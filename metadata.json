@@ -1,0 +1,6 @@
+{
+  "name": "Nifty Option Strategy & Positioning Dashboard",
+  "description": "Nifty options positioning dashboard with OI analysis, complacency gauge, global cues, sector news sentiment, and interactive option strategy suggester with Black-Scholes pricing.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
