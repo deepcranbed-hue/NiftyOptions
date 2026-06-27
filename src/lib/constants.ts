@@ -4,6 +4,7 @@ export const CONFIG = {
   fresh_oi_min: 5.0,
   pcr_heavy_put: 1.30,
   pcr_heavy_call: 0.75,
+  lot_size: 65,
   wing_width: 200,
   iv_floor: 8.0,
   iv_cap: 18.0,

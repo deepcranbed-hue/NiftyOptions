@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+pydantic
+google-genai
+requests
+duckduckgo-search
+numpy
+scipy
+feedparser
+async-lru
+httpx

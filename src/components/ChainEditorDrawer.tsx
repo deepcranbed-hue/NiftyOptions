@@ -6,8 +6,9 @@ interface Props {
   isOpen: boolean;
   onClose: () => void;
   rawChain: string;
-  onSaveChain: (val: string, spotInput: number) => void;
+  onSaveChain: (val: string, spotInput: number, dteInput: number) => void;
   currentSpotInput: number;
+  currentDteInput: number;
 }
 
 export const ChainEditorDrawer: React.FC<Props> = ({
@@ -16,9 +17,11 @@ export const ChainEditorDrawer: React.FC<Props> = ({
   rawChain,
   onSaveChain,
   currentSpotInput,
+  currentDteInput,
 }) => {
   const [tempText, setTempText] = useState(rawChain);
   const [spotOverride, setSpotOverride] = useState(currentSpotInput);
+  const [dteOverride, setDteOverride] = useState(currentDteInput);
   const [error, setError] = useState<string | null>(null);
 
   if (!isOpen) return null;
@@ -30,7 +33,7 @@ export const ChainEditorDrawer: React.FC<Props> = ({
       return;
     }
     try {
-      onSaveChain(tempText, spotOverride);
+      onSaveChain(tempText, spotOverride, dteOverride);
       onClose();
     } catch (err: any) {
       setError(err.message || "Failed to parse option chain data.");
@@ -94,17 +97,32 @@ export const ChainEditorDrawer: React.FC<Props> = ({
             />
           </div>
 
-          <div className="bg-slate-800/40 p-4 rounded-xl border border-slate-800 space-y-2">
-            <label className="text-xs font-bold text-slate-300 block">
-              Manual Spot Price Override (₹) <span className="text-slate-500 font-normal">(Leave 0 for automatic minimum CMP calculation)</span>
-            </label>
-            <input
-              type="number"
-              step="5"
-              value={spotOverride}
-              onChange={(e) => setSpotOverride(parseFloat(e.target.value) || 0)}
-              className="w-full px-4 py-2 bg-slate-950 text-white font-mono font-bold text-sm rounded-xl border border-slate-800 focus:border-indigo-500 outline-none"
-            />
+          <div className="grid grid-cols-2 gap-4">
+            <div className="bg-slate-800/40 p-4 rounded-xl border border-slate-800 space-y-2">
+              <label className="text-xs font-bold text-slate-300 block">
+                Manual Spot Price (₹) <span className="text-slate-500 font-normal">(0 = Auto)</span>
+              </label>
+              <input
+                type="number"
+                step="5"
+                value={spotOverride}
+                onChange={(e) => setSpotOverride(parseFloat(e.target.value) || 0)}
+                className="w-full px-4 py-2 bg-slate-950 text-white font-mono font-bold text-sm rounded-xl border border-slate-800 focus:border-indigo-500 outline-none"
+              />
+            </div>
+            
+            <div className="bg-slate-800/40 p-4 rounded-xl border border-slate-800 space-y-2">
+              <label className="text-xs font-bold text-slate-300 block">
+                Days to Expiry (DTE)
+              </label>
+              <input
+                type="number"
+                step="0.5"
+                value={dteOverride}
+                onChange={(e) => setDteOverride(parseFloat(e.target.value) || 7)}
+                className="w-full px-4 py-2 bg-slate-950 text-white font-mono font-bold text-sm rounded-xl border border-slate-800 focus:border-indigo-500 outline-none"
+              />
+            </div>
           </div>
 
           {error && (

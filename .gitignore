@@ -6,3 +6,5 @@ coverage/
 *.log
 .env*
 !.env.example
+global_cues_cache.json
+sector_news_cache.json

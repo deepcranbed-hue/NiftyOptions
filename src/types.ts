@@ -84,3 +84,15 @@ export interface PayoffPoint {
   isSpot?: boolean;
   isBreakeven?: boolean;
 }
+
+export interface RiskConfig {
+  capital: number;
+  risk_per_trade_pct: number;
+  max_portfolio_heat_pct: number;
+  max_net_delta_units: number;
+  max_net_vega_rupees: number;
+  max_drawdown_pct: number;
+  lot_size: number;
+  complacency_block: number;
+  complacency_halve: number;
+}

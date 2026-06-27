@@ -282,42 +282,7 @@ export function generateGlobalCues(pctMap: Record<string, number>): GlobalCueIte
   return items;
 }
 
-export function classifyHeadline(headline: string): { sector: string; tone: MarketTone; score: number } {
-  const h = " " + headline.toLowerCase() + " ";
-  let sector = "General / Broad Market";
 
-  for (const [sec, kws] of Object.entries(SECTOR_KEYWORDS)) {
-    if (kws.some((k) => h.includes(k))) {
-      sector = sec;
-      break;
-    }
-  }
-
-  let bullCount = 0;
-  let bearCount = 0;
-  for (const kw of NEWS_LEXICON.bull) if (h.includes(kw)) bullCount++;
-  for (const kw of NEWS_LEXICON.bear) if (h.includes(kw)) bearCount++;
-
-  const score = bullCount - bearCount;
-  const tone: MarketTone = score > 0 ? 'bull' : score < 0 ? 'bear' : 'neutral';
-
-  return { sector, tone, score };
-}
-
-export function parseNewsPanel(text: string): { headlines: NewsHeadline[]; aggregated: Record<string, number> } {
-  const lines = text.trim().split(/\r?\n/);
-  const headlines: NewsHeadline[] = [];
-  const aggregated: Record<string, number> = {};
-
-  for (const line of lines) {
-    if (!line.trim()) continue;
-    const { sector, tone, score } = classifyHeadline(line);
-    headlines.push({ sector, tone, score, headline: line.trim() });
-    aggregated[sector] = (aggregated[sector] || 0) + score;
-  }
-
-  return { headlines, aggregated };
-}
 
 // ==========================================
 // OPTION STRATEGY ENGINE & PAYOFF CALCULATOR
@@ -344,7 +309,8 @@ export function suggestStrategies(
   rows: OptionRow[],
   spot: number,
   outlook: 'bullish' | 'bearish' | 'neutral' | 'volatile',
-  ivEnv: 'low' | 'moderate' | 'high'
+  ivEnv: 'low' | 'moderate' | 'high',
+  lotSize: number = 65
 ): StrategyRecommendation[] {
   const atmStrike = getNearestStrike(spot, 0);
   const wing = 200; // 4 strikes
@@ -372,8 +338,8 @@ export function suggestStrategies(
     ivEnvironment: 'moderate',
     riskProfile: 'Defined Risk',
     netPremium: -icNet, // credit
-    maxProfit: `₹${Math.round(icNet * 25).toLocaleString()}`,
-    maxLoss: `₹${Math.round((wing - icNet) * 25).toLocaleString()}`,
+    maxProfit: `₹${Math.round(icNet  * lotSize).toLocaleString()}`,
+    maxLoss: `₹${Math.round((wing - icNet) * lotSize).toLocaleString()}`,
     breakevens: [icPutSell - icNet, icCallSell + icNet],
     probabilityOfProfit: 72,
     rationale: "Captures rapid time decay (Theta) in range-bound regimes. Wings cap catastrophe black-swan risk.",
@@ -394,7 +360,7 @@ export function suggestStrategies(
     ivEnvironment: 'high',
     riskProfile: 'Undefined Risk',
     netPremium: -stNet,
-    maxProfit: `₹${Math.round(stNet * 25).toLocaleString()}`,
+    maxProfit: `₹${Math.round(stNet  * lotSize).toLocaleString()}`,
     maxLoss: 'Unlimited',
     breakevens: [icPutSell - stNet, icCallSell + stNet],
     probabilityOfProfit: 81,
@@ -418,8 +384,8 @@ export function suggestStrategies(
     ivEnvironment: 'moderate',
     riskProfile: 'Defined Risk',
     netPremium: -bpsNet,
-    maxProfit: `₹${Math.round(bpsNet * 25).toLocaleString()}`,
-    maxLoss: `₹${Math.round((wing - bpsNet) * 25).toLocaleString()}`,
+    maxProfit: `₹${Math.round(bpsNet  * lotSize).toLocaleString()}`,
+    maxLoss: `₹${Math.round((wing - bpsNet) * lotSize).toLocaleString()}`,
     breakevens: [bpsSell - bpsNet],
     probabilityOfProfit: 68,
     rationale: "Bullish structure capturing put writer support wall. Profits if Nifty stays flat or ascends.",
@@ -442,8 +408,8 @@ export function suggestStrategies(
     ivEnvironment: 'low',
     riskProfile: 'Defined Risk',
     netPremium: bcsNet, // debit
-    maxProfit: `₹${Math.round((wing - bcsNet) * 25).toLocaleString()}`,
-    maxLoss: `₹${Math.round(bcsNet * 25).toLocaleString()}`,
+    maxProfit: `₹${Math.round((wing - bcsNet) * lotSize).toLocaleString()}`,
+    maxLoss: `₹${Math.round(bcsNet  * lotSize).toLocaleString()}`,
     breakevens: [bcsBuy + bcsNet],
     probabilityOfProfit: 54,
     rationale: "Low IV bullish momentum trade. Sold call reduces net cost and neutralizes vega drag.",
@@ -466,8 +432,8 @@ export function suggestStrategies(
     ivEnvironment: 'moderate',
     riskProfile: 'Defined Risk',
     netPremium: -bcs2Net,
-    maxProfit: `₹${Math.round(bcs2Net * 25).toLocaleString()}`,
-    maxLoss: `₹${Math.round((wing - bcs2Net) * 25).toLocaleString()}`,
+    maxProfit: `₹${Math.round(bcs2Net  * lotSize).toLocaleString()}`,
+    maxLoss: `₹${Math.round((wing - bcs2Net) * lotSize).toLocaleString()}`,
     breakevens: [bcs2Sell + bcs2Net],
     probabilityOfProfit: 67,
     rationale: "Monetizes heavy call OI ceiling. Profits if Nifty drifts lower or stays below resistance.",
@@ -490,8 +456,8 @@ export function suggestStrategies(
     ivEnvironment: 'low',
     riskProfile: 'Defined Risk',
     netPremium: bps2Net,
-    maxProfit: `₹${Math.round((wing - bps2Net) * 25).toLocaleString()}`,
-    maxLoss: `₹${Math.round(bps2Net * 25).toLocaleString()}`,
+    maxProfit: `₹${Math.round((wing - bps2Net) * lotSize).toLocaleString()}`,
+    maxLoss: `₹${Math.round(bps2Net  * lotSize).toLocaleString()}`,
     breakevens: [bps2Buy - bps2Net],
     probabilityOfProfit: 52,
     rationale: "Sharp downside breakdown play. Limited risk with attractive 2:1 risk-reward profile.",
@@ -513,7 +479,7 @@ export function suggestStrategies(
     riskProfile: 'Defined Risk',
     netPremium: lsdNet,
     maxProfit: 'Unlimited',
-    maxLoss: `₹${Math.round(lsdNet * 25).toLocaleString()}`,
+    maxLoss: `₹${Math.round(lsdNet  * lotSize).toLocaleString()}`,
     breakevens: [atmStrike - lsdNet, atmStrike + lsdNet],
     probabilityOfProfit: 44,
     rationale: "Pure long gamma & vega explosion setup prior to major event catalyst (RBI/Fed/Budget).",
@@ -536,8 +502,8 @@ export function suggestStrategies(
     ivEnvironment: 'high',
     riskProfile: 'Defined Risk',
     netPremium: -ibNet,
-    maxProfit: `₹${Math.round(ibNet * 25).toLocaleString()}`,
-    maxLoss: `₹${Math.round((wing - ibNet) * 25).toLocaleString()}`,
+    maxProfit: `₹${Math.round(ibNet  * lotSize).toLocaleString()}`,
+    maxLoss: `₹${Math.round((wing - ibNet) * lotSize).toLocaleString()}`,
     breakevens: [atmStrike - ibNet, atmStrike + ibNet],
     probabilityOfProfit: 62,
     rationale: "Aggressive max pain pinning trade for expiry day. Collects maximum ATM credit.",
@@ -557,7 +523,7 @@ export function suggestStrategies(
   });
 }
 
-export function calculatePayoffCurve(legs: OptionLeg[], spot: number): PayoffPoint[] {
+export function calculatePayoffCurve(legs: OptionLeg[], spot: number, lotSize: number = 65): PayoffPoint[] {
   const minPrice = Math.round((spot * 0.94) / 25) * 25;
   const maxPrice = Math.round((spot * 1.06) / 25) * 25;
   const step = 25;
@@ -575,9 +541,9 @@ export function calculatePayoffCurve(legs: OptionLeg[], spot: number): PayoffPoi
       }
 
       if (leg.action === 'BUY') {
-        netPnl += (intrinsic - leg.premium) * leg.qtyRatio * 25; // Lot size 25
+        netPnl += (intrinsic - leg.premium) * leg.qtyRatio * lotSize; // Lot size 25
       } else {
-        netPnl += (leg.premium - intrinsic) * leg.qtyRatio * 25;
+        netPnl += (leg.premium - intrinsic) * leg.qtyRatio * lotSize;
       }
     }
 
