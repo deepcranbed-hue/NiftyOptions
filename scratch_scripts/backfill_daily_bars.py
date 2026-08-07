@@ -105,44 +105,47 @@ def _same_file(a, b):
     return (sa.st_dev, sa.st_ino) == (sb.st_dev, sb.st_ino)
 
 
+MIRROR_DB = os.path.join(_ROOT, "option_chains.db")
+
+
 def _resolve_db(explicit=None):
-    """Pick the bars database — and surface a REAL ambiguity in this repo.
+    """Pick the bars database. TWO COPIES EXIST, ON PURPOSE.
 
-    Nearly every consumer (backend/quant/fundamentals.py, backend/main.py,
-    shock_recovery_routes.py, and the whole data_agent/fundamentals family) reads
-    OPTION_CHAINS_DB-or-the-Drive-path. A second, stale 329MB option_chains.db also
-    sits at the repo root — same size, DIFFERENT inode, so it is a snapshot copy and
-    not a link. A backfill written to one is invisible to anything reading the
-    other, and the fix would appear to do nothing.
+    Drive  — written by the sync/backfill jobs, read by backend/ and all of
+             data_agent/fundamentals. Source of truth; this is where we WRITE.
+    Mirror — <repo>/option_chains.db, a manual copy of Drive kept so agents and
+             tooling without Drive access can read the data.
 
-    So: follow the repo convention by default, warn whenever a distinct second copy
-    exists, and always print the chosen path rather than leaving it implicit.
+    Same size, different inode: a copy, not a link. So the mirror goes stale the
+    moment this script writes to Drive, and stays stale until it is re-copied.
+    Order: --db -> OPTION_CHAINS_DB -> Drive -> mirror. Never silent about which.
     """
     global _DB
     if _DB:
         return _DB
-    repo_db = os.path.join(_ROOT, "option_chains.db")
 
     if explicit:
         _DB = explicit
     elif os.path.exists(CANONICAL_DB):
         _DB = CANONICAL_DB
-    elif os.path.exists(repo_db):
-        _DB = repo_db
-        print(f"NOTE: canonical DB not reachable; falling back to repo-root {repo_db}\n")
+    elif os.path.exists(MIRROR_DB):
+        _DB = MIRROR_DB
+        print(f"NOTE: Drive not reachable here; using the repo-root mirror "
+              f"{MIRROR_DB}.\n      It is only as fresh as the last manual copy.\n")
     else:
         sys.exit("ERROR: no option_chains.db found — pass --db <path> or set "
                  "OPTION_CHAINS_DB.")
 
     print(f"database: {_DB}\n")
-    for other in (CANONICAL_DB, repo_db):
-        if os.path.exists(other) and not _same_file(other, _DB):
-            print("WARNING: a second, DISTINCT option_chains.db exists —")
-            print(f"   writing to : {_DB}  ({os.path.getsize(_DB)/1e6:.0f} MB)")
-            print(f"   also on disk: {other}  ({os.path.getsize(other)/1e6:.0f} MB)")
-            print("   Equal sizes do NOT mean equal files; these differ by inode.")
-            print("   Anything reading the other copy will not see this backfill.\n")
     return _DB
+
+
+def _mirror_reminder():
+    """Printed after a write: the mirror is now behind and must be re-copied."""
+    if _DB and os.path.exists(MIRROR_DB) and not _same_file(MIRROR_DB, _DB):
+        print("\nMIRROR IS NOW STALE — re-copy it, or agent-side analysis will still")
+        print("read the old bars (equal file SIZES do not mean equal content):")
+        print(f"   cp '{_DB}' '{MIRROR_DB}'")
 
 
 def _db_path():
@@ -297,6 +300,7 @@ def main():
     for s in symbols:
         a, b = after[s], before[s]
         print(f"{s:14}{a['bars']:>7}{a['first']:>13}{a['last']:>13}   {a['bars'] - b['bars']:+d}")
+    _mirror_reminder()
     print("\nNext: re-run data_agent/fundamentals/earnings_reaction_backfill.py "
           "so the reaction record picks up the deeper history.")
 

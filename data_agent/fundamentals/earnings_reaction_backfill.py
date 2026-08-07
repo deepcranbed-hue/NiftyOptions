@@ -60,14 +60,47 @@ from datetime import datetime
 
 _REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# The repo convention (bank_view_data, it_view_data, oil_beta, shock_recovery, ...):
-# OPTION_CHAINS_DB env override, falling back to the Drive path that backend/ reads.
-# This module previously pointed at a repo-root option_chains.db instead. That file
-# exists and is byte-identical in SIZE to the Drive copy but is a DIFFERENT inode —
-# a stale snapshot, not a link. So it read plausible-looking data from a database no
-# other consumer writes to, and any backfill would have appeared to do nothing here.
-_DB = os.getenv("OPTION_CHAINS_DB",
-    "/Users/deepak/Library/CloudStorage/GoogleDrive-deepcranbed@gmail.com/My Drive/option_chains.db")
+# TWO COPIES OF option_chains.db EXIST, ON PURPOSE.
+#
+#   Drive  — /Users/deepak/.../My Drive/option_chains.db   WRITTEN by the sync and
+#            backfill jobs; read by backend/ and the rest of data_agent/fundamentals.
+#            This is the source of truth.
+#   Mirror — <repo>/option_chains.db                       A manual copy of Drive,
+#            kept so agents/tooling without Drive access can read the data.
+#
+# Same size, different inode — a copy, not a link. So the mirror goes stale the
+# moment anything writes to Drive without a re-copy, and a backfill run against
+# Drive is invisible here until that copy happens.
+#
+# Order: OPTION_CHAINS_DB override -> Drive -> mirror. Never silent about which.
+_DRIVE_DB = ("/Users/deepak/Library/CloudStorage/GoogleDrive-deepcranbed@gmail.com"
+             "/My Drive/option_chains.db")
+_MIRROR_DB = os.path.join(_REPO, "option_chains.db")
+
+
+def _resolve_db():
+    env = os.getenv("OPTION_CHAINS_DB")
+    if env:
+        return env
+    if os.path.exists(_DRIVE_DB):
+        # Both reachable: the mirror is only trustworthy if it is no older than Drive.
+        if os.path.exists(_MIRROR_DB):
+            try:
+                if os.path.getmtime(_MIRROR_DB) < os.path.getmtime(_DRIVE_DB):
+                    print("NOTE: repo-root mirror is OLDER than Drive. Re-copy it "
+                          "before any agent reads the repo copy:\n"
+                          f"      cp '{_DRIVE_DB}' '{_MIRROR_DB}'\n")
+            except OSError:
+                pass
+        return _DRIVE_DB
+    if os.path.exists(_MIRROR_DB):
+        print(f"NOTE: Drive not reachable here; reading the repo-root mirror "
+              f"({_MIRROR_DB}). It is only as fresh as the last manual copy.\n")
+        return _MIRROR_DB
+    raise SystemExit("ERROR: no option_chains.db found — set OPTION_CHAINS_DB.")
+
+
+_DB = _resolve_db()
 _CSV = os.path.join(_REPO, "nifty-50-stock-list.csv")
 _OUT = os.path.join(_REPO, "earnings_reactions.json")
 
