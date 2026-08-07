@@ -64,30 +64,17 @@ _ROOT = os.path.dirname(_HERE)
 sys.path.append(os.path.join(_HERE, "breeze_env", "lib", "python3.9", "site-packages"))
 sys.path.append(_ROOT)
 
+# DRY (CLAUDE.md): fetching, writing and verifying daily bars lives in exactly one
+# place, shared with scratch_scripts/sync_nifty50_to_now.py. Imported AFTER the
+# sys.path lines above, which is what makes the repo root importable.
+from daily_bars import (LISTED_FROM, fetch_best, write_daily, verify_daily,
+                        duplicate_dates, drop_intraday_duplicates)
+
 DEFAULT_FROM = "2018-01-01"
 _CSV = os.path.join(_ROOT, "nifty-50-stock-list.csv")
 
-# The format the Yahoo-loaded majority uses. No trailing 'Z' — see docstring.
-_TS_FMT = "%Y-%m-%dT00:00:00"
 
-# Real listing dates. Requesting bars before these returns nothing, which would
-# otherwise look like a fetch failure — so we clamp instead of alarming.
-LISTED_FROM = {
-    "ZOMATO": "2021-07-23",      # Zomato IPO (renamed Eternal in 2025)
-    "ETERNAL": "2021-07-23",
-    "JIOFIN": "2023-08-21",      # demerged out of Reliance
-    "MAXHEALTH": "2020-08-21",
-}
 
-# Yahoo tickers. Renames and demergers are exactly where the NSE symbol and the
-# Yahoo ticker diverge, so each symbol may be tried under several; the one
-# returning the most rows wins. Extend rather than edit when NSE renames again.
-TICKER_ALTS = {
-    "TATAMOTORS": ["TATAMOTORS.NS", "TMPV.NS"],   # Oct-2025 demerger + rename
-    "ZOMATO": ["ETERNAL.NS", "ZOMATO.NS"],        # renamed Eternal, 2025
-    "M&M": ["M&M.NS"],
-    "BAJAJ-AUTO": ["BAJAJ-AUTO.NS"],
-}
 
 CANONICAL_DB = os.getenv("OPTION_CHAINS_DB",
     "/Users/deepak/Library/CloudStorage/GoogleDrive-deepcranbed@gmail.com/My Drive/option_chains.db")
@@ -180,152 +167,9 @@ def _universe():
         return [row["Symbol"].strip() for row in csv.DictReader(f) if row.get("Symbol")]
 
 
-def _tickers_for(symbol):
-    if symbol.upper() in TICKER_ALTS:
-        return TICKER_ALTS[symbol.upper()]
-    return [f"{symbol}.NS"]
 
 
-def _fetch(ticker, start, end):
-    """Full daily history from Yahoo, on the same basis as the existing 46 symbols."""
-    import yfinance as yf
-    df = yf.download(ticker, start=start.strftime("%Y-%m-%d"),
-                     end=end.strftime("%Y-%m-%d"), interval="1d",
-                     auto_adjust=True, progress=False, threads=False)
-    if df is None or df.empty:
-        return []
-    # yfinance returns MultiIndex columns for some versions even with one ticker.
-    if hasattr(df.columns, "nlevels") and df.columns.nlevels > 1:
-        df = df.droplevel(1, axis=1)
 
-    # TIMEZONE — the reason the first version of this shifted every bar back a day.
-    # yfinance hands back a tz-aware index for .NS tickers. Midnight IST is 18:30 UTC
-    # on the PREVIOUS day, so formatting a UTC-expressed timestamp as a date yields
-    # 2017-12-31 for what is really the 2018-01-01 session — a Sunday, when NSE is
-    # shut. Convert to IST before taking the calendar date, never after.
-    idx = df.index
-    if getattr(idx, "tz", None) is not None:
-        try:
-            idx = idx.tz_convert("Asia/Kolkata")
-        except Exception:
-            idx = idx.tz_localize(None)
-
-    rows = []
-    for when, (_, r) in zip(idx, df.iterrows()):
-        try:
-            ts = when.strftime(_TS_FMT)
-            rows.append((ts, float(r["Open"]), float(r["High"]), float(r["Low"]),
-                         float(r["Close"]), float(r["Volume"])))
-        except Exception:
-            continue
-    return rows
-
-
-def _calendar_check(rows, symbol, db, reference="RELIANCE"):
-    """Would have caught the timezone shift immediately, so it now runs every time.
-
-    Two independent tests, because each catches what the other misses:
-      weekends — a shifted series lands sessions on Sat/Sun, which no exchange has;
-      reference — compare dates against a symbol known to be correct. A uniform
-                  shift produces near-total mismatch even though the bar COUNT
-                  looks perfect, which is exactly how the first run looked right.
-    """
-    dates = {r[0][:10] for r in rows}
-    weekend = sorted(d for d in dates
-                     if datetime.strptime(d, "%Y-%m-%d").weekday() >= 5)
-    # A HANDFUL of weekend sessions are real: NSE runs a Muhurat session on Diwali,
-    # e.g. Sunday 2019-10-27. RELIANCE has exactly 3 across 2018-2026. Hundreds are
-    # not — the shifted run put 427 of TATAMOTORS' 2,126 bars on a weekend.
-    if len(weekend) > 10:
-        print(f"   WARNING: {len(weekend)} bars fall on a weekend "
-              f"(e.g. {', '.join(weekend[:3])}) — dates look shifted.")
-    elif weekend:
-        print(f"   note: {len(weekend)} weekend sessions ({', '.join(weekend[:3])}) "
-              f"— plausible Muhurat trading, not a shift.")
-
-    con = sqlite3.connect(db)
-    ref = {r[0][:10] for r in con.execute(
-        "select ts from price_bars where symbol=? and timeframe='1d'", (reference,))}
-    con.close()
-    if not ref:
-        return
-    lo, hi = min(dates), max(dates)
-    ref_win = {d for d in ref if lo <= d <= hi}
-    missing = ref_win - dates          # sessions the reference has and we do not
-    extra = dates - ref               # dates the reference has never traded
-    if ref_win:
-        overlap = 100.0 * len(dates & ref_win) / len(ref_win)
-        verdict = "OK" if overlap >= 98 else "MISALIGNED"
-        print(f"   calendar vs {reference}: {overlap:.1f}% of sessions match  [{verdict}]")
-        if verdict == "MISALIGNED":
-            print(f"      {len(missing)} sessions missing, {len(extra)} dates not in "
-                  f"the {reference} calendar — suspect a date shift, not a data gap.")
-
-
-def _write(rows, symbol, db):
-    """Write daily bars DIRECTLY, deliberately bypassing bar_store.save_bars.
-
-    save_bars sends every ts through backend.timeutil.to_db_ts, which treats a
-    naive timestamp as IST and converts it to UTC ("canonical storage format").
-    For a MINUTE bar that is right. For a DAILY bar it is not: the bar's identity
-    is its trading DATE, and 2018-01-01 00:00 IST converts to 2017-12-31T18:30:00Z
-    — the session lands on the previous calendar day, and on Mondays that is a
-    Sunday. That is what put 427 of TATAMOTORS' 2,126 bars on a weekend.
-
-    The 46 correct symbols were not written through save_bars; they hold naive
-    '2018-01-01T00:00:00'. We match them, so all 50 share one convention.
-
-    (The underlying to_db_ts behaviour is worth fixing for timeframe='1d' — see
-    the NIFTY duplicate-date count that --verify-only reports.)
-    """
-    con = sqlite3.connect(db)
-    con.executemany(
-        "INSERT OR REPLACE INTO price_bars"
-        "(exchange, symbol, timeframe, ts, open, high, low, close, volume) "
-        "VALUES ('NSE', ?, '1d', ?, ?, ?, ?, ?, ?)",
-        [(symbol, r[0], r[1], r[2], r[3], r[4], r[5]) for r in rows])
-    con.commit()
-    con.close()
-    return len(rows)
-
-
-def _verify_written(symbol, db, reference="RELIANCE"):
-    """Re-read from the DB and check THAT — not the rows we held in memory.
-
-    The previous run passed its checks and still wrote shifted data, because the
-    checks ran before the write and the write is what corrupted the dates.
-    """
-    con = sqlite3.connect(db)
-    got = sorted(r[0] for r in con.execute(
-        "select ts from price_bars where symbol=? and timeframe='1d'", (symbol,)))
-    ref = {r[0][:10] for r in con.execute(
-        "select ts from price_bars where symbol=? and timeframe='1d'", (reference,))}
-    con.close()
-    if not got:
-        print("   VERIFY: no rows found after write.")
-        return False
-    dates = {t[:10] for t in got}
-    fmts = sorted({t[10:] for t in got})
-    wk = [d for d in dates if datetime.strptime(d, "%Y-%m-%d").weekday() >= 5]
-    win = {d for d in ref if min(dates) <= d <= max(dates)}
-    ov = 100.0 * len(dates & win) / len(win) if win else 0.0
-    ok = ov >= 98 and len(wk) <= 10 and fmts == ["T00:00:00"]
-    print(f"   VERIFY (read back): {len(got)} rows  {min(dates)} -> {max(dates)}  "
-          f"fmt={','.join(fmts)}  weekend={len(wk)}  calendar={ov:.1f}%  "
-          f"[{'OK' if ok else 'FAILED'}]")
-    if not ok:
-        print("      Stored dates do not match the exchange calendar — do NOT trust "
-              "this series or re-copy the mirror.")
-    return ok
-
-
-def _purge(symbol, db):
-    con = sqlite3.connect(db)
-    n = con.execute("delete from price_bars where symbol=? and timeframe='1d'",
-                    (symbol,)).rowcount
-    con.commit()
-    con.close()
-    return n
 
 
 def main():
@@ -342,11 +186,25 @@ def main():
     ap.add_argument("--dry-run", action="store_true",
                     help="fetch and report, but write nothing")
     ap.add_argument("--db", default=None, help="explicit bars database path")
+    ap.add_argument("--dedupe", action="store_true",
+                    help="drop Breeze-origin duplicate sessions (a date stored twice, "
+                         "once at midnight and once at an intraday time such as "
+                         "03:45Z = 09:15 IST). Keeps the midnight row.")
     args = ap.parse_args()
     db = _resolve_db(args.db)
 
     symbols = _universe() if args.symbols.upper() == "ALL" else \
         [s.strip().upper() for s in args.symbols.split(",") if s.strip()]
+
+    if args.dedupe:
+        dropped = drop_intraday_duplicates(db)
+        if dropped:
+            for sym, n, sample in dropped:
+                print(f"   {sym:14} dropped {n:>3} intraday-stamped rows (e.g. {sample})")
+        else:
+            print("   no duplicate sessions found.")
+        _mirror_reminder()
+        return
 
     before = _coverage(symbols)
     _print_coverage(symbols, before, "BEFORE")
@@ -354,12 +212,7 @@ def main():
         # One trading date must map to exactly one row. Mixed writers break that:
         # a naive '...T00:00:00' and a converted '...T18:30:00Z' are different
         # primary keys for the same session, so both survive and get counted twice.
-        con = sqlite3.connect(db)
-        dupes = con.execute(
-            "select symbol, count(*) from (select symbol, substr(ts,1,10) d, "
-            "count(*) n from price_bars where timeframe='1d' group by 1,2 "
-            "having n>1) group by 1 order by 2 desc").fetchall()
-        con.close()
+        dupes = duplicate_dates(db)
         if dupes:
             print("\nDUPLICATE trading dates (same session stored twice):")
             for sym, n in dupes:
@@ -405,31 +258,21 @@ def main():
                 print(f"\n{sym}: clamped to listing date {LISTED_FROM[sym]}")
         print(f"\n{sym}: fetching {floor.date()} -> {today.date()}")
 
-        best, best_ticker = [], None
-        for tk in _tickers_for(sym):
-            try:
-                rows = _fetch(tk, floor, today)
-            except Exception as e:
-                print(f"   [{tk}] error: {str(e)[:70]}")
-                continue
-            print(f"   [{tk}] {len(rows)} bars")
-            if len(rows) > len(best):
-                best, best_ticker = rows, tk
+        best, best_ticker = fetch_best(sym, floor, today)
 
         if not best:
-            print(f"   -> NO DATA for {sym} — check the ticker in TICKER_ALTS")
+            print(f"   -> NO DATA for {sym} — check TICKER_ALTS in daily_bars.py")
             continue
         print(f"   -> using {best_ticker}: {len(best)} bars "
               f"({best[0][0][:10]} -> {best[-1][0][:10]})")
-        _calendar_check(best, sym, db)
 
         if args.dry_run:
             print("   (--dry-run: not written)")
             continue
+        n, purged = write_daily(best, sym, db, replace=args.replace)
         if args.replace:
-            print(f"   purged {_purge(sym, db)} existing rows")
-        _write(best, sym, db)
-        if not _verify_written(sym, db):
+            print(f"   purged {purged} existing rows, wrote {n}")
+        if not verify_daily(sym, db):
             failed.append(sym)
         time.sleep(0.5)          # be polite to Yahoo
 
