@@ -86,47 +86,62 @@ CODE_FALLBACKS = {
 _DB = None
 
 
+CANONICAL_DB = os.getenv("OPTION_CHAINS_DB",
+    "/Users/deepak/Library/CloudStorage/GoogleDrive-deepcranbed@gmail.com/My Drive/option_chains.db")
+
+
+def _same_file(a, b):
+    """True only if a and b are the SAME file on disk.
+
+    Deliberately (st_dev, st_ino) and not size: the repo-root option_chains.db and
+    the Drive one are both exactly 329,240,576 bytes yet have different inodes.
+    A size comparison here reports 'identical' on precisely the case this guard
+    exists to catch.
+    """
+    try:
+        sa, sb = os.stat(a), os.stat(b)
+    except OSError:
+        return False
+    return (sa.st_dev, sa.st_ino) == (sb.st_dev, sb.st_ino)
+
+
 def _resolve_db(explicit=None):
     """Pick the bars database — and surface a REAL ambiguity in this repo.
 
-    bar_store.py and chain_store.py both hardcode a Google Drive path, while a
-    329MB option_chains.db ALSO sits at the repo root (a regular file, not a
-    symlink). If those are two distinct files, a backfill written to one is
-    invisible to any consumer reading the other — the fix would appear to do
-    nothing. So: resolve explicitly, warn when both exist, and always print the
-    chosen path rather than assuming.
+    Nearly every consumer (backend/quant/fundamentals.py, backend/main.py,
+    shock_recovery_routes.py, and the whole data_agent/fundamentals family) reads
+    OPTION_CHAINS_DB-or-the-Drive-path. A second, stale 329MB option_chains.db also
+    sits at the repo root — same size, DIFFERENT inode, so it is a snapshot copy and
+    not a link. A backfill written to one is invisible to anything reading the
+    other, and the fix would appear to do nothing.
 
-    (Worth fixing properly at some point: per CLAUDE.md's DRY rule the DB path
-    should be ONE constant — ideally env-overridable — not hardcoded in two
-    modules with a third copy on disk.)
+    So: follow the repo convention by default, warn whenever a distinct second copy
+    exists, and always print the chosen path rather than leaving it implicit.
     """
     global _DB
     if _DB:
         return _DB
     repo_db = os.path.join(_ROOT, "option_chains.db")
-    try:
-        from bar_store import DB_PATH as store_db
-    except Exception:
-        store_db = None
 
     if explicit:
         _DB = explicit
-    elif store_db and os.path.exists(store_db):
-        _DB = store_db
-        if os.path.exists(repo_db) and os.path.abspath(repo_db) != os.path.abspath(store_db):
-            a, b = os.path.getsize(store_db), os.path.getsize(repo_db)
-            if a != b:
-                print("WARNING: two different option_chains.db files exist —")
-                print(f"   bar_store : {store_db}  ({a/1e6:.0f} MB)")
-                print(f"   repo root : {repo_db}  ({b/1e6:.0f} MB)")
-                print("   Writing to the bar_store path. If your analysis reads the repo-root")
-                print("   copy, pass --db explicitly or the backfill will look like a no-op.\n")
+    elif os.path.exists(CANONICAL_DB):
+        _DB = CANONICAL_DB
     elif os.path.exists(repo_db):
         _DB = repo_db
-        print(f"NOTE: bar_store DB_PATH not reachable; using repo-root {repo_db}\n")
+        print(f"NOTE: canonical DB not reachable; falling back to repo-root {repo_db}\n")
     else:
-        sys.exit("ERROR: no option_chains.db found — pass --db <path>.")
+        sys.exit("ERROR: no option_chains.db found — pass --db <path> or set "
+                 "OPTION_CHAINS_DB.")
+
     print(f"database: {_DB}\n")
+    for other in (CANONICAL_DB, repo_db):
+        if os.path.exists(other) and not _same_file(other, _DB):
+            print("WARNING: a second, DISTINCT option_chains.db exists —")
+            print(f"   writing to : {_DB}  ({os.path.getsize(_DB)/1e6:.0f} MB)")
+            print(f"   also on disk: {other}  ({os.path.getsize(other)/1e6:.0f} MB)")
+            print("   Equal sizes do NOT mean equal files; these differ by inode.")
+            print("   Anything reading the other copy will not see this backfill.\n")
     return _DB
 
 
