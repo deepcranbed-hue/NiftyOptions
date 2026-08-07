@@ -245,10 +245,23 @@ def main():
     from bar_store import save_bars
     from breeze_connect import BreezeConnect
 
+    # Same idiom as data_agent/fundamentals/*: load .env if present, env still wins.
+    try:
+        from dotenv import load_dotenv
+        load_dotenv(os.path.join(_ROOT, ".env"))
+    except Exception:
+        pass
+
     api_key = os.getenv("BREEZE_API_KEY")
     api_secret = os.getenv("BREEZE_API_SECRET")
     if not (api_key and api_secret):
-        sys.exit("ERROR: set BREEZE_API_KEY and BREEZE_API_SECRET (see .env).")
+        sys.exit(
+            "ERROR: BREEZE_API_KEY / BREEZE_API_SECRET not set.\n"
+            "  They are currently hardcoded in scratch_scripts/sync_nifty50_to_now.py\n"
+            "  (~line 122). Copy them into .env (already gitignored) as:\n"
+            "      BREEZE_API_KEY=...\n"
+            "      BREEZE_API_SECRET=...\n"
+            "  or export them for this shell.")
     breeze = BreezeConnect(api_key=api_key)
     breeze.generate_session(api_secret=api_secret, session_token=args.session_token)
 
