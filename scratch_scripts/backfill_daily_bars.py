@@ -262,6 +262,63 @@ def _calendar_check(rows, symbol, db, reference="RELIANCE"):
                   f"the {reference} calendar — suspect a date shift, not a data gap.")
 
 
+def _write(rows, symbol, db):
+    """Write daily bars DIRECTLY, deliberately bypassing bar_store.save_bars.
+
+    save_bars sends every ts through backend.timeutil.to_db_ts, which treats a
+    naive timestamp as IST and converts it to UTC ("canonical storage format").
+    For a MINUTE bar that is right. For a DAILY bar it is not: the bar's identity
+    is its trading DATE, and 2018-01-01 00:00 IST converts to 2017-12-31T18:30:00Z
+    — the session lands on the previous calendar day, and on Mondays that is a
+    Sunday. That is what put 427 of TATAMOTORS' 2,126 bars on a weekend.
+
+    The 46 correct symbols were not written through save_bars; they hold naive
+    '2018-01-01T00:00:00'. We match them, so all 50 share one convention.
+
+    (The underlying to_db_ts behaviour is worth fixing for timeframe='1d' — see
+    the NIFTY duplicate-date count that --verify-only reports.)
+    """
+    con = sqlite3.connect(db)
+    con.executemany(
+        "INSERT OR REPLACE INTO price_bars"
+        "(exchange, symbol, timeframe, ts, open, high, low, close, volume) "
+        "VALUES ('NSE', ?, '1d', ?, ?, ?, ?, ?, ?)",
+        [(symbol, r[0], r[1], r[2], r[3], r[4], r[5]) for r in rows])
+    con.commit()
+    con.close()
+    return len(rows)
+
+
+def _verify_written(symbol, db, reference="RELIANCE"):
+    """Re-read from the DB and check THAT — not the rows we held in memory.
+
+    The previous run passed its checks and still wrote shifted data, because the
+    checks ran before the write and the write is what corrupted the dates.
+    """
+    con = sqlite3.connect(db)
+    got = sorted(r[0] for r in con.execute(
+        "select ts from price_bars where symbol=? and timeframe='1d'", (symbol,)))
+    ref = {r[0][:10] for r in con.execute(
+        "select ts from price_bars where symbol=? and timeframe='1d'", (reference,))}
+    con.close()
+    if not got:
+        print("   VERIFY: no rows found after write.")
+        return False
+    dates = {t[:10] for t in got}
+    fmts = sorted({t[10:] for t in got})
+    wk = [d for d in dates if datetime.strptime(d, "%Y-%m-%d").weekday() >= 5]
+    win = {d for d in ref if min(dates) <= d <= max(dates)}
+    ov = 100.0 * len(dates & win) / len(win) if win else 0.0
+    ok = ov >= 98 and len(wk) <= 10 and fmts == ["T00:00:00"]
+    print(f"   VERIFY (read back): {len(got)} rows  {min(dates)} -> {max(dates)}  "
+          f"fmt={','.join(fmts)}  weekend={len(wk)}  calendar={ov:.1f}%  "
+          f"[{'OK' if ok else 'FAILED'}]")
+    if not ok:
+        print("      Stored dates do not match the exchange calendar — do NOT trust "
+              "this series or re-copy the mirror.")
+    return ok
+
+
 def _purge(symbol, db):
     con = sqlite3.connect(db)
     n = con.execute("delete from price_bars where symbol=? and timeframe='1d'",
@@ -294,6 +351,20 @@ def main():
     before = _coverage(symbols)
     _print_coverage(symbols, before, "BEFORE")
     if args.verify_only:
+        # One trading date must map to exactly one row. Mixed writers break that:
+        # a naive '...T00:00:00' and a converted '...T18:30:00Z' are different
+        # primary keys for the same session, so both survive and get counted twice.
+        con = sqlite3.connect(db)
+        dupes = con.execute(
+            "select symbol, count(*) from (select symbol, substr(ts,1,10) d, "
+            "count(*) n from price_bars where timeframe='1d' group by 1,2 "
+            "having n>1) group by 1 order by 2 desc").fetchall()
+        con.close()
+        if dupes:
+            print("\nDUPLICATE trading dates (same session stored twice):")
+            for sym, n in dupes:
+                print(f"   {sym:14}{n:>5} dates")
+            print("   Anything joining on date will double-count these.")
         print("\n--verify-only: nothing fetched.")
         return
 
@@ -306,7 +377,7 @@ def main():
     needs = {}
     for s in symbols:
         if "Z" in before[s]["fmt"]:
-            needs[s] = "Breeze-format rows (ts ends 'Z')"
+            needs[s] = f"rows in a different ts format ({before[s]['fmt']})"
             continue
         wk = [d[0][:10] for d in con.execute(
             "select ts from price_bars where symbol=? and timeframe='1d'", (s,))
@@ -320,7 +391,7 @@ def main():
             print(f"   {s}: {why}")
         sys.exit("Re-run with --replace to purge them first.")
 
-    from bar_store import save_bars
+    failed = []
 
     start_floor = datetime.strptime(args.from_date, "%Y-%m-%d")
     today = datetime.now()
@@ -357,7 +428,9 @@ def main():
             continue
         if args.replace:
             print(f"   purged {_purge(sym, db)} existing rows")
-        save_bars(best, exchange="NSE", symbol=sym, timeframe="1d", db=db)
+        _write(best, sym, db)
+        if not _verify_written(sym, db):
+            failed.append(sym)
         time.sleep(0.5)          # be polite to Yahoo
 
     if args.dry_run:
@@ -365,6 +438,11 @@ def main():
         return
 
     _print_coverage(symbols, _coverage(symbols), "AFTER")
+
+    if failed:
+        print(f"\nDID NOT VERIFY: {', '.join(failed)} — the stored dates failed the "
+              f"calendar check.\nDo NOT re-copy the mirror; the series is wrong.")
+        sys.exit(1)
     _mirror_reminder()
     print("\nNext: re-run data_agent/fundamentals/earnings_reaction_backfill.py "
           "so the reaction record picks up the deeper history.")
