@@ -197,15 +197,69 @@ def _fetch(ticker, start, end):
     # yfinance returns MultiIndex columns for some versions even with one ticker.
     if hasattr(df.columns, "nlevels") and df.columns.nlevels > 1:
         df = df.droplevel(1, axis=1)
-    rows = []
-    for idx, r in df.iterrows():
+
+    # TIMEZONE — the reason the first version of this shifted every bar back a day.
+    # yfinance hands back a tz-aware index for .NS tickers. Midnight IST is 18:30 UTC
+    # on the PREVIOUS day, so formatting a UTC-expressed timestamp as a date yields
+    # 2017-12-31 for what is really the 2018-01-01 session — a Sunday, when NSE is
+    # shut. Convert to IST before taking the calendar date, never after.
+    idx = df.index
+    if getattr(idx, "tz", None) is not None:
         try:
-            ts = idx.to_pydatetime().strftime(_TS_FMT)
+            idx = idx.tz_convert("Asia/Kolkata")
+        except Exception:
+            idx = idx.tz_localize(None)
+
+    rows = []
+    for when, (_, r) in zip(idx, df.iterrows()):
+        try:
+            ts = when.strftime(_TS_FMT)
             rows.append((ts, float(r["Open"]), float(r["High"]), float(r["Low"]),
                          float(r["Close"]), float(r["Volume"])))
         except Exception:
             continue
     return rows
+
+
+def _calendar_check(rows, symbol, db, reference="RELIANCE"):
+    """Would have caught the timezone shift immediately, so it now runs every time.
+
+    Two independent tests, because each catches what the other misses:
+      weekends — a shifted series lands sessions on Sat/Sun, which no exchange has;
+      reference — compare dates against a symbol known to be correct. A uniform
+                  shift produces near-total mismatch even though the bar COUNT
+                  looks perfect, which is exactly how the first run looked right.
+    """
+    dates = {r[0][:10] for r in rows}
+    weekend = sorted(d for d in dates
+                     if datetime.strptime(d, "%Y-%m-%d").weekday() >= 5)
+    # A HANDFUL of weekend sessions are real: NSE runs a Muhurat session on Diwali,
+    # e.g. Sunday 2019-10-27. RELIANCE has exactly 3 across 2018-2026. Hundreds are
+    # not — the shifted run put 427 of TATAMOTORS' 2,126 bars on a weekend.
+    if len(weekend) > 10:
+        print(f"   WARNING: {len(weekend)} bars fall on a weekend "
+              f"(e.g. {', '.join(weekend[:3])}) — dates look shifted.")
+    elif weekend:
+        print(f"   note: {len(weekend)} weekend sessions ({', '.join(weekend[:3])}) "
+              f"— plausible Muhurat trading, not a shift.")
+
+    con = sqlite3.connect(db)
+    ref = {r[0][:10] for r in con.execute(
+        "select ts from price_bars where symbol=? and timeframe='1d'", (reference,))}
+    con.close()
+    if not ref:
+        return
+    lo, hi = min(dates), max(dates)
+    ref_win = {d for d in ref if lo <= d <= hi}
+    missing = ref_win - dates          # sessions the reference has and we do not
+    extra = dates - ref               # dates the reference has never traded
+    if ref_win:
+        overlap = 100.0 * len(dates & ref_win) / len(ref_win)
+        verdict = "OK" if overlap >= 98 else "MISALIGNED"
+        print(f"   calendar vs {reference}: {overlap:.1f}% of sessions match  [{verdict}]")
+        if verdict == "MISALIGNED":
+            print(f"      {len(missing)} sessions missing, {len(extra)} dates not in "
+                  f"the {reference} calendar — suspect a date shift, not a data gap.")
 
 
 def _purge(symbol, db):
@@ -243,11 +297,28 @@ def main():
         print("\n--verify-only: nothing fetched.")
         return
 
-    mixed = [s for s in symbols if "Z" in before[s]["fmt"]]
-    if mixed and not args.replace:
-        sys.exit(f"\nREFUSING TO WRITE: {', '.join(mixed)} hold Breeze-format rows "
-                 f"(ts ending 'Z').\nWriting Yahoo-format rows would duplicate every "
-                 f"overlapping date rather than\nreplace it. Re-run with --replace.")
+    # Any existing rows whose ts will not collide with the incoming ones must be
+    # deleted, or the write ADDS a parallel series instead of refreshing it. Two
+    # ways that happens, both seen in this table:
+    #   'Z' suffix      — Breeze rows; different string, same date.
+    #   weekend dates   — rows written by the tz-shifted version of this script.
+    con = sqlite3.connect(db)
+    needs = {}
+    for s in symbols:
+        if "Z" in before[s]["fmt"]:
+            needs[s] = "Breeze-format rows (ts ends 'Z')"
+            continue
+        wk = [d[0][:10] for d in con.execute(
+            "select ts from price_bars where symbol=? and timeframe='1d'", (s,))
+            if datetime.strptime(d[0][:10], "%Y-%m-%d").weekday() >= 5]
+        if wk:
+            needs[s] = f"{len(wk)} weekend-dated rows (e.g. {wk[0]}) — date-shifted"
+    con.close()
+    if needs and not args.replace:
+        print("\nREFUSING TO WRITE — these would gain a duplicate parallel series:")
+        for s, why in needs.items():
+            print(f"   {s}: {why}")
+        sys.exit("Re-run with --replace to purge them first.")
 
     from bar_store import save_bars
 
@@ -279,6 +350,7 @@ def main():
             continue
         print(f"   -> using {best_ticker}: {len(best)} bars "
               f"({best[0][0][:10]} -> {best[-1][0][:10]})")
+        _calendar_check(best, sym, db)
 
         if args.dry_run:
             print("   (--dry-run: not written)")
