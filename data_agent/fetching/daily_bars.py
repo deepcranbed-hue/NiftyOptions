@@ -55,6 +55,11 @@ TICKER_ALTS = {
     "TATAMOTORS": ["TATAMOTORS.NS", "TMPV.NS"],   # Oct-2025 demerger + rename
     "ZOMATO": ["ETERNAL.NS", "ZOMATO.NS"],        # renamed Eternal, 2025
     "ETERNAL": ["ETERNAL.NS", "ZOMATO.NS"],
+    # LTIMindtree: L&T Infotech absorbed Mindtree in Nov-2022 and the NSE symbol
+    # became LTIM. A plain LTIM.NS returned nothing on the full re-pull, so the
+    # predecessors are tried too — whichever yields the most bars wins, and the run
+    # prints which one, so a dead ticker is visible instead of a silent empty result.
+    "LTIM": ["LTIM.NS", "LTIMINDTREE.NS", "LTI.NS", "MINDTREE.NS"],
     # Indices carry no '.NS' suffix.
     "NIFTY": ["^NSEI"],
     "BANKNIFTY": ["^NSEBANK"],

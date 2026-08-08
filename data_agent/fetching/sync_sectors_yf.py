@@ -39,7 +39,9 @@ from daily_bars import sync_symbols, INDEX_TICKERS
 # ^CNXIT -> NIFTYIT and ^NSEBANK -> BANKNIFTY as canonical. Writing both is what
 # created the 257-bar shadow copies.
 SECTORS = [s for s in INDEX_TICKERS if s.startswith("NIFTY") and s != "NIFTY"]
-SECTORS += ["BANKNIFTY"]
+# INDIAVIX belongs here too: it was left to a Breeze path that no longer writes
+# daily bars, so it sat on the old Z format with nothing to refresh it.
+SECTORS += ["BANKNIFTY", "INDIAVIX"]
 
 
 def main():

@@ -205,11 +205,14 @@ def fold_ts_formats(db, dry=True, canon="T00:00:00"):
     not finish; pulling two date sets and diffing them is O(n).
     """
     con = sqlite3.connect(db)
+    # Any symbol holding at least one non-canonical row — NOT just mixed ones.
+    # Selecting on "more than one distinct format" missed GOLD, COPPER and INDIAVIX,
+    # which are 100% 'T00:00:00Z': one distinct format, all of it wrong.
     mixed = [r[0] for r in con.execute(
-        "select symbol from price_bars where timeframe='1d' "
-        "group by symbol having count(distinct substr(ts,11))>1")]
+        "select distinct symbol from price_bars where timeframe='1d' "
+        "and substr(ts,11)!=? order by 1", (canon,))]
     if not mixed:
-        print("\nno symbol carries mixed ts formats.")
+        print("\nevery 1d symbol is already on the canonical ts format.")
         con.close()
         return
 
@@ -224,7 +227,25 @@ def fold_ts_formats(db, dry=True, canon="T00:00:00"):
         canon_dates = {t[:10] for _, t in rows if t[10:] == canon}
         others = [(rid, t) for rid, t in rows if t[10:] != canon]
         if not canon_dates:
-            print(f"\n{sym}: no canonical rows, skipping (needs a re-sync)")
+            # PURELY non-canonical — GOLD, COPPER and INDIAVIX are 100% 'T00:00:00Z'
+            # because their writer never wrote a canonical row (stale feed, so no new
+            # bars arrived after the format fix). There is nothing to collide with, so
+            # every midnight-stamped row is simply rewritten. Intraday-stamped rows are
+            # still excluded — those are minute bars, not a spelling difference.
+            midnightish = {"T00:00:00Z"}
+            rewritable = [(r, t) for r, t in others if t[10:] in midnightish]
+            skipped = len(others) - len(rewritable)
+            print(f"\n{sym}: {len(others)} rows, none canonical — rewriting "
+                  f"{len(rewritable)} to {canon}"
+                  + (f", {skipped} intraday-stamped left alone" if skipped else ""))
+            if not dry:
+                con.executemany("update or replace price_bars set ts=? where rowid=?",
+                                [(t[:10] + canon, r) for r, t in rewritable])
+                con.commit()
+                after = dict(con.execute(
+                    "select substr(ts,11), count(*) from price_bars where symbol=? and "
+                    "timeframe='1d' group by 1", (sym,)))
+                print(f"   after: {after}")
             continue
         # A non-canonical row is only the SAME session in another spelling if its
         # time component is midnight. A real intraday stamp means a MINUTE bar was
