@@ -42,7 +42,7 @@ basis is worth more than a table that is half-adjusted.
 from __future__ import annotations
 
 import sqlite3
-from datetime import datetime
+from datetime import datetime, timedelta
 
 # The one true storage format for a daily bar: the trading date, no timezone
 # conversion, no 'Z'. Matches the 46 correct symbols.
@@ -59,6 +59,31 @@ TICKER_ALTS = {
     "NIFTY": ["^NSEI"],
     "BANKNIFTY": ["^NSEBANK"],
 }
+
+# Index tickers. Yahoo has renamed Indian index symbols more than once, and the
+# ^CNX* family in the old sync_sectors_yf.py appears to be dead — every sector row
+# in price_bars carries the Breeze 'Z' timestamp, not the format that script writes,
+# so it has not been the source of this data. Each index therefore lists CANDIDATES;
+# fetch_best() keeps whichever returns the most bars and reports the winner, so one
+# run tells us which are alive instead of failing silently.
+INDEX_TICKERS = {
+    "NIFTY":        ["^NSEI"],
+    "BANKNIFTY":    ["^NSEBANK"],
+    "NIFTYIT":      ["^CNXIT", "NIFTY_IT.NS"],
+    "NIFTYAUTO":    ["^CNXAUTO", "NIFTY_AUTO.NS"],
+    "NIFTYFIN":     ["^CNXFIN", "NIFTY_FIN_SERVICE.NS"],
+    "NIFTYFMCG":    ["^CNXFMCG", "NIFTY_FMCG.NS"],
+    "NIFTYMETAL":   ["^CNXMETAL", "NIFTY_METAL.NS"],
+    "NIFTYPHARMA":  ["^CNXPHARMA", "NIFTY_PHARMA.NS"],
+    "NIFTYENERGY":  ["^CNXENERGY", "NIFTY_ENERGY.NS"],
+    "NIFTYCONSUM":  ["^CNXCONSUM", "NIFTY_CONSUMPTION.NS"],
+    "NIFTYINFRA":   ["^CNXINFRA", "NIFTY_INFRA.NS"],
+    "NIFTYMEDIA":   ["^CNXMEDIA", "NIFTY_MEDIA.NS"],
+    "NIFTYPSU":     ["^CNXPSUBANK", "NIFTY_PSU_BANK.NS"],
+    "NIFTYREALTY":  ["^CNXREALTY", "NIFTY_REALTY.NS"],
+    "INDIAVIX":     ["^INDIAVIX"],
+}
+TICKER_ALTS.update(INDEX_TICKERS)
 
 # Real listing dates. Requesting bars before these returns nothing, which would
 # otherwise look like a fetch failure — so callers clamp instead of alarming.
@@ -240,6 +265,60 @@ def verify_daily(symbol, db, reference="RELIANCE", log=print):
         log("      Stored dates do not match the exchange calendar — do NOT trust "
             "this series or re-copy the mirror.")
     return ok
+
+
+def sync_symbols(symbols, db, *, full=False, from_date="2018-01-01",
+                 overlap_days=5, log=print):
+    """Incremental daily sync for any symbol set. The ONE routine every sync uses.
+
+    symbols may be a list, or a {db_symbol: [yahoo_tickers]} mapping for names not
+    already in TICKER_ALTS.
+
+    Incremental by default: re-fetch a few sessions behind the stored watermark so
+    late vendor corrections land, without re-pulling years. `full=True` re-pulls
+    from from_date, which is what you need after a split or bonus — those make the
+    vendor re-adjust the ENTIRE history while an incremental run only rewrites the
+    tail, leaving a scale break at the join.
+
+    Returns {symbol: (bars_written, ticker_used)}; ticker_used is None when nothing
+    resolved, which is how a dead ticker announces itself instead of failing quietly.
+    """
+    if isinstance(symbols, dict):
+        for sym, tks in symbols.items():
+            TICKER_ALTS.setdefault(sym.upper(), tks)
+        symbols = list(symbols)
+
+    con = sqlite3.connect(db)
+    floor_default = datetime.strptime(from_date, "%Y-%m-%d")
+    end = datetime.now() + timedelta(days=1)
+    out = {}
+    for sym in symbols:
+        sym = sym.upper()
+        floor = floor_default
+        if sym in LISTED_FROM:
+            listed = datetime.strptime(LISTED_FROM[sym], "%Y-%m-%d")
+            floor = max(floor, listed)
+        wm = None
+        if not full:
+            r = con.execute("select max(ts) from price_bars where symbol=? "
+                            "and timeframe='1d'", (sym,)).fetchone()
+            wm = r[0][:10] if r and r[0] else None
+        start = (max(floor, datetime.strptime(wm, "%Y-%m-%d") - timedelta(days=overlap_days))
+                 if wm else floor)
+        if start >= end:
+            out[sym] = (0, "up-to-date")
+            continue
+        rows, ticker = fetch_best(sym, start, end, log=lambda *_: None)
+        if not rows:
+            log(f"  {sym:14} NO DATA — tried {', '.join(tickers_for(sym))}")
+            out[sym] = (0, None)
+            continue
+        n, _ = write_daily(rows, sym, db)
+        out[sym] = (n, ticker)
+        log(f"  {sym:14} {n:>5} bars via {ticker}"
+            f"{'  (full)' if full else f'  from {start.date()}'}")
+    con.close()
+    return out
 
 
 def duplicate_dates(db, timeframe="1d"):
