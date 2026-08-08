@@ -107,10 +107,19 @@ def ensure_breeze_mappings():
 BREEZE_SYMBOL_MAP = ensure_breeze_mappings()
 BREEZE_SYMBOL_MAP["NIFTY"] = "NIFTY"
 BREEZE_SYMBOL_MAP["INDIAVIX"] = "INDVIX"
-BREEZE_SYMBOL_MAP["NSEBANK"] = "CNXBAN"
-BREEZE_SYMBOL_MAP["CNXIT"] = "CNXIT"
+# CANONICAL DB SYMBOLS, vendor codes on the right.
+#
+# These used to be keyed as NSEBANK / CNXIT — which are YAHOO TICKERS, not symbol
+# names. The same two indices are stored as BANKNIFTY / NIFTYIT by every other job,
+# so the Breeze 1m path was writing one instrument under a second name: ~11,000
+# minute bars each, invisible to anything reading the canonical name.
+#
+# Note Breeze's own code for Bank Nifty is CNXBAN, so NSEBANK was never anyone's
+# name for it — not Yahoo's DB symbol, not Breeze's code. It was just never decided.
+BREEZE_SYMBOL_MAP["BANKNIFTY"] = "CNXBAN"
+BREEZE_SYMBOL_MAP["NIFTYIT"] = "CNXIT"
 
-NIFTY_50_SYMBOLS = ["NIFTY", "INDIAVIX", "NSEBANK", "CNXIT"] + sorted(list(k for k in BREEZE_SYMBOL_MAP.keys() if k not in ("NIFTY", "INDIAVIX", "NSEBANK", "CNXIT")))
+NIFTY_50_SYMBOLS = ["NIFTY", "INDIAVIX", "BANKNIFTY", "NIFTYIT"] + sorted(list(k for k in BREEZE_SYMBOL_MAP.keys() if k not in ("NIFTY", "INDIAVIX", "BANKNIFTY", "NIFTYIT")))
 
 def sync_all_symbols():
     if len(sys.argv) < 2:

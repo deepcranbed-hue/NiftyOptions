@@ -323,10 +323,86 @@ def drop_intraday_from_daily(db, dry=True):
     con.close()
 
 
+def merge_symbols(db, old, new, timeframe, dry=True, tol=0.002):
+    """Merge one symbol into another after PROVING they are the same series.
+
+    CNXIT/NSEBANK are Yahoo TICKERS that were used as DB symbols by the Breeze 1m
+    path, while the same indices are stored as NIFTYIT/BANKNIFTY everywhere else.
+    One instrument, two names, split by timeframe — and repointing the orchestrator
+    to the canonical names started a SECOND 1m series rather than moving the first.
+
+    This refuses to guess. Before touching anything it checks that the two series
+    agree on shared timestamps; a real disagreement means they are not the same
+    thing and merging would fabricate a series that never traded.
+
+    Where a timestamp exists on both sides the NEW row is dropped and the OLD row
+    renamed, because in this case OLD is the superset. Values were verified
+    identical first, so which side wins is immaterial — but the check runs anyway.
+    """
+    con = sqlite3.connect(db)
+    # rowid, not (symbol, ts): the only index is (exchange, symbol, timeframe, ts)
+    # and a predicate without `exchange` cannot use its leftmost prefix, so deleting
+    # by key full-scans a 329MB table per row. 10,875 deletes never finished.
+    a_rows = con.execute("select rowid, ts, close from price_bars where symbol=? and "
+                         "timeframe=?", (old, timeframe)).fetchall()
+    b_rows = con.execute("select rowid, ts, close from price_bars where symbol=? and "
+                         "timeframe=?", (new, timeframe)).fetchall()
+    a = {t: c for _, t, c in a_rows}
+    b = {t: c for _, t, c in b_rows}
+    b_rowid = {t: r for r, t, _ in b_rows}
+    if not a:
+        print(f"\n{old} has no {timeframe} rows — nothing to merge.")
+        con.close()
+        return
+    shared = set(a) & set(b)
+    only_old, only_new = set(a) - set(b), set(b) - set(a)
+    bad = [t for t in shared if a[t] and b[t] and abs(a[t] / b[t] - 1) > tol]
+
+    print(f"\n{old} -> {new}  ({timeframe})")
+    print(f"   {old:12} {len(a):>6} bars   {new:12} {len(b):>6} bars")
+    print(f"   shared {len(shared)}   only-{old} {len(only_old)}   only-{new} {len(only_new)}")
+    print(f"   disagree beyond {tol:.1%} on shared timestamps: {len(bad)}")
+    if bad:
+        for t in sorted(bad)[:3]:
+            print(f"      {t[:16]}  {a[t]} vs {b[t]}")
+        print("   REFUSING — these are not the same series. Investigate before merging.")
+        con.close()
+        return
+    if dry:
+        print(f"   would delete {len(shared)} duplicate {new} rows, "
+              f"then rename {len(a)} {old} rows -> {new}")
+        con.close()
+        return
+
+    # Drop the colliding NEW rows first so the rename cannot hit a key conflict.
+    con.executemany("delete from price_bars where rowid=?",
+                    [(b_rowid[t],) for t in shared])
+    con.execute("update or replace price_bars set symbol=? where symbol=? and "
+                "timeframe=?", (new, old, timeframe))
+    con.commit()
+    after = con.execute("select count(*), min(ts), max(ts) from price_bars where "
+                        "symbol=? and timeframe=?", (new, timeframe)).fetchone()
+    left = con.execute("select count(*) from price_bars where symbol=? and "
+                       "timeframe=?", (old, timeframe)).fetchone()[0]
+    print(f"   after: {new} {after[0]} bars {after[1][:16]}..{after[2][:16]}; "
+          f"{old} has {left} left")
+    con.close()
+
+
+MERGES = [
+    # (old, new, timeframe) — verified supersets with identical values, 2026-08-08
+    ("CNXIT", "NIFTYIT", "1m"),
+    ("NSEBANK", "BANKNIFTY", "1m"),
+]
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--db", default=None)
     ap.add_argument("--apply", action="store_true", help="write; default is dry-run")
+    ap.add_argument("--merge-index-names", action="store_true",
+                    help="merge CNXIT->NIFTYIT and NSEBANK->BANKNIFTY at 1m, after "
+                         "verifying the two series agree")
     ap.add_argument("--drop-intraday", action="store_true",
                     help="delete rows in the 1d table carrying a real intraday time "
                          "(minute bars written with timeframe='1d')")
@@ -340,6 +416,12 @@ def main():
         from bar_store import DB_PATH
         db = os.environ.get("OPTION_CHAINS_DB", DB_PATH)
     print(f"database: {db}")
+    if args.merge_index_names:
+        for old, new, tf in MERGES:
+            merge_symbols(db, old, new, tf, dry=not args.apply)
+        if not args.apply:
+            print("\n--dry-run (default). Re-run with --apply to write.")
+        return
     if args.drop_intraday:
         drop_intraday_from_daily(db, dry=not args.apply)
         if not args.apply:
