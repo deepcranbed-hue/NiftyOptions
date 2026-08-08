@@ -15,7 +15,10 @@ from upstox_auth import get_upstox_token
 UPSTOX_ACCESS_TOKEN = get_upstox_token()
 # Mapping of symbols in DB to Upstox keys and their exchange codes
 SYMBOLS_MAP = {
-    "CRUDEOIL": {"key": "MCX_FO|560977", "exchange": "MCX"},
+    # CRUDEOIL_MCX, not CRUDEOIL: this is the INR MCX contract. CRUDEOIL is the
+    # USD NYMEX series from Yahoo CL=F (sync_crudeoil_yf.py). Sharing one symbol
+    # produced an 84x currency "move" on 2026-02-20. See daily_bars.NATIVE_CCY.
+    "CRUDEOIL_MCX": {"key": "MCX_FO|560977", "exchange": "MCX"},
     "USDINR": {"key": "GLOBAL_INDICATOR|USDINR", "exchange": "CDS"},
     "GOLD": {"key": "MCX_FO|466583", "exchange": "MCX"},
     "SILVER": {"key": "MCX_FO|471725", "exchange": "MCX"},

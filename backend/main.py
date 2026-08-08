@@ -638,7 +638,7 @@ except Exception as e:
         lite_conn = sqlite3.connect("/Users/deepak/Library/CloudStorage/GoogleDrive-deepcranbed@gmail.com/My Drive/option_chains.db")
         lite_cur = lite_conn.cursor()
         
-        symbols_to_check = ["NIFTY", "NIFTYIT", "USDINR", "CRUDEOIL", "NIFTY_FUT_1", "NIFTY_FUT_2"]
+        symbols_to_check = ["NIFTY", "NIFTYIT", "USDINR", "CRUDEOIL", "CRUDEOIL_MCX", "NIFTY_FUT_1", "NIFTY_FUT_2"]
         for sym in symbols_to_check:
             for tf in ["1d", "1m"]:
                 lite_cur.execute("SELECT MAX(ts), COUNT(*) FROM price_bars WHERE symbol = ? AND timeframe = ?", (sym, tf))
@@ -810,7 +810,9 @@ def api_fetch_historical_bars(session_token: str, interval: str, symbol: str = "
     import dateutil.parser
     from bar_store import save_bars, DB_PATH
     from backend.timeutil import to_db_ts, parse_ist_str
-    if symbol.upper() in ("GOLD", "SILVER", "COPPER", "CRUDEOIL"):
+    # CRUDEOIL_MCX is the INR MCX contract; plain CRUDEOIL is the USD NYMEX series
+    # and must never be written from an MCX quote (that is what mixed the two).
+    if symbol.upper() in ("GOLD", "SILVER", "COPPER", "CRUDEOIL_MCX"):
         exchange = "MCX"
     elif symbol.upper() == "USDINR":
         exchange = "NDX"
