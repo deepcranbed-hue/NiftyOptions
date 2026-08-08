@@ -160,6 +160,12 @@ artifact. The check that settled it was comparing a stored bar against an
 independently reported traded price — external to the pipeline, so it cannot
 confirm the pipeline's own error.
 
+**Fixing the symptom can cost more than the symptom.** Gold and copper going stale was a
+2-finding annoyance. The attempt to auto-roll their contracts destroyed 471 bars across
+two symbols and needed a backup to recover. Both times the underlying cause was already
+known and set aside as real work — one symbol can hold one instrument. Patching around
+that is what did the damage.
+
 **A correct bar count proves nothing.** The shifted TATAMOTORS series had exactly
 2,126 bars, matching its peers. Only the calendar-overlap test failed.
 
@@ -174,11 +180,24 @@ at volume 83 and 8. And GOLD/COPPER go stale because `sync_commodities.py` holds
 hardcoded Upstox instrument keys (`MCX_FO|466583`) pointing at a *specific* contract;
 when it expires the key simply stops returning data.
 
-The fix is a dynamic active-contract lookup against the Upstox instrument master plus
-roll adjustment. Worth doing with the API in front of you, not by patching keys. CRUDEOIL
-already shows the alternative shape: a clean USD NYMEX series for analysis
-(`CRUDEOIL`, continuous, from `CL=F`) alongside the tradeable INR contract
-(`CRUDEOIL_MCX`).
+A dynamic active-contract lookup was tried on 2026-08-08 and **made things worse — read
+this before trying it again.** `MCX_FO` is Futures *and* Options; options expire sooner,
+so resolving "nearest expiry for product GOLD" returned an OPTION contract. Because
+`sync_symbol` deletes before writing, 249 gold bars were replaced by 12 bars of option
+premium (close 49-600, against gold's ~150,000), and silver went 222 -> 35. Silver
+recovered on a plain re-run because its expired key still served history; gold's returned
+400 and had to be restored from a backup via `data_agent/quality/restore_symbol.py`.
+
+The resolver now filters `instrument_type == 'FUT'` and is gated behind `--roll`, default
+off. But the deeper point stands: **rolling does not extend a series, it replaces it.** A
+new contract has only its own history, so no amount of key resolution fixes this while one
+symbol holds one contract. Stale-but-intact beats fresh-and-truncated, and the audit
+reports staleness anyway.
+
+The real fix is per-contract storage — one symbol per contract, continuous series derived
+at read time — which is the same open item as `NIFTY_FUT_1/2`. `CRUDEOIL` already shows
+the alternative shape where a continuous source exists: a clean USD NYMEX series for
+analysis (from `CL=F`) alongside the tradeable INR contract (`CRUDEOIL_MCX`).
 
 **`to_db_ts` still shifts daily timestamps** for any other caller of `save_bars`. The
 futures path is one. Separate symbols, so no collision today.
