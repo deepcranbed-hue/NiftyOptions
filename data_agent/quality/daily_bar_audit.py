@@ -78,7 +78,20 @@ def audit(db, symbols=None, reference="RELIANCE"):
         symbols = [r[0] for r in con.execute(
             "select distinct symbol from price_bars where timeframe='1d' order by 1")]
     ref_cal = _reference_calendar(con, reference)
+    # Memoised: the per-venue peer lookup below runs once per symbol, and rebuilding
+    # a calendar each time meant ~98 full scans of a 329MB table — the audit went
+    # from seconds to over a minute the moment the sector indices gained 8 years.
+    _cal_cache = {reference: ref_cal}
+
+    def cal_for(peer):
+        if peer not in _cal_cache:
+            _cal_cache[peer] = _reference_calendar(con, peer)
+        return _cal_cache[peer]
+
     findings = []
+
+    exch_of = dict(con.execute(
+        "select symbol, min(exchange) from price_bars where timeframe='1d' group by 1"))
 
     for sym in symbols:
         rows = [r[0] for r in con.execute(
@@ -103,10 +116,10 @@ def audit(db, symbols=None, reference="RELIANCE"):
         # 3. CALENDAR OVERLAP. A uniform one-day shift still scores ~76%, because
         #    Tue-Fri land on other trading days and only Mondays fall out. The bar
         #    COUNT stays perfect, so this is the only test that sees it.
-        peer = REFERENCE_BY_EXCHANGE.get(_exchange_of(con, sym), reference)
+        peer = REFERENCE_BY_EXCHANGE.get(exch_of.get(sym, "NSE"), reference)
         if sym in CALENDAR_EXEMPT or sym == peer:
             continue
-        peer_cal = _reference_calendar(con, peer) if peer != reference else ref_cal
+        peer_cal = cal_for(peer)
         win = {d for d in peer_cal if min(dates) <= d <= max(dates)}
         if win:
             ov = 100.0 * len(dates & win) / len(win)
