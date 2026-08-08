@@ -186,6 +186,11 @@ def main():
     ap.add_argument("--dry-run", action="store_true",
                     help="fetch and report, but write nothing")
     ap.add_argument("--db", default=None, help="explicit bars database path")
+    ap.add_argument("--purge-symbols", default="",
+                    help="DELETE all 1d rows for these symbols. For orphans left by a "
+                         "writer that used the wrong DB symbol name. Refuses any symbol "
+                         "present in the constituents CSV, so a live series cannot be "
+                         "removed by a typo.")
     ap.add_argument("--dedupe", action="store_true",
                     help="drop Breeze-origin duplicate sessions (a date stored twice, "
                          "once at midnight and once at an intraday time such as "
@@ -195,6 +200,33 @@ def main():
 
     symbols = _universe() if args.symbols.upper() == "ALL" else \
         [s.strip().upper() for s in args.symbols.split(",") if s.strip()]
+
+    if args.purge_symbols:
+        live = {x.upper() for x in _universe()}
+        want = [x.strip().upper() for x in args.purge_symbols.split(",") if x.strip()]
+        guarded = [x for x in want if x in live]
+        if guarded:
+            sys.exit(f"REFUSING: {', '.join(guarded)} are live constituents in "
+                     f"{os.path.basename(_CSV)}. Purge is only for orphaned symbols.")
+        con = sqlite3.connect(db)
+        for sym in want:
+            r = con.execute("select count(*), min(ts), max(ts) from price_bars "
+                            "where symbol=? and timeframe='1d'", (sym,)).fetchone()
+            if not r[0]:
+                print(f"   {sym:12} no rows — nothing to purge")
+                continue
+            print(f"   {sym:12} {r[0]} rows  {str(r[1])[:10]} -> {str(r[2])[:10]}")
+            if not args.dry_run:
+                n = con.execute("delete from price_bars where symbol=? and timeframe='1d'",
+                                (sym,)).rowcount
+                print(f"   {'':12} deleted {n}")
+        con.commit()
+        con.close()
+        if args.dry_run:
+            print("\n--dry-run: nothing deleted.")
+        else:
+            _mirror_reminder()
+        return
 
     if args.dedupe:
         dropped = drop_intraday_duplicates(db)
