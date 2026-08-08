@@ -34,7 +34,7 @@ def resolve_mcx_keys(wanted, log=print):
     COPPER at 2026-07-30 while SILVER and CRUDEOIL_MCX — whose contracts were still
     live — stayed current. Nothing errors; the feed just goes quiet.
 
-    Same approach sync_finnifty_bars.py already uses for NSE_EQ, and the same
+    Same approach the archived upstox/sync_finnifty_bars.py used for NSE_EQ, and the same
     nearest-expiry rule as download_nifty_futures.py: take the earliest expiry that
     has not passed.
 
