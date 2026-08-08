@@ -40,6 +40,26 @@ CALENDAR_MIN = 98.0         # % of reference sessions a healthy series must shar
 STALE_SESSIONS = 3
 
 
+# A symbol can only be judged against a venue that keeps the same hours. MCX runs
+# an evening session and trades some days NSE does not; NYMEX and GIFT Nifty follow
+# US/global calendars. Comparing them to RELIANCE reports a permanent 84-96% overlap
+# that means nothing — and a check that always fires is a check nobody reads.
+REFERENCE_BY_EXCHANGE = {
+    "NSE": "RELIANCE",
+    "MCX": "GOLD",
+    "NYMEX": "CRUDEOIL",
+    "CDS": "USDINR",
+    "NFO": "NIFTY_FUT_1",
+}
+CALENDAR_EXEMPT = {"GIFTNIFTY"}     # near-24h global session; no NSE-like calendar
+
+
+def _exchange_of(con, sym):
+    r = con.execute("select exchange from price_bars where symbol=? and "
+                    "timeframe='1d' limit 1", (sym,)).fetchone()
+    return r[0] if r else "NSE"
+
+
 def _reference_calendar(con, ref="RELIANCE"):
     return {r[0][:10] for r in con.execute(
         "select ts from price_bars where symbol=? and timeframe='1d'", (ref,))}
@@ -83,11 +103,15 @@ def audit(db, symbols=None, reference="RELIANCE"):
         # 3. CALENDAR OVERLAP. A uniform one-day shift still scores ~76%, because
         #    Tue-Fri land on other trading days and only Mondays fall out. The bar
         #    COUNT stays perfect, so this is the only test that sees it.
-        win = {d for d in ref_cal if min(dates) <= d <= max(dates)}
-        if win and sym != reference:
+        peer = REFERENCE_BY_EXCHANGE.get(_exchange_of(con, sym), reference)
+        if sym in CALENDAR_EXEMPT or sym == peer:
+            continue
+        peer_cal = _reference_calendar(con, peer) if peer != reference else ref_cal
+        win = {d for d in peer_cal if min(dates) <= d <= max(dates)}
+        if win:
             ov = 100.0 * len(dates & win) / len(win)
             if ov < CALENDAR_MIN:
-                findings.append((sym, "calendar", f"{ov:.1f}% overlap with {reference}"))
+                findings.append((sym, "calendar", f"{ov:.1f}% overlap with {peer}"))
 
     # 3b. FORKED BY EXCHANGE. exchange is part of the primary key, so the same
     #     symbol stored under two exchanges is two parallel series that silently

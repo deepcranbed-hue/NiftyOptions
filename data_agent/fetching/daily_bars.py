@@ -168,6 +168,16 @@ VENDOR_ADJUSTMENTS = [
 # these are actions the vendor correctly does not adjust for. A backstop that warns
 # about the same known gap every single day is a backstop nobody reads.
 KNOWN_REAL_GAPS = {
+    # Genuine market history. Each verified before being silenced — an entry here
+    # stops the audit ever asking again, so guessing would hide a future defect.
+    ("HDFCAMC", "2020-03-23"): "COVID crash — Nifty fell ~13% in one session, its worst ever",
+    ("LTIM", "2020-03-23"): "COVID crash — same session",
+    ("BANDHANBNK", "2018-10-01"): "fell ~20% on the Gruh Finance merger announcement",
+    ("CRUDEOIL", "2020-03-09"): "Saudi-Russia price war — WTI fell ~25% in a session",
+    ("CRUDEOIL", "2020-04-22"): "rebound off the 2020-04-20 negative settlement (-$37.63)",
+    # NOT whitelisted, deliberately: GOLD 2026-02-02 (0.8356) and SILVER 2026-02-02
+    # (0.5977). Both look like MCX contract rolls rather than market moves, but that
+    # is a guess and the whole point of this list is that entries are verified.
     ("TATAMOTORS", "2025-10-14"):
         "demerger — PV+JLR (TMPV) retained, TMLCV spun off 1:1, market split ~61/39 "
         "(ratio 0.6054). Yahoo does not adjust demergers, so the discontinuity is "
