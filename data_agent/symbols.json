@@ -1,0 +1,2601 @@
+{
+ "version": 1,
+ "generated_from": "live price_bars + the sync scripts, 2026-08-08",
+ "contract": "IDENTITY (symbol, exchange, currency, unit, instrument) is stable and must not change when a data source changes. SOURCING (source, ticker, owner) per timeframe may change freely. Exactly ONE owner per (symbol, timeframe). Adding a symbol or changing a source means editing THIS file first.",
+ "symbols": {
+  "ABCAPITAL": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "ABCAPITAL.NS",
+     "owner": [
+      "sync_finnifty_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    }
+   }
+  },
+  "ADANIENT": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "ADANIENT.NS",
+     "owner": [
+      "sync_nifty50_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10891,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "ADANIPORTS": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "ADANIPORTS.NS",
+     "owner": [
+      "sync_nifty50_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10892,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "APOLLOHOSP": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "APOLLOHOSP.NS",
+     "owner": [
+      "sync_nifty50_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10890,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "ASIANPAINT": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "ASIANPAINT.NS",
+     "owner": [
+      "sync_nifty50_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10892,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "AUBANK": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "AUBANK.NS",
+     "owner": [
+      "sync_bank_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    }
+   }
+  },
+  "AXISBANK": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "AXISBANK.NS",
+     "owner": [
+      "sync_nifty50_bars_yf",
+      "sync_bank_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10889,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "BAJAJ-AUTO": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "BAJAJ-AUTO.NS",
+     "owner": [
+      "sync_nifty50_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10889,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "BAJAJFINSV": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "BAJAJFINSV.NS",
+     "owner": [
+      "sync_nifty50_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10889,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "BAJFINANCE": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "BAJFINANCE.NS",
+     "owner": [
+      "sync_nifty50_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10887,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "BANDHANBNK": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "BANDHANBNK.NS",
+     "owner": [
+      "sync_bank_bars_yf"
+     ],
+     "bars": 2069,
+     "first": "2018-03-27",
+     "last": "2026-08-07"
+    }
+   }
+  },
+  "BANKBARODA": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "BANKBARODA.NS",
+     "owner": [
+      "sync_bank_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    }
+   }
+  },
+  "BANKNIFTY": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "^NSEBANK",
+     "owner": [
+      "sync_sectors_yf"
+     ],
+     "bars": 2121,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10125,
+     "first": "2026-06-29",
+     "last": "2026-08-04"
+    }
+   }
+  },
+  "BEL": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "BEL.NS",
+     "owner": [
+      "sync_nifty50_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10885,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "BHARTIARTL": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "BHARTIARTL.NS",
+     "owner": [
+      "sync_nifty50_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10886,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "BPCL": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 4131,
+     "first": "2026-06-29",
+     "last": "2026-07-13"
+    }
+   }
+  },
+  "BRITANNIA": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 4131,
+     "first": "2026-06-29",
+     "last": "2026-07-13"
+    }
+   }
+  },
+  "CHOLAFIN": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "CHOLAFIN.NS",
+     "owner": [
+      "sync_finnifty_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    }
+   }
+  },
+  "CIPLA": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "CIPLA.NS",
+     "owner": [
+      "sync_nifty50_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10894,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "CNXIT": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10994,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "COALINDIA": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "COALINDIA.NS",
+     "owner": [
+      "sync_nifty50_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10891,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "COFORGE": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "COFORGE.NS",
+     "owner": [
+      "sync_it_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    }
+   }
+  },
+  "COPPER": {
+   "exchange": "MCX",
+   "currency": "INR",
+   "unit": "INR per kg",
+   "instrument": "other",
+   "timeframes": {
+    "1d": {
+     "source": "upstox",
+     "ticker": "MCX_FO|562048",
+     "owner": [
+      "sync_commodities"
+     ],
+     "bars": 108,
+     "first": "2026-03-02",
+     "last": "2026-07-30"
+    },
+    "1m": {
+     "source": "upstox",
+     "ticker": "MCX_FO|562048",
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 21388,
+     "first": "2026-06-29",
+     "last": "2026-07-31"
+    }
+   }
+  },
+  "CRUDEOIL": {
+   "exchange": "NYMEX",
+   "currency": "USD",
+   "unit": "USD per barrel",
+   "instrument": "other",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "CL=F",
+     "owner": [
+      "sync_crudeoil_yf"
+     ],
+     "bars": 2163,
+     "first": "2018-01-02",
+     "last": "2026-08-07"
+    }
+   }
+  },
+  "CRUDEOIL_MCX": {
+   "exchange": "MCX",
+   "currency": "INR",
+   "unit": "INR per barrel",
+   "instrument": "other",
+   "timeframes": {
+    "1d": {
+     "source": "upstox",
+     "ticker": "MCX_FO|560977",
+     "owner": [
+      "sync_commodities"
+     ],
+     "bars": 100,
+     "first": "2026-02-20",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "upstox",
+     "ticker": "MCX_FO|560977",
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 26100,
+     "first": "2026-06-29",
+     "last": "2026-08-07"
+    }
+   }
+  },
+  "DRREDDY": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "DRREDDY.NS",
+     "owner": [
+      "sync_nifty50_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10893,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "EICHERMOT": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "EICHERMOT.NS",
+     "owner": [
+      "sync_nifty50_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10892,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "ETERNAL": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10889,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "FEDERALBNK": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "FEDERALBNK.NS",
+     "owner": [
+      "sync_bank_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    }
+   }
+  },
+  "GIFTNIFTY": {
+   "exchange": "NSEIX",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "other",
+   "timeframes": {
+    "1d": {
+     "source": "upstox",
+     "ticker": "GLOBAL_INDEX|SGX NIFTY",
+     "owner": [
+      "sync_commodities"
+     ],
+     "bars": 270,
+     "first": "2025-07-30",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "upstox",
+     "ticker": "GLOBAL_INDEX|SGX NIFTY",
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 27996,
+     "first": "2026-06-28",
+     "last": "2026-08-07"
+    }
+   }
+  },
+  "GOLD": {
+   "exchange": "MCX",
+   "currency": "INR",
+   "unit": "INR per 10 g",
+   "instrument": "other",
+   "timeframes": {
+    "1d": {
+     "source": "upstox",
+     "ticker": "MCX_FO|466583",
+     "owner": [
+      "sync_commodities"
+     ],
+     "bars": 249,
+     "first": "2025-08-18",
+     "last": "2026-08-04"
+    },
+    "1m": {
+     "source": "upstox",
+     "ticker": "MCX_FO|466583",
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10753,
+     "first": "2026-06-29",
+     "last": "2026-08-07"
+    }
+   }
+  },
+  "GRASIM": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "GRASIM.NS",
+     "owner": [
+      "sync_nifty50_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10892,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "HCLTECH": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "HCLTECH.NS",
+     "owner": [
+      "sync_nifty50_bars_yf",
+      "sync_it_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10888,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "HDFCAMC": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "HDFCAMC.NS",
+     "owner": [
+      "sync_finnifty_bars_yf"
+     ],
+     "bars": 1978,
+     "first": "2018-08-06",
+     "last": "2026-08-07"
+    }
+   }
+  },
+  "HDFCBANK": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "HDFCBANK.NS",
+     "owner": [
+      "sync_nifty50_bars_yf",
+      "sync_bank_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10889,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "HDFCLIFE": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "HDFCLIFE.NS",
+     "owner": [
+      "sync_nifty50_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10887,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "HEROMOTOCO": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 4134,
+     "first": "2026-06-29",
+     "last": "2026-07-13"
+    }
+   }
+  },
+  "HINDALCO": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "HINDALCO.NS",
+     "owner": [
+      "sync_nifty50_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10887,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "HINDUNILVR": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "HINDUNILVR.NS",
+     "owner": [
+      "sync_nifty50_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10889,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "ICICIBANK": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "ICICIBANK.NS",
+     "owner": [
+      "sync_nifty50_bars_yf",
+      "sync_bank_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10888,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "ICICIGI": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "ICICIGI.NS",
+     "owner": [
+      "sync_finnifty_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    }
+   }
+  },
+  "ICICIPRULI": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "ICICIPRULI.NS",
+     "owner": [
+      "sync_finnifty_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    }
+   }
+  },
+  "IDFCFIRSTB": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "IDFCFIRSTB.NS",
+     "owner": [
+      "sync_bank_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    }
+   }
+  },
+  "INDIAVIX": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "^INDIAVIX",
+     "owner": [
+      "sync_sectors_yf"
+     ],
+     "bars": 2106,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 11140,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "INDIGO": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "INDIGO.NS",
+     "owner": [
+      "sync_nifty50_bars_yf"
+     ],
+     "bars": 2126,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10890,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "INDUSINDBK": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "INDUSINDBK.NS",
+     "owner": [
+      "sync_bank_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    }
+   }
+  },
+  "INFY": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "INFY.NS",
+     "owner": [
+      "sync_nifty50_bars_yf",
+      "sync_it_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10886,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "ITC": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "ITC.NS",
+     "owner": [
+      "sync_nifty50_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10888,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "JIOFIN": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "JIOFIN.NS",
+     "owner": [
+      "sync_nifty50_bars_yf"
+     ],
+     "bars": 735,
+     "first": "2023-08-21",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10887,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "JSWSTEEL": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "JSWSTEEL.NS",
+     "owner": [
+      "sync_nifty50_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10892,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "KOTAKBANK": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "KOTAKBANK.NS",
+     "owner": [
+      "sync_nifty50_bars_yf",
+      "sync_bank_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10887,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "LICHSGFIN": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "LICHSGFIN.NS",
+     "owner": [
+      "sync_finnifty_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    }
+   }
+  },
+  "LT": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "LT.NS",
+     "owner": [
+      "sync_nifty50_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10890,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "LTIM": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "LTM.NS",
+     "owner": [
+      "sync_it_bars_yf"
+     ],
+     "bars": 2135,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    }
+   }
+  },
+  "LTTS": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "LTTS.NS",
+     "owner": [
+      "sync_it_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    }
+   }
+  },
+  "M&M": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "M&M.NS",
+     "owner": [
+      "sync_nifty50_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10886,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "MARUTI": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "MARUTI.NS",
+     "owner": [
+      "sync_nifty50_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10892,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "MAXHEALTH": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "MAXHEALTH.NS",
+     "owner": [
+      "sync_nifty50_bars_yf"
+     ],
+     "bars": 1479,
+     "first": "2020-08-21",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10894,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "MPHASIS": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "MPHASIS.NS",
+     "owner": [
+      "sync_it_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    }
+   }
+  },
+  "MUTHOOTFIN": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "MUTHOOTFIN.NS",
+     "owner": [
+      "sync_finnifty_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    }
+   }
+  },
+  "NESTLEIND": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "NESTLEIND.NS",
+     "owner": [
+      "sync_nifty50_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10890,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "NIFTY": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "^NSEI",
+     "owner": [
+      "sync_nifty50_bars_yf"
+     ],
+     "bars": 2119,
+     "first": "2018-01-02",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10924,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "NIFTYAUTO": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "^CNXAUTO",
+     "owner": [
+      "sync_sectors_yf"
+     ],
+     "bars": 2106,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10875,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "NIFTYCONSUM": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "^CNXCONSUM",
+     "owner": [
+      "sync_sectors_yf"
+     ],
+     "bars": 2106,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10875,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "NIFTYENERGY": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "^CNXENERGY",
+     "owner": [
+      "sync_sectors_yf"
+     ],
+     "bars": 2106,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10875,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "NIFTYFIN": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "^CNXFIN",
+     "owner": [
+      "sync_sectors_yf"
+     ],
+     "bars": 2106,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10875,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "NIFTYFMCG": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "^CNXFMCG",
+     "owner": [
+      "sync_sectors_yf"
+     ],
+     "bars": 2105,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10875,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "NIFTYINFRA": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "^CNXINFRA",
+     "owner": [
+      "sync_sectors_yf"
+     ],
+     "bars": 2106,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10875,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "NIFTYIT": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "^CNXIT",
+     "owner": [
+      "sync_sectors_yf"
+     ],
+     "bars": 2121,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10875,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "NIFTYMEDIA": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "^CNXMEDIA",
+     "owner": [
+      "sync_sectors_yf"
+     ],
+     "bars": 2106,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10875,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "NIFTYMETAL": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "^CNXMETAL",
+     "owner": [
+      "sync_sectors_yf"
+     ],
+     "bars": 2106,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10875,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "NIFTYPHARMA": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "^CNXPHARMA",
+     "owner": [
+      "sync_sectors_yf"
+     ],
+     "bars": 2121,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10875,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "NIFTYPSU": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "^CNXPSUBANK",
+     "owner": [
+      "sync_sectors_yf"
+     ],
+     "bars": 2106,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10875,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "NIFTYREALTY": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "^CNXREALTY",
+     "owner": [
+      "sync_sectors_yf"
+     ],
+     "bars": 2106,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10875,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "NIFTY_FUT_1": {
+   "exchange": "NFO",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "other",
+   "timeframes": {
+    "1d": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "sync_nifty50_to_now"
+     ],
+     "bars": 68,
+     "first": "2026-04-29",
+     "last": "2026-08-05"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10757,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "NIFTY_FUT_2": {
+   "exchange": "NFO",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "other",
+   "timeframes": {
+    "1d": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "sync_nifty50_to_now"
+     ],
+     "bars": 49,
+     "first": "2026-05-27",
+     "last": "2026-08-05"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10588,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "NSEBANK": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10994,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "NTPC": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "NTPC.NS",
+     "owner": [
+      "sync_nifty50_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10889,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "ONGC": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "ONGC.NS",
+     "owner": [
+      "sync_nifty50_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10888,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "PERSISTENT": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "PERSISTENT.NS",
+     "owner": [
+      "sync_it_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    }
+   }
+  },
+  "PFC": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "PFC.NS",
+     "owner": [
+      "sync_finnifty_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    }
+   }
+  },
+  "PNB": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "PNB.NS",
+     "owner": [
+      "sync_bank_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    }
+   }
+  },
+  "POWERGRID": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "POWERGRID.NS",
+     "owner": [
+      "sync_nifty50_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10886,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "RECLTD": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "RECLTD.NS",
+     "owner": [
+      "sync_finnifty_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    }
+   }
+  },
+  "RELIANCE": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "RELIANCE.NS",
+     "owner": [
+      "sync_nifty50_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10888,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "SBILIFE": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "SBILIFE.NS",
+     "owner": [
+      "sync_nifty50_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10888,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "SBIN": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "SBIN.NS",
+     "owner": [
+      "sync_nifty50_bars_yf",
+      "sync_bank_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10888,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "SHRIRAMFIN": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "SHRIRAMFIN.NS",
+     "owner": [
+      "sync_nifty50_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10885,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "SILVER": {
+   "exchange": "MCX",
+   "currency": "INR",
+   "unit": "INR per kg",
+   "instrument": "other",
+   "timeframes": {
+    "1d": {
+     "source": "upstox",
+     "ticker": "MCX_FO|471725",
+     "owner": [
+      "sync_commodities"
+     ],
+     "bars": 222,
+     "first": "2025-09-16",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "upstox",
+     "ticker": "MCX_FO|471725",
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 26100,
+     "first": "2026-06-29",
+     "last": "2026-08-07"
+    }
+   }
+  },
+  "SUNPHARMA": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "SUNPHARMA.NS",
+     "owner": [
+      "sync_nifty50_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10890,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "SYNGENE": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "SYNGENE.NS",
+     "owner": [
+      "sync_finnifty_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    }
+   }
+  },
+  "TATACONSUM": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "TATACONSUM.NS",
+     "owner": [
+      "sync_nifty50_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10890,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "TATAMOTORS": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "TATAMOTORS.NS",
+     "owner": [
+      "sync_nifty50_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 5133,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "TATASTEEL": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "TATASTEEL.NS",
+     "owner": [
+      "sync_nifty50_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10887,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "TCS": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "TCS.NS",
+     "owner": [
+      "sync_nifty50_bars_yf",
+      "sync_it_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10889,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "TECHM": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "TECHM.NS",
+     "owner": [
+      "sync_nifty50_bars_yf",
+      "sync_it_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10887,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "TITAN": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "TITAN.NS",
+     "owner": [
+      "sync_nifty50_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10889,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "TMPV": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10890,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "TRENT": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "TRENT.NS",
+     "owner": [
+      "sync_nifty50_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10889,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "ULTRACEMCO": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "ULTRACEMCO.NS",
+     "owner": [
+      "sync_nifty50_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10889,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "USDINR": {
+   "exchange": "CDS",
+   "currency": "INR",
+   "unit": "INR per USD",
+   "instrument": "other",
+   "timeframes": {
+    "1d": {
+     "source": "upstox",
+     "ticker": "GLOBAL_INDICATOR|USDINR",
+     "owner": [
+      "sync_commodities"
+     ],
+     "bars": 2267,
+     "first": "2018-01-02",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "upstox",
+     "ticker": "GLOBAL_INDICATOR|USDINR",
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10346,
+     "first": "2026-06-28",
+     "last": "2026-08-07"
+    }
+   }
+  },
+  "WIPRO": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "WIPRO.NS",
+     "owner": [
+      "sync_nifty50_bars_yf",
+      "sync_it_bars_yf"
+     ],
+     "bars": 2127,
+     "first": "2018-01-01",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 10888,
+     "first": "2026-06-29",
+     "last": "2026-08-06"
+    }
+   }
+  },
+  "ZOMATO": {
+   "exchange": "NSE",
+   "currency": "INR",
+   "unit": null,
+   "instrument": "equity",
+   "timeframes": {
+    "1d": {
+     "source": "yahoo",
+     "ticker": "ETERNAL.NS",
+     "owner": [
+      "sync_nifty50_bars_yf"
+     ],
+     "bars": 1250,
+     "first": "2021-07-23",
+     "last": "2026-08-07"
+    },
+    "1m": {
+     "source": "breeze",
+     "ticker": null,
+     "owner": [
+      "(intraday path)"
+     ],
+     "bars": 370,
+     "first": "2026-08-06",
+     "last": "2026-08-06"
+    }
+   }
+  }
+ }
+}
