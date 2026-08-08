@@ -188,10 +188,86 @@ def fold_forked_exchange(db, dry=True):
     con.close()
 
 
+def fold_ts_formats(db, dry=True, canon="T00:00:00"):
+    """Collapse a symbol carrying two ts spellings of the same session onto one.
+
+    Same root cause as fold_forked_exchange, different key column: ts is part of the
+    primary key, so '...T00:00:00Z' and '...T00:00:00' are two rows for one trading
+    day. The sector sync produced this at scale — BANKNIFTY and NIFTYIT each ended up
+    with ~2,117 sessions stored twice.
+
+    Keeps the canonical spelling. A non-canonical row is deleted only when the same
+    DATE already exists in canonical form; otherwise it is rewritten to canonical, so
+    no session is ever lost.
+
+    The set arithmetic is done in Python on purpose. The obvious SQL — a correlated
+    EXISTS over the same table — makes SQLite rescan a 329MB file per row and does
+    not finish; pulling two date sets and diffing them is O(n).
+    """
+    con = sqlite3.connect(db)
+    mixed = [r[0] for r in con.execute(
+        "select symbol from price_bars where timeframe='1d' "
+        "group by symbol having count(distinct substr(ts,11))>1")]
+    if not mixed:
+        print("\nno symbol carries mixed ts formats.")
+        con.close()
+        return
+
+    for sym in mixed:
+        # rowid, not ts. The only index is (exchange, symbol, timeframe, ts); a
+        # predicate without `exchange` cannot use its leftmost prefix, so deleting by
+        # (symbol, ts) full-scans a 329MB table per row and never finishes. Deleting
+        # by rowid is the fastest path SQLite has.
+        rows = con.execute(
+            "select rowid, ts from price_bars where symbol=? and timeframe='1d'",
+            (sym,)).fetchall()
+        canon_dates = {t[:10] for _, t in rows if t[10:] == canon}
+        others = [(rid, t) for rid, t in rows if t[10:] != canon]
+        if not canon_dates:
+            print(f"\n{sym}: no canonical rows, skipping (needs a re-sync)")
+            continue
+        # A non-canonical row is only the SAME session in another spelling if its
+        # time component is midnight. A real intraday stamp means a MINUTE bar was
+        # written with timeframe='1d' — LTIM carries 225 such rows at T09:15:00 and
+        # T09:51:00. Rewriting those to T00:00:00 would not de-duplicate anything, it
+        # would fabricate 225 daily bars out of intraday snapshots. Report, never touch.
+        midnightish = {"T00:00:00", "T00:00:00Z"}
+        same_session = [(r, t) for r, t in others if t[10:] in midnightish]
+        intraday = [(r, t) for r, t in others if t[10:] not in midnightish]
+        dupes = [(r, t) for r, t in same_session if t[:10] in canon_dates]
+        uniq = [(r, t) for r, t in same_session if t[:10] not in canon_dates]
+        fmts = sorted({t[10:] for _, t in others})
+        print(f"\n{sym}: {len(rows)} rows, {len(canon_dates)} canonical dates, "
+              f"{len(others)} in {','.join(fmts)}")
+        if intraday:
+            times = sorted({t[10:] for _, t in intraday})
+            print(f"   !! {len(intraday)} rows carry an INTRADAY stamp ({','.join(times)}) — "
+                  f"minute bars stored as 1d.")
+            print(f"      NOT converted: rewriting them would fabricate daily bars. "
+                  f"Delete them from the 1d table separately once confirmed.")
+        if not same_session:
+            continue
+        print(f"   delete {len(dupes)} duplicate sessions, rewrite {len(uniq)} unique")
+        if dry:
+            continue
+        con.executemany("delete from price_bars where rowid=?",
+                        [(r,) for r, _ in dupes])
+        con.executemany("update or replace price_bars set ts=? where rowid=?",
+                        [(t[:10] + canon, r) for r, t in uniq])
+        con.commit()
+        after = dict(con.execute(
+            "select substr(ts,11), count(*) from price_bars where symbol=? and "
+            "timeframe='1d' group by 1", (sym,)))
+        print(f"   after: {after}")
+    con.close()
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--db", default=None)
     ap.add_argument("--apply", action="store_true", help="write; default is dry-run")
+    ap.add_argument("--fold-ts", action="store_true",
+                    help="collapse symbols carrying two ts spellings onto the canonical one")
     ap.add_argument("--fold-exchange", action="store_true",
                     help="collapse symbols stored under two exchanges onto one")
     args = ap.parse_args()
@@ -200,6 +276,11 @@ def main():
         from bar_store import DB_PATH
         db = os.environ.get("OPTION_CHAINS_DB", DB_PATH)
     print(f"database: {db}")
+    if args.fold_ts:
+        fold_ts_formats(db, dry=not args.apply)
+        if not args.apply:
+            print("\n--dry-run (default). Re-run with --apply to write.")
+        return
     if args.fold_exchange:
         fold_forked_exchange(db, dry=not args.apply)
         if not args.apply:

@@ -306,6 +306,33 @@ def write_daily(rows, symbol, db, exchange=None, replace=False):
     """
     exchange = resolve_exchange(symbol, db=db, explicit=exchange)
     con = sqlite3.connect(db)
+
+    # PURGE FOREIGN TS FORMATS FIRST — the single most repeated failure in this table.
+    #
+    # ts is part of the primary key, so INSERT OR REPLACE cannot overwrite a row whose
+    # ts is spelled differently. Writing '2018-01-02T00:00:00' over an existing
+    # '2018-01-02T00:00:00Z' does not update it, it ADDS a second row for the same
+    # session, and every date join downstream then double-counts.
+    #
+    # This has now happened three times: Breeze vs Yahoo on the constituents, the
+    # tz-shifted backfill, and the sector indices (BANKNIFTY and NIFTYIT each ended up
+    # with ~2,117 sessions stored twice). backfill_daily_bars refuses without
+    # --replace; sync_symbols had no guard at all. So the check belongs HERE, at the
+    # one place every daily write passes through, rather than in each caller.
+    #
+    # A differently-formatted row for the same symbol at 1d is always the same session
+    # from an older writer, so removing it is a de-duplication, not a data loss.
+    foreign = [f[0] for f in con.execute(
+        "select distinct substr(ts,11) from price_bars where symbol=? and "
+        "timeframe='1d' and exchange=? and substr(ts,11)!=?",
+        (symbol, exchange, "T00:00:00"))]
+    if foreign and not replace:
+        n = con.execute(
+            "delete from price_bars where symbol=? and timeframe='1d' and "
+            "exchange=? and substr(ts,11)!=?",
+            (symbol, exchange, "T00:00:00")).rowcount
+        print(f"   {symbol}: purged {n} rows in a foreign ts format "
+              f"({','.join(foreign)}) before writing")
     purged = 0
     if replace:
         purged = con.execute(
