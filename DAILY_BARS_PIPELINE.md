@@ -66,6 +66,19 @@ exactly one night.
 `data_agent/fetching/sync_nifty50_to_now.py`, which still contained the Breeze
 daily block. The next UI sync would have re-created the duplicate series.
 
+## Where it ended up
+
+| | before | after |
+|---|---|---|
+| Audit findings | 47 | **2** |
+| Timestamp conventions | 3 (`T00:00:00`, `...Z`, intraday) | **1**, across all 96 symbols |
+| Duplicate sessions | 13 symbols, up to 2,117 each | **0** |
+| Symbols forked across exchanges | CRUDEOIL, USDINR | **0** |
+| Sector index history | 251 bars (1 year) | **~2,110 (2018→)** |
+| Sector-relative event coverage | 323/1,633 (20%) | **1,323/1,633 (81%)** |
+
+The two remaining findings are GOLD and COPPER staleness — see *Still open*.
+
 ## What the pipeline is now
 
 | File | Role |
@@ -74,6 +87,9 @@ daily block. The next UI sync would have re-created the duplicate series.
 | `data_agent/fetching/sync_nifty50_bars_yf.py` | **The one daily writer.** Incremental, Yahoo, 50 constituents + NIFTY. Run by `sync_all_auxiliary.py`. |
 | `data_agent/fetching/sync_nifty50_to_now.py` | Breeze — **1-minute bars and futures daily only.** No equity daily. |
 | `data_agent/fetching/backfill_daily_bars.py` | Deep backfill, verification, dedupe, orphan purge. Not part of the daily run. |
+| `data_agent/fetching/sync_{sectors,bank_bars,it_bars,finnifty_bars,crudeoil}_yf.py` | Thin callers of `sync_symbols()`. ~42 lines each; no fetch logic of their own. |
+| `data_agent/quality/daily_bar_audit.py` | Six integrity checks. Run it after anything touches `price_bars`. |
+| `data_agent/quality/split_mixed_symbols.py` | Repairs: `--fold-ts`, `--fold-exchange`, `--drop-intraday`, and the CRUDEOIL currency split. |
 
 Conventions, all enforced in one place:
 
@@ -115,6 +131,18 @@ keep it honest:
   gap, stop flagging it (the Tata Motors demerger). A backstop that fires every day
   is one nobody reads.
 
+## Three renames in eight months
+
+`ZOMATO → ETERNAL`, `TATAMOTORS → TMPV`, `LTIM → LTM` (2026-02-27, LTIMindtree became
+LTM Limited). Each one silently hollowed out a series, because **a renamed ticker does
+not raise — it returns an empty frame.** The sync writes 19,143 bars for nine names,
+zero for the tenth, and reports success.
+
+This is why `TICKER_ALTS` holds candidate *lists* and `fetch_best()` prints which one
+won. The loop that caught the third instance in fifteen minutes: the audit flagged LTIM
+as stale, the sync named the symbol, a direct probe confirmed all candidates 404'd, and
+a search found the rename. Expect a fourth; the mechanism is in place for it.
+
 ## Lessons worth keeping
 
 **Verify what landed, not what you sent.** The timezone bug passed its checks
@@ -135,10 +163,27 @@ confirm the pipeline's own error.
 **A correct bar count proves nothing.** The shifted TATAMOTORS series had exactly
 2,126 bars, matching its peers. Only the calendar-overlap test failed.
 
-## Open
+## Still open
 
-- `to_db_ts` still shifts daily timestamps for any *other* caller of `save_bars` —
-  the futures path still is one. Separate symbols, so no collision today.
-- No pre-announcement consensus is captured, so `expectation_vs_actual` cannot be
-  computed. It is not reconstructable after the fact; the record has to start
-  before a print.
+**MCX series are not continuous contracts.** GOLD, SILVER, COPPER and CRUDEOIL_MCX each
+hold one contract's life: they start when it lists, end when it expires, and carry
+zero-volume prints with `open == close` in between. Two symptoms follow from the one
+cause. The 2026-02-02 "gaps" in gold and silver are rolls, not moves — the preceding
+bars are far-month prints at volume 0-2 and the gap day is the next contract's first bar
+at volume 83 and 8. And GOLD/COPPER go stale because `sync_commodities.py` holds
+hardcoded Upstox instrument keys (`MCX_FO|466583`) pointing at a *specific* contract;
+when it expires the key simply stops returning data.
+
+The fix is a dynamic active-contract lookup against the Upstox instrument master plus
+roll adjustment. Worth doing with the API in front of you, not by patching keys. CRUDEOIL
+already shows the alternative shape: a clean USD NYMEX series for analysis
+(`CRUDEOIL`, continuous, from `CL=F`) alongside the tradeable INR contract
+(`CRUDEOIL_MCX`).
+
+**`to_db_ts` still shifts daily timestamps** for any other caller of `save_bars`. The
+futures path is one. Separate symbols, so no collision today.
+
+**Futures storage is undecided** — `NIFTY_FUT_1/2` hold one contract each rather than a
+stitched series. The expiry *selection* is correct (nearest and next-after from Kite's
+instrument feed); only the storage question is open: per-contract symbols with a rolling
+view derived at read time, versus stitching on roll.
