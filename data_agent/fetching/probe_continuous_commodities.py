@@ -97,26 +97,46 @@ def main():
 
             # unit reconciliation against what we already store for the MCX contract
             if to_mcx and fx:
+                # Compare against the most recent LIQUID bar, not simply the last one.
+                # MCX dailies carry many zero-volume carried-forward prints — silver
+                # is 77/222 zero-volume — and gold's latest bar traded 93 lots. A
+                # reconciliation against an untraded print measures nothing.
                 stored = con.execute(
-                    "select ts, close from price_bars where symbol=? and "
-                    "timeframe='1d' order by ts desc limit 1", (sym,)).fetchone()
+                    "select ts, close, volume from price_bars where symbol=? and "
+                    "timeframe='1d' and volume >= 1000 order by ts desc limit 1",
+                    (sym,)).fetchone()
+                if not stored:
+                    stored = con.execute(
+                        "select ts, close, volume from price_bars where symbol=? and "
+                        "timeframe='1d' order by ts desc limit 1", (sym,)).fetchone()
                 if stored:
                     implied = to_mcx(last, fx)
-                    diff = (implied / stored[1] - 1.0) * 100.0
-                    verdict = ("MATCH" if abs(diff) < 8 else
-                               "MISMATCH — not the same unit or not the same thing")
-                    print(f"            implied MCX-equivalent {implied:,.0f} vs stored "
-                          f"{stored[1]:,.0f} ({stored[0][:10]})  {diff:+.1f}%  [{verdict}]")
-                    if abs(diff) >= 8:
-                        print("            Do NOT pair these symbols until this is "
-                              "understood. Check the MCX contract's quote unit.")
+                    diff = (stored[1] / implied - 1.0) * 100.0
+                    # A UNIT error is an order-of-magnitude or clean-factor miss
+                    # (10x, 31.1x, 2.2x). A BASIS is a market spread: Indian import
+                    # duty plus GST is ~9% on its own, and the physical premium moves
+                    # — India's silver premium over US spot is a published, tracked
+                    # number. Do not call a real spread a data defect.
+                    if abs(diff) > 60:
+                        verdict = "UNIT ERROR — check the contract's quote convention"
+                    elif abs(diff) > 25:
+                        verdict = "LARGE BASIS — plausible but verify before relying on it"
+                    else:
+                        verdict = "OK — consistent with Indian duty + local premium"
+                    print(f"            implied {implied:,.0f} INR vs stored "
+                          f"{stored[1]:,.0f} ({stored[0][:10]}, vol {stored[2]:,.0f})")
+                    print(f"            India basis {diff:+.1f}%  [{verdict}]")
         print()
 
     con.close()
     print("Nothing was written. If gold/silver/copper each show a continuous series")
-    print("and a unit MATCH, the crude pattern can be applied to them:")
+    print("and no UNIT ERROR, the crude pattern can be applied to them:")
     print("  <SYM>      1d  Yahoo, USD, continuous   -> analysis")
     print("  <SYM>_MCX  1m  Upstox MCX, INR          -> algo, rolls with the contract")
+    print()
+    print("The two are NOT interchangeable and must never be converted into each other.")
+    print("The India basis is real, time-varying, and a tracked quantity in its own")
+    print("right — duty plus GST is ~9% before any physical premium. Separate symbols.")
 
 
 if __name__ == "__main__":
