@@ -101,6 +101,19 @@ VENDOR_ADJUSTMENTS = [
 ]
 
 
+# REAL discontinuities that must NOT be scaled away and must NOT be re-flagged.
+# Distinct from VENDOR_ADJUSTMENTS: those are the vendor getting an action wrong,
+# these are actions the vendor correctly does not adjust for. A backstop that warns
+# about the same known gap every single day is a backstop nobody reads.
+KNOWN_REAL_GAPS = {
+    ("TATAMOTORS", "2025-10-14"):
+        "demerger — PV+JLR (TMPV) retained, TMLCV spun off 1:1, market split ~61/39 "
+        "(ratio 0.6054). Yahoo does not adjust demergers, so the discontinuity is "
+        "genuine and stays in the stored series; consumers apply the ratio at read "
+        "time via _KNOWN_ACTIONS in data_agent/fundamentals/earnings_reaction_backfill.py.",
+}
+
+
 def apply_vendor_adjustments(rows, symbol, log=print):
     """Repair known vendor mis-dated corporate actions. Returns rows, possibly scaled."""
     out = rows
