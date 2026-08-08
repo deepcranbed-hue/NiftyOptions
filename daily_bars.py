@@ -70,6 +70,54 @@ LISTED_FROM = {
 }
 
 
+# VENDOR ADJUSTMENT DEFECTS — corrections to what Yahoo actually serves.
+#
+# auto_adjust=True is supposed to back-adjust ALL history before a split/bonus. For
+# TRENT it does not: Yahoo applies the 1:2 bonus from 2026-01-01, five months before
+# the true ex-date, leaving every earlier bar at raw scale. The result is a 33% cliff
+# on a day with no corporate action, and no discontinuity on the day there was one.
+#
+# This is NOT a stitching artifact from incremental downloads — a full fresh
+# --replace re-download reproduces it byte for byte. It is the vendor's data.
+#
+# Applied at FETCH time so the correction survives every future re-download rather
+# than having to be re-applied to the database by hand.
+VENDOR_ADJUSTMENTS = [
+    {
+        "symbol": "TRENT",
+        "boundary": "2026-01-01",   # first bar Yahoo serves already adjusted
+        "ratio": 2.0 / 3.0,         # 1:2 bonus -> price x 2/3
+        "true_ex_date": "2026-06-04",
+        "note": ("1:2 bonus, record/ex date 2026-06-04 (Trent's first). Yahoo adjusts "
+                 "from 2026-01-01 instead. Verified against the traded price: our "
+                 "2026-06-03 close 2834.21 x 1.5 = 4251 vs 4257.60 actually traded, so "
+                 "post-boundary bars are correct and pre-boundary bars are raw. Scaling "
+                 "pre-boundary prices by 2/3 makes the series continuous and moves the "
+                 "1Y return from -42.1% (phantom) to -13.1% (real)."),
+        # Prices only. Volume shows no step across the boundary (~0.4-1.3M either
+        # side), and the reaction detector keys off volume, so leave it untouched.
+        "prices_only": True,
+    },
+]
+
+
+def apply_vendor_adjustments(rows, symbol, log=print):
+    """Repair known vendor mis-dated corporate actions. Returns rows, possibly scaled."""
+    out = rows
+    for adj in VENDOR_ADJUSTMENTS:
+        if adj["symbol"] != symbol.upper():
+            continue
+        b, k = adj["boundary"], adj["ratio"]
+        n = sum(1 for r in out if r[0][:10] < b)
+        if not n:
+            continue
+        out = [((r[0], r[1] * k, r[2] * k, r[3] * k, r[4] * k, r[5])
+                if r[0][:10] < b else r) for r in out]
+        log(f"   vendor fix: scaled {n} bars before {b} by {k:.4f} "
+            f"(true ex-date {adj['true_ex_date']})")
+    return out
+
+
 def tickers_for(symbol):
     return TICKER_ALTS.get(symbol.upper(), [f"{symbol}.NS"])
 
@@ -118,6 +166,8 @@ def fetch_best(symbol, start, end, log=print):
         log(f"   [{tk}] {len(rows)} bars")
         if len(rows) > len(best):
             best, best_ticker = rows, tk
+    if best:
+        best = apply_vendor_adjustments(best, symbol, log=log)
     return best, best_ticker
 
 

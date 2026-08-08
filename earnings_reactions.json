@@ -1,5 +1,5 @@
 {
- "as_of": "2026-08-07",
+ "as_of": "2026-08-08",
  "status": "PRIOR \u2014 descriptive record of realised reactions, NOT a predictor. Announcement dates are volume-detected heuristics, not official filings. Thin sample per name. Walk-forward test before gating anything on it.",
  "method": {
   "announcement_detection": "highest-volume session per reporting window, requiring volume >= 1.8x the trailing 20-day median. Selected on VOLUME ONLY so the measured return is not chosen on its own magnitude.",
@@ -45,7 +45,7 @@
   },
   "Financial Services": {
    "n_stocks": 11,
-   "recent_mean_rel1d_pct": 0.16
+   "recent_mean_rel1d_pct": 0.18
   },
   "Automobile": {
    "n_stocks": 5,
@@ -65,11 +65,11 @@
   },
   "Power": {
    "n_stocks": 2,
-   "recent_mean_rel1d_pct": -0.35
+   "recent_mean_rel1d_pct": -0.17
   },
   "Oil & Gas": {
    "n_stocks": 2,
-   "recent_mean_rel1d_pct": 0.9
+   "recent_mean_rel1d_pct": 1.06
   }
  },
  "summary": {
@@ -191,16 +191,16 @@
    "recent_bias": "neutral"
   },
   "BHARTIARTL": {
-   "n_events": 33,
-   "full_mean_r1d_pct": -0.27,
-   "full_mean_rel1d_pct": -0.04,
-   "full_positive_share": 0.52,
+   "n_events": 34,
+   "full_mean_r1d_pct": -0.25,
+   "full_mean_rel1d_pct": -0.03,
+   "full_positive_share": 0.53,
    "full_bias": "neutral",
    "recent_n": 8,
-   "recent_mean_r1d_pct": -0.86,
-   "recent_mean_rel1d_pct": -0.75,
+   "recent_mean_r1d_pct": -0.63,
+   "recent_mean_rel1d_pct": -0.47,
    "recent_mean_sect_rel1d_pct": null,
-   "recent_positive_share": 0.38,
+   "recent_positive_share": 0.5,
    "recent_bias": "neutral"
   },
   "CIPLA": {
@@ -256,13 +256,13 @@
    "recent_bias": "neutral"
   },
   "GRASIM": {
-   "n_events": 34,
-   "full_mean_r1d_pct": 0.83,
-   "full_mean_rel1d_pct": 0.68,
-   "full_positive_share": 0.65,
+   "n_events": 33,
+   "full_mean_r1d_pct": 0.89,
+   "full_mean_rel1d_pct": 0.71,
+   "full_positive_share": 0.67,
    "full_bias": "neutral",
    "recent_n": 8,
-   "recent_mean_r1d_pct": 0.8,
+   "recent_mean_r1d_pct": 0.85,
    "recent_mean_rel1d_pct": 1.04,
    "recent_mean_sect_rel1d_pct": null,
    "recent_positive_share": 0.62,
@@ -490,16 +490,16 @@
    "recent_bias": "neutral"
   },
   "NTPC": {
-   "n_events": 29,
-   "full_mean_r1d_pct": 1.12,
-   "full_mean_rel1d_pct": 1.03,
-   "full_positive_share": 0.69,
+   "n_events": 30,
+   "full_mean_r1d_pct": 1.15,
+   "full_mean_rel1d_pct": 1.06,
+   "full_positive_share": 0.7,
    "full_bias": "neutral",
    "recent_n": 8,
-   "recent_mean_r1d_pct": -0.63,
-   "recent_mean_rel1d_pct": -0.45,
+   "recent_mean_r1d_pct": -0.16,
+   "recent_mean_rel1d_pct": -0.09,
    "recent_mean_sect_rel1d_pct": null,
-   "recent_positive_share": 0.38,
+   "recent_positive_share": 0.5,
    "recent_bias": "neutral"
   },
   "ONGC": {
@@ -529,15 +529,15 @@
    "recent_bias": "neutral"
   },
   "RELIANCE": {
-   "n_events": 32,
-   "full_mean_r1d_pct": 0.5,
-   "full_mean_rel1d_pct": 0.56,
-   "full_positive_share": 0.56,
+   "n_events": 33,
+   "full_mean_r1d_pct": 0.46,
+   "full_mean_rel1d_pct": 0.52,
+   "full_positive_share": 0.55,
    "full_bias": "neutral",
    "recent_n": 8,
-   "recent_mean_r1d_pct": -0.85,
-   "recent_mean_rel1d_pct": -0.65,
-   "recent_mean_sect_rel1d_pct": -0.48,
+   "recent_mean_r1d_pct": -0.52,
+   "recent_mean_rel1d_pct": -0.34,
+   "recent_mean_sect_rel1d_pct": -0.58,
    "recent_positive_share": 0.38,
    "recent_bias": "neutral"
   },
@@ -570,12 +570,12 @@
   "SHRIRAMFIN": {
    "n_events": 32,
    "full_mean_r1d_pct": 1.71,
-   "full_mean_rel1d_pct": 1.81,
+   "full_mean_rel1d_pct": 1.87,
    "full_positive_share": 0.62,
    "full_bias": "positive",
    "recent_n": 8,
    "recent_mean_r1d_pct": 1.41,
-   "recent_mean_rel1d_pct": 0.93,
+   "recent_mean_rel1d_pct": 1.18,
    "recent_mean_sect_rel1d_pct": -0.16,
    "recent_positive_share": 0.62,
    "recent_bias": "neutral"
@@ -4840,7 +4840,7 @@
    "vol_ratio": 4.44,
    "r1d_pct": 3.88,
    "r3d_pct": 6.24,
-   "rel1d_pct": 5.84,
+   "rel1d_pct": 5.85,
    "rel3d_pct": 8.21,
    "sector_index": null,
    "sect_rel1d_pct": null,
@@ -5063,6 +5063,19 @@
    "r3d_pct": -2.05,
    "rel1d_pct": 0.25,
    "rel3d_pct": null,
+   "sector_index": null,
+   "sect_rel1d_pct": null,
+   "sect_rel3d_pct": null
+  },
+  {
+   "symbol": "BHARTIARTL",
+   "date": "2026-08-05",
+   "quarter": "Q1 2026",
+   "vol_ratio": 2.39,
+   "r1d_pct": 0.4,
+   "r3d_pct": -0.52,
+   "rel1d_pct": 0.36,
+   "rel3d_pct": -0.34,
    "sector_index": null,
    "sect_rel1d_pct": null,
    "sect_rel3d_pct": null
@@ -5358,7 +5371,7 @@
    "date": "2023-07-27",
    "quarter": "Q1 2023",
    "vol_ratio": 12.94,
-   "r1d_pct": 9.64,
+   "r1d_pct": 9.63,
    "r3d_pct": 9.97,
    "rel1d_pct": 10.23,
    "rel3d_pct": 10.09,
@@ -7299,19 +7312,6 @@
    "r3d_pct": 6.75,
    "rel1d_pct": 6.19,
    "rel3d_pct": 5.17,
-   "sector_index": null,
-   "sect_rel1d_pct": null,
-   "sect_rel3d_pct": null
-  },
-  {
-   "symbol": "GRASIM",
-   "date": "2026-07-14",
-   "quarter": "Q1 2026",
-   "vol_ratio": 1.98,
-   "r1d_pct": -0.99,
-   "r3d_pct": -2.27,
-   "rel1d_pct": -0.33,
-   "rel3d_pct": -1.7,
    "sector_index": null,
    "sect_rel1d_pct": null,
    "sect_rel3d_pct": null
@@ -10337,7 +10337,7 @@
    "date": "2018-01-17",
    "quarter": "Q3 2018",
    "vol_ratio": 2.69,
-   "r1d_pct": 2.6,
+   "r1d_pct": 2.61,
    "r3d_pct": 1.83,
    "rel1d_pct": 1.78,
    "rel3d_pct": 0.02,
@@ -11846,7 +11846,7 @@
    "quarter": "Q4 2019",
    "vol_ratio": 2.62,
    "r1d_pct": 0.53,
-   "r3d_pct": 2.79,
+   "r3d_pct": 2.8,
    "rel1d_pct": 0.58,
    "rel3d_pct": 3.16,
    "sector_index": "NIFTYFIN",
@@ -14675,6 +14675,19 @@
    "sect_rel3d_pct": null
   },
   {
+   "symbol": "NTPC",
+   "date": "2026-08-05",
+   "quarter": "Q1 2026",
+   "vol_ratio": 2.16,
+   "r1d_pct": 1.82,
+   "r3d_pct": -0.33,
+   "rel1d_pct": 1.78,
+   "rel3d_pct": -0.15,
+   "sector_index": null,
+   "sect_rel1d_pct": null,
+   "sect_rel3d_pct": null
+  },
+  {
    "symbol": "ONGC",
    "date": "2018-01-22",
    "quarter": "Q3 2018",
@@ -15933,6 +15946,19 @@
    "rel3d_pct": null,
    "sector_index": "NIFTYENERGY",
    "sect_rel1d_pct": -0.59,
+   "sect_rel3d_pct": null
+  },
+  {
+   "symbol": "RELIANCE",
+   "date": "2026-08-05",
+   "quarter": "Q1 2026",
+   "vol_ratio": 2.3,
+   "r1d_pct": -0.84,
+   "r3d_pct": 3.4,
+   "rel1d_pct": -0.88,
+   "rel3d_pct": 3.58,
+   "sector_index": "NIFTYENERGY",
+   "sect_rel1d_pct": -0.88,
    "sect_rel3d_pct": null
   },
   {
@@ -17229,7 +17255,7 @@
    "vol_ratio": 2.43,
    "r1d_pct": -5.68,
    "r3d_pct": -2.08,
-   "rel1d_pct": -6.74,
+   "rel1d_pct": -4.76,
    "rel3d_pct": -3.88,
    "sector_index": "NIFTYFIN",
    "sect_rel1d_pct": -6.05,
@@ -19022,7 +19048,7 @@
    "quarter": "Q4 2018",
    "vol_ratio": 6.36,
    "r1d_pct": 6.62,
-   "r3d_pct": 6.09,
+   "r3d_pct": 6.1,
    "rel1d_pct": 6.63,
    "rel3d_pct": 5.63,
    "sector_index": "NIFTYIT",
@@ -19204,7 +19230,7 @@
    "quarter": "Q3 2022",
    "vol_ratio": 2.39,
    "r1d_pct": -1.96,
-   "r3d_pct": -6.06,
+   "r3d_pct": -6.07,
    "rel1d_pct": -1.56,
    "rel3d_pct": -4.83,
    "sector_index": "NIFTYIT",
@@ -19386,7 +19412,7 @@
    "quarter": "Q1 2025",
    "vol_ratio": 3.27,
    "r1d_pct": -3.43,
-   "r3d_pct": -3.83,
+   "r3d_pct": -3.84,
    "rel1d_pct": -2.62,
    "rel3d_pct": -3.21,
    "sector_index": "NIFTYIT",
@@ -20855,7 +20881,7 @@
    "quarter": "Q4 2019",
    "vol_ratio": 9.06,
    "r1d_pct": 5.11,
-   "r3d_pct": 5.05,
+   "r3d_pct": 5.06,
    "rel1d_pct": 5.82,
    "rel3d_pct": 4.87,
    "sector_index": null,
