@@ -1,0 +1,720 @@
+{
+ "as_of": "2026-07-31",
+ "thresh": -1.5,
+ "index": {
+  "shock_next": {
+   "n": 108,
+   "mean": 0.36,
+   "median": 0.36,
+   "pos": 0.63,
+   "std": 1.8,
+   "worst": -5.56,
+   "best": 8.76
+  },
+  "base_next": {
+   "n": 2113,
+   "mean": 0.05,
+   "median": 0.07,
+   "pos": 0.54,
+   "std": 1.07,
+   "worst": -12.98,
+   "best": 8.76
+  },
+  "edge": 0.31,
+  "next3": {
+   "n": 108,
+   "mean": 0.62,
+   "median": 0.76,
+   "pos": 0.63,
+   "std": 3.43,
+   "worst": -13.13,
+   "best": 13.02
+  },
+  "by_year": {
+   "2018": {
+    "n": 10,
+    "mean": -0.06,
+    "median": 0.05,
+    "pos": 0.5,
+    "std": 1.3,
+    "worst": -2.67,
+    "best": 2.32
+   },
+   "2019": {
+    "n": 6,
+    "mean": 0.29,
+    "median": 0.32,
+    "pos": 0.67,
+    "std": 0.53,
+    "worst": -0.64,
+    "best": 0.95
+   },
+   "2020": {
+    "n": 32,
+    "mean": 0.66,
+    "median": 0.67,
+    "pos": 0.66,
+    "std": 2.69,
+    "worst": -5.56,
+    "best": 8.76
+   },
+   "2021": {
+    "n": 15,
+    "mean": 0.11,
+    "median": 0.22,
+    "pos": 0.67,
+    "std": 1.13,
+    "worst": -2.18,
+    "best": 1.6
+   },
+   "2022": {
+    "n": 19,
+    "mean": 0.16,
+    "median": 0.03,
+    "pos": 0.53,
+    "std": 1.54,
+    "worst": -2.64,
+    "best": 3.03
+   },
+   "2023": {
+    "n": 2,
+    "mean": 0.0,
+    "median": 0.0,
+    "pos": 0.5,
+    "std": 0.25,
+    "worst": -0.25,
+    "best": 0.25
+   },
+   "2024": {
+    "n": 8,
+    "mean": 0.56,
+    "median": 0.56,
+    "pos": 0.62,
+    "std": 1.23,
+    "worst": -0.93,
+    "best": 3.36
+   },
+   "2025": {
+    "n": 4,
+    "mean": 0.69,
+    "median": 0.55,
+    "pos": 0.75,
+    "std": 0.63,
+    "worst": -0.02,
+    "best": 1.69
+   },
+   "2026": {
+    "n": 12,
+    "mean": 0.4,
+    "median": 0.73,
+    "pos": 0.75,
+    "std": 1.11,
+    "worst": -2.14,
+    "best": 1.78
+   }
+  },
+  "oil": {
+   "crude_up>4pct_next": {
+    "n": 89,
+    "mean": 0.2,
+    "median": 0.03,
+    "pos": 0.51,
+    "std": 1.82,
+    "worst": -5.74,
+    "best": 8.76
+   },
+   "crude_dn>4pct_next": {
+    "n": 104,
+    "mean": -0.21,
+    "median": 0.04,
+    "pos": 0.52,
+    "std": 2.08,
+    "worst": -12.98,
+    "best": 3.82
+   }
+  },
+  "vix": {
+   "vix_median": 22.0,
+   "hi_vix_next": {
+    "n": 54,
+    "mean": 0.66,
+    "median": 0.72,
+    "pos": 0.67,
+    "std": 2.29,
+    "worst": -5.56,
+    "best": 8.76
+   },
+   "lo_vix_next": {
+    "n": 54,
+    "mean": 0.06,
+    "median": 0.28,
+    "pos": 0.59,
+    "std": 1.02,
+    "worst": -2.67,
+    "best": 2.32
+   }
+  }
+ },
+ "stocks": [
+  {
+   "sym": "JSWSTEEL",
+   "n_shocks": 107,
+   "shock_drop_mean": -3.03,
+   "next_mean": 1.17,
+   "next_pos": 0.69,
+   "next_worst": -6.86
+  },
+  {
+   "sym": "ADANIENT",
+   "n_shocks": 107,
+   "shock_drop_mean": -3.72,
+   "next_mean": 1.08,
+   "next_pos": 0.64,
+   "next_worst": -8.26
+  },
+  {
+   "sym": "TATASTEEL",
+   "n_shocks": 107,
+   "shock_drop_mean": -3.07,
+   "next_mean": 1.03,
+   "next_pos": 0.65,
+   "next_worst": -8.31
+  },
+  {
+   "sym": "BEL",
+   "n_shocks": 107,
+   "shock_drop_mean": -2.75,
+   "next_mean": 0.78,
+   "next_pos": 0.56,
+   "next_worst": -13.7
+  },
+  {
+   "sym": "HINDALCO",
+   "n_shocks": 107,
+   "shock_drop_mean": -3.14,
+   "next_mean": 0.74,
+   "next_pos": 0.62,
+   "next_worst": -8.65
+  },
+  {
+   "sym": "SUNPHARMA",
+   "n_shocks": 107,
+   "shock_drop_mean": -1.4,
+   "next_mean": 0.71,
+   "next_pos": 0.61,
+   "next_worst": -5.03
+  },
+  {
+   "sym": "ADANIPORTS",
+   "n_shocks": 107,
+   "shock_drop_mean": -3.4,
+   "next_mean": 0.68,
+   "next_pos": 0.58,
+   "next_worst": -5.71
+  },
+  {
+   "sym": "APOLLOHOSP",
+   "n_shocks": 107,
+   "shock_drop_mean": -1.93,
+   "next_mean": 0.67,
+   "next_pos": 0.6,
+   "next_worst": -10.1
+  },
+  {
+   "sym": "BHARTIARTL",
+   "n_shocks": 107,
+   "shock_drop_mean": -1.95,
+   "next_mean": 0.65,
+   "next_pos": 0.63,
+   "next_worst": -6.41
+  },
+  {
+   "sym": "RELIANCE",
+   "n_shocks": 107,
+   "shock_drop_mean": -2.39,
+   "next_mean": 0.63,
+   "next_pos": 0.6,
+   "next_worst": -12.34
+  },
+  {
+   "sym": "CIPLA",
+   "n_shocks": 107,
+   "shock_drop_mean": -0.8,
+   "next_mean": 0.59,
+   "next_pos": 0.6,
+   "next_worst": -3.92
+  },
+  {
+   "sym": "GRASIM",
+   "n_shocks": 107,
+   "shock_drop_mean": -2.77,
+   "next_mean": 0.59,
+   "next_pos": 0.64,
+   "next_worst": -7.65
+  },
+  {
+   "sym": "TATACONSUM",
+   "n_shocks": 107,
+   "shock_drop_mean": -2.31,
+   "next_mean": 0.59,
+   "next_pos": 0.55,
+   "next_worst": -6.24
+  },
+  {
+   "sym": "ITC",
+   "n_shocks": 107,
+   "shock_drop_mean": -1.65,
+   "next_mean": 0.58,
+   "next_pos": 0.63,
+   "next_worst": -3.98
+  },
+  {
+   "sym": "JIOFIN",
+   "n_shocks": 23,
+   "shock_drop_mean": -3.34,
+   "next_mean": 0.56,
+   "next_pos": 0.61,
+   "next_worst": -3.63
+  },
+  {
+   "sym": "PFC",
+   "n_shocks": 108,
+   "shock_drop_mean": -3.27,
+   "next_mean": 0.56,
+   "next_pos": 0.58,
+   "next_worst": -5.6
+  },
+  {
+   "sym": "INFY",
+   "n_shocks": 107,
+   "shock_drop_mean": -1.81,
+   "next_mean": 0.52,
+   "next_pos": 0.59,
+   "next_worst": -4.84
+  },
+  {
+   "sym": "COALINDIA",
+   "n_shocks": 107,
+   "shock_drop_mean": -2.03,
+   "next_mean": 0.51,
+   "next_pos": 0.56,
+   "next_worst": -7.14
+  },
+  {
+   "sym": "COFORGE",
+   "n_shocks": 107,
+   "shock_drop_mean": -2.77,
+   "next_mean": 0.51,
+   "next_pos": 0.55,
+   "next_worst": -10.87
+  },
+  {
+   "sym": "ASIANPAINT",
+   "n_shocks": 107,
+   "shock_drop_mean": -1.8,
+   "next_mean": 0.5,
+   "next_pos": 0.57,
+   "next_worst": -6.55
+  },
+  {
+   "sym": "RECLTD",
+   "n_shocks": 108,
+   "shock_drop_mean": -3.19,
+   "next_mean": 0.49,
+   "next_pos": 0.59,
+   "next_worst": -14.42
+  },
+  {
+   "sym": "DRREDDY",
+   "n_shocks": 107,
+   "shock_drop_mean": -0.91,
+   "next_mean": 0.47,
+   "next_pos": 0.59,
+   "next_worst": -5.89
+  },
+  {
+   "sym": "MUTHOOTFIN",
+   "n_shocks": 108,
+   "shock_drop_mean": -2.82,
+   "next_mean": 0.47,
+   "next_pos": 0.56,
+   "next_worst": -10.43
+  },
+  {
+   "sym": "PNB",
+   "n_shocks": 107,
+   "shock_drop_mean": -3.63,
+   "next_mean": 0.47,
+   "next_pos": 0.55,
+   "next_worst": -6.14
+  },
+  {
+   "sym": "HINDUNILVR",
+   "n_shocks": 107,
+   "shock_drop_mean": -1.31,
+   "next_mean": 0.46,
+   "next_pos": 0.55,
+   "next_worst": -4.44
+  },
+  {
+   "sym": "INDIGO",
+   "n_shocks": 107,
+   "shock_drop_mean": -2.56,
+   "next_mean": 0.46,
+   "next_pos": 0.59,
+   "next_worst": -7.01
+  },
+  {
+   "sym": "LICHSGFIN",
+   "n_shocks": 108,
+   "shock_drop_mean": -3.88,
+   "next_mean": 0.46,
+   "next_pos": 0.62,
+   "next_worst": -10.05
+  },
+  {
+   "sym": "ONGC",
+   "n_shocks": 107,
+   "shock_drop_mean": -2.16,
+   "next_mean": 0.44,
+   "next_pos": 0.52,
+   "next_worst": -15.76
+  },
+  {
+   "sym": "HCLTECH",
+   "n_shocks": 107,
+   "shock_drop_mean": -1.71,
+   "next_mean": 0.42,
+   "next_pos": 0.58,
+   "next_worst": -4.99
+  },
+  {
+   "sym": "HDFCLIFE",
+   "n_shocks": 107,
+   "shock_drop_mean": -2.54,
+   "next_mean": 0.42,
+   "next_pos": 0.55,
+   "next_worst": -9.79
+  },
+  {
+   "sym": "BAJAJFINSV",
+   "n_shocks": 107,
+   "shock_drop_mean": -3.53,
+   "next_mean": 0.41,
+   "next_pos": 0.58,
+   "next_worst": -10.08
+  },
+  {
+   "sym": "ULTRACEMCO",
+   "n_shocks": 107,
+   "shock_drop_mean": -2.51,
+   "next_mean": 0.41,
+   "next_pos": 0.61,
+   "next_worst": -5.82
+  },
+  {
+   "sym": "SBIN",
+   "n_shocks": 107,
+   "shock_drop_mean": -3.3,
+   "next_mean": 0.38,
+   "next_pos": 0.6,
+   "next_worst": -6.3
+  },
+  {
+   "sym": "M&M",
+   "n_shocks": 107,
+   "shock_drop_mean": -2.98,
+   "next_mean": 0.37,
+   "next_pos": 0.6,
+   "next_worst": -9.3
+  },
+  {
+   "sym": "NESTLEIND",
+   "n_shocks": 107,
+   "shock_drop_mean": -1.07,
+   "next_mean": 0.36,
+   "next_pos": 0.57,
+   "next_worst": -6.91
+  },
+  {
+   "sym": "HDFCAMC",
+   "n_shocks": 105,
+   "shock_drop_mean": -2.44,
+   "next_mean": 0.35,
+   "next_pos": 0.53,
+   "next_worst": -5.57
+  },
+  {
+   "sym": "ICICIBANK",
+   "n_shocks": 107,
+   "shock_drop_mean": -3.1,
+   "next_mean": 0.35,
+   "next_pos": 0.63,
+   "next_worst": -8.85
+  },
+  {
+   "sym": "MARUTI",
+   "n_shocks": 107,
+   "shock_drop_mean": -2.68,
+   "next_mean": 0.34,
+   "next_pos": 0.57,
+   "next_worst": -9.96
+  },
+  {
+   "sym": "SBILIFE",
+   "n_shocks": 107,
+   "shock_drop_mean": -2.0,
+   "next_mean": 0.34,
+   "next_pos": 0.64,
+   "next_worst": -13.21
+  },
+  {
+   "sym": "WIPRO",
+   "n_shocks": 107,
+   "shock_drop_mean": -1.74,
+   "next_mean": 0.34,
+   "next_pos": 0.54,
+   "next_worst": -5.01
+  },
+  {
+   "sym": "ICICIGI",
+   "n_shocks": 108,
+   "shock_drop_mean": -1.84,
+   "next_mean": 0.33,
+   "next_pos": 0.52,
+   "next_worst": -7.39
+  },
+  {
+   "sym": "TECHM",
+   "n_shocks": 107,
+   "shock_drop_mean": -2.19,
+   "next_mean": 0.33,
+   "next_pos": 0.54,
+   "next_worst": -8.57
+  },
+  {
+   "sym": "BAJFINANCE",
+   "n_shocks": 107,
+   "shock_drop_mean": -3.89,
+   "next_mean": 0.32,
+   "next_pos": 0.58,
+   "next_worst": -11.13
+  },
+  {
+   "sym": "CHOLAFIN",
+   "n_shocks": 108,
+   "shock_drop_mean": -4.14,
+   "next_mean": 0.32,
+   "next_pos": 0.63,
+   "next_worst": -12.74
+  },
+  {
+   "sym": "KOTAKBANK",
+   "n_shocks": 107,
+   "shock_drop_mean": -2.75,
+   "next_mean": 0.32,
+   "next_pos": 0.57,
+   "next_worst": -11.4
+  },
+  {
+   "sym": "ICICIPRULI",
+   "n_shocks": 108,
+   "shock_drop_mean": -2.49,
+   "next_mean": 0.29,
+   "next_pos": 0.56,
+   "next_worst": -10.21
+  },
+  {
+   "sym": "IDFCFIRSTB",
+   "n_shocks": 107,
+   "shock_drop_mean": -3.79,
+   "next_mean": 0.26,
+   "next_pos": 0.53,
+   "next_worst": -13.63
+  },
+  {
+   "sym": "BAJAJ-AUTO",
+   "n_shocks": 107,
+   "shock_drop_mean": -1.96,
+   "next_mean": 0.25,
+   "next_pos": 0.58,
+   "next_worst": -5.91
+  },
+  {
+   "sym": "EICHERMOT",
+   "n_shocks": 107,
+   "shock_drop_mean": -2.63,
+   "next_mean": 0.25,
+   "next_pos": 0.53,
+   "next_worst": -6.49
+  },
+  {
+   "sym": "TCS",
+   "n_shocks": 107,
+   "shock_drop_mean": -1.65,
+   "next_mean": 0.25,
+   "next_pos": 0.59,
+   "next_worst": -6.81
+  },
+  {
+   "sym": "FEDERALBNK",
+   "n_shocks": 107,
+   "shock_drop_mean": -3.44,
+   "next_mean": 0.23,
+   "next_pos": 0.58,
+   "next_worst": -8.99
+  },
+  {
+   "sym": "NTPC",
+   "n_shocks": 107,
+   "shock_drop_mean": -2.23,
+   "next_mean": 0.23,
+   "next_pos": 0.59,
+   "next_worst": -8.57
+  },
+  {
+   "sym": "TITAN",
+   "n_shocks": 107,
+   "shock_drop_mean": -2.14,
+   "next_mean": 0.2,
+   "next_pos": 0.57,
+   "next_worst": -12.26
+  },
+  {
+   "sym": "POWERGRID",
+   "n_shocks": 107,
+   "shock_drop_mean": -1.58,
+   "next_mean": 0.19,
+   "next_pos": 0.54,
+   "next_worst": -11.02
+  },
+  {
+   "sym": "BANKBARODA",
+   "n_shocks": 107,
+   "shock_drop_mean": -3.38,
+   "next_mean": 0.18,
+   "next_pos": 0.54,
+   "next_worst": -9.86
+  },
+  {
+   "sym": "ABCAPITAL",
+   "n_shocks": 108,
+   "shock_drop_mean": -3.36,
+   "next_mean": 0.17,
+   "next_pos": 0.57,
+   "next_worst": -8.96
+  },
+  {
+   "sym": "AXISBANK",
+   "n_shocks": 107,
+   "shock_drop_mean": -3.43,
+   "next_mean": 0.17,
+   "next_pos": 0.5,
+   "next_worst": -9.55
+  },
+  {
+   "sym": "SYNGENE",
+   "n_shocks": 108,
+   "shock_drop_mean": -1.46,
+   "next_mean": 0.14,
+   "next_pos": 0.55,
+   "next_worst": -6.18
+  },
+  {
+   "sym": "HDFCBANK",
+   "n_shocks": 107,
+   "shock_drop_mean": -2.62,
+   "next_mean": 0.13,
+   "next_pos": 0.5,
+   "next_worst": -10.07
+  },
+  {
+   "sym": "PERSISTENT",
+   "n_shocks": 107,
+   "shock_drop_mean": -1.68,
+   "next_mean": 0.1,
+   "next_pos": 0.52,
+   "next_worst": -7.77
+  },
+  {
+   "sym": "MPHASIS",
+   "n_shocks": 107,
+   "shock_drop_mean": -2.12,
+   "next_mean": 0.08,
+   "next_pos": 0.52,
+   "next_worst": -5.69
+  },
+  {
+   "sym": "LT",
+   "n_shocks": 107,
+   "shock_drop_mean": -2.77,
+   "next_mean": 0.07,
+   "next_pos": 0.54,
+   "next_worst": -6.79
+  },
+  {
+   "sym": "TRENT",
+   "n_shocks": 107,
+   "shock_drop_mean": -2.3,
+   "next_mean": 0.06,
+   "next_pos": 0.52,
+   "next_worst": -8.91
+  },
+  {
+   "sym": "LTIM",
+   "n_shocks": 108,
+   "shock_drop_mean": -1.92,
+   "next_mean": 0.03,
+   "next_pos": 0.51,
+   "next_worst": -10.72
+  },
+  {
+   "sym": "MAXHEALTH",
+   "n_shocks": 66,
+   "shock_drop_mean": -1.39,
+   "next_mean": 0.03,
+   "next_pos": 0.47,
+   "next_worst": -5.03
+  },
+  {
+   "sym": "LTTS",
+   "n_shocks": 107,
+   "shock_drop_mean": -2.1,
+   "next_mean": -0.03,
+   "next_pos": 0.51,
+   "next_worst": -7.78
+  },
+  {
+   "sym": "SHRIRAMFIN",
+   "n_shocks": 107,
+   "shock_drop_mean": -4.06,
+   "next_mean": -0.05,
+   "next_pos": 0.53,
+   "next_worst": -16.25
+  },
+  {
+   "sym": "AUBANK",
+   "n_shocks": 107,
+   "shock_drop_mean": -3.11,
+   "next_mean": -0.19,
+   "next_pos": 0.55,
+   "next_worst": -18.87
+  },
+  {
+   "sym": "BANDHANBNK",
+   "n_shocks": 104,
+   "shock_drop_mean": -3.84,
+   "next_mean": -0.24,
+   "next_pos": 0.5,
+   "next_worst": -12.94
+  },
+  {
+   "sym": "INDUSINDBK",
+   "n_shocks": 107,
+   "shock_drop_mean": -4.02,
+   "next_mean": -0.56,
+   "next_pos": 0.4,
+   "next_worst": -23.73
+  }
+ ]
+}

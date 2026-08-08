@@ -153,7 +153,11 @@ def sync_symbol(conn, symbol, config):
     for c in daily_candles:
         try:
             dt = datetime.strptime(c[0][:10], "%Y-%m-%d")
-            utc_ts = dt.strftime("%Y-%m-%dT00:00:00Z")
+            # Canonical daily format — no trailing Z, no timezone conversion.
+            # ts is part of the primary key, so a Z here is a SECOND row for the
+            # same session beside anything written by daily_bars. That is what
+            # duplicated 13 index symbols. See data_agent/fetching/daily_bars.py.
+            utc_ts = dt.strftime("%Y-%m-%dT00:00:00")
             
             # Scale down USDINR indicator (10x scaled in Upstox)
             scale = 10.0 if symbol == "USDINR" else 1.0

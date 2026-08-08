@@ -262,10 +262,53 @@ def fold_ts_formats(db, dry=True, canon="T00:00:00"):
     con.close()
 
 
+def drop_intraday_from_daily(db, dry=True):
+    """Delete rows in the 1d table whose ts carries a real intraday time.
+
+    A daily bar's ts is midnight by definition. LTIM holds 225 rows at T09:15:00 and
+    T09:51:00 — minute bars written with timeframe='1d'. They cannot be converted
+    (that would fabricate daily bars from intraday snapshots) and they cannot stay
+    (they are not daily bars). Only dates with no legitimate daily bar are affected,
+    which is reported before anything is deleted.
+    """
+    con = sqlite3.connect(db)
+    rows = con.execute(
+        "select rowid, symbol, ts from price_bars where timeframe='1d' "
+        "and substr(ts,12,8) not in ('00:00:00')").fetchall()
+    if not rows:
+        print("\nno intraday-stamped rows in the 1d table.")
+        con.close()
+        return
+    by_sym = {}
+    for rid, sym, ts in rows:
+        by_sym.setdefault(sym, []).append((rid, ts))
+    for sym, items in sorted(by_sym.items()):
+        have = {t[0][:10] for t in con.execute(
+            "select ts from price_bars where symbol=? and timeframe='1d' "
+            "and substr(ts,12,8)='00:00:00'", (sym,))}
+        lost = sorted({t[:10] for _, t in items} - have)
+        times = sorted({t[11:] for _, t in items})
+        print(f"\n{sym}: {len(items)} intraday-stamped rows ({','.join(times)})")
+        print(f"   {len(lost)} of those dates have NO proper daily bar — "
+              f"they will simply be absent until the next sync fills them"
+              + (f" (e.g. {', '.join(lost[:3])})" if lost else ""))
+        if not dry:
+            con.executemany("delete from price_bars where rowid=?",
+                            [(r,) for r, _ in items])
+            con.commit()
+            left = con.execute("select count(*) from price_bars where symbol=? and "
+                               "timeframe='1d'", (sym,)).fetchone()[0]
+            print(f"   deleted {len(items)}; {left} daily bars remain")
+    con.close()
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--db", default=None)
     ap.add_argument("--apply", action="store_true", help="write; default is dry-run")
+    ap.add_argument("--drop-intraday", action="store_true",
+                    help="delete rows in the 1d table carrying a real intraday time "
+                         "(minute bars written with timeframe='1d')")
     ap.add_argument("--fold-ts", action="store_true",
                     help="collapse symbols carrying two ts spellings onto the canonical one")
     ap.add_argument("--fold-exchange", action="store_true",
@@ -276,6 +319,11 @@ def main():
         from bar_store import DB_PATH
         db = os.environ.get("OPTION_CHAINS_DB", DB_PATH)
     print(f"database: {db}")
+    if args.drop_intraday:
+        drop_intraday_from_daily(db, dry=not args.apply)
+        if not args.apply:
+            print("\n--dry-run (default). Re-run with --apply to write.")
+        return
     if args.fold_ts:
         fold_ts_formats(db, dry=not args.apply)
         if not args.apply:

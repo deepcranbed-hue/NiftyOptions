@@ -51,7 +51,32 @@ REFERENCE_BY_EXCHANGE = {
     "CDS": "USDINR",
     "NFO": "NIFTY_FUT_1",
 }
-CALENDAR_EXEMPT = {"GIFTNIFTY"}     # near-24h global session; no NSE-like calendar
+CALENDAR_EXEMPT = {
+    # Near-24h global session; no NSE-like trading calendar to compare against.
+    "GIFTNIFTY",
+    # MCX commodity series are SINGLE-CONTRACT, not continuous: they start when a
+    # contract lists, end when it expires, and carry zero-volume prints in between.
+    # Comparing their session set to another MCX symbol on a different contract cycle
+    # measures the contract cycle, not data quality. Fixing this properly means
+    # building continuous contracts — a real piece of work, not an audit tweak.
+    "CRUDEOIL_MCX", "GOLD", "SILVER", "COPPER",
+}
+
+# Weekend rows are a defect for an exchange-session series and NORMAL for a 24/5 or
+# global feed. Exempting is not the same as hiding: each entry names why.
+WEEKEND_EXEMPT = {
+    "USDINR": "Upstox GLOBAL_INDICATOR feed, not an NSE session series — FX quotes "
+              "print outside Indian exchange hours",
+    "GIFTNIFTY": "near-24h global session",
+}
+
+# Writers not yet migrated to the canonical daily format, with the reason. Anything
+# NOT listed here that carries a foreign format is a real finding.
+TS_FORMAT_EXEMPT = {
+    "NIFTY_FUT_1": "Breeze futures path, deliberately deferred — futures storage needs "
+                   "a per-contract vs rolling decision first",
+    "NIFTY_FUT_2": "as NIFTY_FUT_1",
+}
 
 
 def _exchange_of(con, sym):
@@ -103,13 +128,13 @@ def audit(db, symbols=None, reference="RELIANCE"):
         #    one session are two rows that never overwrite each other. This is the
         #    defect every other daily-bar problem grew out of.
         fmts = sorted({t[10:] for t in rows})
-        if fmts != [CANON_TS]:
+        if fmts != [CANON_TS] and sym not in TS_FORMAT_EXEMPT:
             findings.append((sym, "ts_format", f"{','.join(fmts)} (want {CANON_TS})"))
 
         # 2. WEEKEND DATES. A timezone-shifted series lands sessions on Sat/Sun.
         dates = {t[:10] for t in rows}
         wk = [d for d in dates if datetime.strptime(d, "%Y-%m-%d").weekday() >= 5]
-        if len(wk) > WEEKEND_TOLERANCE:
+        if len(wk) > WEEKEND_TOLERANCE and sym not in WEEKEND_EXEMPT:
             findings.append((sym, "weekend_dates",
                              f"{len(wk)} sessions on Sat/Sun, e.g. {sorted(wk)[0]}"))
 
@@ -195,6 +220,9 @@ def main():
 
     findings, stats = audit(db, syms)
     print(f"daily-bar audit — {stats['symbols']} symbols, reference {stats['reference']}")
+    if TS_FORMAT_EXEMPT or WEEKEND_EXEMPT or CALENDAR_EXEMPT:
+        print(f"exempt: {len(TS_FORMAT_EXEMPT)} ts-format, {len(WEEKEND_EXEMPT)} weekend, "
+              f"{len(CALENDAR_EXEMPT)} calendar (each with a documented reason in-file)")
     print(f"database: {db}\n")
     if not findings:
         print("PASS — no integrity problems found.")

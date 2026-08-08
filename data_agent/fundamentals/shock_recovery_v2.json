@@ -1,0 +1,587 @@
+{
+ "as_of": "2026-07-31",
+ "thresh": -1.5,
+ "hivix": 20.0,
+ "ma": 200,
+ "pooled": {
+  "hi_healthy": {
+   "n": 1947,
+   "mean": 0.54,
+   "pos": 0.59,
+   "worst": -18.9
+  },
+  "hi_broken": {
+   "n": 2576,
+   "mean": 0.47,
+   "pos": 0.57,
+   "worst": -23.7
+  },
+  "lo_healthy": {
+   "n": 1321,
+   "mean": 0.28,
+   "pos": 0.57,
+   "worst": -14.4
+  },
+  "lo_broken": {
+   "n": 1062,
+   "mean": 0.1,
+   "pos": 0.55,
+   "worst": -9.9
+  }
+ },
+ "roe_corr": -0.13,
+ "stocks": [
+  {
+   "sym": "JSWSTEEL",
+   "setupA_n": 29,
+   "setupA_mean": 1.91,
+   "setupA_pos": 0.79,
+   "setupA_worst": -3.4,
+   "roe": 22.3
+  },
+  {
+   "sym": "TATASTEEL",
+   "setupA_n": 29,
+   "setupA_mean": 1.85,
+   "setupA_pos": 0.76,
+   "setupA_worst": -2.4,
+   "roe": 10.6
+  },
+  {
+   "sym": "HINDALCO",
+   "setupA_n": 33,
+   "setupA_mean": 1.62,
+   "setupA_pos": 0.7,
+   "setupA_worst": -4.8,
+   "roe": 9.8
+  },
+  {
+   "sym": "ADANIENT",
+   "setupA_n": 36,
+   "setupA_mean": 1.24,
+   "setupA_pos": 0.64,
+   "setupA_worst": -7.0,
+   "roe": 11.5
+  },
+  {
+   "sym": "GRASIM",
+   "setupA_n": 25,
+   "setupA_mean": 1.19,
+   "setupA_pos": 0.76,
+   "setupA_worst": -2.5,
+   "roe": 4.8
+  },
+  {
+   "sym": "FEDERALBNK",
+   "setupA_n": 31,
+   "setupA_mean": 1.02,
+   "setupA_pos": 0.68,
+   "setupA_worst": -6.3,
+   "roe": 11.2
+  },
+  {
+   "sym": "INDIGO",
+   "setupA_n": 24,
+   "setupA_mean": 0.97,
+   "setupA_pos": 0.75,
+   "setupA_worst": -4.9,
+   "roe": -34.3
+  },
+  {
+   "sym": "ABCAPITAL",
+   "setupA_n": 23,
+   "setupA_mean": 0.96,
+   "setupA_pos": 0.65,
+   "setupA_worst": -3.8,
+   "roe": null
+  },
+  {
+   "sym": "ICICIGI",
+   "setupA_n": 19,
+   "setupA_mean": 0.95,
+   "setupA_pos": 0.63,
+   "setupA_worst": -4.5,
+   "roe": null
+  },
+  {
+   "sym": "BHARTIARTL",
+   "setupA_n": 47,
+   "setupA_mean": 0.91,
+   "setupA_pos": 0.64,
+   "setupA_worst": -6.4,
+   "roe": 17.9
+  },
+  {
+   "sym": "WIPRO",
+   "setupA_n": 22,
+   "setupA_mean": 0.89,
+   "setupA_pos": 0.64,
+   "setupA_worst": -3.3,
+   "roe": 15.1
+  },
+  {
+   "sym": "COALINDIA",
+   "setupA_n": 36,
+   "setupA_mean": 0.88,
+   "setupA_pos": 0.61,
+   "setupA_worst": -3.3,
+   "roe": 26.1
+  },
+  {
+   "sym": "BAJAJFINSV",
+   "setupA_n": 21,
+   "setupA_mean": 0.83,
+   "setupA_pos": 0.71,
+   "setupA_worst": -4.6,
+   "roe": 12.6
+  },
+  {
+   "sym": "LT",
+   "setupA_n": 25,
+   "setupA_mean": 0.81,
+   "setupA_pos": 0.68,
+   "setupA_worst": -3.1,
+   "roe": 14.7
+  },
+  {
+   "sym": "AXISBANK",
+   "setupA_n": 21,
+   "setupA_mean": 0.8,
+   "setupA_pos": 0.57,
+   "setupA_worst": -3.4,
+   "roe": 12.9
+  },
+  {
+   "sym": "TATACONSUM",
+   "setupA_n": 38,
+   "setupA_mean": 0.77,
+   "setupA_pos": 0.55,
+   "setupA_worst": -5.5,
+   "roe": 7.1
+  },
+  {
+   "sym": "CHOLAFIN",
+   "setupA_n": 32,
+   "setupA_mean": 0.74,
+   "setupA_pos": 0.62,
+   "setupA_worst": -7.8,
+   "roe": null
+  },
+  {
+   "sym": "HINDUNILVR",
+   "setupA_n": 33,
+   "setupA_mean": 0.74,
+   "setupA_pos": 0.55,
+   "setupA_worst": -4.0,
+   "roe": 30.9
+  },
+  {
+   "sym": "DRREDDY",
+   "setupA_n": 37,
+   "setupA_mean": 0.7,
+   "setupA_pos": 0.59,
+   "setupA_worst": -4.4,
+   "roe": 11.1
+  },
+  {
+   "sym": "PFC",
+   "setupA_n": 19,
+   "setupA_mean": 0.69,
+   "setupA_pos": 0.74,
+   "setupA_worst": -4.8,
+   "roe": null
+  },
+  {
+   "sym": "ADANIPORTS",
+   "setupA_n": 22,
+   "setupA_mean": 0.68,
+   "setupA_pos": 0.45,
+   "setupA_worst": -5.5,
+   "roe": 13.3
+  },
+  {
+   "sym": "BANDHANBNK",
+   "setupA_n": 19,
+   "setupA_mean": 0.68,
+   "setupA_pos": 0.47,
+   "setupA_worst": -7.4,
+   "roe": 4.8
+  },
+  {
+   "sym": "SHRIRAMFIN",
+   "setupA_n": 26,
+   "setupA_mean": 0.68,
+   "setupA_pos": 0.54,
+   "setupA_worst": -10.6,
+   "roe": 15.2
+  },
+  {
+   "sym": "SBIN",
+   "setupA_n": 32,
+   "setupA_mean": 0.67,
+   "setupA_pos": 0.56,
+   "setupA_worst": -3.9,
+   "roe": 14.3
+  },
+  {
+   "sym": "LICHSGFIN",
+   "setupA_n": 15,
+   "setupA_mean": 0.66,
+   "setupA_pos": 0.73,
+   "setupA_worst": -5.0,
+   "roe": null
+  },
+  {
+   "sym": "ASIANPAINT",
+   "setupA_n": 34,
+   "setupA_mean": 0.65,
+   "setupA_pos": 0.62,
+   "setupA_worst": -6.5,
+   "roe": 20.2
+  },
+  {
+   "sym": "M&M",
+   "setupA_n": 35,
+   "setupA_mean": 0.65,
+   "setupA_pos": 0.63,
+   "setupA_worst": -3.4,
+   "roe": 18.4
+  },
+  {
+   "sym": "BEL",
+   "setupA_n": 40,
+   "setupA_mean": 0.61,
+   "setupA_pos": 0.55,
+   "setupA_worst": -5.6,
+   "roe": 25.3
+  },
+  {
+   "sym": "COFORGE",
+   "setupA_n": 25,
+   "setupA_mean": 0.6,
+   "setupA_pos": 0.52,
+   "setupA_worst": -7.3,
+   "roe": 18.3
+  },
+  {
+   "sym": "ONGC",
+   "setupA_n": 34,
+   "setupA_mean": 0.59,
+   "setupA_pos": 0.47,
+   "setupA_worst": -4.2,
+   "roe": 11.1
+  },
+  {
+   "sym": "CIPLA",
+   "setupA_n": 37,
+   "setupA_mean": 0.58,
+   "setupA_pos": 0.62,
+   "setupA_worst": -3.5,
+   "roe": 11.3
+  },
+  {
+   "sym": "NTPC",
+   "setupA_n": 36,
+   "setupA_mean": 0.55,
+   "setupA_pos": 0.61,
+   "setupA_worst": -3.3,
+   "roe": 13.3
+  },
+  {
+   "sym": "TITAN",
+   "setupA_n": 38,
+   "setupA_mean": 0.54,
+   "setupA_pos": 0.63,
+   "setupA_worst": -4.5,
+   "roe": 32.3
+  },
+  {
+   "sym": "APOLLOHOSP",
+   "setupA_n": 39,
+   "setupA_mean": 0.53,
+   "setupA_pos": 0.59,
+   "setupA_worst": -3.8,
+   "roe": 20.5
+  },
+  {
+   "sym": "ICICIBANK",
+   "setupA_n": 24,
+   "setupA_mean": 0.53,
+   "setupA_pos": 0.62,
+   "setupA_worst": -5.9,
+   "roe": 17.1
+  },
+  {
+   "sym": "INFY",
+   "setupA_n": 29,
+   "setupA_mean": 0.52,
+   "setupA_pos": 0.59,
+   "setupA_worst": -2.0,
+   "roe": 31.7
+  },
+  {
+   "sym": "SUNPHARMA",
+   "setupA_n": 50,
+   "setupA_mean": 0.52,
+   "setupA_pos": 0.66,
+   "setupA_worst": -2.5,
+   "roe": 13.7
+  },
+  {
+   "sym": "MAXHEALTH",
+   "setupA_n": 16,
+   "setupA_mean": 0.51,
+   "setupA_pos": 0.5,
+   "setupA_worst": -3.8,
+   "roe": 13.4
+  },
+  {
+   "sym": "NESTLEIND",
+   "setupA_n": 37,
+   "setupA_mean": 0.51,
+   "setupA_pos": 0.62,
+   "setupA_worst": -6.9,
+   "roe": 67.9
+  },
+  {
+   "sym": "PERSISTENT",
+   "setupA_n": 34,
+   "setupA_mean": 0.51,
+   "setupA_pos": 0.53,
+   "setupA_worst": -4.7,
+   "roe": 23.8
+  },
+  {
+   "sym": "BAJFINANCE",
+   "setupA_n": 24,
+   "setupA_mean": 0.49,
+   "setupA_pos": 0.67,
+   "setupA_worst": -4.7,
+   "roe": 16.7
+  },
+  {
+   "sym": "HDFCLIFE",
+   "setupA_n": 22,
+   "setupA_mean": 0.48,
+   "setupA_pos": 0.64,
+   "setupA_worst": -5.6,
+   "roe": 10.8
+  },
+  {
+   "sym": "RELIANCE",
+   "setupA_n": 32,
+   "setupA_mean": 0.47,
+   "setupA_pos": 0.66,
+   "setupA_worst": -3.9,
+   "roe": 8.9
+  },
+  {
+   "sym": "SYNGENE",
+   "setupA_n": 27,
+   "setupA_mean": 0.46,
+   "setupA_pos": 0.56,
+   "setupA_worst": -2.6,
+   "roe": null
+  },
+  {
+   "sym": "RECLTD",
+   "setupA_n": 15,
+   "setupA_mean": 0.44,
+   "setupA_pos": 0.67,
+   "setupA_worst": -3.4,
+   "roe": null
+  },
+  {
+   "sym": "TCS",
+   "setupA_n": 29,
+   "setupA_mean": 0.42,
+   "setupA_pos": 0.66,
+   "setupA_worst": -4.4,
+   "roe": 46.1
+  },
+  {
+   "sym": "POWERGRID",
+   "setupA_n": 40,
+   "setupA_mean": 0.4,
+   "setupA_pos": 0.6,
+   "setupA_worst": -2.6,
+   "roe": 15.8
+  },
+  {
+   "sym": "SBILIFE",
+   "setupA_n": 25,
+   "setupA_mean": 0.39,
+   "setupA_pos": 0.64,
+   "setupA_worst": -2.8,
+   "roe": null
+  },
+  {
+   "sym": "BAJAJ-AUTO",
+   "setupA_n": 28,
+   "setupA_mean": 0.38,
+   "setupA_pos": 0.64,
+   "setupA_worst": -5.1,
+   "roe": 27.7
+  },
+  {
+   "sym": "EICHERMOT",
+   "setupA_n": 34,
+   "setupA_mean": 0.37,
+   "setupA_pos": 0.62,
+   "setupA_worst": -4.7,
+   "roe": 22.0
+  },
+  {
+   "sym": "HDFCAMC",
+   "setupA_n": 16,
+   "setupA_mean": 0.36,
+   "setupA_pos": 0.56,
+   "setupA_worst": -4.2,
+   "roe": null
+  },
+  {
+   "sym": "BANKBARODA",
+   "setupA_n": 33,
+   "setupA_mean": 0.32,
+   "setupA_pos": 0.48,
+   "setupA_worst": -9.9,
+   "roe": 12.1
+  },
+  {
+   "sym": "ICICIPRULI",
+   "setupA_n": 11,
+   "setupA_mean": 0.32,
+   "setupA_pos": 0.45,
+   "setupA_worst": -3.4,
+   "roe": null
+  },
+  {
+   "sym": "IDFCFIRSTB",
+   "setupA_n": 13,
+   "setupA_mean": 0.32,
+   "setupA_pos": 0.46,
+   "setupA_worst": -3.0,
+   "roe": 3.4
+  },
+  {
+   "sym": "HCLTECH",
+   "setupA_n": 30,
+   "setupA_mean": 0.26,
+   "setupA_pos": 0.57,
+   "setupA_worst": -4.5,
+   "roe": 22.2
+  },
+  {
+   "sym": "MUTHOOTFIN",
+   "setupA_n": 37,
+   "setupA_mean": 0.25,
+   "setupA_pos": 0.59,
+   "setupA_worst": -10.4,
+   "roe": null
+  },
+  {
+   "sym": "ULTRACEMCO",
+   "setupA_n": 18,
+   "setupA_mean": 0.23,
+   "setupA_pos": 0.61,
+   "setupA_worst": -4.7,
+   "roe": 10.7
+  },
+  {
+   "sym": "ITC",
+   "setupA_n": 26,
+   "setupA_mean": 0.11,
+   "setupA_pos": 0.65,
+   "setupA_worst": -4.0,
+   "roe": 28.5
+  },
+  {
+   "sym": "MPHASIS",
+   "setupA_n": 29,
+   "setupA_mean": 0.08,
+   "setupA_pos": 0.48,
+   "setupA_worst": -4.4,
+   "roe": 17.3
+  },
+  {
+   "sym": "TECHM",
+   "setupA_n": 28,
+   "setupA_mean": 0.07,
+   "setupA_pos": 0.46,
+   "setupA_worst": -4.8,
+   "roe": 16.2
+  },
+  {
+   "sym": "HDFCBANK",
+   "setupA_n": 18,
+   "setupA_mean": 0.03,
+   "setupA_pos": 0.5,
+   "setupA_worst": -2.7,
+   "roe": 13.5
+  },
+  {
+   "sym": "MARUTI",
+   "setupA_n": 22,
+   "setupA_mean": -0.03,
+   "setupA_pos": 0.5,
+   "setupA_worst": -5.4,
+   "roe": 13.7
+  },
+  {
+   "sym": "PNB",
+   "setupA_n": 16,
+   "setupA_mean": -0.13,
+   "setupA_pos": 0.5,
+   "setupA_worst": -5.6,
+   "roe": 12.3
+  },
+  {
+   "sym": "INDUSINDBK",
+   "setupA_n": 16,
+   "setupA_mean": -0.14,
+   "setupA_pos": 0.44,
+   "setupA_worst": -5.2,
+   "roe": 3.9
+  },
+  {
+   "sym": "KOTAKBANK",
+   "setupA_n": 20,
+   "setupA_mean": -0.15,
+   "setupA_pos": 0.45,
+   "setupA_worst": -3.9,
+   "roe": 14.2
+  },
+  {
+   "sym": "LTTS",
+   "setupA_n": 29,
+   "setupA_mean": -0.24,
+   "setupA_pos": 0.41,
+   "setupA_worst": -7.4,
+   "roe": 19.8
+  },
+  {
+   "sym": "LTIM",
+   "setupA_n": 33,
+   "setupA_mean": -0.31,
+   "setupA_pos": 0.48,
+   "setupA_worst": -6.7,
+   "roe": 20.9
+  },
+  {
+   "sym": "TRENT",
+   "setupA_n": 39,
+   "setupA_mean": -0.49,
+   "setupA_pos": 0.46,
+   "setupA_worst": -8.9,
+   "roe": 24.6
+  },
+  {
+   "sym": "AUBANK",
+   "setupA_n": 34,
+   "setupA_mean": -0.74,
+   "setupA_pos": 0.56,
+   "setupA_worst": -18.9,
+   "roe": 13.4
+  }
+ ]
+}

@@ -178,6 +178,17 @@ KNOWN_REAL_GAPS = {
     # NOT whitelisted, deliberately: GOLD 2026-02-02 (0.8356) and SILVER 2026-02-02
     # (0.5977). Both look like MCX contract rolls rather than market moves, but that
     # is a guess and the whole point of this list is that entries are verified.
+    ("SYNGENE", "2020-09-14"):
+        "+18.5% on the COVID ELISA test-kit run — ICMR approval was announced that "
+        "week and the stock gapped up. News, not a corporate action (an action would "
+        "move price DOWN at these ratios).",
+    ("GOLD", "2026-02-02"):
+        "MCX contract roll, not a market move. The preceding bars are far-month "
+        "prints with volume 0-2 and open==close (carried forward); 2026-02-02 is the "
+        "first bar of the next contract at volume 83. Gold did not fall 16% that day.",
+    ("SILVER", "2026-02-02"):
+        "MCX contract roll — same signature: 450,414 at volume 0 then 269,201 at "
+        "volume 8. A 40% single-day fall in silver did not happen.",
     ("TATAMOTORS", "2025-10-14"):
         "demerger — PV+JLR (TMPV) retained, TMLCV spun off 1:1, market split ~61/39 "
         "(ratio 0.6054). Yahoo does not adjust demergers, so the discontinuity is "

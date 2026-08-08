@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bank Nifty View — 31 Jul 2026</title>
+<style>
+  :root{
+    --bg:#0f1420; --panel:#171d2b; --panel2:#1e2636; --line:#2a3346; --ink:#e7ecf4;
+    --dim:#93a0b4; --dimmer:#6b7688; --green:#35c98a; --red:#f2617a;
+    --amber:#e8b04b; --blue:#5aa2f0; --purple:#b184e8; --gray:#8894a6;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;padding:22px}
+  .wrap{max-width:1180px;margin:0 auto}
+  h1{font-size:22px;margin:0 0 2px;letter-spacing:-.2px}
+  .sub{color:var(--dim);font-size:13px;margin-bottom:18px}
+  .concl{background:linear-gradient(180deg,#1a2233,#161d2b);border:1px solid var(--line);
+    border-left:3px solid var(--blue);border-radius:10px;padding:14px 16px;margin-bottom:14px}
+  .concl b{color:#fff}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+  .chip{background:var(--panel);border:1px solid var(--line);border-radius:999px;
+    padding:6px 12px;font-size:12px;color:var(--dim)}
+  .chip b{color:var(--ink)}
+  .idx{display:flex;gap:18px;align-items:center;background:var(--panel);border:1px solid var(--line);
+    border-radius:10px;padding:10px 16px;margin-bottom:18px;flex-wrap:wrap}
+  .idx .nm{font-weight:600}
+  .idx .r{font-size:13px;color:var(--dim)}
+  .regime{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+  .regime .lbl{font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:var(--dimmer);margin-bottom:9px}
+  .btns{display:flex;gap:8px;flex-wrap:wrap}
+  .btn{cursor:pointer;background:var(--panel2);border:1px solid var(--line);color:var(--dim);
+    border-radius:8px;padding:9px 14px;font-size:13px;font-weight:600;transition:.15s;user-select:none}
+  .btn:hover{border-color:#3a465e;color:var(--ink)}
+  .btn.on{background:#22406b;border-color:var(--blue);color:#fff}
+  .btn .ic{font-weight:400;color:var(--dimmer);font-size:11px;margin-left:6px}
+  .btn.on .ic{color:#bcd4f5}
+  .rexp{margin-top:11px;font-size:13px;color:var(--dim);min-height:20px}
+  .rexp b{color:var(--ink)}
+  table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);
+    border-radius:10px;overflow:hidden}
+  th,td{padding:10px 10px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+  th{font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--dimmer);font-weight:600;
+    background:var(--panel2);cursor:default}
+  td:first-child,th:first-child{text-align:left;padding-left:14px}
+  tr:last-child td{border-bottom:none}
+  tr:hover td{background:#1a2130}
+  .nm{font-weight:600}
+  .tk{font-size:11px;color:var(--dimmer)}
+  .pos{color:var(--green)} .neg{color:var(--red)} .flat{color:var(--dim)}
+  .pbcell{min-width:118px}
+  .track{position:relative;height:5px;background:#232c3d;border-radius:3px;margin-top:5px}
+  .mark{position:absolute;top:-2px;width:9px;height:9px;border-radius:50%;background:var(--ink);transform:translateX(-50%)}
+  .rng{font-size:10px;color:var(--dimmer);display:flex;justify-content:space-between;margin-top:2px}
+  .arrow{font-size:11px;margin-left:3px}
+  .badge{display:inline-block;padding:4px 9px;border-radius:6px;font-size:11.5px;font-weight:700;
+    border:1px solid transparent;transition:.2s}
+  .b-con{background:rgba(53,201,138,.14);color:var(--green);border-color:rgba(53,201,138,.3)}
+  .b-hold{background:rgba(90,162,240,.12);color:var(--blue);border-color:rgba(90,162,240,.28)}
+  .b-neu{background:rgba(136,148,166,.12);color:var(--gray);border-color:rgba(136,148,166,.26)}
+  .b-cau{background:rgba(232,176,75,.13);color:var(--amber);border-color:rgba(232,176,75,.3)}
+  .b-avoid{background:rgba(242,97,122,.13);color:var(--red);border-color:rgba(242,97,122,.3)}
+  .b-spec{background:rgba(177,132,232,.14);color:var(--purple);border-color:rgba(177,132,232,.3)}
+  .why{text-align:left;font-size:12px;color:var(--dim);white-space:normal;max-width:250px}
+  .flash{animation:fl .55s ease}
+  @keyframes fl{0%{background:#22406b55}100%{background:transparent}}
+  .foot{margin-top:18px;font-size:12px;color:var(--dimmer);line-height:1.7;
+    background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+  .foot b{color:var(--dim)}
+  .decode-wrap{margin-top:16px}
+  .dbtn{width:100%;text-align:left;font-size:14px;padding:12px 16px;background:#1c2740;border-color:#33507f;color:#cfe0f7}
+  .dbtn:hover{background:#22406b;color:#fff}
+  .decode{margin-top:12px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px}
+  .dhead{font-size:13px;color:var(--dim);margin-bottom:14px;line-height:1.65}
+  .dhead b{color:#fff}
+  .dgrid{display:grid;grid-template-columns:minmax(0,460px) 1fr;gap:18px;align-items:start}
+  @media(max-width:860px){.dgrid{grid-template-columns:1fr}}
+  .dtab{width:100%;border-collapse:collapse;font-size:12.5px}
+  .dtab th,.dtab td{padding:6px 8px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+  .dtab td:first-child,.dtab th:first-child{text-align:left}
+  .dtab th{color:var(--dimmer);font-size:10.5px;text-transform:uppercase;font-weight:600}
+  .resid-pos{color:var(--amber)} .resid-neg{color:var(--blue)}
+  .dnote{font-size:11.5px;color:var(--dim);margin-top:12px;line-height:1.65}
+  .dnote b{color:var(--ink)}
+  .scatter{width:100%;height:auto;background:#131a28;border:1px solid var(--line);border-radius:8px}
+  .leg{display:flex;gap:14px;flex-wrap:wrap;margin:8px 0 2px;font-size:11.5px;color:var(--dim)}
+  .leg span{display:flex;align-items:center;gap:5px}
+  .dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Bank Nifty View</h1>
+  <div class="sub">Fundamentals × market × regime-conditional stance · data as of <b id="asof">31 Jul 2026</b> · standalone P/B, street-anchored</div>
+
+  <div class="concl">
+    <b>Bottom line: banks are ballast, not the engine — for now.</b> Benign, catalyst-free regime:
+    RBI on hold, asset quality uniformly improving, Q1 done. Our validated finding says P/B has
+    <b>~zero cross-sectional edge in this (normalization) regime</b> — so cheapness is <b>not</b> a
+    buy signal today. The data proves it: the cheapest premium names (HDFC, Kotak at their own P/B
+    floors) are the <b>laggards</b>, while leaders are the executing/recovering names. Stances below
+    are positioning tilts, <b>not predictions</b>.
+  </div>
+
+  <div class="chips">
+    <div class="chip">RBI repo <b>5.50%</b> · on hold (neutral)</div>
+    <div class="chip">System GNPA <b>~1.6%</b> · falling slowly</div>
+    <div class="chip">Credit growth <b>~16%→13-15%</b> · moderating</div>
+    <div class="chip">Crude <b>~$90</b> · range-bound</div>
+    <div class="chip">Validated P/B factor edge (now) <b>≈ 0</b></div>
+  </div>
+
+  <div class="idx">
+    <span class="nm">BANK NIFTY</span>
+    <span class="r">1W <b class="pos">+1.01%</b></span>
+    <span class="r">1M <b class="neg">−1.32%</b></span>
+    <span class="r">6M <b class="neg">−3.93%</b></span>
+    <span class="r" style="color:var(--dimmer)">(other bank returns shown vs this)</span>
+  </div>
+
+  <div class="regime">
+    <div class="lbl">Credit-cycle regime — click to recompute every stance (the validated conditional factor)</div>
+    <div class="btns">
+      <div class="btn" data-r="deteriorating">Deteriorating<span class="ic">P/B IC +0.12</span></div>
+      <div class="btn on" data-r="normalized">Normalized — current<span class="ic">P/B IC ≈ 0</span></div>
+      <div class="btn" data-r="improving">Improving / recovery<span class="ic">P/B IC −0.52</span></div>
+    </div>
+    <div class="rexp" id="rexp"></div>
+  </div>
+
+  <table>
+    <thead><tr>
+      <th>Bank</th><th>P/B <span style="text-transform:none;color:var(--dimmer)">(current px ÷ book · own 9y range)</span></th>
+      <th>Book/sh</th><th>ROE</th><th>%ile</th><th>GNPA</th><th>PCR</th><th>1W</th><th>1M</th><th>6M</th><th>6M vs BN</th>
+      <th style="text-align:left">Stance</th><th style="text-align:left">Why</th>
+    </tr></thead>
+    <tbody id="tb"></tbody>
+  </table>
+
+  <div class="leg">
+    <span><i class="dot" style="background:var(--green)"></i>Constructive</span>
+    <span><i class="dot" style="background:var(--blue)"></i>Hold (leader, rich)</span>
+    <span><i class="dot" style="background:var(--gray)"></i>Neutral</span>
+    <span><i class="dot" style="background:var(--amber)"></i>Cautious</span>
+    <span><i class="dot" style="background:var(--red)"></i>Avoid / trap</span>
+    <span><i class="dot" style="background:var(--purple)"></i>Speculative (stress-recovery)</span>
+  </div>
+
+  <div class="decode-wrap">
+    <button class="btn dbtn" id="decodeBtn">▸ Decode embedded expectations — fit P/B vs ROE (runs only on click)</button>
+    <div id="decodePanel" class="decode" style="display:none"></div>
+  </div>
+
+  <div class="foot">
+    <b>How the stance is computed (transparent, no black box):</b> valuation = P/B percentile in the
+    bank's <i>own</i> 9-year range (cheap ≤33 / rich ≥67) · quality = YoY change in GNPA (improving if
+    falling) · momentum = 6M return vs Bank Nifty · stress flag = GNPA level ≥ 2.5%. The <b>regime
+    button</b> switches which rule dominates, using our validated per-regime P/B rank-ICs: in
+    <b>Improving</b> cheap re-rates (IC −0.52) so cheap+improving = buy; in <b>Deteriorating</b> cheap
+    is punished (IC +0.12) so cheap = value-trap avoid; in <b>Normalized</b> (today) the factor edge is
+    ~0, so momentum/quality lead and cheapness is inert.<br><br>
+    <b>Hard caveats:</b> this is a Product-B <i>thesis</i>, not a tradeable signal — n = 3 years per
+    regime (one instance of each cycle), bank returns are gap-locked, the rule is not operational
+    without a live regime detector (an RBI system-GNPA series). Stances are positioning tilts, not
+    predictions or targets. ROA omitted (not populated in standalone load). Not investment advice.
+  </div>
+</div>
+
+<script>
+const IDX={ret_1w:1.01,ret_1m:-1.32,ret_6m:-3.93};
+const NAME={HDFCBANK:"HDFC Bank",ICICIBANK:"ICICI Bank",SBIN:"SBI",KOTAKBANK:"Kotak Mahindra",
+  AXISBANK:"Axis Bank",INDUSINDBK:"IndusInd",BANKBARODA:"Bank of Baroda",PNB:"PNB",
+  AUBANK:"AU SFB",IDFCFIRSTB:"IDFC First",FEDERALBNK:"Federal Bank",BANDHANBNK:"Bandhan Bank"};
+const PSU=["SBIN","BANKBARODA","PNB"], SFB=["AUBANK"], TURN=["INDUSINDBK","IDFCFIRSTB","BANDHANBNK"];
+const B=[
+ {t:"HDFCBANK",pb:2.05,bv:365.7,roe:13.3,pct:0.00,mn:2.06,mx:4.57,gnpa:1.17,dg:-0.23,pcr:65,r1w:0.72,r1m:-6.03,r6m:-18.16,rel6:-14.23},
+ {t:"ICICIBANK",pb:3.05,bv:471.2,roe:14.9,pct:0.67,mn:1.73,mx:3.51,gnpa:1.38,dg:-0.29,pcr:75,r1w:0.17,r1m:4.03,r6m:5.93,rel6:9.86},
+ {t:"SBIN",pb:1.74,bv:589.8,roe:14.7,pct:0.89,mn:0.58,mx:1.84,gnpa:1.49,dg:-0.33,pcr:74,r1w:1.22,r1m:-1.91,r6m:-2.90,rel6:1.03},
+ {t:"KOTAKBANK",pb:2.87,bv:136.0,roe:10.4,pct:0.11,mn:2.84,mx:6.48,gnpa:1.18,dg:-0.30,pcr:77,r1w:1.44,r1m:-2.37,r6m:-4.17,rel6:-0.24},
+ {t:"AXISBANK",pb:1.86,bv:661.3,roe:11.9,pct:0.22,mn:1.28,mx:2.77,gnpa:1.28,dg:-0.29,pcr:70,r1w:0.18,r1m:-10.10,r6m:-10.21,rel6:-6.28},
+ {t:"INDUSINDBK",pb:1.21,bv:838.0,roe:1.4,pct:0.33,mn:0.81,mx:4.59,gnpa:3.25,dg:-0.39,pcr:71,r1w:1.65,r1m:7.52,r6m:13.17,rel6:17.10},
+ {t:"BANKBARODA",pb:0.82,bv:296.3,roe:13.1,pct:0.56,mn:0.23,mx:1.11,gnpa:1.99,dg:-0.29,pcr:75,r1w:-1.56,r1m:-10.69,r6m:-16.35,rel6:-12.42},
+ {t:"PNB",pb:0.91,bv:124.1,roe:11.8,pct:0.89,mn:0.28,mx:1.20,gnpa:2.78,dg:-1.00,pcr:90,r1w:2.11,r1m:4.81,r6m:-7.35,rel6:-3.42},
+ {t:"AUBANK",pb:3.97,bv:263.7,roe:13.4,pct:0.44,mn:2.88,mx:8.65,gnpa:2.10,dg:-0.37,pcr:64,r1w:4.41,r1m:-0.29,r6m:6.72,rel6:10.65},
+ {t:"IDFCFIRSTB",pb:1.55,bv:54.7,roe:3.5,pct:0.67,mn:0.65,mx:1.72,gnpa:1.51,dg:-0.46,pcr:71,r1w:4.81,r1m:7.28,r6m:1.32,rel6:5.25},
+ {t:"FEDERALBNK",pb:2.28,bv:157.1,roe:10.6,pct:1.00,mn:0.57,mx:1.79,gnpa:1.52,dg:-0.39,pcr:88,r1w:1.28,r1m:8.28,r6m:24.71,rel6:28.64},
+ {t:"BANDHANBNK",pb:1.10,bv:158.8,roe:4.8,pct:0.11,mn:1.10,mx:5.95,gnpa:3.15,dg:-1.81,pcr:70,r1w:4.94,r1m:-15.08,r6m:12.60,rel6:16.53},
+].sort((a,b)=>b.rel6-a.rel6);
+
+const REXP={
+ deteriorating:"<b>Deteriorating cycle</b> (like 2017-20): P/B IC was <b>+0.12</b> — cheapness is <b>punished</b>. Cheap banks are value traps; quality/defensive names are favored. <i>Hypothetical — not today's regime.</i>",
+ normalized:"<b>Normalized cycle (current)</b>: P/B IC ≈ <b>0</b> (faint +0.11). The factor is <b>dormant</b> — cheapness neither helps nor hurts, so stances lean on <b>execution & momentum</b>, not valuation. This is where we are.",
+ improving:"<b>Improving / recovery</b> (like 2021-23): P/B IC was <b>−0.52</b> — cheap banks <b>re-rate hard</b>. Cheap+improving = the buy; rich names lag. <i>Hypothetical — the recovery already happened.</i>"
+};
+
+function stance(b,regime){
+  const cheap=b.pct<=0.33, rich=b.pct>=0.67;
+  const improving=b.dg<-0.05, deteriorating=b.dg>0.05;
+  const stressed=b.gnpa>=2.5;
+  const leading=b.rel6>5, lagging=b.rel6<-5;
+  if(regime==="improving"){
+    if(cheap&&improving&&stressed) return["Speculative buy","b-spec","Cheap + improving but elevated GNPA — high-beta re-rating in a recovery"];
+    if(cheap&&improving) return["Buy — re-rating","b-con","Cheap in own range + quality improving: the factor's sweet spot in a recovery"];
+    if(cheap&&deteriorating) return["Avoid — trap","b-avoid","Cheap but quality worsening — a trap even in recovery"];
+    if(rich) return["Underweight","b-cau","Richly valued — the factor headwind when cheap names re-rate"];
+    return["Neutral","b-neu","Mid valuation — modest in a cheap-wins regime"];
+  }
+  if(regime==="deteriorating"){
+    if(cheap) return["Avoid — value trap","b-avoid","Cheap is punished when quality deteriorates (IC +0.12) — the classic trap"];
+    if(rich&&improving) return["Defensive hold","b-hold","Quality/expensive names are the shelter when the cycle turns down"];
+    if(stressed) return["Avoid","b-avoid","Elevated GNPA into a deteriorating cycle — highest risk"];
+    return["Neutral / defensive","b-neu","No cheapness edge; bias to quality as the cycle worsens"];
+  }
+  // normalized (current)
+  if(leading&&stressed) return["Speculative","b-spec","Strong bounce off idiosyncratic stress (high GNPA) — recovery trade, high-beta, not a quality holding"];
+  if(leading&&rich) return["Hold — leader","b-hold","Momentum leader but richly valued in its own range — priced for delivery, don't chase"];
+  if(leading) return["Constructive","b-con","Quality + positive momentum align — the executing names the mild quality-tilt favours now"];
+  if(cheap&&lagging) return["Neutral — don't chase","b-neu","Cheap vs own history but de-rating (structural, not a spring); factor edge is ~0 so the low %ile is not a buy"];
+  if(lagging) return["Cautious","b-cau","Lagging on weak execution; no factor tailwind to offset it — wait for delivery"];
+  return["Neutral","b-neu","Execution-driven; no cross-sectional factor edge in this regime"];
+}
+
+function cls(v){return v>0.05?"pos":v<-0.05?"neg":"flat"}
+function sgn(v){return (v>0?"+":"")+v.toFixed(2)+"%"}
+function arrow(dg){return dg<-0.05?'<span class="arrow pos">▼ improving</span>':dg>0.05?'<span class="arrow neg">▲ worse</span>':'<span class="arrow flat">▬ flat</span>'}
+
+let REGIME="normalized";
+function render(flash){
+  const tb=document.getElementById("tb");
+  tb.innerHTML=B.map(b=>{
+    const [lab,c,why]=stance(b,REGIME);
+    const lo=Math.min(b.mn,b.pb), hi=Math.max(b.mx,b.pb);
+    const mpos=Math.max(2,Math.min(98,(b.pb-lo)/(hi-lo)*100));
+    return `<tr class="${flash?'flash':''}">
+      <td><span class="nm">${NAME[b.t]}</span><br><span class="tk">${b.t}</span></td>
+      <td class="pbcell">${b.pb.toFixed(2)}
+        <div class="track"><div class="mark" style="left:${mpos}%"></div></div>
+        <div class="rng"><span>${lo.toFixed(1)}</span><span>${hi.toFixed(1)}</span></div></td>
+      <td class="flat">₹${b.bv}</td>
+      <td>${b.roe!=null?b.roe.toFixed(1):'—'}</td>
+      <td>${Math.round(b.pct*100)}</td>
+      <td>${b.gnpa.toFixed(2)}${arrow(b.dg)}</td>
+      <td class="flat">${b.pcr}</td>
+      <td class="${cls(b.r1w)}">${sgn(b.r1w)}</td>
+      <td class="${cls(b.r1m)}">${sgn(b.r1m)}</td>
+      <td class="${cls(b.r6m)}">${sgn(b.r6m)}</td>
+      <td class="${cls(b.rel6)}">${sgn(b.rel6)}</td>
+      <td><span class="badge ${c}">${lab}</span></td>
+      <td class="why">${why}</td>
+    </tr>`;
+  }).join("");
+  document.getElementById("rexp").innerHTML=REXP[REGIME];
+}
+document.querySelectorAll(".btn").forEach(el=>el.onclick=()=>{
+  document.querySelectorAll(".btn").forEach(x=>x.classList.remove("on"));
+  el.classList.add("on"); REGIME=el.dataset.r; render(true);
+});
+render(false);
+
+// ---- embedded-expectation decode (P/B vs ROE) — computed ONLY on button click ----
+function ols(pts){
+  const n=pts.length; let sx=0,sy=0; pts.forEach(p=>{sx+=p.x;sy+=p.y;});
+  const mx=sx/n,my=sy/n; let sxy=0,sxx=0,syy=0;
+  pts.forEach(p=>{sxy+=(p.x-mx)*(p.y-my);sxx+=(p.x-mx)**2;syy+=(p.y-my)**2;});
+  const b=sxy/sxx,a=my-b*mx; let ssr=0; pts.forEach(p=>{const f=a+b*p.x;ssr+=(f-my)**2;});
+  return {a,b,r2:ssr/syy};
+}
+function bucket(t){return PSU.includes(t)?"PSU":SFB.includes(t)?"SFB":TURN.includes(t)?"Turnaround":"Private";}
+function decodeRender(){
+  const {a,b,r2}=ols(B.map(x=>({x:x.roe,y:x.pb})));
+  const rows=B.map(x=>{
+    const fair=a+b*x.roe, resid=x.pb-fair, bk=bucket(x.t); let tag,cl,why;
+    if(resid>0.3){
+      if(bk==="SFB"){tag="Growth premium";cl="b-spec";why="SFB growth optionality priced well above current ROE";}
+      else if(bk==="Turnaround"){tag="Recovery premium";cl="b-spec";why="priced for an ROE recovery not yet delivered";}
+      else if(x.roe>=12){tag="Durability premium";cl="b-hold";why="pays up for proven high ROE — must keep delivering to hold it";}
+      else {tag="Growth premium";cl="b-spec";why="priced for ROE above what it earns today";}
+    } else if(resid<-0.3){
+      if(bk==="PSU"){tag="Structural PSU discount";cl="b-cau";why="delivers ROE the price ignores — governance/dilution discount, not an ROE-fall call";}
+      else {tag="Priced for skepticism";cl="b-neu";why="market doubts the ROE is durable — a better-than-feared candidate if it holds";}
+    } else {tag="Fair for its ROE";cl="b-neu";why="P/B ≈ what current ROE justifies vs peers";}
+    return {...x,fair,resid,bk,tag,cl,why};
+  }).sort((p,q)=>q.resid-p.resid);
+  const tab=`<table class="dtab"><thead><tr><th>Bank</th><th>ROE</th><th>P/B</th><th>Fair</th><th>Resid</th><th style="text-align:left">Read</th></tr></thead><tbody>`
+    +rows.map(r=>`<tr><td>${r.t}</td><td>${r.roe.toFixed(1)}</td><td>${r.pb.toFixed(2)}</td><td class="flat">${r.fair.toFixed(2)}</td>`
+      +`<td class="${r.resid>0?'resid-pos':'resid-neg'}">${r.resid>0?'+':''}${r.resid.toFixed(2)}</td>`
+      +`<td style="text-align:left"><span class="badge ${r.cl}" style="font-size:10.5px">${r.tag}</span></td></tr>`).join("")+`</tbody></table>`;
+  const W=460,H=300,pad=40, xmx=16, ymx=4.4;
+  const X=v=>pad+(v/xmx)*(W-pad-12), Y=v=>H-30-(v/ymx)*(H-30-14);
+  const line=`<line x1="${X(0)}" y1="${Y(a)}" x2="${X(xmx)}" y2="${Y(a+b*xmx)}" stroke="#5aa2f0" stroke-width="1.5" stroke-dasharray="5 3"/>`;
+  const dots=rows.map(r=>`<circle cx="${X(r.roe)}" cy="${Y(r.pb)}" r="4.5" fill="${r.resid>0.3?'#e8b04b':r.resid<-0.3?'#5aa2f0':'#8894a6'}"/>`
+    +`<text x="${X(r.roe)+6}" y="${Y(r.pb)+3}" font-size="9" fill="#93a0b4">${r.t.replace('BANK','').replace('BK','')}</text>`).join("");
+  const ax=`<line x1="${pad}" y1="${Y(0)}" x2="${W-12}" y2="${Y(0)}" stroke="#2a3346"/><line x1="${pad}" y1="12" x2="${pad}" y2="${Y(0)}" stroke="#2a3346"/>`
+    +`<text x="${(pad+W)/2}" y="${H-6}" font-size="10" fill="#6b7688" text-anchor="middle">ROE %  →</text>`
+    +`<text x="13" y="${H/2}" font-size="10" fill="#6b7688" text-anchor="middle" transform="rotate(-90 13 ${H/2})">P/B  →</text>`;
+  const pctR2=Math.round(r2*100);
+  document.getElementById("decodePanel").innerHTML=
+    `<div class="dhead">Fitting <b>P/B = ${a.toFixed(2)} + ${b.toFixed(3)}·ROE</b> across the 12 banks, current ROE explains only <b>R² = ${pctR2}%</b> of the P/B spread. The other <b>${100-pctR2}%</b> is the <b>embedded expectation</b> — future ROE, growth and structural premium/discount. The residual (P/B minus the line) is what the market prices that today's ROE doesn't show.</div>`
+    +`<div class="dgrid"><div><svg class="scatter" viewBox="0 0 ${W} ${H}">${ax}${line}${dots}</svg></div><div>${tab}</div></div>`
+    +`<div class="dnote"><b>Reading it —</b> <span class="resid-pos">amber = above the line</span> (paying more than current ROE justifies: a bet on higher future ROE, growth, or quality durability); <span class="resid-neg">blue = below the line</span> (paying less: skepticism or a structural discount); grey = fair. <b>Caveat that keeps this honest:</b> the residual mixes <i>expected-ROE-change</i> with <i>structural premium/discount</i> — the PSUs (SBI/BoB/PNB) sit below the line for governance/dilution reasons, <i>not</i> an ROE-fall forecast; AU (SFB) and the turnaround names carry recovery/growth premia on depressed current ROE. Isolating the pure expectation needs a <b>forward</b>-ROE estimate — the next build (framework §6.7).</div>`;
+}
+let __decoded=false;
+document.getElementById("decodeBtn").onclick=function(){
+  const p=document.getElementById("decodePanel");
+  if(p.style.display==="none"){ if(!__decoded){decodeRender();__decoded=true;} p.style.display="block";
+    this.textContent="▾ Hide embedded-expectation decode"; }
+  else { p.style.display="none"; this.textContent="▸ Decode embedded expectations — fit P/B vs ROE (runs only on click)"; }
+};
+</script>
+</body>
+</html>
