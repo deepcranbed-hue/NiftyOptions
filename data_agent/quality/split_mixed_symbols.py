@@ -133,16 +133,78 @@ def run(db, dry=True):
     con.close()
 
 
+def fold_forked_exchange(db, dry=True):
+    """Collapse a symbol stored under two exchanges back onto one.
+
+    exchange is part of the primary key, so a wrong exchange forks the series
+    rather than updating it. A hardcoded exchange="NSE" default did this to
+    CRUDEOIL: a full re-pull wrote 2,163 NSE rows beside 1,906 existing NYMEX
+    rows, duplicating every date in the overlap with identical values.
+
+    Keeps the exchange daily_bars.SYMBOL_EXCHANGE documents for the symbol (or the
+    one holding the most rows), and only deletes a row from the losing exchange
+    when the SAME ts already exists on the winner — so nothing unique is dropped;
+    the rest is moved across.
+    """
+    from daily_bars import SYMBOL_EXCHANGE
+    con = sqlite3.connect(db)
+    forked = [r[0] for r in con.execute(
+        "select symbol from price_bars where timeframe='1d' "
+        "group by symbol having count(distinct exchange)>1")]
+    if not forked:
+        print("\nno symbol is forked across exchanges.")
+        con.close()
+        return
+    for sym in forked:
+        counts = dict(con.execute(
+            "select exchange, count(*) from price_bars where symbol=? and "
+            "timeframe='1d' group by 1", (sym,)))
+        want = SYMBOL_EXCHANGE.get(sym.upper())
+        keep = want if want in counts else max(counts, key=counts.get)
+        losers = [e for e in counts if e != keep]
+        print(f"\n{sym}: {counts}  ->  keep {keep}")
+        for loser in losers:
+            dupes = con.execute(
+                "select count(*) from price_bars a where a.symbol=? and a.timeframe='1d' "
+                "and a.exchange=? and exists (select 1 from price_bars b where "
+                "b.symbol=a.symbol and b.timeframe='1d' and b.exchange=? and b.ts=a.ts)",
+                (sym, loser, keep)).fetchone()[0]
+            uniq = counts[loser] - dupes
+            print(f"   {loser}: {dupes} duplicate ts (delete), {uniq} unique (move to {keep})")
+            if not dry:
+                con.execute(
+                    "delete from price_bars where symbol=? and timeframe='1d' and "
+                    "exchange=? and exists (select 1 from price_bars b where "
+                    "b.symbol=price_bars.symbol and b.timeframe='1d' and "
+                    "b.exchange=? and b.ts=price_bars.ts)", (sym, loser, keep))
+                con.execute("update or replace price_bars set exchange=? where symbol=? "
+                            "and timeframe='1d' and exchange=?", (keep, sym, loser))
+        if not dry:
+            con.commit()
+            after = dict(con.execute(
+                "select exchange, count(*) from price_bars where symbol=? and "
+                "timeframe='1d' group by 1", (sym,)))
+            print(f"   after: {after}")
+    con.close()
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--db", default=None)
     ap.add_argument("--apply", action="store_true", help="write; default is dry-run")
+    ap.add_argument("--fold-exchange", action="store_true",
+                    help="collapse symbols stored under two exchanges onto one")
     args = ap.parse_args()
     db = args.db
     if not db:
         from bar_store import DB_PATH
         db = os.environ.get("OPTION_CHAINS_DB", DB_PATH)
     print(f"database: {db}")
+    if args.fold_exchange:
+        fold_forked_exchange(db, dry=not args.apply)
+        if not args.apply:
+            print("\n--dry-run (default). Re-run with --apply to write.")
+        return
     run(db, dry=not args.apply)
     if not args.apply:
         print("\n--dry-run (default). Re-run with --apply to write.")

@@ -89,6 +89,18 @@ def audit(db, symbols=None, reference="RELIANCE"):
             if ov < CALENDAR_MIN:
                 findings.append((sym, "calendar", f"{ov:.1f}% overlap with {reference}"))
 
+    # 3b. FORKED BY EXCHANGE. exchange is part of the primary key, so the same
+    #     symbol stored under two exchanges is two parallel series that silently
+    #     double every date. A hardcoded exchange="NSE" default did this to
+    #     CRUDEOIL (NYMEX + NSE, 1,906 dates twice) and USDINR carries it too.
+    for sym, n in con.execute(
+            "select symbol, count(distinct exchange) c from price_bars "
+            "where timeframe='1d' group by 1 having c>1"):
+        exch = [f"{e}:{k}" for e, k in con.execute(
+            "select exchange, count(*) from price_bars where symbol=? and "
+            "timeframe='1d' group by 1", (sym,))]
+        findings.append((sym, "forked_exchange", " + ".join(exch)))
+
     # 4. DUPLICATE SESSIONS. One trading date, two rows — anything joining on date
     #    double-counts. NIFTY had 22, and NIFTY is the reaction benchmark.
     for sym, n in con.execute(

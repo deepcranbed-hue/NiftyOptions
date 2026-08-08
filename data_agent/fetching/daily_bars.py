@@ -193,6 +193,48 @@ def apply_vendor_adjustments(rows, symbol, log=print):
     return out
 
 
+# EXCHANGE IS PART OF THE PRIMARY KEY — (exchange, symbol, timeframe, ts).
+#
+# So writing a symbol under the wrong exchange does not overwrite the existing
+# series, it creates a SECOND one beside it. That is exactly what a hardcoded
+# exchange="NSE" default did to CRUDEOIL: the full re-pull wrote 2,163 NSE rows
+# next to the 1,906 existing NYMEX rows, duplicating 1,906 trading dates with
+# identical values. Same failure as the ts-format split, one column over.
+#
+# Resolution order is: explicit argument, then whatever the symbol ALREADY uses in
+# this database, then this map, then NSE. Adopting the stored exchange matters most
+# — it means a symbol can never be forked by a default, whatever the map says.
+SYMBOL_EXCHANGE = {
+    "CRUDEOIL": "NYMEX",
+    "BRENT": "NYMEX",
+    "CRUDEOIL_MCX": "MCX", "GOLD": "MCX", "SILVER": "MCX", "COPPER": "MCX",
+    "USDINR": "CDS",
+    "NIFTY_FUT_1": "NFO", "NIFTY_FUT_2": "NFO",
+}
+
+
+def resolve_exchange(symbol, db=None, explicit=None, timeframe="1d"):
+    """The exchange this symbol is already stored under, or its documented home."""
+    if explicit:
+        return explicit
+    if db:
+        try:
+            con = sqlite3.connect(db)
+            rows = [r[0] for r in con.execute(
+                "select distinct exchange from price_bars where symbol=? and timeframe=?",
+                (symbol, timeframe))]
+            con.close()
+            if len(rows) == 1:
+                return rows[0]
+            if len(rows) > 1:
+                # Already forked. Prefer the documented one and let the audit shout.
+                want = SYMBOL_EXCHANGE.get(symbol.upper())
+                return want if want in rows else sorted(rows)[0]
+        except Exception:
+            pass
+    return SYMBOL_EXCHANGE.get(symbol.upper(), "NSE")
+
+
 def tickers_for(symbol):
     return TICKER_ALTS.get(symbol.upper(), [f"{symbol}.NS"])
 
@@ -246,8 +288,13 @@ def fetch_best(symbol, start, end, log=print):
     return best, best_ticker
 
 
-def write_daily(rows, symbol, db, exchange="NSE", replace=False):
-    """Insert daily bars directly. See the module docstring for why not save_bars."""
+def write_daily(rows, symbol, db, exchange=None, replace=False):
+    """Insert daily bars directly. See the module docstring for why not save_bars.
+
+    exchange defaults to whatever this symbol already uses in the database rather
+    than to 'NSE' — a wrong exchange forks the series instead of updating it.
+    """
+    exchange = resolve_exchange(symbol, db=db, explicit=exchange)
     con = sqlite3.connect(db)
     purged = 0
     if replace:
