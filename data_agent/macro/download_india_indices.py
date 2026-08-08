@@ -38,7 +38,14 @@ def main():
                 
             for dt, row in df.iterrows():
                 # Format timestamp as YYYY-MM-DDT00:00:00Z
-                ts_str = dt.strftime("%Y-%m-%dT00:00:00Z")
+                # Canonical daily format — no trailing Z. ts is part of the
+                # primary key, so a Z here is a SECOND row for the same session
+                # beside whatever daily_bars wrote. This script targets NIFTY,
+                # NIFTYIT and BANKNIFTY, which sync_sectors_yf and
+                # sync_nifty50_bars_yf also own — so the Z was about to
+                # re-duplicate ~2,117 sessions per symbol on the next
+                # /api/sync-all-data run. See data_agent/fetching/daily_bars.py.
+                ts_str = dt.strftime("%Y-%m-%dT00:00:00")
                 data_list.append((
                     "NSE",
                     local_symbol,
