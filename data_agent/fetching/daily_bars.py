@@ -85,6 +85,43 @@ INDEX_TICKERS = {
 }
 TICKER_ALTS.update(INDEX_TICKERS)
 
+# ONE SYMBOL = ONE INSTRUMENT, ONE VENUE, ONE CURRENCY.
+#
+# This is the convention every source has to be normalised onto, and CRUDEOIL is
+# what happens without it. Two feeds wrote the same symbol:
+#
+#   1d  2018-01-02..2025-07-30   USD, NYMEX (Yahoo CL=F)   close -37.6..123.7
+#   1d  2026-02-20..present      INR, MCX   (Upstox)       close 5886..9230
+#   1m  2026-06-29..present      INR, MCX   (Upstox)
+#
+# giving an 84x "price move" on 2026-02-20 that is purely a change of currency, and
+# a 6.5-month hole where neither feed wrote. impact_monitor.py reads CRUDEOIL with
+# a 4% threshold, so that jump is a live false signal, and oil is the top-ranked
+# macro factor in the Nifty view.
+#
+# Both feeds are the SAME commodity — CL=F is WTI and MCX crude is WTI-linked; the
+# -37.63 print on 2020-04-20 is the WTI negative settlement, which Brent never had.
+# So this is a currency/venue split, not an instrument mismatch:
+#
+#   CRUDEOIL      -> USD, NYMEX, from CL=F. Eight years, continuous. The macro series.
+#   CRUDEOIL_MCX  -> INR, MCX. The tradeable contract, 1m and 1d.
+#
+# Nothing is currency-converted at WRITE time. Store native, convert at read using
+# the USDINR series already in price_bars — same reason bar_store stores raw bars.
+COMMODITY_TICKERS = {
+    "CRUDEOIL": ["CL=F"],       # WTI, USD/bbl — the long macro history
+    "BRENT": ["BZ=F"],          # only if a genuine Brent series is ever wanted
+}
+TICKER_ALTS.update(COMMODITY_TICKERS)
+
+# Native currency per symbol, so a consumer can never silently mix two. Anything
+# absent is INR (the NSE default).
+NATIVE_CCY = {
+    "CRUDEOIL": "USD", "BRENT": "USD",
+    "CRUDEOIL_MCX": "INR", "GOLD": "INR", "SILVER": "INR", "COPPER": "INR",
+    "USDINR": "INR",
+}
+
 # Real listing dates. Requesting bars before these returns nothing, which would
 # otherwise look like a fetch failure — so callers clamp instead of alarming.
 LISTED_FROM = {

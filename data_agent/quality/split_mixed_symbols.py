@@ -1,0 +1,155 @@
+"""split_mixed_symbols.py — separate feeds that were written under one symbol.
+
+THE PROBLEM THIS EXISTS FOR
+---------------------------
+`price_bars` has no currency or venue column, so a symbol carries those implicitly.
+When two feeds with different conventions write the same symbol, the series looks
+continuous and is not — and nothing in the schema can object.
+
+CRUDEOIL is the worked example:
+
+    1d  2018-01-02..2025-07-30   USD, NYMEX (Yahoo CL=F)   close  -37.6 ..  123.7
+    1d  2026-02-20..present      INR, MCX   (Upstox)       close 5886.0 .. 9230.0
+    1m  2026-06-29..present      INR, MCX   (Upstox)
+
+On 2026-02-20 the stored price rises 84x. No market did that; the currency changed.
+`backend/quant/impact_monitor.py` reads CRUDEOIL against a 4% threshold, and oil is
+the top-ranked macro factor in the Nifty view, so this is a live false signal rather
+than a cosmetic blemish.
+
+Both feeds are the SAME commodity. CL=F is WTI, MCX crude is WTI-linked, and the
+-37.63 close on 2020-04-20 is the WTI negative settlement — Brent never printed
+negative. So the fix is a clean split by currency, not a reconciliation of two
+different oils.
+
+WHAT IT DOES
+------------
+Moves the INR rows to CRUDEOIL_MCX and leaves the USD history as CRUDEOIL, using
+the ts format as the discriminator ('Z' = the Upstox/Breeze writer, naive = Yahoo).
+That is not a guess: the two formats partition the rows exactly along the price
+break, which is checked before anything is written.
+
+Idempotent, and --dry-run shows the plan. After running, the 2025-07-30..2026-02-20
+hole is filled by the ordinary sync, because CRUDEOIL is now a normal Yahoo symbol:
+
+    python data_agent/fetching/sync_commodities.py          # unchanged, INR side
+    python -c "import sys; sys.path.insert(0,'data_agent/fetching'); \\
+               from daily_bars import sync_symbols; sync_symbols(['CRUDEOIL'], DB, full=True)"
+"""
+from __future__ import annotations
+
+import argparse
+import os
+import sqlite3
+import sys
+
+_HERE = os.path.dirname(os.path.abspath(__file__))
+_ROOT = os.path.dirname(os.path.dirname(_HERE))
+sys.path.insert(0, os.path.join(_ROOT, "data_agent", "fetching"))
+sys.path.append(_ROOT)
+
+# (symbol, ts-suffix identifying the foreign feed) -> destination symbol
+SPLITS = [
+    {
+        "symbol": "CRUDEOIL",
+        # Per timeframe, WHICH rows are the foreign feed.
+        #   1d — both feeds present; the ts suffix separates them exactly.
+        #   1m — only the MCX feed ever wrote at this timeframe, so all of it moves.
+        #        (Its suffix is the bar's own minute, 'T17:37:00Z', so a fixed-format
+        #        match silently moves nothing — which is what the first run did.)
+        "move_fmt": {"1d": "T00:00:00Z", "1m": "*"},
+        "dest": "CRUDEOIL_MCX",
+        "move_timeframes": ("1d", "1m"),
+        "why": "INR MCX rows leaving the USD NYMEX history behind as CRUDEOIL",
+    },
+]
+
+
+def _describe(con, sym, tf):
+    r = con.execute("select count(*), min(ts), max(ts), min(close), max(close) "
+                    "from price_bars where symbol=? and timeframe=?", (sym, tf)).fetchone()
+    return r if r and r[0] else None
+
+
+def run(db, dry=True):
+    con = sqlite3.connect(db)
+    for spec in SPLITS:
+        sym, fmts, dest = spec["symbol"], spec["move_fmt"], spec["dest"]
+        print(f"\n{sym} -> {dest}   ({spec['why']})")
+        total = 0
+        for tf in spec["move_timeframes"]:
+            fmt = fmts[tf] if isinstance(fmts, dict) else fmts
+            all_rows = fmt == "*"
+            where_move = "1=1" if all_rows else "substr(ts,11)=?"
+            where_keep = "1=0" if all_rows else "substr(ts,11)!=?"
+            p_move = (sym, tf) if all_rows else (sym, tf, fmt)
+            p_keep = (sym, tf) if all_rows else (sym, tf, fmt)
+            rows = con.execute(
+                "select count(*), min(ts), max(ts), min(close), max(close) from price_bars "
+                f"where symbol=? and timeframe=? and {where_move}", p_move).fetchone()
+            keep = con.execute(
+                "select count(*), min(ts), max(ts), min(close), max(close) from price_bars "
+                f"where symbol=? and timeframe=? and {where_keep}", p_keep).fetchone()
+            if not rows or not rows[0]:
+                print(f"   {tf}: nothing to move")
+                continue
+
+            # SAFETY: the formats must partition the data along the price break. If
+            # the two groups overlap in value range, the format is not actually
+            # tracking currency and this migration would scramble the series.
+            if keep and keep[0]:
+                moving_lo, moving_hi = rows[3], rows[4]
+                keep_lo, keep_hi = keep[3], keep[4]
+                if not (moving_lo > keep_hi or moving_hi < keep_lo):
+                    print(f"   {tf}: REFUSING — value ranges overlap "
+                          f"(moving {moving_lo:.1f}..{moving_hi:.1f}, "
+                          f"keeping {keep_lo:.1f}..{keep_hi:.1f}). The ts format is "
+                          f"not cleanly tracking the currency here; split by date "
+                          f"instead after checking the data.")
+                    continue
+                print(f"   {tf}: move {rows[0]:>6} bars {rows[1][:10]}..{rows[2][:10]} "
+                      f"close {moving_lo:.1f}..{moving_hi:.1f}")
+                print(f"   {tf}: keep {keep[0]:>6} bars {keep[1][:10]}..{keep[2][:10]} "
+                      f"close {keep_lo:.1f}..{keep_hi:.1f}")
+            else:
+                print(f"   {tf}: move {rows[0]:>6} bars {rows[1][:10]}..{rows[2][:10]} "
+                      f"(no rows of the other format)")
+
+            if not dry:
+                n = con.execute(
+                    "update or replace price_bars set symbol=? where symbol=? "
+                    f"and timeframe=? and {where_move}",
+                    (dest,) + p_move).rowcount
+                total += n
+        if not dry:
+            con.commit()
+            print(f"   moved {total} rows")
+            for tf in spec["move_timeframes"]:
+                for s in (sym, dest):
+                    d = _describe(con, s, tf)
+                    if d:
+                        print(f"   after: {s:14} {tf}  {d[0]:>6} bars  "
+                              f"{d[1][:10]}..{d[2][:10]}  close {d[3]:.1f}..{d[4]:.1f}")
+    con.close()
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--db", default=None)
+    ap.add_argument("--apply", action="store_true", help="write; default is dry-run")
+    args = ap.parse_args()
+    db = args.db
+    if not db:
+        from bar_store import DB_PATH
+        db = os.environ.get("OPTION_CHAINS_DB", DB_PATH)
+    print(f"database: {db}")
+    run(db, dry=not args.apply)
+    if not args.apply:
+        print("\n--dry-run (default). Re-run with --apply to write.")
+    else:
+        print("\nNext: re-sync CRUDEOIL from CL=F to fill the 2025-07-30..2026-02-20 hole,")
+        print("then re-copy the mirror and re-run daily_bar_audit.py.")
+
+
+if __name__ == "__main__":
+    main()
