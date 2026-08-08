@@ -33,8 +33,9 @@ _REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 _CSV_PATH = os.path.join(_REPO_ROOT, "nifty-50-stock-list.csv")
 _DRIVERS_PATH = os.path.join(_REPO_ROOT, "nifty50_drivers.json")  # curated tailwinds/headwinds
 _REACTIONS_PATH = os.path.join(_REPO_ROOT, "earnings_reactions.json")  # MEASURED earnings reactions
+_EXPECT_PATH = os.path.join(_REPO_ROOT, "expectation_snapshots.json")  # pre-announcement expectations
 _STATE_DIR = os.path.join(_REPO_ROOT, ".state")
-_CACHE = os.path.join(_STATE_DIR, "nifty50_view_cache_v7.json")  # v7: measured earnings-reaction bias
+_CACHE = os.path.join(_STATE_DIR, "nifty50_view_cache_v8.json")  # v8: expectation bar
 
 # Heuristic Nifty trailing-P/E band (PRIOR, not a measurement — post-2021 NSE
 # consolidated-earnings methodology; calibrate from history when wired to a P/E series):
@@ -378,6 +379,69 @@ def _compute() -> dict:
         for r in rows:
             r["reaction"] = None
 
+    # EXPECTATION — what the market is priced FOR, as distinct from what the company
+    # has delivered. Two sources, deliberately:
+    #
+    #   implied_eps_growth = trailing P/E / forward P/E - 1, computed LIVE from the
+    #   multiples already fetched above. It is not a score and carries no weights:
+    #   if a stock trades at 96x trailing and 59x forward, consensus is priced for
+    #   ~63% EPS growth. That is arithmetic, not judgment. Trent is the worked case
+    #   — priced for +63%, delivered +22%, and the "good" quarter sold off.
+    #
+    #   target/dispersion/coverage come from expectation_snapshots.json, an
+    #   append-only log captured BEFORE each print, because consensus is revised
+    #   continuously and the pre-announcement values cannot be recovered later.
+    #
+    # Dispersion is target spread over mean. It only means anything after corporate
+    # actions are normalised — a stale pre-bonus target next to a post-bonus price
+    # manufactures disagreement that nobody actually has.
+    expectation_meta = None
+    snap_by_sym = {}
+    try:
+        with open(_EXPECT_PATH, "r") as f:
+            snaps = json.load(f).get("snapshots", [])
+        if snaps:
+            latest = snaps[-1]
+            for row in latest.get("rows", []):
+                snap_by_sym[row.get("symbol", "").upper()] = row
+            expectation_meta = {"captured_at": latest.get("captured_at"),
+                                "source": latest.get("source"),
+                                "snapshots": len(snaps)}
+    except Exception:
+        pass
+
+    for r in rows:
+        pe, fwd = r.get("pe"), r.get("fwd_pe")
+        implied = round((pe / fwd - 1.0) * 100.0, 1) if (pe and fwd and pe > 0 and fwd > 0) else None
+        snap = next((snap_by_sym[k] for k in _candidates(r["symbol"])
+                     if k in snap_by_sym), None)
+        exp = {"implied_eps_growth_pct": implied}
+        if snap:
+            tgt = snap.get("targetMeanPrice")
+            lo, hi = snap.get("targetLowPrice"), snap.get("targetHighPrice")
+            last = r.get("last")
+            exp.update({
+                "target_mean": tgt,
+                "target_low": lo,
+                "target_high": hi,
+                "target_upside_pct": round((tgt / last - 1.0) * 100.0, 1)
+                                     if (tgt and last) else None,
+                "dispersion_pct": round((hi - lo) / tgt * 100.0, 0)
+                                  if (lo and hi and tgt) else None,
+                "analysts": int(snap["numberOfAnalystOpinions"])
+                            if snap.get("numberOfAnalystOpinions") else None,
+                "next_earnings": snap.get("next_earnings_date"),
+                "as_of": expectation_meta["captured_at"] if expectation_meta else None,
+            })
+        r["expectation"] = exp
+
+    if expectation_meta:
+        vals = [r["expectation"]["implied_eps_growth_pct"] for r in rows
+                if r.get("expectation", {}).get("implied_eps_growth_pct") is not None]
+        if vals:
+            vals.sort()
+            expectation_meta["median_implied_eps_growth_pct"] = vals[len(vals) // 2]
+
     index_block = None
     index_read = None
     try:
@@ -403,6 +467,7 @@ def _compute() -> dict:
         "rows": rows,
         "drivers_meta": drivers_meta,
         "reactions_meta": reactions_meta,
+        "expectation_meta": expectation_meta,
         "note": ("Verdicts are categorical (rich / in-line / cheap) vs the sector-median "
                  "trailing P/E within the Nifty 50 (P/B fallback for loss-makers; index-median "
                  "fallback when a sector has <3 valued peers; thresholds ±25%). A cross-sectional "
@@ -416,6 +481,7 @@ def _compute() -> dict:
             "5 · DRIVERS (judgment, not computation) — each stock's tailwinds (why investors hold: dividend support, deposit/NIM strength, low competition, capex pipeline) and headwinds (what can hurt) come from curated research in nifty50_drivers.json, dated and hand-editable. This is the qualitative layer the numbers can't see — and it goes stale: refresh it each earnings season.",
             "6 · INDEX READ — the overall cheap/fair/rich call is the bottom-up weighted trailing P/E (Σweight ÷ Σ(weight/P/E), i.e. total mcap over total earnings) judged against a heuristic band (<18 cheap · 18-21 fair · 21-24 mildly rich · >24 rich — a PRIOR, not a calibrated measurement). The short-term lean combines that with a 50/200-DMA trend state. Valuation is a poor 3-month timer — the lean weights trend over valuation, and the options-based Market State view remains the desk's real short-term instrument.",
             "7 · EARNINGS REACTION (measured, not judged) — how this stock has actually traded the session after a results announcement, from data_agent/fundamentals/earnings_reaction_backfill.py over price_bars back to 2018. Announcement days are identified by VOLUME ONLY — never by the size of the move, which would make the finding circular. Each reaction is measured against NIFTY and against the stock's own sector index, so a 'positive' bias means it beat the market on results day, not merely that it rose. The badge shows the RECENT bias (last 8 events); the arrow marks names whose recent behaviour has diverged from their full-sample habit, which is where the market has changed its mind about a name.",
+            "8 \u00b7 EXPECTATION (arithmetic, not a score) \u2014 implied EPS growth is trailing P/E \u00f7 forward P/E \u2212 1: a stock at 96\u00d7 trailing and 59\u00d7 forward is priced for ~63% earnings growth. No weights are set by hand \u2014 it is what the two multiples already say. This is the bar a result has to clear, and it is why a company can report +22% profit and still fall: the number was good in absolute terms and a miss against what was priced in. Analyst target, dispersion (spread \u00f7 mean) and coverage come from expectation_snapshots.json, captured BEFORE each print because consensus is revised continuously and the pre-announcement value cannot be recovered afterwards. Dispersion is only meaningful once corporate actions are normalised \u2014 a stale pre-bonus target beside a post-bonus price manufactures disagreement nobody has.",
             "A rich stock can stay rich for years (quality/growth premium) and a cheap one can be cheap for a reason (value trap) — the verdict is a question to investigate, not a signal to trade.",
         ],
     }

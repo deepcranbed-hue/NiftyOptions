@@ -41,6 +41,19 @@ const BIAS_STYLE: Record<Bias, string> = {
   negative: 'bg-rose-50 text-rose-700 border-rose-200',
 };
 
+// EXPECTATION — what the market is priced FOR, not what was delivered.
+// implied_eps_growth_pct is trailing P/E / forward P/E - 1: 96x trailing against
+// 59x forward means consensus is priced for ~63% earnings growth. Arithmetic from
+// two multiples, not a weighted score. Target/dispersion/coverage come from
+// expectation_snapshots.json, captured BEFORE a print because consensus is revised
+// continuously and the pre-announcement value cannot be recovered afterwards.
+type Expectation = {
+  implied_eps_growth_pct: number | null;
+  target_mean?: number | null; target_low?: number | null; target_high?: number | null;
+  target_upside_pct?: number | null; dispersion_pct?: number | null;
+  analysts?: number | null; next_earnings?: string | null; as_of?: string | null;
+};
+
 type Row = {
   symbol: string; name: string; sector: string; weight: number | null;
   last: number | null; d1_pct: number | null; w1_pct: number | null; m6_pct: number | null; y1_pct: number | null;
@@ -51,6 +64,7 @@ type Row = {
   yahoo_symbol?: string | null; symbol_note?: string | null;
   rel_1w?: number | null; rel_6m?: number | null; rel_1y?: number | null;
   reaction?: Reaction | null;
+  expectation?: Expectation | null;
 };
 type View = {
   fetched_at: number;
@@ -58,6 +72,8 @@ type View = {
   rows: Row[]; note: string; mechanism?: string[];
   drivers_meta?: { as_of: string; note: string } | null;
   reactions_meta?: { as_of: string; events: number; names: number; diverging: number } | null;
+  expectation_meta?: { captured_at: string; source: string; snapshots: number;
+                       median_implied_eps_growth_pct?: number } | null;
   index_read?: {
     weighted_pe: number | null; pe_coverage_pct: number; pe_band: number[];
     val_label: 'cheap' | 'fair' | 'mildly rich' | 'rich' | null;
@@ -124,7 +140,7 @@ const VERDICT_STYLE: Record<Verdict['label'], string> = {
   cheap: 'bg-emerald-50 text-emerald-700 border-emerald-200',
 };
 
-type SortKey = 'weight' | 'd1_pct' | 'w1_pct' | 'm6_pct' | 'y1_pct' | 'pe' | 'vs_median' | 'rel_6m';
+type SortKey = 'weight' | 'd1_pct' | 'w1_pct' | 'm6_pct' | 'y1_pct' | 'pe' | 'vs_median' | 'rel_6m' | 'implied';
 
 const fmtPct = (v: number | null | undefined) =>
   v == null ? '—' : `${v >= 0 ? '+' : ''}${v}%`;
@@ -225,7 +241,8 @@ export function Nifty50Panel() {
 
   const sortVal = useCallback((r: Row): number => {
     if (sortKey === 'vs_median') return r.verdict?.vs_median_pct ?? -Infinity;
-    const v = r[sortKey];
+    if (sortKey === 'implied') return r.expectation?.implied_eps_growth_pct ?? -Infinity;
+    const v = r[sortKey as keyof Row];
     return typeof v === 'number' ? v : -Infinity;
   }, [sortKey]);
 
@@ -666,6 +683,7 @@ export function Nifty50Panel() {
                   <th className="px-2 py-2.5 text-right">Fwd</th>
                   <th className="px-2 py-2.5 text-right">P/B</th>
                   <SortTh k="vs_median" align="left">Pricing</SortTh>
+                  <SortTh k="implied">Priced for</SortTh>
                   <th className="px-2 py-2.5"
                     title="Measured: how this stock traded the session after its last 8 results announcements, vs Nifty. An arrow marks names whose recent behaviour differs from their full-sample habit.">Results</th>
                 </tr>
@@ -717,6 +735,14 @@ export function Nifty50Panel() {
                         </span>
                       ) : <span className="text-slate-300">—</span>}
                     </td>
+                    <td className="px-2 py-2 text-right whitespace-nowrap">
+                      {r.expectation?.implied_eps_growth_pct != null ? (
+                        <span className={`font-mono font-bold ${r.expectation.implied_eps_growth_pct >= 60 ? 'text-amber-700' : r.expectation.implied_eps_growth_pct < 0 ? 'text-slate-400' : 'text-slate-700'}`}
+                          title={`Consensus is priced for ${r.expectation.implied_eps_growth_pct}% EPS growth (trailing P/E ${r.pe ?? '—'} / forward P/E ${r.fwd_pe ?? '—'} − 1). This is the bar a result has to clear — a company can report strong absolute growth and still fall short of it.`}>
+                          {r.expectation.implied_eps_growth_pct >= 0 ? '+' : ''}{Math.round(r.expectation.implied_eps_growth_pct)}%
+                        </span>
+                      ) : <span className="text-slate-300">—</span>}
+                    </td>
                     <td className="px-2 py-2 whitespace-nowrap">
                       {r.reaction ? (
                         <span className={`text-[10px] font-black px-2 py-0.5 rounded-full border ${BIAS_STYLE[r.reaction.recent_bias]}`}
@@ -730,7 +756,7 @@ export function Nifty50Panel() {
                   {open && (
                     <tr className="border-b border-slate-100 bg-slate-50/50">
                       <td />
-                      <td colSpan={14} className="px-2 py-3">
+                      <td colSpan={15} className="px-2 py-3">
                         {/* Price header — current (delayed) price front and centre */}
                         <div className="flex flex-wrap items-center gap-3 mb-3 text-xs">
                           <span className="text-lg font-black text-slate-900 font-mono">
@@ -817,6 +843,57 @@ export function Nifty50Panel() {
                                 </span>
                               )}
                             </p>
+                            {r.expectation?.implied_eps_growth_pct != null && (
+                              <div className="rounded-xl border border-purple-200 bg-purple-50/50 px-3 py-2 mb-3">
+                                <div className="text-[10px] font-black uppercase text-purple-700 mb-1">
+                                  Priced for — the bar this result has to clear
+                                  {r.expectation.as_of && (
+                                    <span className="font-normal text-purple-400 ml-1.5">
+                                      analyst data as of {r.expectation.as_of.slice(0, 10)}
+                                    </span>
+                                  )}
+                                </div>
+                                <div className="flex flex-wrap gap-4 text-[11px] text-slate-600">
+                                  <span>
+                                    <span className="text-slate-400">Implied EPS growth</span>{' '}
+                                    <span className="font-mono font-bold text-purple-800">
+                                      {r.expectation.implied_eps_growth_pct >= 0 ? '+' : ''}
+                                      {Math.round(r.expectation.implied_eps_growth_pct)}%
+                                    </span>
+                                    <span className="text-slate-400"> ({r.pe ?? '—'}× → {r.fwd_pe ?? '—'}×)</span>
+                                  </span>
+                                  {r.expectation.target_mean != null && (
+                                    <span>
+                                      <span className="text-slate-400">Target</span>{' '}
+                                      <span className="font-mono font-bold">₹{r.expectation.target_mean.toLocaleString('en-IN')}</span>
+                                      {r.expectation.target_upside_pct != null && (
+                                        <span className="text-slate-400"> ({fmtPct(r.expectation.target_upside_pct)})</span>
+                                      )}
+                                    </span>
+                                  )}
+                                  {r.expectation.dispersion_pct != null && (
+                                    <span title="Spread between the highest and lowest analyst target, as a share of the mean. Wide = low agreement. Only meaningful once corporate actions are normalised — a stale pre-bonus target beside a post-bonus price manufactures disagreement nobody has.">
+                                      <span className="text-slate-400">Spread</span>{' '}
+                                      <span className="font-mono font-bold">{r.expectation.dispersion_pct}%</span>
+                                      {r.expectation.target_low != null && r.expectation.target_high != null && (
+                                        <span className="text-slate-400"> (₹{r.expectation.target_low.toLocaleString('en-IN')}–₹{r.expectation.target_high.toLocaleString('en-IN')})</span>
+                                      )}
+                                    </span>
+                                  )}
+                                  {r.expectation.analysts != null && (
+                                    <span className="text-slate-400">{r.expectation.analysts} analysts</span>
+                                  )}
+                                  {r.expectation.next_earnings && (
+                                    <span className="text-slate-400">reports {r.expectation.next_earnings}</span>
+                                  )}
+                                </div>
+                                <p className="text-[10px] text-slate-400 mt-1.5">
+                                  Trailing P/E ÷ forward P/E − 1. No weights are set by hand — it is what the two
+                                  multiples already imply. This is why a company can report strong absolute growth
+                                  and still fall: good in absolute terms, short of what was priced in.
+                                </p>
+                              </div>
+                            )}
                             {r.reaction && (
                               <div className="rounded-xl border border-amber-200 bg-amber-50/50 px-3 py-2 mb-3">
                                 <div className="text-[10px] font-black uppercase text-amber-700 mb-1">
