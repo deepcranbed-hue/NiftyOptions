@@ -47,7 +47,21 @@ def resolve_mcx_keys(wanted, log=print):
     try:
         df = pd.read_csv(
             "https://assets.upstox.com/market-quote/instruments/exchange/complete.csv.gz")
-        fut = df[df["instrument_key"].astype(str).str.startswith("MCX_FO|", na=False)].copy()
+        # FUTURES ONLY. 'MCX_FO' is Futures AND Options, and options expire sooner —
+        # so a nearest-expiry match by name alone picks an OPTION. That is exactly
+        # what happened on the first run: GOLD resolved to a call contract and, since
+        # sync_symbol DELETEs before writing, 249 gold bars were replaced by 12 bars
+        # of option premium (close 49-600, against gold's ~150,000). Filter on
+        # instrument_type before anything else.
+        df = df[df["instrument_key"].astype(str).str.startswith("MCX_FO|", na=False)].copy()
+        itype = df.get("instrument_type")
+        if itype is None:
+            log("   instrument master has no instrument_type column — refusing to roll")
+            return {}
+        fut = df[itype.astype(str).str.upper() == "FUT"].copy()
+        if fut.empty:
+            log("   no FUT rows in the instrument master — refusing to roll")
+            return {}
         fut["expiry"] = pd.to_datetime(fut["expiry"], errors="coerce")
         today = pd.Timestamp(datetime.now().date())
         live = fut[fut["expiry"] >= today]
@@ -248,8 +262,16 @@ def main():
         # Refresh the MCX contract keys before fetching. Hardcoded keys point at one
         # contract and go silent when it expires — that is the whole of the GOLD and
         # COPPER staleness. Anything unresolved keeps its fallback key.
-        print("Resolving current MCX contracts...")
-        live_keys = resolve_mcx_keys(MCX_PRODUCTS)
+        # OPT-IN. Rolling to a new contract does not extend the old series — it
+        # replaces it, because sync_symbol DELETEs first and a new contract only has
+        # its own short history. GOLD went 249 bars -> 12 that way. Until per-contract
+        # storage exists (one symbol = one contract, continuous series derived at read
+        # time), the hardcoded keys are the safer default: they go stale, which the
+        # audit reports, rather than silently destroying history.
+        live_keys = {}
+        if "--roll" in sys.argv:
+            print("Resolving current MCX contracts (--roll)...")
+            live_keys = resolve_mcx_keys(MCX_PRODUCTS)
         for db_sym, key in live_keys.items():
             if db_sym in SYMBOLS_MAP and SYMBOLS_MAP[db_sym]["key"] != key:
                 print(f"   {db_sym}: contract rolled "
