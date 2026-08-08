@@ -37,6 +37,33 @@ sys.path.append(_ROOT)
 
 GRAMS_PER_TROY_OZ = 31.1035
 
+# LANDED PARITY, not naked spot.
+#
+# An Indian buyer cannot transact at the international spot price. The comparable
+# number is spot converted to INR and then grossed up for customs duty and GST —
+# what it costs to legally land the metal here. Comparing MCX against naked spot
+# measures the tax code, not the market, and I made exactly that mistake: silver's
+# apparent +19.4% "premium" is 18.45% duty+GST and a real basis of about -0.75%.
+#
+#     landed = spot_usd x USDINR x unit_factor x (1 + duty) x (1 + gst)
+#
+# Silver: 15% duty (10% BCD + 5% AIDC) + 3% GST -> 1.15 x 1.03 = 1.1845. Verified
+# against a market snapshot: $63.55/oz at 95.21 gives 194,533 naked, 230,426 landed,
+# against an MCX close of 228,700 — a -0.75% paper basis, which is the sane number.
+#
+# THESE ARE POLICY RATES AND THEY CHANGE. India cut bullion duty sharply in the 2024
+# budget and has moved it several times since. Each entry is dated; re-check before
+# relying on the output, and treat an unexplained drift in the basis as a possible
+# duty change rather than a market signal.
+DUTY_GST = {
+    # symbol: (duty, gst, as_of, confidence)
+    "SILVER": (0.15, 0.03, "2026-08", "verified against a market snapshot"),
+    "GOLD":   (0.06, 0.03, "2026-08", "UNVERIFIED — bullion duty was cut in 2024 and "
+                                      "gold may differ from silver; confirm before use"),
+    "COPPER": (0.05, 0.18, "2026-08", "UNVERIFIED — industrial metal, GST is 18% not 3%; "
+                                      "confirm both rates"),
+}
+
 # db symbol -> (candidate Yahoo tickers, how to convert USD quote -> the MCX unit)
 #   gold   : USD/troy oz  -> INR per 10 g
 #   silver : USD/troy oz  -> INR per kg
@@ -110,22 +137,36 @@ def main():
                         "select ts, close, volume from price_bars where symbol=? and "
                         "timeframe='1d' order by ts desc limit 1", (sym,)).fetchone()
                 if stored:
-                    implied = to_mcx(last, fx)
-                    diff = (stored[1] / implied - 1.0) * 100.0
+                    naked = to_mcx(last, fx)
+                    duty, gst, as_of, note = DUTY_GST.get(sym, (0.0, 0.0, "-", "no rates"))
+                    landed = naked * (1 + duty) * (1 + gst)
+                    raw_diff = (stored[1] / naked - 1.0) * 100.0
+                    diff = (stored[1] / landed - 1.0) * 100.0
                     # A UNIT error is an order-of-magnitude or clean-factor miss
                     # (10x, 31.1x, 2.2x). A BASIS is a market spread: Indian import
                     # duty plus GST is ~9% on its own, and the physical premium moves
                     # — India's silver premium over US spot is a published, tracked
                     # number. Do not call a real spread a data defect.
-                    if abs(diff) > 60:
-                        verdict = "UNIT ERROR — check the contract's quote convention"
-                    elif abs(diff) > 25:
-                        verdict = "LARGE BASIS — plausible but verify before relying on it"
+                    # Measured against LANDED parity, a healthy futures basis is small:
+                    # MCX paper tracks parity closely because arbitrage is available to
+                    # importers. A few percent is carry and local supply; tens of
+                    # percent means the units or the duty assumption are wrong.
+                    if abs(diff) > 40:
+                        verdict = "UNIT ERROR — check the quote convention"
+                    elif abs(diff) > 10:
+                        verdict = "WIDE — check the duty rate before blaming the market"
                     else:
-                        verdict = "OK — consistent with Indian duty + local premium"
-                    print(f"            implied {implied:,.0f} INR vs stored "
-                          f"{stored[1]:,.0f} ({stored[0][:10]}, vol {stored[2]:,.0f})")
-                    print(f"            India basis {diff:+.1f}%  [{verdict}]")
+                        verdict = "OK — paper tracking landed parity"
+                    print(f"            naked  {naked:,.0f} INR   "
+                          f"landed {landed:,.0f} INR  "
+                          f"(duty {duty:.0%} + GST {gst:.0%}, {as_of})")
+                    print(f"            stored {stored[1]:,.0f} INR "
+                          f"({stored[0][:10]}, vol {stored[2]:,.0f})")
+                    print(f"            vs naked  {raw_diff:+.1f}%   <- mostly the tax wedge")
+                    print(f"            vs landed {diff:+.1f}%   <- the REAL paper basis  "
+                          f"[{verdict}]")
+                    if "UNVERIFIED" in note:
+                        print(f"            duty/GST for {sym}: {note}")
         print()
 
     con.close()
