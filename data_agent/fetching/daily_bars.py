@@ -55,11 +55,17 @@ TICKER_ALTS = {
     "TATAMOTORS": ["TATAMOTORS.NS", "TMPV.NS"],   # Oct-2025 demerger + rename
     "ZOMATO": ["ETERNAL.NS", "ZOMATO.NS"],        # renamed Eternal, 2025
     "ETERNAL": ["ETERNAL.NS", "ZOMATO.NS"],
-    # LTIMindtree: L&T Infotech absorbed Mindtree in Nov-2022 and the NSE symbol
-    # became LTIM. A plain LTIM.NS returned nothing on the full re-pull, so the
-    # predecessors are tried too — whichever yields the most bars wins, and the run
-    # prints which one, so a dead ticker is visible instead of a silent empty result.
-    "LTIM": ["LTIM.NS", "LTIMINDTREE.NS", "LTI.NS", "MINDTREE.NS"],
+    # LTIMindtree renamed to LTM Limited; the NSE trading symbol changed LTIM -> LTM
+    # on 2026-02-27. LTIM.NS now 404s, which is why the full re-pull silently wrote
+    # zero bars for it while the other nine IT names came back fine.
+    #
+    # Third instance of this exact failure in one table — ZOMATO -> ETERNAL,
+    # TATAMOTORS -> TMPV, now LTIM -> LTM. A renamed ticker does not error, it
+    # returns an empty frame, so it looks like "no data today" rather than "this
+    # symbol no longer exists". The DB symbol stays LTIM so history and every
+    # consumer keep working; only the fetch ticker moves.
+    "LTIM": ["LTM.NS", "LTIM.NS", "LTIMINDTREE.NS", "LTI.NS", "MINDTREE.NS"],
+    "LTM": ["LTM.NS", "LTIM.NS"],
     # Indices carry no '.NS' suffix.
     "NIFTY": ["^NSEI"],
     "BANKNIFTY": ["^NSEBANK"],
