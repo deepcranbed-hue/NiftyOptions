@@ -26,6 +26,50 @@ SYMBOLS_MAP = {
     "GIFTNIFTY": {"key": "GLOBAL_INDEX|SGX NIFTY", "exchange": "NSEIX"}
 }
 
+def resolve_mcx_keys(wanted, log=print):
+    """Resolve MCX futures to the CURRENT contract from Upstox's instrument master.
+
+    The hardcoded keys in SYMBOLS_MAP point at a SPECIFIC contract. When it expires
+    the key simply stops returning data, which is why GOLD stalled at 2026-08-04 and
+    COPPER at 2026-07-30 while SILVER and CRUDEOIL_MCX — whose contracts were still
+    live — stayed current. Nothing errors; the feed just goes quiet.
+
+    Same approach sync_finnifty_bars.py already uses for NSE_EQ, and the same
+    nearest-expiry rule as download_nifty_futures.py: take the earliest expiry that
+    has not passed.
+
+    Returns {db_symbol: instrument_key} for whatever it could resolve. Anything it
+    cannot resolve is left to the hardcoded fallback, so a bad instrument dump
+    degrades to today's behaviour instead of breaking the run.
+    """
+    import pandas as pd
+    out = {}
+    try:
+        df = pd.read_csv(
+            "https://assets.upstox.com/market-quote/instruments/exchange/complete.csv.gz")
+        fut = df[df["instrument_key"].astype(str).str.startswith("MCX_FO|", na=False)].copy()
+        fut["expiry"] = pd.to_datetime(fut["expiry"], errors="coerce")
+        today = pd.Timestamp(datetime.now().date())
+        live = fut[fut["expiry"] >= today]
+        for db_sym, name in wanted.items():
+            m = live[live["name"].astype(str).str.upper() == name.upper()]
+            if m.empty:
+                log(f"   {db_sym}: no live MCX contract for '{name}' — keeping fallback key")
+                continue
+            row = m.sort_values("expiry").iloc[0]
+            out[db_sym] = row["instrument_key"]
+            log(f"   {db_sym}: {row['instrument_key']} "
+                f"(expiry {str(row['expiry'])[:10]}, {row.get('tradingsymbol', '')})")
+    except Exception as e:
+        log(f"   instrument master unavailable ({str(e)[:60]}) — keeping fallback keys")
+    return out
+
+
+# db symbol -> the MCX product name in the instrument master
+MCX_PRODUCTS = {"GOLD": "GOLD", "SILVER": "SILVER", "COPPER": "COPPER",
+                "CRUDEOIL_MCX": "CRUDEOIL"}
+
+
 def to_utc_str(ist_timestamp_str):
     # Upstox returns: "2026-07-27T23:29:00+05:30"
     # Convert to UTC ISO format: "2026-07-27T17:59:00Z"
@@ -201,6 +245,17 @@ def main():
     conn = sqlite3.connect(DB_PATH)
     
     try:
+        # Refresh the MCX contract keys before fetching. Hardcoded keys point at one
+        # contract and go silent when it expires — that is the whole of the GOLD and
+        # COPPER staleness. Anything unresolved keeps its fallback key.
+        print("Resolving current MCX contracts...")
+        live_keys = resolve_mcx_keys(MCX_PRODUCTS)
+        for db_sym, key in live_keys.items():
+            if db_sym in SYMBOLS_MAP and SYMBOLS_MAP[db_sym]["key"] != key:
+                print(f"   {db_sym}: contract rolled "
+                      f"{SYMBOLS_MAP[db_sym]['key']} -> {key}")
+                SYMBOLS_MAP[db_sym]["key"] = key
+
         for symbol, config in SYMBOLS_MAP.items():
             sync_symbol(conn, symbol, config)
         print("\n[SUCCESS] All commodities, USDINR, and GIFTNIFTY synced successfully!")
