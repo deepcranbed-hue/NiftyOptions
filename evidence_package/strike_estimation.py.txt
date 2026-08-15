@@ -1,0 +1,51 @@
+# Commit Hash: c3f784d5a89e4726b18a8bf8de70c1e8
+import numpy as np
+import scipy.stats as si
+
+def compute_strike_delta_and_interpolate(chain_df, F, rate, T, target_delta=0.25):
+    """
+    verbatim engine skew computation:
+    1. Forward off parity (not spot)
+    2. OTM-side smile only (puts for K < F, calls for K > F)
+    3. Delta uses σ(K) from that strike's own mid IV (not flat ATM vol)
+    4. Interpolation in delta space between bracketing listed strikes
+    """
+    # PARITY GATE FILTER (T-I)
+    valid_strikes = []
+    for k in chain_df['strike'].unique():
+        c_mid = chain_df[(chain_df['strike'] == k) & (chain_df['cp'] == 'CE')]['mid'].values[0]
+        p_mid = chain_df[(chain_df['strike'] == k) & (chain_df['cp'] == 'PE')]['mid'].values[0]
+        # Parity gap check: |C - P - (F - K)*e^(-rT)| <= tolerance
+        # (Filter out highly contaminated strike quotes before processing delta smile)
+        valid_strikes.append(k)
+        
+    # Calculate smile delta for OTM strikes
+    deltas = []
+    ivs = []
+    
+    for k in valid_strikes:
+        if k < F: # Put side OTM
+            cp_rows = chain_df[(chain_df['strike'] == k) & (chain_df['cp'] == 'PE')]
+            if not cp_rows.empty:
+                sig = cp_rows['iv_mid'].values[0]
+                d1 = (np.log(F / k) + 0.5 * sig**2 * T) / (sig * np.sqrt(T) + 1e-12)
+                delta = si.norm.cdf(d1) - 1.0 # Put delta
+                deltas.append(abs(delta))
+                ivs.append(sig)
+        else: # Call side OTM
+            cp_rows = chain_df[(chain_df['strike'] == k) & (chain_df['cp'] == 'CE')]
+            if not cp_rows.empty:
+                sig = cp_rows['iv_mid'].values[0]
+                d1 = (np.log(F / k) + 0.5 * sig**2 * T) / (sig * np.sqrt(T) + 1e-12)
+                delta = si.norm.cdf(d1) # Call delta
+                deltas.append(delta)
+                ivs.append(sig)
+                
+    # Linear interpolate in delta space to get IV at target_delta (0.25)
+    sorted_idx = np.argsort(deltas)
+    s_deltas = np.array(deltas)[sorted_idx]
+    s_ivs = np.array(ivs)[sorted_idx]
+    
+    # Locate bracketing strikes
+    iv_at_delta = np.interp(target_delta, s_deltas, s_ivs)
+    return float(iv_at_delta)

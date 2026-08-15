@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# --- single source for DB connections (D-SC-06, CLAUDE.md) ---
+import os as _os, sys as _sys
+_RT = _os.path.abspath(_os.path.join(_os.path.dirname(__file__), "../../.."))
+_RT in _sys.path or _sys.path.insert(0, _RT)
+from db_config import resolve_pg_dsn
 import os
 import sys
 import sqlite3
@@ -20,7 +25,7 @@ IT_STOCKS = [
 ]
 
 def get_upstox_keys():
-    dsn = os.getenv("DATABASE_URL", "postgresql://localhost/niftyoptions")
+    dsn = resolve_pg_dsn()
     conn = psycopg.connect(dsn)
     cur = conn.cursor()
     cur.execute(

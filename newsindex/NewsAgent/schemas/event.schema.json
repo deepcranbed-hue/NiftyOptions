@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://newsindex/NewsAgent/schemas/event.schema.json",
+  "title": "Canonical Event",
+  "description": "A single normalized market event, produced by the Normalization Agent by collapsing many source headlines describing the same underlying event.",
+  "type": "object",
+  "required": ["event_id", "canonical_label", "class", "dedup_key", "first_seen", "member_items"],
+  "properties": {
+    "event_id": { "type": "string" },
+    "canonical_label": {
+      "type": "string",
+      "description": "Names the event, not any single outlet's framing. e.g. 'Middle East Supply Shock'."
+    },
+    "class": {
+      "type": "string",
+      "enum": ["Economic", "Corporate", "Policy", "Geopolitical", "Market"]
+    },
+    "subtype": {
+      "type": "string",
+      "description": "Fine class, e.g. CPI, GDP, PMI, Payrolls, EarningsSurprise, GuidanceRevision, CEOChange, Acquisition, Buyback, RateDecision, Tariff, TaxChange, ExportRestriction, War, Sanctions, Election, TradeAgreement, OilSpike, YieldShock, FXIntervention."
+    },
+    "dedup_key": {
+      "type": "string",
+      "description": "Deterministic key from entities + class + time-bucket, produced by the Core."
+    },
+    "first_seen": { "type": "string", "format": "date-time" },
+    "novelty": { "type": "number", "minimum": 0, "maximum": 1 },
+    "surprise_hint": { "type": "number", "minimum": 0, "maximum": 1 },
+    "entities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "type"],
+        "properties": {
+          "name": { "type": "string" },
+          "type": {
+            "type": "string",
+            "enum": ["Asset", "MacroFactor", "PolicyActor", "Theme", "Sector", "Industry", "Company", "Index"]
+          }
+        }
+      }
+    },
+    "member_items": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["raw_item_id", "source", "source_tier", "ts_event"],
+        "properties": {
+          "raw_item_id": { "type": "string" },
+          "source": { "type": "string" },
+          "source_tier": { "type": "integer", "minimum": 1, "maximum": 5 },
+          "url": { "type": "string" },
+          "title": { "type": "string" },
+          "ts_event": { "type": "string", "format": "date-time" },
+          "ts_ingest": { "type": "string", "format": "date-time" },
+          "ts_estimated": { "type": "boolean" }
+        }
+      }
+    }
+  }
+}

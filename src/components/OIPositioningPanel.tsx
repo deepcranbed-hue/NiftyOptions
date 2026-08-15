@@ -1,7 +1,7 @@
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceLine, Cell } from 'recharts';
 import { AutomatedRead, OptionRow, StructureContextItem } from '../types';
-import { ShieldCheck, TrendingDown, TrendingUp, AlertTriangle, Info, Layers, BarChart2 } from 'lucide-react';
+import { ShieldCheck, TrendingDown, TrendingUp, AlertTriangle, Info, Layers, BarChart2, Activity } from 'lucide-react';
 
 interface Props {
   rows: OptionRow[];
@@ -10,6 +10,7 @@ interface Props {
   pcr: number;
   reads: AutomatedRead[];
   structureContext: StructureContextItem[];
+  breadthInterpretation?: { regime: string; read: string };
 }
 
 export const OIPositioningPanel: React.FC<Props> = ({
@@ -19,6 +20,7 @@ export const OIPositioningPanel: React.FC<Props> = ({
   pcr,
   reads,
   structureContext,
+  breadthInterpretation,
 }) => {
   // Format data for diverging horizontal bar chart
   const chartData = rows.map((r) => ({
@@ -99,6 +101,24 @@ export const OIPositioningPanel: React.FC<Props> = ({
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column: Automated Reads & Structure Context */}
         <div className="lg:col-span-1 space-y-6">
+          
+          {/* Interpretation Layer: Breadth */}
+          {breadthInterpretation && typeof breadthInterpretation.regime === 'string' && (
+            <div className={`p-5 rounded-xl border shadow-sm ${
+              breadthInterpretation.regime.includes('NARROW') || breadthInterpretation.regime.includes('DOWN') 
+                ? 'bg-amber-50 border-amber-200 text-amber-900' 
+                : 'bg-emerald-50 border-emerald-200 text-emerald-900'
+            }`}>
+              <h3 className="text-base font-bold flex items-center gap-2 mb-2">
+                <Activity className="w-5 h-5" /> Breadth & Index Action
+                <span className="ml-auto text-[10px] font-black uppercase tracking-wider bg-white/50 px-2 py-1 rounded">
+                  {breadthInterpretation.regime.replace(/_/g, ' ')}
+                </span>
+              </h3>
+              <p className="text-sm leading-snug">{breadthInterpretation.read}</p>
+            </div>
+          )}
+
           <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
             <h3 className="text-base font-bold text-slate-900 flex items-center gap-2 mb-4 pb-3 border-b border-slate-100">
               <Layers className="w-5 h-5 text-indigo-600" /> Automated OI Reads
@@ -206,7 +226,7 @@ export const OIPositioningPanel: React.FC<Props> = ({
                   }}
                 />
                 <ReferenceLine x={0} stroke="#cbd5e1" strokeWidth={1.5} />
-                <Bar dataKey="PutOI" name="Puts" fill="#10B981" radius={[4, 0, 0, 4]}>
+                <Bar dataKey="PutOI" name="Puts" fill="#10B981" radius={[4, 0, 0, 4]} isAnimationActive={false}>
                   {chartData.map((entry, index) => (
                     <Cell
                       key={`cell-put-${index}`}
@@ -215,7 +235,7 @@ export const OIPositioningPanel: React.FC<Props> = ({
                     />
                   ))}
                 </Bar>
-                <Bar dataKey="CallOI" name="Calls" fill="#EF4444" radius={[0, 4, 4, 0]}>
+                <Bar dataKey="CallOI" name="Calls" fill="#EF4444" radius={[0, 4, 4, 0]} isAnimationActive={false}>
                   {chartData.map((entry, index) => (
                     <Cell
                       key={`cell-call-${index}`}

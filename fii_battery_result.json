@@ -1,0 +1,604 @@
+{
+ "n": 247,
+ "min_detectable_r": 0.179,
+ "rel_daily_std_pct": 0.984,
+ "hits": 11,
+ "tests": 132,
+ "coefficients": {
+  "LEVEL_h1_NIFTYIT": {
+   "beta": -0.1185,
+   "t": -0.93
+  },
+  "LEVEL_h1_NIFTYAUTO": {
+   "beta": 0.0766,
+   "t": 1.72
+  },
+  "LEVEL_h1_NIFTYFMCG": {
+   "beta": -0.0029,
+   "t": -0.06
+  },
+  "LEVEL_h1_NIFTYMETAL": {
+   "beta": 0.0123,
+   "t": 0.16
+  },
+  "LEVEL_h1_NIFTYPHARMA": {
+   "beta": 0.048,
+   "t": 0.83
+  },
+  "LEVEL_h1_NIFTYFIN": {
+   "beta": 0.055,
+   "t": 1.05
+  },
+  "LEVEL_h1_NIFTYPSU": {
+   "beta": 0.0889,
+   "t": 1.31
+  },
+  "LEVEL_h1_NIFTYREALTY": {
+   "beta": 0.057,
+   "t": 0.63
+  },
+  "LEVEL_h1_NIFTYENERGY": {
+   "beta": 0.0844,
+   "t": 1.57
+  },
+  "LEVEL_h1_NIFTYCONSUM": {
+   "beta": 0.0378,
+   "t": 1.24
+  },
+  "LEVEL_h1_NIFTYINFRA": {
+   "beta": 0.0798,
+   "t": 2.65
+  },
+  "LEVEL_h2_NIFTYIT": {
+   "beta": -0.2611,
+   "t": -1.45
+  },
+  "LEVEL_h2_NIFTYAUTO": {
+   "beta": 0.0568,
+   "t": 0.85
+  },
+  "LEVEL_h2_NIFTYFMCG": {
+   "beta": 0.0581,
+   "t": 0.93
+  },
+  "LEVEL_h2_NIFTYMETAL": {
+   "beta": 0.0171,
+   "t": 0.15
+  },
+  "LEVEL_h2_NIFTYPHARMA": {
+   "beta": 0.1742,
+   "t": 1.67
+  },
+  "LEVEL_h2_NIFTYFIN": {
+   "beta": 0.0464,
+   "t": 0.79
+  },
+  "LEVEL_h2_NIFTYPSU": {
+   "beta": 0.0885,
+   "t": 0.85
+  },
+  "LEVEL_h2_NIFTYREALTY": {
+   "beta": 0.1084,
+   "t": 0.78
+  },
+  "LEVEL_h2_NIFTYENERGY": {
+   "beta": 0.167,
+   "t": 2.2
+  },
+  "LEVEL_h2_NIFTYCONSUM": {
+   "beta": 0.0695,
+   "t": 1.61
+  },
+  "LEVEL_h2_NIFTYINFRA": {
+   "beta": 0.1447,
+   "t": 3.66
+  },
+  "LEVEL_h3_NIFTYIT": {
+   "beta": -0.4101,
+   "t": -1.95
+  },
+  "LEVEL_h3_NIFTYAUTO": {
+   "beta": 0.0404,
+   "t": 0.49
+  },
+  "LEVEL_h3_NIFTYFMCG": {
+   "beta": 0.1909,
+   "t": 2.2
+  },
+  "LEVEL_h3_NIFTYMETAL": {
+   "beta": 0.0259,
+   "t": 0.2
+  },
+  "LEVEL_h3_NIFTYPHARMA": {
+   "beta": 0.1623,
+   "t": 1.14
+  },
+  "LEVEL_h3_NIFTYFIN": {
+   "beta": -0.022,
+   "t": -0.36
+  },
+  "LEVEL_h3_NIFTYPSU": {
+   "beta": 0.1608,
+   "t": 1.25
+  },
+  "LEVEL_h3_NIFTYREALTY": {
+   "beta": 0.0605,
+   "t": 0.37
+  },
+  "LEVEL_h3_NIFTYENERGY": {
+   "beta": 0.25,
+   "t": 2.18
+  },
+  "LEVEL_h3_NIFTYCONSUM": {
+   "beta": 0.1028,
+   "t": 1.96
+  },
+  "LEVEL_h3_NIFTYINFRA": {
+   "beta": 0.1728,
+   "t": 3.24
+  },
+  "LEVEL_h5_NIFTYIT": {
+   "beta": -0.4736,
+   "t": -1.82
+  },
+  "LEVEL_h5_NIFTYAUTO": {
+   "beta": 0.0776,
+   "t": 0.65
+  },
+  "LEVEL_h5_NIFTYFMCG": {
+   "beta": 0.2327,
+   "t": 1.96
+  },
+  "LEVEL_h5_NIFTYMETAL": {
+   "beta": 0.2385,
+   "t": 1.27
+  },
+  "LEVEL_h5_NIFTYPHARMA": {
+   "beta": 0.1462,
+   "t": 0.7
+  },
+  "LEVEL_h5_NIFTYFIN": {
+   "beta": 0.0852,
+   "t": 0.64
+  },
+  "LEVEL_h5_NIFTYPSU": {
+   "beta": 0.3243,
+   "t": 1.47
+  },
+  "LEVEL_h5_NIFTYREALTY": {
+   "beta": 0.0237,
+   "t": 0.12
+  },
+  "LEVEL_h5_NIFTYENERGY": {
+   "beta": 0.3576,
+   "t": 2.29
+  },
+  "LEVEL_h5_NIFTYCONSUM": {
+   "beta": 0.0873,
+   "t": 1.22
+  },
+  "LEVEL_h5_NIFTYINFRA": {
+   "beta": 0.2452,
+   "t": 4.01
+  },
+  "CHANGE_h1_NIFTYIT": {
+   "beta": 0.0211,
+   "t": 0.17
+  },
+  "CHANGE_h1_NIFTYAUTO": {
+   "beta": 0.0829,
+   "t": 1.57
+  },
+  "CHANGE_h1_NIFTYFMCG": {
+   "beta": -0.0545,
+   "t": -1.22
+  },
+  "CHANGE_h1_NIFTYMETAL": {
+   "beta": 0.0049,
+   "t": 0.07
+  },
+  "CHANGE_h1_NIFTYPHARMA": {
+   "beta": -0.0689,
+   "t": -1.36
+  },
+  "CHANGE_h1_NIFTYFIN": {
+   "beta": 0.0552,
+   "t": 1.03
+  },
+  "CHANGE_h1_NIFTYPSU": {
+   "beta": 0.0775,
+   "t": 1.09
+  },
+  "CHANGE_h1_NIFTYREALTY": {
+   "beta": 0.0045,
+   "t": 0.06
+  },
+  "CHANGE_h1_NIFTYENERGY": {
+   "beta": 0.002,
+   "t": 0.04
+  },
+  "CHANGE_h1_NIFTYCONSUM": {
+   "beta": 0.0055,
+   "t": 0.19
+  },
+  "CHANGE_h1_NIFTYINFRA": {
+   "beta": 0.0118,
+   "t": 0.4
+  },
+  "CHANGE_h2_NIFTYIT": {
+   "beta": 0.0197,
+   "t": 0.12
+  },
+  "CHANGE_h2_NIFTYAUTO": {
+   "beta": 0.0773,
+   "t": 1.09
+  },
+  "CHANGE_h2_NIFTYFMCG": {
+   "beta": -0.1186,
+   "t": -2.11
+  },
+  "CHANGE_h2_NIFTYMETAL": {
+   "beta": 0.0045,
+   "t": 0.05
+  },
+  "CHANGE_h2_NIFTYPHARMA": {
+   "beta": 0.0503,
+   "t": 0.79
+  },
+  "CHANGE_h2_NIFTYFIN": {
+   "beta": 0.0697,
+   "t": 1.23
+  },
+  "CHANGE_h2_NIFTYPSU": {
+   "beta": 0.0021,
+   "t": 0.02
+  },
+  "CHANGE_h2_NIFTYREALTY": {
+   "beta": 0.0966,
+   "t": 0.87
+  },
+  "CHANGE_h2_NIFTYENERGY": {
+   "beta": 0.0036,
+   "t": 0.05
+  },
+  "CHANGE_h2_NIFTYCONSUM": {
+   "beta": 0.0047,
+   "t": 0.14
+  },
+  "CHANGE_h2_NIFTYINFRA": {
+   "beta": 0.0418,
+   "t": 0.97
+  },
+  "CHANGE_h3_NIFTYIT": {
+   "beta": -0.091,
+   "t": -0.63
+  },
+  "CHANGE_h3_NIFTYAUTO": {
+   "beta": 0.0179,
+   "t": 0.3
+  },
+  "CHANGE_h3_NIFTYFMCG": {
+   "beta": -0.0515,
+   "t": -0.96
+  },
+  "CHANGE_h3_NIFTYMETAL": {
+   "beta": 0.0021,
+   "t": 0.02
+  },
+  "CHANGE_h3_NIFTYPHARMA": {
+   "beta": 0.0568,
+   "t": 0.79
+  },
+  "CHANGE_h3_NIFTYFIN": {
+   "beta": -0.07,
+   "t": -0.92
+  },
+  "CHANGE_h3_NIFTYPSU": {
+   "beta": -0.0404,
+   "t": -0.37
+  },
+  "CHANGE_h3_NIFTYREALTY": {
+   "beta": 0.0876,
+   "t": 0.76
+  },
+  "CHANGE_h3_NIFTYENERGY": {
+   "beta": 0.0562,
+   "t": 0.69
+  },
+  "CHANGE_h3_NIFTYCONSUM": {
+   "beta": 0.027,
+   "t": 0.83
+  },
+  "CHANGE_h3_NIFTYINFRA": {
+   "beta": 0.0361,
+   "t": 0.8
+  },
+  "CHANGE_h5_NIFTYIT": {
+   "beta": -0.0366,
+   "t": -0.22
+  },
+  "CHANGE_h5_NIFTYAUTO": {
+   "beta": 0.1262,
+   "t": 1.77
+  },
+  "CHANGE_h5_NIFTYFMCG": {
+   "beta": -0.0765,
+   "t": -1.18
+  },
+  "CHANGE_h5_NIFTYMETAL": {
+   "beta": -0.0186,
+   "t": -0.2
+  },
+  "CHANGE_h5_NIFTYPHARMA": {
+   "beta": 0.0568,
+   "t": 0.66
+  },
+  "CHANGE_h5_NIFTYFIN": {
+   "beta": 0.054,
+   "t": 0.85
+  },
+  "CHANGE_h5_NIFTYPSU": {
+   "beta": -0.0051,
+   "t": -0.05
+  },
+  "CHANGE_h5_NIFTYREALTY": {
+   "beta": -0.0184,
+   "t": -0.14
+  },
+  "CHANGE_h5_NIFTYENERGY": {
+   "beta": 0.0857,
+   "t": 1.18
+  },
+  "CHANGE_h5_NIFTYCONSUM": {
+   "beta": 0.0038,
+   "t": 0.12
+  },
+  "CHANGE_h5_NIFTYINFRA": {
+   "beta": 0.056,
+   "t": 1.3
+  },
+  "ACCEL_h1_NIFTYIT": {
+   "beta": 0.0136,
+   "t": 0.14
+  },
+  "ACCEL_h1_NIFTYAUTO": {
+   "beta": 0.0546,
+   "t": 1.04
+  },
+  "ACCEL_h1_NIFTYFMCG": {
+   "beta": 0.005,
+   "t": 0.12
+  },
+  "ACCEL_h1_NIFTYMETAL": {
+   "beta": 0.0025,
+   "t": 0.04
+  },
+  "ACCEL_h1_NIFTYPHARMA": {
+   "beta": -0.1162,
+   "t": -2.16
+  },
+  "ACCEL_h1_NIFTYFIN": {
+   "beta": 0.0255,
+   "t": 0.61
+  },
+  "ACCEL_h1_NIFTYPSU": {
+   "beta": 0.0894,
+   "t": 1.19
+  },
+  "ACCEL_h1_NIFTYREALTY": {
+   "beta": -0.0481,
+   "t": -0.72
+  },
+  "ACCEL_h1_NIFTYENERGY": {
+   "beta": -0.0002,
+   "t": -0.0
+  },
+  "ACCEL_h1_NIFTYCONSUM": {
+   "beta": 0.005,
+   "t": 0.18
+  },
+  "ACCEL_h1_NIFTYINFRA": {
+   "beta": -0.0126,
+   "t": -0.58
+  },
+  "ACCEL_h2_NIFTYIT": {
+   "beta": 0.079,
+   "t": 0.64
+  },
+  "ACCEL_h2_NIFTYAUTO": {
+   "beta": 0.0849,
+   "t": 1.46
+  },
+  "ACCEL_h2_NIFTYFMCG": {
+   "beta": -0.0769,
+   "t": -1.64
+  },
+  "ACCEL_h2_NIFTYMETAL": {
+   "beta": 0.0056,
+   "t": 0.08
+  },
+  "ACCEL_h2_NIFTYPHARMA": {
+   "beta": -0.0479,
+   "t": -0.85
+  },
+  "ACCEL_h2_NIFTYFIN": {
+   "beta": 0.0915,
+   "t": 1.32
+  },
+  "ACCEL_h2_NIFTYPSU": {
+   "beta": 0.0588,
+   "t": 0.88
+  },
+  "ACCEL_h2_NIFTYREALTY": {
+   "beta": 0.0162,
+   "t": 0.22
+  },
+  "ACCEL_h2_NIFTYENERGY": {
+   "beta": -0.0306,
+   "t": -0.51
+  },
+  "ACCEL_h2_NIFTYCONSUM": {
+   "beta": -0.0092,
+   "t": -0.34
+  },
+  "ACCEL_h2_NIFTYINFRA": {
+   "beta": 0.0065,
+   "t": 0.18
+  },
+  "ACCEL_h3_NIFTYIT": {
+   "beta": -0.0023,
+   "t": -0.02
+  },
+  "ACCEL_h3_NIFTYAUTO": {
+   "beta": 0.0132,
+   "t": 0.23
+  },
+  "ACCEL_h3_NIFTYFMCG": {
+   "beta": -0.0709,
+   "t": -1.41
+  },
+  "ACCEL_h3_NIFTYMETAL": {
+   "beta": 0.1032,
+   "t": 1.51
+  },
+  "ACCEL_h3_NIFTYPHARMA": {
+   "beta": -0.0338,
+   "t": -0.57
+  },
+  "ACCEL_h3_NIFTYFIN": {
+   "beta": -0.0339,
+   "t": -0.74
+  },
+  "ACCEL_h3_NIFTYPSU": {
+   "beta": -0.0072,
+   "t": -0.09
+  },
+  "ACCEL_h3_NIFTYREALTY": {
+   "beta": 0.0324,
+   "t": 0.44
+  },
+  "ACCEL_h3_NIFTYENERGY": {
+   "beta": 0.0336,
+   "t": 0.61
+  },
+  "ACCEL_h3_NIFTYCONSUM": {
+   "beta": -0.0118,
+   "t": -0.39
+  },
+  "ACCEL_h3_NIFTYINFRA": {
+   "beta": 0.0043,
+   "t": 0.13
+  },
+  "ACCEL_h5_NIFTYIT": {
+   "beta": 0.0161,
+   "t": 0.12
+  },
+  "ACCEL_h5_NIFTYAUTO": {
+   "beta": 0.0843,
+   "t": 1.52
+  },
+  "ACCEL_h5_NIFTYFMCG": {
+   "beta": -0.1078,
+   "t": -2.11
+  },
+  "ACCEL_h5_NIFTYMETAL": {
+   "beta": 0.0058,
+   "t": 0.08
+  },
+  "ACCEL_h5_NIFTYPHARMA": {
+   "beta": -0.0084,
+   "t": -0.12
+  },
+  "ACCEL_h5_NIFTYFIN": {
+   "beta": 0.0283,
+   "t": 0.62
+  },
+  "ACCEL_h5_NIFTYPSU": {
+   "beta": -0.0146,
+   "t": -0.18
+  },
+  "ACCEL_h5_NIFTYREALTY": {
+   "beta": -0.0545,
+   "t": -0.55
+  },
+  "ACCEL_h5_NIFTYENERGY": {
+   "beta": 0.0366,
+   "t": 0.66
+  },
+  "ACCEL_h5_NIFTYCONSUM": {
+   "beta": -0.0231,
+   "t": -0.88
+  },
+  "ACCEL_h5_NIFTYINFRA": {
+   "beta": 0.0015,
+   "t": 0.05
+  }
+ },
+ "extremes_fwd5d": {
+  "Q1 most short": {
+   "NIFTYIT": 0.808,
+   "NIFTYAUTO": -0.042,
+   "NIFTYFMCG": -0.584,
+   "NIFTYMETAL": 0.46,
+   "NIFTYPHARMA": 0.464,
+   "NIFTYFIN": -0.128,
+   "NIFTYPSU": -0.115,
+   "NIFTYREALTY": 0.124,
+   "NIFTYENERGY": 0.12,
+   "NIFTYCONSUM": -0.075,
+   "NIFTYINFRA": -0.157
+  },
+  "Q2": {
+   "NIFTYIT": -0.576,
+   "NIFTYAUTO": 1.228,
+   "NIFTYFMCG": -0.32,
+   "NIFTYMETAL": 0.746,
+   "NIFTYPHARMA": 0.417,
+   "NIFTYFIN": 0.127,
+   "NIFTYPSU": 0.253,
+   "NIFTYREALTY": 0.066,
+   "NIFTYENERGY": -0.135,
+   "NIFTYCONSUM": 0.317,
+   "NIFTYINFRA": 0.103
+  },
+  "Q3": {
+   "NIFTYIT": 0.212,
+   "NIFTYAUTO": 0.349,
+   "NIFTYFMCG": -0.331,
+   "NIFTYMETAL": 0.672,
+   "NIFTYPHARMA": -0.018,
+   "NIFTYFIN": 0.255,
+   "NIFTYPSU": 0.392,
+   "NIFTYREALTY": -0.263,
+   "NIFTYENERGY": -0.131,
+   "NIFTYCONSUM": -0.216,
+   "NIFTYINFRA": -0.003
+  },
+  "Q4": {
+   "NIFTYIT": -0.959,
+   "NIFTYAUTO": 0.335,
+   "NIFTYFMCG": 0.113,
+   "NIFTYMETAL": 0.454,
+   "NIFTYPHARMA": 0.812,
+   "NIFTYFIN": 0.06,
+   "NIFTYPSU": 0.406,
+   "NIFTYREALTY": 0.163,
+   "NIFTYENERGY": 0.263,
+   "NIFTYCONSUM": 0.137,
+   "NIFTYINFRA": 0.152
+  },
+  "Q5 most long": {
+   "NIFTYIT": -0.298,
+   "NIFTYAUTO": 0.463,
+   "NIFTYFMCG": -0.015,
+   "NIFTYMETAL": 1.426,
+   "NIFTYPHARMA": 0.358,
+   "NIFTYFIN": 0.265,
+   "NIFTYPSU": 1.355,
+   "NIFTYREALTY": 0.313,
+   "NIFTYENERGY": 1.055,
+   "NIFTYCONSUM": 0.238,
+   "NIFTYINFRA": 0.448
+  }
+ }
+}

@@ -29,13 +29,21 @@ import numpy as np
 # --------------------------------------------------------------------------- #
 # 1. Market-implied distribution from the chain
 # --------------------------------------------------------------------------- #
-def _norm_cdf(x: float) -> float:
-    return 0.5 * (1.0 + math.erf(x / math.sqrt(2.0)))
+# Normal CDF comes from strategy_framework/bs.py — one definition (D-SC-03).
+import os as _os, sys as _sys
+_ROOT = _os.path.abspath(_os.path.join(_os.path.dirname(__file__), "..", ".."))
+if _ROOT not in _sys.path:
+    _sys.path.insert(0, _ROOT)
+from strategy_framework.bs import ncdf as _norm_cdf
 
 
 def implied_move(spot: float, atm_iv: float, days: float) -> float:
     """1-sigma move in points. atm_iv is annualised (e.g. 0.093 for 9.3%).
-    Approximately equals the ATM straddle price."""
+
+    NOT the ATM straddle price — the straddle prices the MEAN ABSOLUTE move,
+    E|S_T - F| = sigma*sqrt(2/pi) ~= 0.7979*sigma, so 1 sigma is 1.2533x the
+    straddle, ~25% larger. Conflating the two is exactly the defect corrected in
+    D-SC-01; this docstring previously asserted they were approximately equal."""
     return spot * atm_iv * math.sqrt(days / 365.0)
 
 

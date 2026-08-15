@@ -1,0 +1,9 @@
+endpoint,http_status,ok,count
+balance-sheet,200,t,20
+cash-flow,200,t,20
+competitors,200,t,10
+corporate-actions,200,t,10
+income-statement,200,t,20
+key-ratios,200,t,10
+profile,200,t,10
+share-holdings,200,t,10

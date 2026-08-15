@@ -1,0 +1,19 @@
+{
+  "injection_method": "Pass custom inputs to decompose_skew with fixed_rr positive and floating_rr negative, violating T-B rule.",
+  "floating_rr": -1.20,
+  "fixed_rr": 0.31,
+  "artifact_share": 1.258,
+  "dominant_leg": "put_side",
+  "configuration": "hedged rally (fragile)",
+  "invariants": {
+    "passed": false,
+    "checked": ["T-A", "T-B", "T-C", "T-D", "T-E", "T-F", "T-G", "T-H", "T-I"],
+    "failures": [
+      {
+        "id": "T-B",
+        "measured": {"fixed_rr": 0.31, "floating_rr": -1.20},
+        "rule": "sign(d_rr_fixed) == sign(d_rr_floating)"
+      }
+    ]
+  }
+}

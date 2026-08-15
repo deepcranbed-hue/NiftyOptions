@@ -1,0 +1,4180 @@
+{
+  "mio_id": "mio_20260725T090803_geopolitics_hits",
+  "as_of": "2026-07-25T09:08:03.618120+00:00",
+  "live": true,
+  "graph_version": "engine_market_scan",
+  "regime_version": "Neutral|🟡 Mixed",
+  "degraded": false,
+  "event": {
+    "event_id": "evt_geopolitics_hits",
+    "canonical_label": "Geopolitical Risk Event",
+    "class": "Geopolitical",
+    "member_items": [],
+    "normalized_from": 1
+  },
+  "theme": "Geopolitics",
+  "market_context": {
+    "brent_price": 96.78,
+    "oil_level_multiplier": 1.8,
+    "oil_level_band": "crisis zone",
+    "oil_pct_move": -3.91,
+    "note": "Oil impact is level-scaled: the same % move has a larger effect at a higher absolute Brent price (e.g. +2% at $100 > +2% at $70).",
+    "amplifiers": {
+      "oil": {
+        "price": 96.78,
+        "multiplier": 1.8,
+        "band": "crisis zone"
+      },
+      "usdinr": {
+        "price": 96.56,
+        "multiplier": 1.3,
+        "band": "watch (RBI attentive)",
+        "vs_normal": 1.56,
+        "normal": 95.0
+      },
+      "vix": {
+        "price": 14.03,
+        "multiplier": 1.0,
+        "band": "normal"
+      }
+    },
+    "usdinr_level": {
+      "price": 96.56,
+      "multiplier": 1.3,
+      "band": "watch (RBI attentive)",
+      "vs_normal": 1.56,
+      "normal": 95.0
+    },
+    "vix_level": {
+      "price": 14.03,
+      "multiplier": 1.0,
+      "band": "normal"
+    }
+  },
+  "regime": {
+    "active": [
+      "Neutral",
+      "🟡 Mixed"
+    ],
+    "primary": "🟡 Mixed",
+    "confidence": 0.86,
+    "transition": "possible — persistent overrides"
+  },
+  "shock_type": "supply",
+  "transmission": [
+    {
+      "chain": [
+        "Geopolitics",
+        "Nifty 50"
+      ],
+      "score": 0.389,
+      "sign": -1,
+      "mechanism": "Geopolitics contributes -0.450 to the Nifty expected move (coefficient x driver, capped & regime-aware)."
+    },
+    {
+      "chain": [
+        "India VIX",
+        "Nifty 50"
+      ],
+      "score": 0.179,
+      "sign": -1,
+      "mechanism": "India VIX contributes -0.207 to the Nifty expected move (coefficient x driver, capped & regime-aware)."
+    },
+    {
+      "chain": [
+        "Oil ($97)",
+        "Nifty 50"
+      ],
+      "score": 0.122,
+      "sign": 1,
+      "mechanism": "Oil -3.9% at Brent $97 (crisis zone, x1.8 level amplifier) contributes +0.141 to the Nifty expected move — the SAME % move bites ~1.8x vs the $75-85 normal band, because impact scales with the absolute price level, not just the % change.",
+      "driver_price": 96.78,
+      "level_multiplier": 1.8,
+      "level_band": "crisis zone"
+    },
+    {
+      "chain": [
+        "Kospi",
+        "Nifty 50"
+      ],
+      "score": 0.103,
+      "sign": -1,
+      "mechanism": "Kospi contributes -0.119 to the Nifty expected move (coefficient x driver, capped & regime-aware)."
+    },
+    {
+      "chain": [
+        "SOX (US semis)",
+        "Nifty 50"
+      ],
+      "score": 0.1,
+      "sign": -1,
+      "mechanism": "SOX (US semis) contributes -0.116 to the Nifty expected move (coefficient x driver, capped & regime-aware)."
+    },
+    {
+      "chain": [
+        "India CPI",
+        "Nifty 50"
+      ],
+      "score": 0.086,
+      "sign": -1,
+      "mechanism": "India CPI contributes -0.100 to the Nifty expected move (coefficient x driver, capped & regime-aware)."
+    },
+    {
+      "chain": [
+        "US 10Y Yield",
+        "Nifty 50"
+      ],
+      "score": 0.016,
+      "sign": 1,
+      "mechanism": "US 10Y Yield contributes +0.018 to the Nifty expected move (coefficient x driver, capped & regime-aware)."
+    },
+    {
+      "chain": [
+        "Dollar Index",
+        "Nifty 50"
+      ],
+      "score": 0.005,
+      "sign": -1,
+      "mechanism": "Dollar Index contributes -0.006 to the Nifty expected move (coefficient x driver, capped & regime-aware)."
+    }
+  ],
+  "affected_sectors": [
+    {
+      "sector": "Auto",
+      "direction": "Neutral",
+      "score": 0.092,
+      "mechanism": "Oil dominant"
+    },
+    {
+      "sector": "Pharma",
+      "direction": "Neutral",
+      "score": 0.083,
+      "mechanism": "VIX dominant"
+    },
+    {
+      "sector": "Banks/Financials",
+      "direction": "Neutral",
+      "score": 0.061,
+      "mechanism": "VIX dominant"
+    },
+    {
+      "sector": "IT services",
+      "direction": "Down",
+      "score": 0.17,
+      "mechanism": "SOX dominant"
+    },
+    {
+      "sector": "Energy (upstream)",
+      "direction": "Down",
+      "score": 0.263,
+      "mechanism": "Oil dominant"
+    },
+    {
+      "sector": "Metals",
+      "direction": "Down",
+      "score": 0.409,
+      "mechanism": "Kospi dominant"
+    }
+  ],
+  "affected_companies": [
+    {
+      "company": "HDFC Bank",
+      "direction": "Down",
+      "score": 1.0,
+      "nifty_weight": 0.13,
+      "exposure_vector": {
+        "sector": "Bank",
+        "catalyst_kind": "News"
+      }
+    },
+    {
+      "company": "Bharti Airtel",
+      "direction": "Neutral",
+      "score": 1.0,
+      "nifty_weight": 0.045,
+      "exposure_vector": {
+        "sector": "Telecom",
+        "catalyst_kind": "News"
+      }
+    },
+    {
+      "company": "Hindustan Unilever",
+      "direction": "Down",
+      "score": 1.0,
+      "nifty_weight": 0.023,
+      "exposure_vector": {
+        "sector": "FMCG",
+        "catalyst_kind": "News"
+      }
+    },
+    {
+      "company": "NTPC",
+      "direction": "Neutral",
+      "score": 1.0,
+      "nifty_weight": 0.016,
+      "exposure_vector": {
+        "sector": "Power",
+        "catalyst_kind": "Catalyst"
+      }
+    },
+    {
+      "company": "ICICI Prudential",
+      "direction": "Down",
+      "score": 0.6,
+      "nifty_weight": 0.0,
+      "exposure_vector": {
+        "sector": "Insurance",
+        "catalyst_kind": "News"
+      }
+    },
+    {
+      "company": "LTIMindtree",
+      "direction": "Neutral",
+      "score": 0.6,
+      "nifty_weight": 0.0,
+      "exposure_vector": {
+        "sector": "IT",
+        "catalyst_kind": "Catalyst"
+      }
+    }
+  ],
+  "expected_direction": {
+    "Nifty 50": "Down",
+    "Bank Nifty": "Down",
+    "Bond Yield": "Down",
+    "USD": "Neutral"
+  },
+  "impact": {
+    "immediate": {
+      "direction": "Down",
+      "magnitude": 0.84,
+      "unit": "pct_nifty",
+      "note": "engine expected move (intraday reaction)"
+    },
+    "short": {
+      "direction": "Down",
+      "magnitude": 0.84,
+      "unit": "pct_nifty",
+      "note": "1-5 day directional lean from the causal engine"
+    },
+    "medium": {
+      "direction": "Neutral",
+      "magnitude": 0.0,
+      "unit": "pct_nifty",
+      "note": "not modelled — engine is a session-horizon read"
+    },
+    "structural": {
+      "direction": "Neutral",
+      "magnitude": 0.0,
+      "unit": "pct_nifty",
+      "note": "not modelled — requires fundamental/regime overlay"
+    }
+  },
+  "validation": [
+    {
+      "edge": "Economic relationship — Oil → Downstream OMCs",
+      "expected_sign": 1,
+      "observed_sign": 0,
+      "status": "OVERRIDDEN",
+      "held": [],
+      "broke": [
+        {
+          "name": "BPCL",
+          "pct": -0.05
+        }
+      ],
+      "confirmed": 1,
+      "disagreed": 3,
+      "reason": "observed tape disagreed with the oil -3.9% rule; likely a stronger concurrent driver, positioning, or policy override.",
+      "status_label": "Dominated by stronger drivers",
+      "prior_phrase": "the economic prior was dominated by stronger drivers today (not a failed rule)",
+      "level": "Company",
+      "expected_basis": "oil ↓ -3.91% × consumer (−) exposure",
+      "state": "🔄",
+      "state_label": "Overridden",
+      "exp_dir": "↑",
+      "override": "GRM / marketing margins",
+      "override_evidenced": false,
+      "override_note": "structural — not confirmed by today's tape",
+      "override_ranking": [
+        [
+          "GRM (gross refining margin)",
+          "★★★★★"
+        ],
+        [
+          "Marketing margins",
+          "★★★"
+        ],
+        [
+          "Retail fuel-price policy",
+          "★★★"
+        ],
+        [
+          "Crude input",
+          "★★"
+        ]
+      ],
+      "reason_econ": "GRM, marketing margins and retail fuel-pricing policy dominated today's crude move — the crude-input link is the weak one.",
+      "override_search": {
+        "attempted": true,
+        "timed_out": false,
+        "pool": 195,
+        "why": "web search ran (6 extra articles)"
+      }
+    },
+    {
+      "edge": "Economic relationship — Oil → Fuel consumers",
+      "expected_sign": 1,
+      "observed_sign": 0,
+      "status": "OVERRIDDEN",
+      "held": [],
+      "broke": [
+        {
+          "name": "Asian Paints",
+          "pct": -1.16
+        },
+        {
+          "name": "IndiGo",
+          "pct": -0.77
+        }
+      ],
+      "confirmed": 1,
+      "disagreed": 3,
+      "reason": "observed tape disagreed with the oil -3.9% rule; likely a stronger concurrent driver, positioning, or policy override.",
+      "status_label": "Dominated by stronger drivers",
+      "prior_phrase": "the economic prior was dominated by stronger drivers today (not a failed rule)",
+      "level": "Company",
+      "expected_basis": "oil ↓ -3.91% × consumer (−) exposure",
+      "state": "🔄",
+      "state_label": "Overridden",
+      "exp_dir": "↑",
+      "override": "Company-specific demand",
+      "override_evidenced": false,
+      "override_note": "candidate — tape not clearly risk-on",
+      "reason_econ": "broad risk-on / company-specific demand outweighed the fuel-cost headwind today.",
+      "override_search": {
+        "attempted": true,
+        "timed_out": false,
+        "pool": 199,
+        "why": "web search ran (10 extra articles)"
+      }
+    },
+    {
+      "edge": "Economic relationship — Rising US yields → banks pressured",
+      "expected_sign": 1,
+      "observed_sign": -1,
+      "status": "OVERRIDDEN",
+      "held": [],
+      "broke": [
+        {
+          "name": "HDFC Bank",
+          "pct": -0.6
+        },
+        {
+          "name": "ICICI Bank",
+          "pct": -0.12
+        }
+      ],
+      "confirmed": 0,
+      "disagreed": 2,
+      "reason": "observed tape disagreed with the us10y -0.5% rule; likely a stronger concurrent driver, positioning, or policy override.",
+      "status_label": "Dominated by stronger drivers",
+      "prior_phrase": "the economic prior was dominated by stronger drivers today (not a failed rule)",
+      "reliability": {
+        "value": 0.54,
+        "hit_rate_pct": 54.0,
+        "n": 1404,
+        "ci95": [
+          51.4,
+          56.6
+        ],
+        "tag": "MARGINAL",
+        "verdict": "positive but the interval is thin",
+        "sample_ok": true,
+        "source": "events.db/linkage_conf",
+        "matched": "Rising US yields → banks pressured",
+        "match_score": 0.71
+      },
+      "state": "🔄",
+      "state_label": "Overridden",
+      "level": "Macro",
+      "exp_dir": "↑",
+      "override": "Indirect / mixed transmission",
+      "override_evidenced": true,
+      "reason_econ": "US10Y hits Indian banks INDIRECTLY (US yields → global capital flows → INR → India bond yield → banks), so pass-through is mixed, not 1:1.",
+      "override_search": {
+        "attempted": true,
+        "timed_out": false,
+        "pool": 201,
+        "why": "web search ran (12 extra articles)"
+      }
+    },
+    {
+      "edge": "Economic relationship — Geopolitics premium → defence up",
+      "expected_sign": 1,
+      "observed_sign": -1,
+      "status": "OVERRIDDEN",
+      "held": [],
+      "broke": [
+        {
+          "name": "HAL",
+          "pct": -0.29
+        },
+        {
+          "name": "Bharat Electronics",
+          "pct": -0.12
+        }
+      ],
+      "confirmed": 0,
+      "disagreed": 2,
+      "reason": "observed tape disagreed with the geo +9.0% rule; likely a stronger concurrent driver, positioning, or policy override.",
+      "status_label": "Dominated by stronger drivers",
+      "prior_phrase": "the economic prior was dominated by stronger drivers today (not a failed rule)",
+      "state": "🔄",
+      "state_label": "Overridden",
+      "level": "Company",
+      "exp_dir": "↑",
+      "override": "Order-timing / stock-specific",
+      "override_evidenced": true,
+      "reason_econ": "company-specific (order timing, results) — border-security (BEL) and platforms (HAL) are different businesses.",
+      "override_search": {
+        "attempted": true,
+        "timed_out": false,
+        "pool": 199,
+        "why": "web search ran (10 extra articles)"
+      }
+    },
+    {
+      "edge": "Economic relationship — Oil/diesel ↑ → cement freight cost",
+      "expected_sign": 1,
+      "observed_sign": -1,
+      "status": "OVERRIDDEN",
+      "held": [],
+      "broke": [
+        {
+          "name": "UltraTech",
+          "pct": -0.52
+        }
+      ],
+      "confirmed": 0,
+      "disagreed": 1,
+      "reason": "observed tape disagreed with the oil -3.9% rule; likely a stronger concurrent driver, positioning, or policy override.",
+      "status_label": "Dominated by stronger drivers",
+      "prior_phrase": "the economic prior was dominated by stronger drivers today (not a failed rule)",
+      "state": "🔄",
+      "state_label": "Overridden",
+      "level": "Company",
+      "exp_dir": "↑",
+      "override": "Stronger concurrent driver",
+      "override_evidenced": false,
+      "override_note": "unspecified",
+      "reason_econ": null,
+      "override_search": {
+        "attempted": true,
+        "timed_out": false,
+        "pool": 195,
+        "why": "web search ran (6 extra articles)"
+      }
+    },
+    {
+      "edge": "Industrial metals cycle → Indian metals producers (by family)",
+      "level": "Sector",
+      "families": {
+        "steel_complex": {
+          "cycle": 0.208,
+          "sign": 1
+        },
+        "base_metals": {
+          "cycle": 0.33,
+          "sign": 1
+        }
+      },
+      "unmapped": [],
+      "family_note": "steel_complex (iron ore · coking coal · HRC · China rebar) drives Tata Steel/JSW/SAIL; base_metals (copper · aluminium · zinc · nickel · lead) drives Hindalco/NALCO/HZL. They are SIBLING cycles — a copper rally implies nothing for steel, so each is validated separately.",
+      "expected_sign": 1,
+      "observed_sign": -1,
+      "status": "OVERRIDDEN",
+      "held": [],
+      "broke": [
+        {
+          "name": "Tata Steel",
+          "pct": -0.83,
+          "family": "steel_complex",
+          "family_cycle": 0.208
+        }
+      ],
+      "driver_active": true,
+      "override_ranking": [
+        [
+          "China property expectations",
+          "★★★★★"
+        ],
+        [
+          "Domestic steel pricing",
+          "★★★★★"
+        ],
+        [
+          "China PMI / industrial activity",
+          "★★★★"
+        ],
+        [
+          "Iron ore",
+          "★★★"
+        ],
+        [
+          "Coking coal",
+          "★★★"
+        ],
+        [
+          "Company-specific positioning / earnings",
+          "★★"
+        ]
+      ],
+      "reason": "Indian steel producers are driven primarily by domestic steel prices, China property/infrastructure activity, iron ore and coking coal. Copper/aluminium are useful GLOBAL manufacturing-cycle proxies but only indirect signals for Indian steel.",
+      "metals_basket": {
+        "composite": -0.033,
+        "label": "Neutral",
+        "overall_label": "Bullish",
+        "news": {
+          "score": 0.29,
+          "label": "Bullish",
+          "n_items": 14,
+          "filtered_out": 10,
+          "bullish": 6,
+          "bearish": 2,
+          "evidence": [
+            "…metals on fire: what's driving the unstoppable rally in copper, aluminium, and zinc - the economic times search metals on fire: what's driving the unstoppab…",
+            "…base metals rally on supply crunch, ai-infra demand; experts see selective upside ahead - moneycontr…",
+            "…mcx gold down 23%; silver prices dip by nearly ₹200,000 from high in 6 days - business standard sear…"
+          ]
+        },
+        "bucket_avgs": {
+          "base_metals": 0.04,
+          "steel_complex": -0.082
+        },
+        "components": [
+          {
+            "name": "Copper",
+            "bucket": "base_metals",
+            "pct": -0.06,
+            "available": true,
+            "source": "web(TE)",
+            "role": ""
+          },
+          {
+            "name": "Aluminium",
+            "bucket": "base_metals",
+            "pct": 0.33,
+            "available": true,
+            "source": "web(TE)",
+            "role": ""
+          },
+          {
+            "name": "Zinc",
+            "bucket": "base_metals",
+            "pct": 0.11,
+            "available": true,
+            "source": "web(TE)",
+            "role": ""
+          },
+          {
+            "name": "Nickel",
+            "bucket": "base_metals",
+            "pct": 0.09,
+            "available": true,
+            "source": "web(TE)",
+            "role": ""
+          },
+          {
+            "name": "Lead",
+            "bucket": "base_metals",
+            "pct": -0.27,
+            "available": true,
+            "source": "web(TE)",
+            "role": ""
+          },
+          {
+            "name": "Steel (China rebar)",
+            "bucket": "steel_complex",
+            "pct": 0.36,
+            "available": true,
+            "source": "web(TE)",
+            "role": ""
+          },
+          {
+            "name": "HRC Steel",
+            "bucket": "steel_complex",
+            "pct": 0.41,
+            "available": true,
+            "source": "web(TE)",
+            "role": ""
+          },
+          {
+            "name": "Iron Ore (China)",
+            "bucket": "steel_complex",
+            "pct": -0.2,
+            "available": true,
+            "source": "web(TE)",
+            "role": ""
+          },
+          {
+            "name": "Coking Coal",
+            "bucket": "steel_complex",
+            "pct": -0.9,
+            "available": true,
+            "source": "web(TE)",
+            "role": ""
+          }
+        ],
+        "coverage": "9/9 metals via web (tradingeconomics) + metal news",
+        "n_available": 9,
+        "n_total": 9,
+        "web_used": true,
+        "note": null,
+        "tag": "PRIOR"
+      },
+      "source": "overlay/extra_validations global-metals-cycle (PRIOR — hypothesis redefined, recalibration pending)",
+      "state": "🔄",
+      "state_label": "Overridden",
+      "exp_dir": "↑",
+      "override": "China demand / steel prices",
+      "override_evidenced": false,
+      "override_note": "structural — not confirmed by today's tape",
+      "reason_econ": "Indian steel producers are driven primarily by domestic steel prices, China property/infrastructure activity, iron ore and coking coal — copper/aluminium are useful GLOBAL manufacturing-cycle proxies but only indirect signals for Indian steel.",
+      "override_search": {
+        "attempted": false,
+        "timed_out": false,
+        "pool": 189,
+        "why": "live-search budget spent (5 per run) — snapshot news only"
+      }
+    },
+    {
+      "edge": "Economic relationship — US semis (SOX) → Indian IT services",
+      "expected_sign": -1,
+      "observed_sign": 0,
+      "status": "WEAKENED",
+      "held": [
+        {
+          "name": "Infosys",
+          "pct": -1.14
+        }
+      ],
+      "broke": [
+        {
+          "name": "TCS",
+          "pct": 0.51
+        },
+        {
+          "name": "Wipro",
+          "pct": 1.18
+        },
+        {
+          "name": "HCL Tech",
+          "pct": 2.11
+        }
+      ],
+      "confirmed": 1,
+      "disagreed": 3,
+      "status_label": "Partially supported",
+      "prior_phrase": "the economic prior held only partially today",
+      "reliability": {
+        "value": 0.57,
+        "hit_rate_pct": 57.0,
+        "n": 1323,
+        "ci95": [
+          54.3,
+          59.6
+        ],
+        "tag": "MARGINAL",
+        "verdict": "positive but the interval is thin",
+        "sample_ok": true,
+        "source": "events.db/linkage_conf",
+        "matched": "US semis (SOX) → Indian IT/EMS",
+        "match_score": 0.56
+      },
+      "state": "⚠️",
+      "state_label": "Partially Confirmed",
+      "level": "Sector",
+      "exp_dir": "↓",
+      "override": "Company results / rupee (idiosyncratic)",
+      "override_evidenced": false,
+      "override_note": "not the chip cause",
+      "reason_econ": "Enterprise AI budget rotation is a near-term HEADWIND for Indian IT, so it does NOT explain today's IT rally — IT rose on its own catalyst (results / rupee tailwind). SOX weakness and IT strength are separate stories today.",
+      "override_search": {
+        "attempted": false,
+        "timed_out": false,
+        "pool": 189,
+        "why": "live-search budget spent (5 per run) — snapshot news only"
+      }
+    },
+    {
+      "edge": "Economic relationship — Oil ↑ → ICE autos pressured (fuel/demand)",
+      "expected_sign": 1,
+      "observed_sign": 0,
+      "status": "WEAKENED",
+      "held": [
+        {
+          "name": "Maruti",
+          "pct": 0.29
+        }
+      ],
+      "broke": [
+        {
+          "name": "Hero MotoCorp",
+          "pct": -3.11
+        },
+        {
+          "name": "Bajaj Auto",
+          "pct": -1.36
+        }
+      ],
+      "confirmed": 1,
+      "disagreed": 2,
+      "status_label": "Partially supported",
+      "prior_phrase": "the economic prior held only partially today",
+      "reliability": {
+        "value": 0.49,
+        "hit_rate_pct": 49.0,
+        "n": 2009,
+        "ci95": [
+          46.8,
+          51.2
+        ],
+        "tag": "NOISE",
+        "verdict": "interval spans 50% — not distinguishable from a coin flip",
+        "sample_ok": true,
+        "source": "events.db/linkage_conf",
+        "matched": "Oil ↑ → ICE autos pressured (fuel/demand)",
+        "match_score": 0.75
+      },
+      "state": "⚠️",
+      "state_label": "Partially Confirmed",
+      "level": "Company",
+      "exp_dir": "↑",
+      "override": "Company-specific demand",
+      "override_evidenced": false,
+      "override_note": "candidate — tape not clearly risk-on",
+      "reason_econ": "strong domestic demand / earnings / EV mix outweighed the fuel-cost concern; PV vs 2W vs CV differ.",
+      "override_search": {
+        "attempted": false,
+        "timed_out": false,
+        "pool": 189,
+        "why": "live-search budget spent (5 per run) — snapshot news only"
+      }
+    },
+    {
+      "edge": "Economic relationship — Oil ↑ → chemicals input-cost pressure",
+      "expected_sign": 1,
+      "observed_sign": -1,
+      "status": "OVERRIDDEN",
+      "held": [
+        {
+          "name": "SRF",
+          "pct": 1.61
+        }
+      ],
+      "broke": [
+        {
+          "name": "Asian Paints",
+          "pct": -1.16
+        }
+      ],
+      "confirmed": 1,
+      "disagreed": 1,
+      "reason": "observed tape disagreed with the oil -3.9% rule; likely a stronger concurrent driver, positioning, or policy override.",
+      "status_label": "Dominated by stronger drivers",
+      "prior_phrase": "the economic prior was dominated by stronger drivers today (not a failed rule)",
+      "reliability": {
+        "value": 0.52,
+        "hit_rate_pct": 52.0,
+        "n": 1107,
+        "ci95": [
+          49.1,
+          55.0
+        ],
+        "tag": "NOISE",
+        "verdict": "interval spans 50% — not distinguishable from a coin flip",
+        "sample_ok": true,
+        "source": "events.db/linkage_conf",
+        "matched": "Oil ↑ → chemicals input-cost pressure",
+        "match_score": 0.71
+      },
+      "state": "⚠️",
+      "state_label": "Partially Confirmed",
+      "level": "Company",
+      "exp_dir": "↑",
+      "override": "Stronger concurrent driver",
+      "override_evidenced": false,
+      "override_note": "unspecified",
+      "reason_econ": null,
+      "override_search": {
+        "attempted": false,
+        "timed_out": false,
+        "pool": 189,
+        "why": "live-search budget spent (5 per run) — snapshot news only"
+      }
+    },
+    {
+      "edge": "Economic relationship — India rate stress → rate-sensitives (banks/NBFC/realty)",
+      "level": "Sector",
+      "expected_sign": -1,
+      "observed_sign": 1,
+      "status": "WEAKENED",
+      "held": [
+        {
+          "name": "HDFC Bank",
+          "pct": -0.6
+        },
+        {
+          "name": "ICICI Bank",
+          "pct": -0.12
+        }
+      ],
+      "broke": [
+        {
+          "name": "DLF",
+          "pct": 0.21
+        }
+      ],
+      "driver_active": true,
+      "driver_value": 0.6,
+      "source": "overlay/extra_validations (new relationship, PRIOR)",
+      "state": "⚠️",
+      "state_label": "Partially Confirmed",
+      "exp_dir": "↓",
+      "override": "Stock-specific",
+      "override_evidenced": true,
+      "reason_econ": "rate-sensitive response is stock-specific today — not every bank / NBFC / realty name moved with the rate signal.",
+      "override_search": {
+        "attempted": false,
+        "timed_out": false,
+        "pool": 189,
+        "why": "live-search budget spent (5 per run) — snapshot news only"
+      }
+    },
+    {
+      "edge": "Economic relationship — AI substitution → IT services (regime-gated)",
+      "level": "Sector",
+      "expected_sign": -1,
+      "observed_sign": -1,
+      "status": "WEAKENED",
+      "held": [
+        {
+          "name": "Infosys",
+          "pct": -1.14
+        }
+      ],
+      "broke": [
+        {
+          "name": "Tech Mahindra",
+          "pct": 0.24
+        },
+        {
+          "name": "Wipro",
+          "pct": 1.18
+        },
+        {
+          "name": "Coforge",
+          "pct": 2.82
+        },
+        {
+          "name": "TCS",
+          "pct": 0.51
+        }
+      ],
+      "driver_active": false,
+      "driver_value": 0.0,
+      "source": "overlay/extra_validations (new relationship, PRIOR)",
+      "state": "⏸️",
+      "state_label": "Inactive",
+      "exp_dir": "↓"
+    },
+    {
+      "edge": "Economic relationship — Oil → Upstream producers",
+      "expected_sign": -1,
+      "observed_sign": 0,
+      "status": "OVERRIDDEN",
+      "held": [
+        {
+          "name": "ONGC",
+          "pct": -1.38
+        }
+      ],
+      "broke": [],
+      "confirmed": 1,
+      "disagreed": 3,
+      "reason": "observed tape disagreed with the oil -3.9% rule; likely a stronger concurrent driver, positioning, or policy override.",
+      "status_label": "Dominated by stronger drivers",
+      "prior_phrase": "the economic prior was dominated by stronger drivers today (not a failed rule)",
+      "level": "Company",
+      "expected_basis": "oil ↓ -3.91% × producer (+) exposure",
+      "state": "✅",
+      "state_label": "Confirmed",
+      "exp_dir": "↓"
+    },
+    {
+      "edge": "Economic relationship — AI infrastructure → Power (structural)",
+      "level": "Structural",
+      "expected_sign": -1,
+      "observed_sign": 1,
+      "status": "CONFIRMED",
+      "held": [
+        {
+          "name": "NTPC",
+          "pct": -0.4
+        },
+        {
+          "name": "Power Grid",
+          "pct": -0.69
+        }
+      ],
+      "broke": [],
+      "driver_active": true,
+      "driver_value": -4.25,
+      "source": "overlay/extra_validations (new relationship, PRIOR)",
+      "state": "✅",
+      "state_label": "Confirmed",
+      "exp_dir": "↓"
+    },
+    {
+      "edge": "Economic relationship — AI infrastructure → Telecom (structural)",
+      "level": "Structural",
+      "expected_sign": -1,
+      "observed_sign": 1,
+      "status": "CONFIRMED",
+      "held": [
+        {
+          "name": "Bharti Airtel",
+          "pct": -1.7
+        }
+      ],
+      "broke": [],
+      "driver_active": true,
+      "driver_value": -4.25,
+      "source": "overlay/extra_validations (new relationship, PRIOR)",
+      "state": "✅",
+      "state_label": "Confirmed",
+      "exp_dir": "↓"
+    },
+    {
+      "edge": "Heavyweight leadership → Nifty direction",
+      "level": "Index",
+      "expected_sign": -1,
+      "observed_sign": -1,
+      "status": "CONFIRMED",
+      "held": [
+        {
+          "name": "HDFC Bank",
+          "pct": -0.6
+        },
+        {
+          "name": "Bharti Airtel",
+          "pct": -1.7
+        },
+        {
+          "name": "Infosys",
+          "pct": -1.14
+        }
+      ],
+      "broke": [],
+      "contribution_pct": 78,
+      "top_contribution": -21.15,
+      "rest_contribution": -6.028,
+      "net_contribution": -27.178,
+      "nifty_pct": -0.44,
+      "n_tracked": 25,
+      "source": "overlay/extra_validations heavyweight (PRIOR)",
+      "state": "✅",
+      "state_label": "Confirmed",
+      "exp_dir": "↓"
+    }
+  ],
+  "confidence": {
+    "econ_rationale_stars": 5,
+    "historical_reliability": 0.546,
+    "today_confidence": 0.86,
+    "reliability_tag": "CALIBRATED",
+    "reliability_detail": {
+      "value": 0.546,
+      "hit_rate_pct": 54.6,
+      "n": 6251,
+      "tag": "CALIBRATED",
+      "source": "events.db (mean of active linkages)",
+      "basis": "5 active calibrated relationships"
+    }
+  },
+  "driver_dominance": {
+    "vector": {
+      "Geopolitics": 0.389,
+      "India VIX": 0.179,
+      "Oil": 0.122,
+      "Kospi": 0.103,
+      "SOX (US semis)": 0.1,
+      "India CPI": 0.086,
+      "US 10Y Yield": 0.016,
+      "Dollar Index": 0.005
+    },
+    "dominant_driver": "Geopolitics",
+    "dominant_driver_score": 0.389
+  },
+  "provenance": {
+    "pipeline_run": "mcp_20260725T090803",
+    "core_version": "market_scan.py (NiftyOptions news engine)"
+  },
+  "news_acquisition": {
+    "searched": true,
+    "added": 132,
+    "bodies_pulled": 20,
+    "total_news": 189
+  },
+  "fulltext_pulled": 20,
+  "narratives": {
+    "activations": [
+      {
+        "narrative": "Geopolitics",
+        "weight": 1.0,
+        "kind": "news",
+        "evidence": [
+          "NTPC board approves raising up to Rs 12,000 cr via NCD issue",
+          "360 ONE's Mayur Patel bets on smallcaps, says midcaps look somewhat expensive",
+          "Why gold is showing signs of reversal after recent selling pressure",
+          "Sensex sinks over 2,000 points in 5 days. How scary do the charts look for next week?"
+        ],
+        "triggers_hit": [
+          "blockade",
+          "closure",
+          "gulf",
+          "hormuz",
+          "houthi",
+          "iran",
+          "israel",
+          "middle east"
+        ],
+        "detail": {
+          "severe_headlines": 39,
+          "severity": "SEVERE (closure/war/nuclear risk)"
+        }
+      },
+      {
+        "narrative": "Oil",
+        "weight": 1.0,
+        "kind": "both",
+        "evidence": [
+          "Brent -3.91% (price-triggered, no headline needed)",
+          "360 ONE's Mayur Patel bets on smallcaps, says midcaps look somewhat expensive",
+          "Why gold is showing signs of reversal after recent selling pressure",
+          "Sensex sinks over 2,000 points in 5 days. How scary do the charts look for next week?"
+        ],
+        "triggers_hit": [
+          "barrel",
+          "brent",
+          "crude",
+          "diesel",
+          "gasoline",
+          "hormuz",
+          "oil price",
+          "oil prices"
+        ],
+        "detail": {
+          "oil_pct": -3.91
+        }
+      },
+      {
+        "narrative": "Earnings",
+        "weight": 0.996,
+        "kind": "news",
+        "evidence": [
+          "AU Small Finance Bank Q1 Results: Net profit up 37% to Rs 796 crore",
+          "F&amp;O Talk: Nifty looks weak on chart, says Sudeep Shah; outlines HDFC Bank, Bluestone Strategy after Q1",
+          "360 ONE's Mayur Patel bets on smallcaps, says midcaps look somewhat expensive",
+          "Selling spree! Ace investor Dolly Khanna likely exited these 5 stocks in Q1. Do you own any?"
+        ],
+        "triggers_hit": [
+          "earnings",
+          "guidance",
+          "margin",
+          "profit",
+          "q1",
+          "q2",
+          "q3",
+          "q4"
+        ],
+        "detail": {}
+      },
+      {
+        "narrative": "Semiconductors / AI",
+        "weight": 0.96,
+        "kind": "both",
+        "evidence": [
+          "SOX -4.25% (price-triggered)",
+          "360 ONE's Mayur Patel bets on smallcaps, says midcaps look somewhat expensive",
+          "Wall Street Week Ahead: US stocks face tests from Fed decision, tech-led earnings deluge",
+          "Trump's new global tariff draws rebukes from trade partners over forced labor justification"
+        ],
+        "triggers_hit": [
+          "ai capex",
+          "ai infrastructure",
+          "ai spending",
+          "chip",
+          "chips",
+          "data center",
+          "data centre",
+          "hbm"
+        ],
+        "detail": {
+          "sox_pct": -4.25
+        }
+      }
+    ],
+    "contexts": [
+      {
+        "name": "Geopolitics",
+        "activation": 1.0,
+        "via": [
+          "headline"
+        ],
+        "evidence": [
+          "NTPC board approves raising up to Rs 12,000 cr via NCD issue",
+          "360 ONE's Mayur Patel bets on smallcaps, says midcaps look somewhat expensive",
+          "Why gold is showing signs of reversal after recent selling pressure",
+          "Sensex sinks over 2,000 points in 5 days. How scary do the charts look for next week?"
+        ],
+        "interactions": [
+          "Oil",
+          "Earnings",
+          "Semiconductors / AI"
+        ],
+        "horizon": "days",
+        "confidence": 0.8,
+        "triggers_hit": [
+          "blockade",
+          "closure",
+          "gulf",
+          "hormuz",
+          "houthi",
+          "iran",
+          "israel",
+          "middle east"
+        ],
+        "metadata": {
+          "severe_headlines": 39,
+          "severity": "SEVERE (closure/war/nuclear risk)"
+        }
+      },
+      {
+        "name": "Oil",
+        "activation": 1.0,
+        "via": [
+          "headline",
+          "price"
+        ],
+        "evidence": [
+          "Brent -3.91% (price-triggered, no headline needed)",
+          "360 ONE's Mayur Patel bets on smallcaps, says midcaps look somewhat expensive",
+          "Why gold is showing signs of reversal after recent selling pressure",
+          "Sensex sinks over 2,000 points in 5 days. How scary do the charts look for next week?"
+        ],
+        "interactions": [
+          "Geopolitics",
+          "Earnings",
+          "Semiconductors / AI"
+        ],
+        "horizon": "days",
+        "confidence": 1.0,
+        "triggers_hit": [
+          "barrel",
+          "brent",
+          "crude",
+          "diesel",
+          "gasoline",
+          "hormuz",
+          "oil price",
+          "oil prices"
+        ],
+        "metadata": {
+          "oil_pct": -3.91
+        }
+      },
+      {
+        "name": "Earnings",
+        "activation": 0.996,
+        "via": [
+          "headline"
+        ],
+        "evidence": [
+          "AU Small Finance Bank Q1 Results: Net profit up 37% to Rs 796 crore",
+          "F&amp;O Talk: Nifty looks weak on chart, says Sudeep Shah; outlines HDFC Bank, Bluestone Strategy after Q1",
+          "360 ONE's Mayur Patel bets on smallcaps, says midcaps look somewhat expensive",
+          "Selling spree! Ace investor Dolly Khanna likely exited these 5 stocks in Q1. Do you own any?"
+        ],
+        "interactions": [
+          "Geopolitics",
+          "Oil",
+          "Semiconductors / AI"
+        ],
+        "horizon": "1-2 quarters",
+        "confidence": 0.8,
+        "triggers_hit": [
+          "earnings",
+          "guidance",
+          "margin",
+          "profit",
+          "q1",
+          "q2",
+          "q3",
+          "q4"
+        ],
+        "metadata": {}
+      },
+      {
+        "name": "Semiconductors / AI",
+        "activation": 0.96,
+        "via": [
+          "headline",
+          "price"
+        ],
+        "evidence": [
+          "SOX -4.25% (price-triggered)",
+          "360 ONE's Mayur Patel bets on smallcaps, says midcaps look somewhat expensive",
+          "Wall Street Week Ahead: US stocks face tests from Fed decision, tech-led earnings deluge",
+          "Trump's new global tariff draws rebukes from trade partners over forced labor justification"
+        ],
+        "interactions": [
+          "Geopolitics",
+          "Oil",
+          "Earnings"
+        ],
+        "horizon": "days",
+        "confidence": 1.0,
+        "triggers_hit": [
+          "ai capex",
+          "ai infrastructure",
+          "ai spending",
+          "chip",
+          "chips",
+          "data center",
+          "data centre",
+          "hbm"
+        ],
+        "metadata": {
+          "sox_pct": -4.25
+        }
+      }
+    ],
+    "relationships": [
+      {
+        "pair": "Geopolitics × Oil",
+        "strength": 1.0,
+        "known_interaction": true,
+        "note": "modelled compounding interaction"
+      },
+      {
+        "pair": "Geopolitics × Earnings",
+        "strength": 0.998,
+        "known_interaction": false,
+        "note": "co-active today — NOT a modelled interaction; candidate for one if it recurs"
+      },
+      {
+        "pair": "Oil × Earnings",
+        "strength": 0.998,
+        "known_interaction": false,
+        "note": "co-active today — NOT a modelled interaction; candidate for one if it recurs"
+      },
+      {
+        "pair": "Geopolitics × Semiconductors / AI",
+        "strength": 0.98,
+        "known_interaction": false,
+        "note": "co-active today — NOT a modelled interaction; candidate for one if it recurs"
+      },
+      {
+        "pair": "Oil × Semiconductors / AI",
+        "strength": 0.98,
+        "known_interaction": false,
+        "note": "co-active today — NOT a modelled interaction; candidate for one if it recurs"
+      },
+      {
+        "pair": "Earnings × Semiconductors / AI",
+        "strength": 0.978,
+        "known_interaction": false,
+        "note": "co-active today — NOT a modelled interaction; candidate for one if it recurs"
+      }
+    ],
+    "n_registered": 4,
+    "errors": [],
+    "discovery": {
+      "pairs_tracked": 10,
+      "recorded_today": 0
+    }
+  },
+  "transmission_multihop": [
+    {
+      "driver": "Geopolitics",
+      "branch": "geopolitics→oil→inflation",
+      "chain": [
+        "Geopolitical Risk",
+        "Oil",
+        "Inflation",
+        "RBI / Rates",
+        "Banks & Consumer"
+      ],
+      "path": "Geopolitical Risk → Oil → Inflation → RBI / Rates → Banks & Consumer",
+      "mechanisms": [
+        "Geopolitical Risk: Middle-East / Hormuz tension",
+        "Oil: supply-risk premium",
+        "Inflation: energy-led price pressure",
+        "RBI / Rates: policy stays tight",
+        "Banks & Consumer: rate + demand channel"
+      ],
+      "sub_sectors": [
+        "Oil & Gas",
+        "Defence",
+        "Banks/Financials"
+      ],
+      "activation": 0.389
+    },
+    {
+      "driver": "Geopolitics",
+      "branch": "geopolitics→freight",
+      "chain": [
+        "Geopolitical Risk",
+        "Freight / Tanker Insurance",
+        "Import Landed Cost",
+        "Import-reliant Manufacturers"
+      ],
+      "path": "Geopolitical Risk → Freight / Tanker Insurance → Import Landed Cost → Import-reliant Manufacturers",
+      "mechanisms": [
+        "Geopolitical Risk: shipping-lane disruption",
+        "Freight / Tanker Insurance: container & tanker rates up",
+        "Import Landed Cost: input-cost squeeze",
+        "Import-reliant Manufacturers: chemicals, auto-components, EMS, pharma API"
+      ],
+      "sub_sectors": [
+        "Chemicals",
+        "Auto Components",
+        "EMS",
+        "Pharma API"
+      ],
+      "activation": 0.389
+    },
+    {
+      "driver": "India VIX",
+      "branch": "risk-off",
+      "chain": [
+        "India VIX",
+        "Risk-Off",
+        "High-beta / Leveraged Names"
+      ],
+      "path": "India VIX → Risk-Off → High-beta / Leveraged Names",
+      "mechanisms": [
+        "India VIX: implied vol rises",
+        "Risk-Off: positioning de-risks",
+        "High-beta / Leveraged Names: sold as risk appetite falls"
+      ],
+      "sub_sectors": [
+        "High-beta",
+        "NBFC",
+        "Small/Mid caps"
+      ],
+      "activation": 0.179
+    },
+    {
+      "driver": "Oil",
+      "branch": "disinflation→easing",
+      "chain": [
+        "Oil",
+        "Inflation",
+        "RBI",
+        "Yield Curve",
+        "Financial Conditions",
+        "Rate-sensitives"
+      ],
+      "path": "Oil → Inflation → RBI → Yield Curve → Financial Conditions → Rate-sensitives",
+      "mechanisms": [
+        "Oil: crude falls",
+        "Inflation: import bill & CPI ease",
+        "RBI: room to cut / turn dovish",
+        "Yield Curve: yields drift lower",
+        "Financial Conditions: cost of capital eases",
+        "Rate-sensitives: banks, NBFCs, autos, realty supported"
+      ],
+      "sub_sectors": [
+        "Banks/Financials",
+        "NBFC",
+        "Auto",
+        "Real Estate"
+      ],
+      "activation": 0.122
+    },
+    {
+      "driver": "Oil",
+      "branch": "fiscal-relief",
+      "chain": [
+        "Oil",
+        "Current Account",
+        "Fiscal Space",
+        "Bond Yield"
+      ],
+      "path": "Oil → Current Account → Fiscal Space → Bond Yield",
+      "mechanisms": [
+        "Oil: crude falls",
+        "Current Account: CAD narrows",
+        "Fiscal Space: subsidy relief / excise room improves",
+        "Bond Yield: lower borrowing pressure eases yields"
+      ],
+      "sub_sectors": [
+        "Capital Goods",
+        "Infra"
+      ],
+      "activation": 0.122
+    },
+    {
+      "driver": "India CPI",
+      "branch": "cpi→rates",
+      "chain": [
+        "India CPI",
+        "RBI",
+        "Yield Curve",
+        "Rate-sensitives"
+      ],
+      "path": "India CPI → RBI → Yield Curve → Rate-sensitives",
+      "mechanisms": [
+        "India CPI: inflation prints above forecast",
+        "RBI: stays hawkish",
+        "Yield Curve: rates higher-for-longer",
+        "Rate-sensitives: financials, NBFCs, autos, realty pressured"
+      ],
+      "sub_sectors": [
+        "Banks/Financials",
+        "NBFC",
+        "Auto",
+        "Real Estate"
+      ],
+      "activation": 0.086
+    },
+    {
+      "driver": "Dollar Index",
+      "branch": "dollar→EM-flows",
+      "chain": [
+        "Dollar Index",
+        "USDINR",
+        "FII Flows",
+        "Nifty"
+      ],
+      "path": "Dollar Index → USDINR → FII Flows → Nifty",
+      "mechanisms": [
+        "Dollar Index: USD strengthens",
+        "USDINR: rupee under pressure",
+        "FII Flows: dollar strength pulls capital from EM",
+        "Nifty: foreign selling weighs on the index"
+      ],
+      "sub_sectors": [
+        "Banks/Financials"
+      ],
+      "activation": 0.005
+    }
+  ],
+  "interactions": [
+    {
+      "term": "Oil × Geopolitics",
+      "legs": [
+        "oil_pct",
+        "geopolitics_hits"
+      ],
+      "leg_values": {
+        "oil_pct": -3.91,
+        "geopolitics_hits": 9.0
+      },
+      "magnitude": 1.075,
+      "sign": -1,
+      "tag": "PRIOR",
+      "mechanism": "A geopolitical flare-up ON TOP of rising oil is a supply-shock accelerant — the risk premium compounds the price move → inflation + CAD stress beyond either alone."
+    },
+    {
+      "term": "Oil × India-CPI",
+      "legs": [
+        "oil_pct",
+        "india_cpi_hot"
+      ],
+      "leg_values": {
+        "oil_pct": -3.91,
+        "india_cpi_hot": 1
+      },
+      "magnitude": 0.978,
+      "sign": -1,
+      "tag": "PRIOR",
+      "mechanism": "High oil into an already-hot CPI compounds the inflation signal → RBI stays tighter for longer → rate-sensitives hit harder."
+    },
+    {
+      "term": "Oil × USD",
+      "legs": [
+        "oil_pct",
+        "dxy_pct"
+      ],
+      "leg_values": {
+        "oil_pct": -3.91,
+        "dxy_pct": 0.06
+      },
+      "magnitude": 0.066,
+      "sign": -1,
+      "tag": "PRIOR",
+      "mechanism": "Rising oil AND a strong dollar compound the import-bill + outflow hit — a weaker rupee imports inflation while foreign capital leaves; jointly more bearish than either alone."
+    },
+    {
+      "term": "US10Y × Dollar",
+      "legs": [
+        "us10y_pct",
+        "dxy_pct"
+      ],
+      "leg_values": {
+        "us10y_pct": -0.51,
+        "dxy_pct": 0.06
+      },
+      "magnitude": 0.011,
+      "sign": -1,
+      "tag": "PRIOR",
+      "mechanism": "Rising US yields with a strengthening dollar is the classic FII-outflow accelerant for EM equity — the combined pull exceeds the sum of parts."
+    }
+  ],
+  "driver_dominance_adjusted": {
+    "vector": {
+      "Oil": 0.378,
+      "Geopolitics": 0.296,
+      "India CPI": 0.184,
+      "India VIX": 0.057,
+      "Kospi": 0.033,
+      "SOX (US semis)": 0.032,
+      "Dollar Index": 0.014,
+      "US 10Y Yield": 0.007
+    },
+    "note": "base dominance + interaction boosts, renormalized — a driver's effective importance rises through interaction terms, not a bigger direct coefficient.",
+    "dominant_driver": "Oil"
+  },
+  "affected_sectors_enriched": [
+    {
+      "sector": "Energy (OMC)",
+      "direction": "🟢 Bullish",
+      "net": 0.158,
+      "top_rows": [
+        [
+          "Crude input cost (opposite of upstream)",
+          0.158
+        ]
+      ],
+      "company_bridge": null,
+      "overlay": true,
+      "note": "overlay: OMCs are SHORT crude — marketing margins squeezed when oil rises and retail prices are capped (distinct from upstream realisations)."
+    },
+    {
+      "sector": "Auto",
+      "direction": "🟡 Neutral",
+      "net": 0.092,
+      "top_rows": [
+        [
+          "Oil",
+          0.156
+        ],
+        [
+          "India CPI (rates)",
+          -0.08
+        ],
+        [
+          "US10Y",
+          0.015
+        ]
+      ],
+      "company_bridge": null,
+      "overlay": false,
+      "note": null
+    },
+    {
+      "sector": "Pharma",
+      "direction": "🟡 Neutral",
+      "net": 0.083,
+      "top_rows": [
+        [
+          "VIX",
+          0.083
+        ]
+      ],
+      "company_bridge": null,
+      "overlay": false,
+      "note": null
+    },
+    {
+      "sector": "Banks/Financials",
+      "direction": "🔴 Bearish",
+      "net": -0.121,
+      "top_rows": [
+        [
+          "VIX",
+          -0.207
+        ],
+        [
+          "Earnings headlines",
+          0.15
+        ],
+        [
+          "India CPI (rates)",
+          0.1
+        ]
+      ],
+      "company_bridge": [
+        "HDFC Bank(-)",
+        "ICICI Prudential(-)"
+      ],
+      "overlay": false,
+      "note": null
+    },
+    {
+      "sector": "IT services",
+      "direction": "🔴 Bearish",
+      "net": -0.17,
+      "top_rows": [
+        [
+          "SOX",
+          -0.17
+        ]
+      ],
+      "company_bridge": null,
+      "overlay": false,
+      "note": null
+    },
+    {
+      "sector": "Energy (upstream)",
+      "direction": "🔴 Bearish",
+      "net": -0.263,
+      "top_rows": [
+        [
+          "Oil",
+          -0.313
+        ],
+        [
+          "Earnings headlines",
+          0.05
+        ]
+      ],
+      "company_bridge": null,
+      "overlay": false,
+      "note": null
+    },
+    {
+      "sector": "Metals",
+      "direction": "🔴 Bearish",
+      "net": -0.409,
+      "top_rows": [
+        [
+          "Kospi",
+          -0.286
+        ],
+        [
+          "Oil",
+          -0.117
+        ],
+        [
+          "DXY",
+          -0.006
+        ]
+      ],
+      "company_bridge": null,
+      "overlay": false,
+      "note": null
+    }
+  ],
+  "causal_graph": {
+    "as_of_tone": "🟡 Mixed",
+    "ai_regime": "Neutral",
+    "node_count": 23,
+    "edge_count": 23,
+    "nodes": [
+      {
+        "id": "Oil",
+        "kind": "driver",
+        "current_state": "-3.9%",
+        "economic_confidence": 5,
+        "historical_reliability": {
+          "value": null,
+          "tag": "PRIOR"
+        },
+        "today_activation": 0.331,
+        "supporting_news": [
+          "Sensex sinks over 2,000 points in 5 days. How scary do the charts look for next week?",
+          "Nifty closes below key 23,800 level on Gulf war ripples",
+          "Wall Street Week Ahead: US stocks face tests from Fed decision, tech-led earnings deluge"
+        ],
+        "observed_confirmation": "OVERRIDDEN"
+      },
+      {
+        "id": "Inflation",
+        "kind": "economic",
+        "current_state": null,
+        "economic_confidence": 5,
+        "historical_reliability": {
+          "value": null,
+          "tag": "PRIOR"
+        },
+        "today_activation": 0.281,
+        "supporting_news": [],
+        "observed_confirmation": null
+      },
+      {
+        "id": "RBI",
+        "kind": "economic",
+        "current_state": null,
+        "economic_confidence": 5,
+        "historical_reliability": {
+          "value": null,
+          "tag": "PRIOR"
+        },
+        "today_activation": 0.088,
+        "supporting_news": [],
+        "observed_confirmation": null
+      },
+      {
+        "id": "Yield Curve",
+        "kind": "economic",
+        "current_state": null,
+        "economic_confidence": 5,
+        "historical_reliability": {
+          "value": null,
+          "tag": "PRIOR"
+        },
+        "today_activation": 0.075,
+        "supporting_news": [],
+        "observed_confirmation": "OVERRIDDEN"
+      },
+      {
+        "id": "Financial Conditions",
+        "kind": "economic",
+        "current_state": null,
+        "economic_confidence": 5,
+        "historical_reliability": {
+          "value": null,
+          "tag": "PRIOR"
+        },
+        "today_activation": 0.064,
+        "supporting_news": [],
+        "observed_confirmation": null
+      },
+      {
+        "id": "Rate-sensitives",
+        "kind": "economic",
+        "current_state": null,
+        "economic_confidence": 5,
+        "historical_reliability": {
+          "value": null,
+          "tag": "PRIOR"
+        },
+        "today_activation": 0.054,
+        "supporting_news": [],
+        "observed_confirmation": null
+      },
+      {
+        "id": "Current Account",
+        "kind": "economic",
+        "current_state": null,
+        "economic_confidence": 5,
+        "historical_reliability": {
+          "value": null,
+          "tag": "PRIOR"
+        },
+        "today_activation": 0.104,
+        "supporting_news": [],
+        "observed_confirmation": null
+      },
+      {
+        "id": "Fiscal Space",
+        "kind": "economic",
+        "current_state": null,
+        "economic_confidence": 5,
+        "historical_reliability": {
+          "value": null,
+          "tag": "PRIOR"
+        },
+        "today_activation": 0.088,
+        "supporting_news": [],
+        "observed_confirmation": null
+      },
+      {
+        "id": "Bond Yield",
+        "kind": "economic",
+        "current_state": null,
+        "economic_confidence": 5,
+        "historical_reliability": {
+          "value": null,
+          "tag": "PRIOR"
+        },
+        "today_activation": 0.075,
+        "supporting_news": [],
+        "observed_confirmation": null
+      },
+      {
+        "id": "India VIX",
+        "kind": "driver",
+        "current_state": "+4.1%",
+        "economic_confidence": 4,
+        "historical_reliability": {
+          "value": null,
+          "tag": "PRIOR"
+        },
+        "today_activation": 0.179,
+        "supporting_news": [
+          "Sensex, Nifty gain for third day in a row; easing volatility to support bull trend",
+          "Mid-day Mood | Cooling volatility sparks market rally, India VIX sees steepest fall in 4 years",
+          "Strait of Hormuz traffic at a standstill as fears for global oil supply grow - NBC News"
+        ],
+        "observed_confirmation": "WEAKENED"
+      },
+      {
+        "id": "Risk-Off",
+        "kind": "economic",
+        "current_state": null,
+        "economic_confidence": 4,
+        "historical_reliability": {
+          "value": null,
+          "tag": "PRIOR"
+        },
+        "today_activation": 0.152,
+        "supporting_news": [],
+        "observed_confirmation": null
+      },
+      {
+        "id": "High-beta / Leveraged Names",
+        "kind": "economic",
+        "current_state": null,
+        "economic_confidence": 4,
+        "historical_reliability": {
+          "value": null,
+          "tag": "PRIOR"
+        },
+        "today_activation": 0.129,
+        "supporting_news": [],
+        "observed_confirmation": null
+      },
+      {
+        "id": "Dollar Index",
+        "kind": "driver",
+        "current_state": "+0.1%",
+        "economic_confidence": 4,
+        "historical_reliability": {
+          "value": null,
+          "tag": "PRIOR"
+        },
+        "today_activation": 0.005,
+        "supporting_news": [
+          "Yen records biggest weekly drop in over two months, dollar climbs for the week",
+          "Canadian Dollar edges higher ahead of BoC rate decision - TMGM trading"
+        ],
+        "observed_confirmation": null
+      },
+      {
+        "id": "USDINR",
+        "kind": "economic",
+        "current_state": null,
+        "economic_confidence": 4,
+        "historical_reliability": {
+          "value": null,
+          "tag": "PRIOR"
+        },
+        "today_activation": 0.004,
+        "supporting_news": [],
+        "observed_confirmation": null
+      },
+      {
+        "id": "FII Flows",
+        "kind": "economic",
+        "current_state": null,
+        "economic_confidence": 4,
+        "historical_reliability": {
+          "value": null,
+          "tag": "PRIOR"
+        },
+        "today_activation": 0.004,
+        "supporting_news": [],
+        "observed_confirmation": null
+      },
+      {
+        "id": "Nifty",
+        "kind": "economic",
+        "current_state": null,
+        "economic_confidence": 4,
+        "historical_reliability": {
+          "value": null,
+          "tag": "PRIOR"
+        },
+        "today_activation": 0.003,
+        "supporting_news": [],
+        "observed_confirmation": null
+      },
+      {
+        "id": "Geopolitical Risk",
+        "kind": "driver",
+        "current_state": null,
+        "economic_confidence": 3,
+        "historical_reliability": {
+          "value": null,
+          "tag": "PRIOR"
+        },
+        "today_activation": 0.389,
+        "supporting_news": [
+          "BNP Paribas Cardif to acquire Warburg’s 26% in IndiaFirst Life",
+          "Nifty closes below key 23,800 level on Gulf war ripples",
+          "Stocks to buy under  ₹200: Amid escalation in US-Iran war, Mehul Kothari of Anand Rathi recommends three shares to buy"
+        ],
+        "observed_confirmation": null
+      },
+      {
+        "id": "RBI / Rates",
+        "kind": "economic",
+        "current_state": null,
+        "economic_confidence": 3,
+        "historical_reliability": {
+          "value": null,
+          "tag": "PRIOR"
+        },
+        "today_activation": 0.239,
+        "supporting_news": [],
+        "observed_confirmation": null
+      },
+      {
+        "id": "Banks & Consumer",
+        "kind": "economic",
+        "current_state": null,
+        "economic_confidence": 3,
+        "historical_reliability": {
+          "value": null,
+          "tag": "PRIOR"
+        },
+        "today_activation": 0.203,
+        "supporting_news": [],
+        "observed_confirmation": "OVERRIDDEN"
+      },
+      {
+        "id": "Freight / Tanker Insurance",
+        "kind": "economic",
+        "current_state": null,
+        "economic_confidence": 3,
+        "historical_reliability": {
+          "value": null,
+          "tag": "PRIOR"
+        },
+        "today_activation": 0.331,
+        "supporting_news": [],
+        "observed_confirmation": "OVERRIDDEN"
+      },
+      {
+        "id": "Import Landed Cost",
+        "kind": "economic",
+        "current_state": null,
+        "economic_confidence": 3,
+        "historical_reliability": {
+          "value": null,
+          "tag": "PRIOR"
+        },
+        "today_activation": 0.281,
+        "supporting_news": [],
+        "observed_confirmation": null
+      },
+      {
+        "id": "Import-reliant Manufacturers",
+        "kind": "economic",
+        "current_state": null,
+        "economic_confidence": 3,
+        "historical_reliability": {
+          "value": null,
+          "tag": "PRIOR"
+        },
+        "today_activation": 0.239,
+        "supporting_news": [],
+        "observed_confirmation": null
+      },
+      {
+        "id": "India CPI",
+        "kind": "driver",
+        "current_state": null,
+        "economic_confidence": 5,
+        "historical_reliability": {
+          "value": null,
+          "tag": "PRIOR"
+        },
+        "today_activation": 0.086,
+        "supporting_news": [
+          "Wall Street Week Ahead: US stocks face tests from Fed decision, tech-led earnings deluge",
+          "Kevin Warsh has homed in on three key phrases. How Fed watchers interpret them",
+          "India's inflation accelerates to 4.38% in June, exceeding forecasts"
+        ],
+        "observed_confirmation": "WEAKENED"
+      }
+    ],
+    "edges": [
+      {
+        "source": "Oil",
+        "target": "Inflation",
+        "branch": "disinflation→easing",
+        "driver": "Oil"
+      },
+      {
+        "source": "Inflation",
+        "target": "RBI",
+        "branch": "disinflation→easing",
+        "driver": "Oil"
+      },
+      {
+        "source": "RBI",
+        "target": "Yield Curve",
+        "branch": "disinflation→easing",
+        "driver": "Oil"
+      },
+      {
+        "source": "Yield Curve",
+        "target": "Financial Conditions",
+        "branch": "disinflation→easing",
+        "driver": "Oil"
+      },
+      {
+        "source": "Financial Conditions",
+        "target": "Rate-sensitives",
+        "branch": "disinflation→easing",
+        "driver": "Oil"
+      },
+      {
+        "source": "Oil",
+        "target": "Current Account",
+        "branch": "fiscal-relief",
+        "driver": "Oil"
+      },
+      {
+        "source": "Current Account",
+        "target": "Fiscal Space",
+        "branch": "fiscal-relief",
+        "driver": "Oil"
+      },
+      {
+        "source": "Fiscal Space",
+        "target": "Bond Yield",
+        "branch": "fiscal-relief",
+        "driver": "Oil"
+      },
+      {
+        "source": "India VIX",
+        "target": "Risk-Off",
+        "branch": "risk-off",
+        "driver": "India VIX"
+      },
+      {
+        "source": "Risk-Off",
+        "target": "High-beta / Leveraged Names",
+        "branch": "risk-off",
+        "driver": "India VIX"
+      },
+      {
+        "source": "Dollar Index",
+        "target": "USDINR",
+        "branch": "dollar→EM-flows",
+        "driver": "Dollar Index"
+      },
+      {
+        "source": "USDINR",
+        "target": "FII Flows",
+        "branch": "dollar→EM-flows",
+        "driver": "Dollar Index"
+      },
+      {
+        "source": "FII Flows",
+        "target": "Nifty",
+        "branch": "dollar→EM-flows",
+        "driver": "Dollar Index"
+      },
+      {
+        "source": "Geopolitical Risk",
+        "target": "Oil",
+        "branch": "geopolitics→oil→inflation",
+        "driver": "Geopolitics"
+      },
+      {
+        "source": "Oil",
+        "target": "Inflation",
+        "branch": "geopolitics→oil→inflation",
+        "driver": "Geopolitics"
+      },
+      {
+        "source": "Inflation",
+        "target": "RBI / Rates",
+        "branch": "geopolitics→oil→inflation",
+        "driver": "Geopolitics"
+      },
+      {
+        "source": "RBI / Rates",
+        "target": "Banks & Consumer",
+        "branch": "geopolitics→oil→inflation",
+        "driver": "Geopolitics"
+      },
+      {
+        "source": "Geopolitical Risk",
+        "target": "Freight / Tanker Insurance",
+        "branch": "geopolitics→freight",
+        "driver": "Geopolitics"
+      },
+      {
+        "source": "Freight / Tanker Insurance",
+        "target": "Import Landed Cost",
+        "branch": "geopolitics→freight",
+        "driver": "Geopolitics"
+      },
+      {
+        "source": "Import Landed Cost",
+        "target": "Import-reliant Manufacturers",
+        "branch": "geopolitics→freight",
+        "driver": "Geopolitics"
+      },
+      {
+        "source": "India CPI",
+        "target": "RBI",
+        "branch": "cpi→rates",
+        "driver": "India CPI"
+      },
+      {
+        "source": "RBI",
+        "target": "Yield Curve",
+        "branch": "cpi→rates",
+        "driver": "India CPI"
+      },
+      {
+        "source": "Yield Curve",
+        "target": "Rate-sensitives",
+        "branch": "cpi→rates",
+        "driver": "India CPI"
+      }
+    ]
+  },
+  "extracted_fundamentals": [
+    {
+      "metric": "PAT growth",
+      "value": 37.0,
+      "impact_score": 1.0,
+      "impact_label": "Very High",
+      "surprise_sigma": 3.12,
+      "quality_direction": 1,
+      "nifty_weight": null,
+      "index_impact": 0.15,
+      "rationale": "37% vs baseline 12% (±8) → +3.1σ",
+      "tag": "PRIOR",
+      "unit": "%",
+      "direction": "up",
+      "source": "AU Small Finance Bank Q1 Results: Net profit up 37% to Rs 796 crore"
+    },
+    {
+      "metric": "PAT growth",
+      "value": 72.0,
+      "impact_score": 1.0,
+      "impact_label": "Very High",
+      "surprise_sigma": 7.5,
+      "quality_direction": 1,
+      "nifty_weight": null,
+      "index_impact": 0.15,
+      "rationale": "72% vs baseline 12% (±8) → +7.5σ",
+      "tag": "PRIOR",
+      "unit": "%",
+      "direction": "down",
+      "source": "NMC health settlement drags Bank of Baroda Q1 net profit down 72%"
+    },
+    {
+      "metric": "PAT growth",
+      "value": 60.0,
+      "impact_score": 1.0,
+      "impact_label": "Very High",
+      "surprise_sigma": 6.0,
+      "quality_direction": 1,
+      "nifty_weight": null,
+      "index_impact": 0.15,
+      "rationale": "60% vs baseline 12% (±8) → +6.0σ",
+      "tag": "PRIOR",
+      "unit": "%",
+      "direction": "down",
+      "source": "ACC Q1 Results: Profit plunges 60% to Rs 147 crore on lower sales"
+    },
+    {
+      "metric": "PAT growth",
+      "value": 93.0,
+      "impact_score": 1.0,
+      "impact_label": "Very High",
+      "surprise_sigma": 10.12,
+      "quality_direction": 1,
+      "nifty_weight": null,
+      "index_impact": 0.15,
+      "rationale": "93% vs baseline 12% (±8) → +10.1σ",
+      "tag": "PRIOR",
+      "unit": "%",
+      "direction": "up",
+      "source": "Cyient DLM#39;s profit after tax in FY24 surges 93%"
+    },
+    {
+      "metric": "Hyperscaler capex",
+      "value": 650.0,
+      "impact_score": 1.0,
+      "impact_label": "Very High",
+      "surprise_sigma": 3.0,
+      "quality_direction": 1,
+      "nifty_weight": null,
+      "index_impact": 0.15,
+      "rationale": "$650bn capex (no prior guidance to compare)",
+      "tag": "PRIOR",
+      "unit": "usd_bn",
+      "direction": "up",
+      "source": "Big Tech AI Capex Tops $650 Billion as Q1 Earnings Beats Pressure Bitcoin Risk Trade - Yahoo Finance"
+    },
+    {
+      "metric": "PAT growth",
+      "value": 26.0,
+      "impact_score": 0.583,
+      "impact_label": "High",
+      "surprise_sigma": 1.75,
+      "quality_direction": 1,
+      "nifty_weight": null,
+      "index_impact": 0.0874,
+      "rationale": "26% vs baseline 12% (±8) → +1.8σ",
+      "tag": "PRIOR",
+      "unit": "%",
+      "direction": "down",
+      "source": "ICICI Pru Life Q4 net profit falls 26% to Rs 174 cr, insurer announces dividend"
+    },
+    {
+      "metric": "PAT growth",
+      "value": 19.0,
+      "impact_score": 0.292,
+      "impact_label": "Moderate",
+      "surprise_sigma": 0.88,
+      "quality_direction": 1,
+      "nifty_weight": null,
+      "index_impact": 0.0438,
+      "rationale": "19% vs baseline 12% (±8) → +0.9σ",
+      "tag": "PRIOR",
+      "unit": "%",
+      "direction": "down",
+      "source": "Tata Consumer Q4 net profit falls 19% to Rs 217 cr, firm declares dividend of Rs 7.75 per share"
+    }
+  ],
+  "semis_regime": {
+    "sox_pct": -4.25,
+    "kospi_pct": -5.72,
+    "nifty_it_pct": 0.52,
+    "primary_cause": "enterprise_budget_rotation",
+    "cause_label": "Enterprise AI budget rotation",
+    "cause_scores": {
+      "enterprise_budget_rotation": 0.72,
+      "ai_productivity_deflation": 0.59,
+      "semiconductor_valuation_correction": 0.57,
+      "ai_demand_accelerating": 0.53,
+      "macro_derating": 0.17,
+      "true_ai_demand_slowdown": 0.06
+    },
+    "ai_demand": "Strong",
+    "capital_allocation": "Infrastructure (from software/services)",
+    "indian_it_expected": "Bearish (near-term)",
+    "target_reads": {
+      "AI infrastructure (semis/EMS/power)": "🟢 Bullish",
+      "Enterprise software": "🔴 Bearish",
+      "Indian IT services": "🔴 Bearish",
+      "Cloud providers": "🟢 Bullish"
+    },
+    "reasoning": "budget constant but redirected to GPUs/servers/networking — software & consulting squeezed. AI demand is NOT weak (Reuters: IBM says spend redirected, not abandoned).",
+    "evidence_layers": {
+      "news": 1.0,
+      "market": 0.4,
+      "fundamentals": 0.6,
+      "guidance": 1.0
+    },
+    "confidence": 0.15,
+    "confidence_components": {
+      "evidence_quality": 1.0,
+      "agreement": 0.27,
+      "historical_accuracy": 0.57
+    },
+    "capex_signal": "AI capex guidance RAISED → demand strong, dip is allocation/positioning",
+    "currency_offset": null,
+    "diagnostic_questions": [
+      {
+        "q": "Budget rotation (IBM/Accenture: HW↑ / SW↓)?",
+        "answer": true,
+        "evidence": [
+          "IBM warns AI boom is squeezing software budgets; shares slump in sector rout - RTE.ie",
+          "IBM warning sparks software selloff as AI spending squeezes budgets - calcalistech.com"
+        ]
+      },
+      {
+        "q": "AI productivity / services deflation?",
+        "answer": true,
+        "evidence": [
+          "China consumer price growth weakens in June while producer inflation rises to near 4-year high",
+          "Indian IT braces for AI-deflation as pricing pressure reshapes growth - Forbes India"
+        ]
+      },
+      {
+        "q": "Valuation reset / profit-taking?",
+        "answer": true,
+        "evidence": [
+          "Sensex sinks over 2,000 points in 5 days. How scary do the charts look for next week?",
+          "Stocks edge back up as oil prices pause climb but yields hover near highs"
+        ]
+      },
+      {
+        "q": "TRUE demand slowdown (capex cut + cloud + orders)?",
+        "answer": false,
+        "evidence": []
+      },
+      {
+        "q": "Macro shock (Fed / yields / dollar)?",
+        "answer": false,
+        "evidence": [
+          "US10Y -0.5%",
+          "DXY +0.1%"
+        ]
+      }
+    ],
+    "chain": [
+      "SOX/KOSPI move",
+      "cause: Enterprise AI budget rotation",
+      "AI demand: Strong",
+      "allocation: Infrastructure (from software/services)",
+      "Indian IT: Bearish (near-term)"
+    ],
+    "supersedes": "the naive 'SOX↓ ⇒ AI demand weak ⇒ IT↓' rule — replaced by a multi-cause, multi-target read (demand vs allocation vs revenue-model).",
+    "ai_regime": "Substitution",
+    "tag": "PRIOR",
+    "target_companies": {
+      "AI infrastructure (semis/EMS/power)": {
+        "lean": "🟢 Bullish",
+        "india": [
+          {
+            "company": "NTPC",
+            "pct": -0.4
+          },
+          {
+            "company": "Power Grid",
+            "pct": -0.69
+          },
+          {
+            "company": "Dixon Tech",
+            "pct": null
+          },
+          {
+            "company": "Kaynes Tech",
+            "pct": null
+          },
+          {
+            "company": "CG Power",
+            "pct": null
+          },
+          {
+            "company": "Polycab",
+            "pct": null
+          }
+        ],
+        "global": [
+          "Nvidia",
+          "TSMC",
+          "AMD",
+          "Micron",
+          "Broadcom"
+        ],
+        "note": null
+      },
+      "Enterprise software": {
+        "lean": "🔴 Bearish",
+        "india": [],
+        "global": [
+          "Microsoft",
+          "Oracle",
+          "SAP",
+          "Salesforce",
+          "ServiceNow",
+          "Adobe"
+        ],
+        "note": "GLOBAL — no direct Indian-listed proxy (this is the software the budget is rotating AWAY from)"
+      },
+      "Indian IT services": {
+        "lean": "🔴 Bearish",
+        "india": [
+          {
+            "company": "Tech Mahindra",
+            "pct": 0.24
+          },
+          {
+            "company": "Infosys",
+            "pct": -1.14
+          },
+          {
+            "company": "Wipro",
+            "pct": 1.18
+          },
+          {
+            "company": "Coforge",
+            "pct": 2.82
+          },
+          {
+            "company": "TCS",
+            "pct": 0.51
+          },
+          {
+            "company": "HCL Technologies",
+            "pct": null
+          }
+        ],
+        "global": [],
+        "note": null
+      },
+      "Cloud providers": {
+        "lean": "🟢 Bullish",
+        "india": [
+          {
+            "company": "Bharti Airtel",
+            "pct": -1.7
+          },
+          {
+            "company": "NTPC",
+            "pct": -0.4
+          },
+          {
+            "company": "Power Grid",
+            "pct": -0.69
+          },
+          {
+            "company": "Vodafone Idea",
+            "pct": null
+          },
+          {
+            "company": "Indus Towers",
+            "pct": null
+          },
+          {
+            "company": "Tata Power",
+            "pct": null
+          }
+        ],
+        "global": [
+          "Amazon (AWS)",
+          "Microsoft (Azure)",
+          "Alphabet (GCP)"
+        ],
+        "note": "global hyperscalers; Indian proxy = data-centre / telecom / power"
+      }
+    },
+    "reliability": {
+      "value": 0.57,
+      "hit_rate_pct": 57.0,
+      "n": 1323,
+      "ci95": [
+        54.3,
+        59.6
+      ],
+      "tag": "MARGINAL",
+      "verdict": "positive but the interval is thin",
+      "sample_ok": true,
+      "source": "events.db/linkage_conf",
+      "matched": "US semis (SOX) → Indian IT/EMS",
+      "match_score": 0.71
+    },
+    "historical_analogue": {
+      "condition": "sox_drop_3",
+      "stats": {
+        "description": "US SOX down >3%",
+        "targets": {
+          "Nifty 50": {
+            "n": 74,
+            "mean": -0.36,
+            "median": -0.31,
+            "hit_down": 65.0,
+            "std": 0.96
+          },
+          "Bank Nifty": {
+            "n": 74,
+            "mean": -0.24,
+            "median": -0.19,
+            "hit_down": 62.0,
+            "std": 1.15
+          },
+          "Nifty IT": {
+            "n": 74,
+            "mean": -0.66,
+            "median": -0.76,
+            "hit_down": 66.0,
+            "std": 1.69
+          }
+        }
+      }
+    }
+  },
+  "subsector_factors": [
+    {
+      "parent": "Auto",
+      "sub_sectors": [
+        {
+          "sub_sector": "Commercial Vehicles (CV)",
+          "net_computed": 2.61,
+          "verdict": "🟢 Bullish",
+          "computed_factors": [
+            {
+              "factor": "Diesel / freight cost",
+              "contrib": 1.955,
+              "kind": "macro"
+            },
+            {
+              "factor": "Rates (heavy financing)",
+              "contrib": 0.255,
+              "kind": "macro"
+            },
+            {
+              "factor": "Infra / industrial activity",
+              "contrib": 0.4,
+              "kind": "catalyst-hit"
+            }
+          ],
+          "structural_factors": []
+        },
+        {
+          "sub_sector": "Two-Wheelers (2W)",
+          "net_computed": 1.666,
+          "verdict": "🟢 Bullish",
+          "computed_factors": [
+            {
+              "factor": "Petrol price",
+              "contrib": 1.564,
+              "kind": "macro"
+            },
+            {
+              "factor": "Rates (financing)",
+              "contrib": 0.102,
+              "kind": "macro"
+            }
+          ],
+          "structural_factors": [
+            {
+              "factor": "Rural demand",
+              "sign": "＋",
+              "kind": "catalyst (none today)"
+            }
+          ]
+        },
+        {
+          "sub_sector": "Passenger Vehicles (PV)",
+          "net_computed": 1.627,
+          "verdict": "🟢 Bullish",
+          "computed_factors": [
+            {
+              "factor": "Oil / fuel cost",
+              "contrib": 1.173,
+              "kind": "macro"
+            },
+            {
+              "factor": "Interest rates (financing)",
+              "contrib": 0.204,
+              "kind": "macro"
+            },
+            {
+              "factor": "Festival / urban demand",
+              "contrib": 0.25,
+              "kind": "catalyst-hit"
+            }
+          ],
+          "structural_factors": [
+            {
+              "factor": "Rural sentiment",
+              "sign": "＋",
+              "kind": "catalyst (none today)"
+            }
+          ]
+        },
+        {
+          "sub_sector": "Auto Components",
+          "net_computed": 1.173,
+          "verdict": "🟢 Bullish",
+          "computed_factors": [
+            {
+              "factor": "Input cost (oil/metals)",
+              "contrib": 1.173,
+              "kind": "macro"
+            }
+          ],
+          "structural_factors": [
+            {
+              "factor": "Global/US auto demand",
+              "sign": "＋",
+              "kind": "catalyst (none today)"
+            }
+          ]
+        },
+        {
+          "sub_sector": "Electric Vehicles (EV)",
+          "net_computed": -0.623,
+          "verdict": "🔴 Bearish",
+          "computed_factors": [
+            {
+              "factor": "High oil → EV attractive",
+              "contrib": -1.173,
+              "kind": "macro"
+            },
+            {
+              "factor": "EV policy / theme",
+              "contrib": 0.55,
+              "kind": "catalyst-hit"
+            }
+          ],
+          "structural_factors": []
+        }
+      ]
+    },
+    {
+      "parent": "Banks/Financials",
+      "sub_sectors": [
+        {
+          "sub_sector": "Margins / quality",
+          "net_computed": 0.153,
+          "verdict": "🟢 Bullish",
+          "computed_factors": [
+            {
+              "factor": "Treasury MTM (yields up = hit)",
+              "contrib": 0.153,
+              "kind": "macro"
+            }
+          ],
+          "structural_factors": [
+            {
+              "factor": "Net Interest Margin (NIM)",
+              "sign": "＋",
+              "kind": "fundamental (needs data)",
+              "driver": "spread / cost of funds"
+            },
+            {
+              "factor": "Provisions / asset quality",
+              "sign": "－",
+              "kind": "fundamental (needs data)",
+              "driver": "GNPA / slippage / credit cost"
+            }
+          ]
+        },
+        {
+          "sub_sector": "Catalysts",
+          "net_computed": 0.05,
+          "verdict": "🟡 Neutral",
+          "computed_factors": [
+            {
+              "factor": "Quarterly results",
+              "contrib": 0.05,
+              "kind": "catalyst-hit"
+            }
+          ],
+          "structural_factors": []
+        },
+        {
+          "sub_sector": "Deposit franchise",
+          "net_computed": 0.0,
+          "verdict": "🟡 Neutral",
+          "computed_factors": [],
+          "structural_factors": [
+            {
+              "factor": "Deposit growth",
+              "sign": "＋",
+              "kind": "fundamental (needs data)",
+              "driver": "deposit growth / mobilization"
+            },
+            {
+              "factor": "CASA ratio",
+              "sign": "＋",
+              "kind": "fundamental (needs data)",
+              "driver": "low-cost CASA mix"
+            }
+          ]
+        },
+        {
+          "sub_sector": "Credit / growth",
+          "net_computed": -0.102,
+          "verdict": "🔴 Bearish",
+          "computed_factors": [
+            {
+              "factor": "Rates (NIM)",
+              "contrib": -0.102,
+              "kind": "macro"
+            }
+          ],
+          "structural_factors": [
+            {
+              "factor": "Credit growth",
+              "sign": "＋",
+              "kind": "fundamental (needs data)",
+              "driver": "loan book / advances growth"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "parent": "Pharma",
+      "sub_sectors": [
+        {
+          "sub_sector": "Inputs",
+          "net_computed": 0.0,
+          "verdict": "🟡 Neutral",
+          "computed_factors": [],
+          "structural_factors": [
+            {
+              "factor": "China API cost",
+              "sign": "－",
+              "kind": "catalyst (none today)"
+            }
+          ]
+        },
+        {
+          "sub_sector": "US generics / exports",
+          "net_computed": -0.05,
+          "verdict": "🟡 Neutral",
+          "computed_factors": [
+            {
+              "factor": "US export demand",
+              "contrib": 0.3,
+              "kind": "catalyst-hit"
+            },
+            {
+              "factor": "Generic price erosion",
+              "contrib": -0.35,
+              "kind": "catalyst-hit"
+            }
+          ],
+          "structural_factors": []
+        },
+        {
+          "sub_sector": "Regulatory",
+          "net_computed": -0.15,
+          "verdict": "🔴 Bearish",
+          "computed_factors": [
+            {
+              "factor": "USFDA action (483 / warning / clearance)",
+              "contrib": -0.45,
+              "kind": "catalyst-hit"
+            },
+            {
+              "factor": "Patent cliff / launch",
+              "contrib": 0.3,
+              "kind": "catalyst-hit"
+            }
+          ],
+          "structural_factors": []
+        }
+      ]
+    },
+    {
+      "parent": "FMCG",
+      "sub_sectors": [
+        {
+          "sub_sector": "Input cost / margin",
+          "net_computed": 0.978,
+          "verdict": "🟢 Bullish",
+          "computed_factors": [
+            {
+              "factor": "Crude derivatives (packaging)",
+              "contrib": 0.978,
+              "kind": "macro"
+            }
+          ],
+          "structural_factors": [
+            {
+              "factor": "Palm oil / edible oil",
+              "sign": "－",
+              "kind": "catalyst (none today)"
+            },
+            {
+              "factor": "Food inflation (pricing power vs volume)",
+              "sign": "－",
+              "kind": "catalyst (none today)"
+            }
+          ]
+        },
+        {
+          "sub_sector": "Rural demand",
+          "net_computed": 0.0,
+          "verdict": "🟡 Neutral",
+          "computed_factors": [],
+          "structural_factors": [
+            {
+              "factor": "Monsoon / rural wage",
+              "sign": "＋",
+              "kind": "catalyst (none today)"
+            },
+            {
+              "factor": "Festival demand",
+              "sign": "＋",
+              "kind": "catalyst (none today)"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "calibration_source": "events.db (build_events.py linkage_conf + event_stats)",
+  "macro_expectations": {
+    "always_included": true,
+    "us": {
+      "labor": {
+        "trend": "Stable",
+        "rate_implication": "neutral",
+        "evidence": [
+          "no fresh US labor print"
+        ]
+      },
+      "inflation": {
+        "trend": "Rising",
+        "components": "US CPI + PPI/wholesale + core PCE",
+        "rate_implication": "hawkish",
+        "evidence": [
+          "there will be price pressures and sustained inflation.\"\\n\"note that over the shorter run there can be times when supply is temporarily disrupted and p…"
+        ]
+      },
+      "rate_expectation": {
+        "central_bank": "Fed / FOMC",
+        "expectation": "On hold",
+        "confidence": 0.6,
+        "drivers": {
+          "news_hawkish": 0,
+          "news_dovish": 2,
+          "tape_bias": 0,
+          "us10y_pct": -0.51,
+          "dxy_pct": 0.06
+        },
+        "evidence": [
+          "stocks edge back up as oil prices pause climb but yields hover near highs oil",
+          "india-us trade deal: will refiners cut back on russian oil imports and pause new orders?"
+        ]
+      }
+    },
+    "india": {
+      "labor": {
+        "trend": "n/a",
+        "note": "India labour prints are infrequent; not modelled daily"
+      },
+      "inflation": {
+        "trend": "Stable",
+        "components": "India CPI/WPI + food + oil pass-through",
+        "evidence": [
+          "rising wholesale inflation in india signals producer price pressure - usthadian.com search rising wholesale inflation in india signals producer price …"
+        ]
+      },
+      "rate_expectation": {
+        "central_bank": "RBI / MPC",
+        "expectation": "On hold",
+        "drivers": [
+          "no fresh India rate signal"
+        ],
+        "evidence": [
+          "easing volatility to support bull trend"
+        ]
+      }
+    },
+    "europe": {
+      "rate_expectation": {
+        "central_bank": "ECB",
+        "expectation": "On hold (neutral)",
+        "tone": "neutral",
+        "drivers": [
+          "no fresh ECB signal"
+        ],
+        "nifty_transmission": "neutral for Nifty in isolation",
+        "evidence": [
+          "no fresh ECB data"
+        ]
+      }
+    },
+    "policy_path": {
+      "us": "US inflation rising + jobs stable → Fed on hold",
+      "india": "India inflation stable → RBI on hold",
+      "europe": "ECB on hold (neutral) (neutral) — guidance-driven"
+    },
+    "tag": "EXPECTATION"
+  },
+  "policy_catalysts": {
+    "scheme_catalysts": [
+      {
+        "theme": "Telecom",
+        "affected_sectors": [
+          "telecom"
+        ],
+        "direction": "tailwind",
+        "is_approval": true,
+        "beneficiaries_named": [],
+        "beneficiaries_watch": [
+          "Bharti Airtel",
+          "Vodafone Idea",
+          "Indus Towers"
+        ],
+        "resolved_from": "COMPANY_GAZETTEER (dynamic, not hardcoded)",
+        "signal": "POLICY TAILWIND — approved",
+        "headlines": [
+          "Kevin Warsh has homed in on three key phrases. How Fed watchers interpret them",
+          "OPEC+ approves fourth straight oil output hike, raises July targets by 188,000 bpd - The Times of India"
+        ]
+      },
+      {
+        "theme": "Electronics / mobile manufacturing",
+        "affected_sectors": [
+          "electronic",
+          "semiconductor"
+        ],
+        "direction": "tailwind",
+        "is_approval": true,
+        "beneficiaries_named": [],
+        "beneficiaries_watch": [
+          "Dixon Tech",
+          "Kaynes Tech"
+        ],
+        "resolved_from": "COMPANY_GAZETTEER (dynamic, not hardcoded)",
+        "signal": "POLICY TAILWIND — approved",
+        "headlines": [
+          "Cabinet-approved mobile phone manufacturing scheme to drive India's electronics manufacturing - DD India",
+          "Cabinet clears new Rs 62,500 crore mobile manufacturing scheme, Indian-brand phones to get fresh push - The Indian Express",
+          "Cabinet approves Mobile Phone Manufacturing Scheme (MPMS) - Manorama Yearbook"
+        ]
+      },
+      {
+        "theme": "Metals / mining",
+        "affected_sectors": [
+          "metals"
+        ],
+        "direction": "mixed",
+        "is_approval": false,
+        "beneficiaries_named": [
+          "Vedanta"
+        ],
+        "beneficiaries_watch": [
+          "Tata Steel",
+          "JSW Steel",
+          "Hindalco"
+        ],
+        "resolved_from": "COMPANY_GAZETTEER (dynamic, not hardcoded)",
+        "signal": "POLICY MIXED — conflicting signals",
+        "headlines": [
+          "Hindustan Zinc, Vedanta to NALCO: Metal stocks jump after India raises import duty in gold, silver, other metals - livemint.com",
+          "Base metals face supply strains, carbon costs and tariff headwinds: LME Week 2025 - Fastmarkets"
+        ]
+      }
+    ],
+    "broker_views": []
+  },
+  "sector_factor_library": [
+    {
+      "sector": "Capital Goods",
+      "score": 1.0,
+      "verdict": "🟢 Bullish",
+      "active_factors": [
+        {
+          "factor": "Government capex",
+          "base_weight": 0.3,
+          "activation": 1.0,
+          "regime_mult": 1.0,
+          "effective_weight": 0.3,
+          "contrib": 0.3
+        },
+        {
+          "factor": "AI infrastructure",
+          "base_weight": 0.2,
+          "activation": 1.0,
+          "regime_mult": 1.0,
+          "effective_weight": 0.2,
+          "contrib": 0.2
+        },
+        {
+          "factor": "China (secondary)",
+          "base_weight": 0.05,
+          "activation": 1.0,
+          "regime_mult": 1.0,
+          "effective_weight": 0.05,
+          "contrib": 0.05
+        }
+      ],
+      "primary_drivers": [
+        "Government capex",
+        "AI infrastructure",
+        "Manufacturing PMI",
+        "Power / copper (electrification)"
+      ],
+      "needs_data": [
+        {
+          "factor": "Manufacturing PMI",
+          "base_weight": 0.2,
+          "sign": "＋"
+        },
+        {
+          "factor": "Power / copper (electrification)",
+          "base_weight": 0.15,
+          "sign": "＋"
+        },
+        {
+          "factor": "FII",
+          "base_weight": 0.1,
+          "sign": "＋"
+        }
+      ],
+      "coverage": "3/6 factors live",
+      "regime_context": {
+        "ai_regime": "Neutral",
+        "risk_off": false,
+        "inflation_on": true
+      }
+    },
+    {
+      "sector": "Power & Utilities",
+      "score": 1.0,
+      "verdict": "🟢 Bullish",
+      "active_factors": [
+        {
+          "factor": "AI data centres / electricity demand",
+          "base_weight": 0.35,
+          "activation": 1.0,
+          "regime_mult": 1.0,
+          "effective_weight": 0.35,
+          "contrib": 0.35
+        },
+        {
+          "factor": "Government policy",
+          "base_weight": 0.15,
+          "activation": 1.0,
+          "regime_mult": 1.0,
+          "effective_weight": 0.15,
+          "contrib": 0.15
+        }
+      ],
+      "primary_drivers": [
+        "AI data centres / electricity demand",
+        "Peak / power demand",
+        "Coal / gas prices (inverse)",
+        "Government policy"
+      ],
+      "needs_data": [
+        {
+          "factor": "Peak / power demand",
+          "base_weight": 0.15,
+          "sign": "＋"
+        },
+        {
+          "factor": "Coal / gas prices (inverse)",
+          "base_weight": 0.2,
+          "sign": "－"
+        },
+        {
+          "factor": "FII",
+          "base_weight": 0.15,
+          "sign": "＋"
+        }
+      ],
+      "coverage": "2/5 factors live",
+      "regime_context": {
+        "ai_regime": "Neutral",
+        "risk_off": false,
+        "inflation_on": true
+      }
+    },
+    {
+      "sector": "Energy — OMC (downstream)",
+      "score": 0.795,
+      "verdict": "🟢 Bullish",
+      "active_factors": [
+        {
+          "factor": "Brent (input cost, inverse)",
+          "base_weight": 0.25,
+          "activation": 0.98,
+          "regime_mult": 1.3,
+          "effective_weight": 0.318,
+          "contrib": 0.318
+        },
+        {
+          "factor": "Govt retail pricing",
+          "base_weight": 0.2,
+          "activation": 0.4,
+          "regime_mult": 1.0,
+          "effective_weight": 0.08,
+          "contrib": 0.08
+        }
+      ],
+      "primary_drivers": [
+        "GRM / marketing margin",
+        "Govt retail pricing",
+        "Brent (input cost, inverse)",
+        "Inventory gains/losses"
+      ],
+      "needs_data": [
+        {
+          "factor": "GRM / marketing margin",
+          "base_weight": 0.35,
+          "sign": "＋"
+        },
+        {
+          "factor": "Inventory gains/losses",
+          "base_weight": 0.1,
+          "sign": "＋"
+        },
+        {
+          "factor": "FII",
+          "base_weight": 0.1,
+          "sign": "＋"
+        }
+      ],
+      "coverage": "2/5 factors live",
+      "regime_context": {
+        "ai_regime": "Neutral",
+        "risk_off": false,
+        "inflation_on": true
+      }
+    },
+    {
+      "sector": "Pharma",
+      "score": 0.655,
+      "verdict": "🟢 Bullish",
+      "active_factors": [
+        {
+          "factor": "USFDA action",
+          "base_weight": 0.3,
+          "activation": 1.0,
+          "regime_mult": 1.0,
+          "effective_weight": 0.3,
+          "contrib": 0.3
+        },
+        {
+          "factor": "Generic drug pricing",
+          "base_weight": 0.18,
+          "activation": 1.0,
+          "regime_mult": 1.0,
+          "effective_weight": 0.18,
+          "contrib": 0.18
+        },
+        {
+          "factor": "Earnings",
+          "base_weight": 0.1,
+          "activation": 1.0,
+          "regime_mult": 1.0,
+          "effective_weight": 0.1,
+          "contrib": -0.1
+        }
+      ],
+      "primary_drivers": [
+        "USDINR (export)",
+        "USFDA action",
+        "Generic drug pricing",
+        "Earnings"
+      ],
+      "needs_data": [
+        {
+          "factor": "USDINR (export)",
+          "base_weight": 0.3,
+          "sign": "＋"
+        },
+        {
+          "factor": "China API cost (inverse)",
+          "base_weight": 0.07,
+          "sign": "－"
+        },
+        {
+          "factor": "FII (secondary)",
+          "base_weight": 0.05,
+          "sign": "＋"
+        }
+      ],
+      "coverage": "3/6 factors live",
+      "regime_context": {
+        "ai_regime": "Neutral",
+        "risk_off": false,
+        "inflation_on": true
+      }
+    },
+    {
+      "sector": "Metals",
+      "score": 0.492,
+      "verdict": "🟢 Bullish",
+      "active_factors": [
+        {
+          "factor": "China demand / stimulus",
+          "base_weight": 0.25,
+          "activation": 1.0,
+          "regime_mult": 1.0,
+          "effective_weight": 0.25,
+          "contrib": 0.25
+        },
+        {
+          "factor": "USD (strong USD = headwind)",
+          "base_weight": 0.05,
+          "activation": 0.07,
+          "regime_mult": 1.0,
+          "effective_weight": 0.004,
+          "contrib": -0.004
+        }
+      ],
+      "primary_drivers": [
+        "China demand / stimulus",
+        "China property",
+        "Copper",
+        "Steel / iron ore"
+      ],
+      "needs_data": [
+        {
+          "factor": "China property",
+          "base_weight": 0.2,
+          "sign": "＋"
+        },
+        {
+          "factor": "Copper",
+          "base_weight": 0.15,
+          "sign": "＋"
+        },
+        {
+          "factor": "Steel / iron ore",
+          "base_weight": 0.15,
+          "sign": "＋"
+        },
+        {
+          "factor": "Global manufacturing PMI",
+          "base_weight": 0.15,
+          "sign": "＋"
+        },
+        {
+          "factor": "FII",
+          "base_weight": 0.05,
+          "sign": "＋"
+        }
+      ],
+      "coverage": "2/7 factors live",
+      "regime_context": {
+        "ai_regime": "Neutral",
+        "risk_off": false,
+        "inflation_on": true
+      }
+    },
+    {
+      "sector": "Telecom",
+      "score": 0.4,
+      "verdict": "🟢 Bullish",
+      "active_factors": [
+        {
+          "factor": "Spectrum / tariff policy",
+          "base_weight": 0.2,
+          "activation": 1.0,
+          "regime_mult": 1.0,
+          "effective_weight": 0.2,
+          "contrib": 0.2
+        },
+        {
+          "factor": "AI infrastructure",
+          "base_weight": 0.15,
+          "activation": 1.0,
+          "regime_mult": 1.0,
+          "effective_weight": 0.15,
+          "contrib": 0.15
+        },
+        {
+          "factor": "Capex intensity (inverse)",
+          "base_weight": 0.15,
+          "activation": 1.0,
+          "regime_mult": 1.0,
+          "effective_weight": 0.15,
+          "contrib": -0.15
+        }
+      ],
+      "primary_drivers": [
+        "Data growth / AI usage",
+        "Spectrum / tariff policy",
+        "AI infrastructure",
+        "Capex intensity (inverse)"
+      ],
+      "needs_data": [
+        {
+          "factor": "Data growth / AI usage",
+          "base_weight": 0.4,
+          "sign": "＋"
+        },
+        {
+          "factor": "FII",
+          "base_weight": 0.1,
+          "sign": "＋"
+        }
+      ],
+      "coverage": "3/5 factors live",
+      "regime_context": {
+        "ai_regime": "Neutral",
+        "risk_off": false,
+        "inflation_on": true
+      }
+    },
+    {
+      "sector": "FMCG",
+      "score": 0.181,
+      "verdict": "🟢 Bullish",
+      "active_factors": [
+        {
+          "factor": "Crude derivatives — packaging (inverse)",
+          "base_weight": 0.15,
+          "activation": 0.98,
+          "regime_mult": 1.3,
+          "effective_weight": 0.191,
+          "contrib": 0.191
+        },
+        {
+          "factor": "Earnings",
+          "base_weight": 0.1,
+          "activation": 1.0,
+          "regime_mult": 1.0,
+          "effective_weight": 0.1,
+          "contrib": -0.1
+        }
+      ],
+      "primary_drivers": [
+        "Monsoon / rural demand",
+        "Palm / edible oil (input, inverse)",
+        "Rural wage",
+        "Food inflation"
+      ],
+      "needs_data": [
+        {
+          "factor": "Monsoon / rural demand",
+          "base_weight": 0.2,
+          "sign": "＋"
+        },
+        {
+          "factor": "Palm / edible oil (input, inverse)",
+          "base_weight": 0.2,
+          "sign": "－"
+        },
+        {
+          "factor": "Rural wage",
+          "base_weight": 0.15,
+          "sign": "＋"
+        },
+        {
+          "factor": "Food inflation",
+          "base_weight": 0.15,
+          "sign": "－"
+        },
+        {
+          "factor": "Consumer confidence",
+          "base_weight": 0.05,
+          "sign": "＋"
+        }
+      ],
+      "coverage": "2/7 factors live",
+      "regime_context": {
+        "ai_regime": "Neutral",
+        "risk_off": false,
+        "inflation_on": true
+      }
+    },
+    {
+      "sector": "IT Services",
+      "score": 0.16,
+      "verdict": "🟢 Bullish",
+      "active_factors": [
+        {
+          "factor": "US enterprise IT spend",
+          "base_weight": 0.25,
+          "activation": 1.0,
+          "regime_mult": 1.0,
+          "effective_weight": 0.25,
+          "contrib": 0.25
+        },
+        {
+          "factor": "Earnings",
+          "base_weight": 0.15,
+          "activation": 1.0,
+          "regime_mult": 1.0,
+          "effective_weight": 0.15,
+          "contrib": -0.15
+        },
+        {
+          "factor": "SOX (proxy only, secondary)",
+          "base_weight": 0.02,
+          "activation": 1.0,
+          "regime_mult": 1.0,
+          "effective_weight": 0.02,
+          "contrib": -0.02
+        }
+      ],
+      "primary_drivers": [
+        "AI regime (Complement/Substitution)",
+        "US enterprise IT spend",
+        "USDINR (weak rupee = export tailwind)",
+        "Earnings"
+      ],
+      "needs_data": [
+        {
+          "factor": "AI regime (Complement/Substitution)",
+          "base_weight": 0.3,
+          "sign": "＋"
+        },
+        {
+          "factor": "USDINR (weak rupee = export tailwind)",
+          "base_weight": 0.2,
+          "sign": "＋"
+        },
+        {
+          "factor": "FII",
+          "base_weight": 0.05,
+          "sign": "＋"
+        }
+      ],
+      "coverage": "3/6 factors live",
+      "regime_context": {
+        "ai_regime": "Neutral",
+        "risk_off": false,
+        "inflation_on": true
+      }
+    },
+    {
+      "sector": "Auto",
+      "score": -0.21,
+      "verdict": "🔴 Bearish",
+      "active_factors": [
+        {
+          "factor": "Earnings / execution",
+          "base_weight": 0.2,
+          "activation": 1.0,
+          "regime_mult": 1.0,
+          "effective_weight": 0.2,
+          "contrib": -0.2
+        },
+        {
+          "factor": "Fuel prices (oil, inverse)",
+          "base_weight": 0.1,
+          "activation": 0.98,
+          "regime_mult": 1.3,
+          "effective_weight": 0.127,
+          "contrib": 0.127
+        },
+        {
+          "factor": "Interest rates (financing)",
+          "base_weight": 0.15,
+          "activation": 0.6,
+          "regime_mult": 1.3,
+          "effective_weight": 0.117,
+          "contrib": -0.117
+        },
+        {
+          "factor": "Consumer demand",
+          "base_weight": 0.2,
+          "activation": 0.4,
+          "regime_mult": 1.0,
+          "effective_weight": 0.08,
+          "contrib": 0.08
+        }
+      ],
+      "primary_drivers": [
+        "Consumer demand",
+        "Earnings / execution",
+        "EV theme (structural)",
+        "Interest rates (financing)"
+      ],
+      "needs_data": [
+        {
+          "factor": "EV theme (structural)",
+          "base_weight": 0.15,
+          "sign": "＋"
+        },
+        {
+          "factor": "Rural income / monsoon",
+          "base_weight": 0.1,
+          "sign": "＋"
+        },
+        {
+          "factor": "Commodity cost — steel/rubber/alu",
+          "base_weight": 0.1,
+          "sign": "－"
+        }
+      ],
+      "coverage": "4/7 factors live",
+      "regime_context": {
+        "ai_regime": "Neutral",
+        "risk_off": false,
+        "inflation_on": true
+      }
+    },
+    {
+      "sector": "Energy — Upstream",
+      "score": -0.292,
+      "verdict": "🔴 Bearish",
+      "active_factors": [
+        {
+          "factor": "Brent LEVEL (realisations)",
+          "base_weight": 0.3,
+          "activation": 0.67,
+          "regime_mult": 1.3,
+          "effective_weight": 0.26,
+          "contrib": 0.26
+        },
+        {
+          "factor": "Brent daily move",
+          "base_weight": 0.2,
+          "activation": 0.98,
+          "regime_mult": 1.3,
+          "effective_weight": 0.254,
+          "contrib": -0.254
+        },
+        {
+          "factor": "Govt policy / windfall tax",
+          "base_weight": 0.3,
+          "activation": 0.4,
+          "regime_mult": 1.0,
+          "effective_weight": 0.12,
+          "contrib": -0.12
+        },
+        {
+          "factor": "Earnings",
+          "base_weight": 0.1,
+          "activation": 1.0,
+          "regime_mult": 1.0,
+          "effective_weight": 0.1,
+          "contrib": -0.1
+        }
+      ],
+      "primary_drivers": [
+        "Govt policy / windfall tax",
+        "Brent LEVEL (realisations)",
+        "Brent daily move",
+        "Gas prices"
+      ],
+      "needs_data": [
+        {
+          "factor": "Gas prices",
+          "base_weight": 0.1,
+          "sign": "＋"
+        }
+      ],
+      "coverage": "4/5 factors live",
+      "regime_context": {
+        "ai_regime": "Neutral",
+        "risk_off": false,
+        "inflation_on": true
+      }
+    },
+    {
+      "sector": "Realty",
+      "score": -0.468,
+      "verdict": "🔴 Bearish",
+      "active_factors": [
+        {
+          "factor": "RBI rates / mortgage cost (inverse)",
+          "base_weight": 0.3,
+          "activation": 0.6,
+          "regime_mult": 1.3,
+          "effective_weight": 0.234,
+          "contrib": -0.234
+        }
+      ],
+      "primary_drivers": [
+        "RBI rates / mortgage cost (inverse)",
+        "Credit availability / mortgage demand",
+        "Commercial office demand",
+        "FII"
+      ],
+      "needs_data": [
+        {
+          "factor": "Credit availability / mortgage demand",
+          "base_weight": 0.2,
+          "sign": "＋"
+        },
+        {
+          "factor": "Commercial office demand",
+          "base_weight": 0.15,
+          "sign": "＋"
+        },
+        {
+          "factor": "FII",
+          "base_weight": 0.15,
+          "sign": "＋"
+        },
+        {
+          "factor": "Income growth",
+          "base_weight": 0.1,
+          "sign": "＋"
+        },
+        {
+          "factor": "Cement / steel input (inverse)",
+          "base_weight": 0.1,
+          "sign": "－"
+        }
+      ],
+      "coverage": "1/6 factors live",
+      "regime_context": {
+        "ai_regime": "Neutral",
+        "risk_off": false,
+        "inflation_on": true
+      }
+    },
+    {
+      "sector": "Banks / Financials",
+      "score": -0.56,
+      "verdict": "🔴 Bearish",
+      "active_factors": [
+        {
+          "factor": "RBI / rate stress (hot CPI + yields)",
+          "base_weight": 0.25,
+          "activation": 0.6,
+          "regime_mult": 1.3,
+          "effective_weight": 0.195,
+          "contrib": -0.195
+        },
+        {
+          "factor": "Earnings",
+          "base_weight": 0.15,
+          "activation": 1.0,
+          "regime_mult": 1.0,
+          "effective_weight": 0.15,
+          "contrib": -0.15
+        },
+        {
+          "factor": "Oil (indirect via inflation)",
+          "base_weight": 0.03,
+          "activation": 0.98,
+          "regime_mult": 1.3,
+          "effective_weight": 0.038,
+          "contrib": 0.038
+        },
+        {
+          "factor": "Yield curve / treasury MTM",
+          "base_weight": 0.2,
+          "activation": 0.17,
+          "regime_mult": 1.0,
+          "effective_weight": 0.034,
+          "contrib": 0.034
+        },
+        {
+          "factor": "VIX (secondary)",
+          "base_weight": 0.02,
+          "activation": 0.34,
+          "regime_mult": 1.0,
+          "effective_weight": 0.007,
+          "contrib": -0.007
+        }
+      ],
+      "primary_drivers": [
+        "RBI / rate stress (hot CPI + yields)",
+        "Yield curve / treasury MTM",
+        "Credit growth",
+        "Earnings"
+      ],
+      "needs_data": [
+        {
+          "factor": "Credit growth",
+          "base_weight": 0.2,
+          "sign": "＋"
+        },
+        {
+          "factor": "Deposit growth / CASA",
+          "base_weight": 0.1,
+          "sign": "＋"
+        },
+        {
+          "factor": "FII / DII flow",
+          "base_weight": 0.05,
+          "sign": "＋"
+        }
+      ],
+      "coverage": "5/8 factors live",
+      "regime_context": {
+        "ai_regime": "Neutral",
+        "risk_off": false,
+        "inflation_on": true
+      }
+    }
+  ],
+  "metals_sentiment": {
+    "composite": -0.033,
+    "label": "Neutral",
+    "overall_label": "Bullish",
+    "news": {
+      "score": 0.29,
+      "label": "Bullish",
+      "n_items": 14,
+      "filtered_out": 10,
+      "bullish": 6,
+      "bearish": 2,
+      "evidence": [
+        "…metals on fire: what's driving the unstoppable rally in copper, aluminium, and zinc - the economic times search metals on fire: what's driving the unstoppab…",
+        "…base metals rally on supply crunch, ai-infra demand; experts see selective upside ahead - moneycontr…",
+        "…mcx gold down 23%; silver prices dip by nearly ₹200,000 from high in 6 days - business standard sear…"
+      ]
+    },
+    "bucket_avgs": {
+      "base_metals": 0.04,
+      "steel_complex": -0.082
+    },
+    "components": [
+      {
+        "name": "Copper",
+        "bucket": "base_metals",
+        "pct": -0.06,
+        "available": true,
+        "source": "web(TE)",
+        "role": ""
+      },
+      {
+        "name": "Aluminium",
+        "bucket": "base_metals",
+        "pct": 0.33,
+        "available": true,
+        "source": "web(TE)",
+        "role": ""
+      },
+      {
+        "name": "Zinc",
+        "bucket": "base_metals",
+        "pct": 0.11,
+        "available": true,
+        "source": "web(TE)",
+        "role": ""
+      },
+      {
+        "name": "Nickel",
+        "bucket": "base_metals",
+        "pct": 0.09,
+        "available": true,
+        "source": "web(TE)",
+        "role": ""
+      },
+      {
+        "name": "Lead",
+        "bucket": "base_metals",
+        "pct": -0.27,
+        "available": true,
+        "source": "web(TE)",
+        "role": ""
+      },
+      {
+        "name": "Steel (China rebar)",
+        "bucket": "steel_complex",
+        "pct": 0.36,
+        "available": true,
+        "source": "web(TE)",
+        "role": ""
+      },
+      {
+        "name": "HRC Steel",
+        "bucket": "steel_complex",
+        "pct": 0.41,
+        "available": true,
+        "source": "web(TE)",
+        "role": ""
+      },
+      {
+        "name": "Iron Ore (China)",
+        "bucket": "steel_complex",
+        "pct": -0.2,
+        "available": true,
+        "source": "web(TE)",
+        "role": ""
+      },
+      {
+        "name": "Coking Coal",
+        "bucket": "steel_complex",
+        "pct": -0.9,
+        "available": true,
+        "source": "web(TE)",
+        "role": ""
+      }
+    ],
+    "coverage": "9/9 metals via web (tradingeconomics) + metal news",
+    "n_available": 9,
+    "n_total": 9,
+    "web_used": true,
+    "note": null,
+    "tag": "PRIOR"
+  },
+  "relationship_tiers": {
+    "framework": "return = market (systematic) + sector + idiosyncratic (specific)",
+    "market_tilt": {
+      "expected_move_pct": -2.15,
+      "direction": "Down",
+      "note": "systematic (beta) tilt — the whole-market lean from primary drivers"
+    },
+    "primary": [
+      {
+        "relationship": "Geopolitics / oil shock",
+        "driver": "geopolitics_hits",
+        "value": 36.0,
+        "market_effect": "Down",
+        "contribution": -1.8,
+        "mechanism": "supply-risk premium is a systematic risk-off shock",
+        "active": true
+      },
+      {
+        "relationship": "Volatility / risk",
+        "driver": "vix_pct",
+        "value": 4.14,
+        "market_effect": "Down",
+        "contribution": -0.207,
+        "mechanism": "rising VIX = risk-off = broad de-risking",
+        "active": true
+      },
+      {
+        "relationship": "Asia risk (Kospi)",
+        "driver": "kospi_pct",
+        "value": -5.72,
+        "market_effect": "Down",
+        "contribution": -0.2,
+        "mechanism": "Asia session risk appetite spills into India",
+        "active": true
+      },
+      {
+        "relationship": "Global equities (SOX)",
+        "driver": "sox_pct",
+        "value": -4.25,
+        "market_effect": "Down",
+        "contribution": -0.149,
+        "mechanism": "global tech/risk sentiment sets the overnight lead",
+        "active": true
+      },
+      {
+        "relationship": "India CPI / RBI",
+        "driver": "india_cpi_hot",
+        "value": 1,
+        "market_effect": "Down",
+        "contribution": -0.1,
+        "mechanism": "hot CPI → hawkish RBI → tighter conditions for the whole market",
+        "active": true
+      },
+      {
+        "relationship": "US rates / Fed path",
+        "driver": "us10y_pct",
+        "value": -0.51,
+        "market_effect": "Flat",
+        "contribution": 0.018,
+        "mechanism": "higher US yields → stronger USD → EM/FII outflow → market down",
+        "active": false
+      },
+      {
+        "relationship": "US Dollar (DXY)",
+        "driver": "dxy_pct",
+        "value": 0.06,
+        "market_effect": "Flat",
+        "contribution": -0.006,
+        "mechanism": "a strong dollar pulls capital out of EM equity",
+        "active": false
+      }
+    ],
+    "secondary": [
+      {
+        "sector": "Capital Goods",
+        "direction": "🟢 Bullish",
+        "score": 1.0,
+        "top_driver": "Government capex"
+      },
+      {
+        "sector": "Power & Utilities",
+        "direction": "🟢 Bullish",
+        "score": 1.0,
+        "top_driver": "AI data centres / electricity demand"
+      },
+      {
+        "sector": "Energy — OMC (downstream)",
+        "direction": "🟢 Bullish",
+        "score": 0.795,
+        "top_driver": "Brent"
+      },
+      {
+        "sector": "Pharma",
+        "direction": "🟢 Bullish",
+        "score": 0.655,
+        "top_driver": "USFDA action"
+      },
+      {
+        "sector": "Metals",
+        "direction": "🟢 Bullish",
+        "score": 0.492,
+        "top_driver": "China demand / stimulus"
+      },
+      {
+        "sector": "Telecom",
+        "direction": "🟢 Bullish",
+        "score": 0.4,
+        "top_driver": "Spectrum / tariff policy"
+      },
+      {
+        "sector": "Energy — Upstream",
+        "direction": "🔴 Bearish",
+        "score": -0.292,
+        "top_driver": "Brent LEVEL"
+      },
+      {
+        "sector": "Realty",
+        "direction": "🔴 Bearish",
+        "score": -0.468,
+        "top_driver": "RBI rates / mortgage cost"
+      },
+      {
+        "sector": "Banks / Financials",
+        "direction": "🔴 Bearish",
+        "score": -0.56,
+        "top_driver": "RBI / rate stress"
+      }
+    ],
+    "tertiary": [
+      {
+        "company": "HDFC Bank",
+        "catalyst": "company news",
+        "idiosyncratic_direction": "Down",
+        "strength": "News"
+      },
+      {
+        "company": "Bharti Airtel",
+        "catalyst": "company news",
+        "idiosyncratic_direction": "Neutral",
+        "strength": "News"
+      },
+      {
+        "company": "Hindustan Unilever",
+        "catalyst": "company news",
+        "idiosyncratic_direction": "Down",
+        "strength": "News"
+      },
+      {
+        "company": "NTPC",
+        "catalyst": "results/earnings catalyst",
+        "idiosyncratic_direction": "Neutral",
+        "strength": "Catalyst"
+      },
+      {
+        "company": "ICICI Prudential",
+        "catalyst": "company news",
+        "idiosyncratic_direction": "Down",
+        "strength": "News"
+      },
+      {
+        "company": "LTIMindtree",
+        "catalyst": "results/earnings catalyst",
+        "idiosyncratic_direction": "Neutral",
+        "strength": "Catalyst"
+      },
+      {
+        "company": "Vedanta",
+        "catalyst": "scheme beneficiary",
+        "idiosyncratic_direction": "Up",
+        "strength": "Catalyst"
+      }
+    ],
+    "decoupling": [
+      {
+        "company": "Vedanta",
+        "catalyst": "scheme beneficiary",
+        "market_says": "Down",
+        "stock_expected": "Up",
+        "verdict": "DECOUPLED — expected to up despite the market leaning down; its idiosyncratic catalyst (scheme beneficiary) dominates."
+      }
+    ]
+  },
+  "macro_dashboard": {
+    "market_phase": {
+      "phase": "Risk-Off / Defensive",
+      "liquidity": "Negative",
+      "growth": "Positive",
+      "inflation": "Watch",
+      "ai": "Mixed",
+      "oil": "Brent $97 — inflation watch",
+      "market_bias": "🔴 Bearish",
+      "confidence": 81,
+      "overall_score": -0.269
+    },
+    "macro_regime_card": [
+      {
+        "theme": "Liquidity",
+        "score": -0.103,
+        "view": "🟡 Neutral",
+        "drivers": "flows n/a"
+      },
+      {
+        "theme": "Growth",
+        "score": 0.143,
+        "view": "🟢 Bullish",
+        "drivers": "PMI ＋ (40%), Earnings － (30%)"
+      },
+      {
+        "theme": "Inflation",
+        "score": -0.205,
+        "view": "🔴 Bearish",
+        "drivers": "US Rising, India Stable, oil -3.9%"
+      },
+      {
+        "theme": "Monetary Policy",
+        "score": 0.0,
+        "view": "🟡 Neutral",
+        "drivers": "Fed On hold, RBI On hold"
+      },
+      {
+        "theme": "Geopolitics",
+        "score": -1.0,
+        "view": "🔴 Bearish",
+        "drivers": "36 headline(s) · SEVERE (closure/war/nuclear risk)"
+      },
+      {
+        "theme": "Technology / AI",
+        "score": -0.37,
+        "view": "🔴 Bearish",
+        "drivers": "SOX -4.2%, AI regime Substitution (infra > services)"
+      },
+      {
+        "theme": "Valuation / Risk",
+        "score": -0.345,
+        "view": "🔴 Risk-Off",
+        "drivers": "VIX +4.1% (rising → risk-off)"
+      }
+    ],
+    "dominant_themes": [
+      {
+        "rank": 1,
+        "theme": "Geopolitics deteriorating",
+        "strength": 92,
+        "beneficiaries": [
+          "Upstream Energy"
+        ],
+        "losers": [
+          "Airlines",
+          "Paints"
+        ]
+      },
+      {
+        "rank": 2,
+        "theme": "Technology / AI deteriorating",
+        "strength": 71,
+        "beneficiaries": [
+          "IT Services"
+        ],
+        "losers": [
+          "EMS",
+          "Power",
+          "Telecom",
+          "Capital Goods"
+        ]
+      },
+      {
+        "rank": 3,
+        "theme": "Valuation / Risk deteriorating",
+        "strength": 70,
+        "beneficiaries": [
+          "Gold",
+          "Defensives"
+        ],
+        "losers": [
+          "High-beta",
+          "Banks"
+        ]
+      },
+      {
+        "rank": 4,
+        "theme": "Inflation deteriorating",
+        "strength": 65,
+        "beneficiaries": [
+          "Upstream Energy"
+        ],
+        "losers": [
+          "Consumer",
+          "Auto",
+          "Banks"
+        ]
+      },
+      {
+        "rank": 5,
+        "theme": "Growth improving",
+        "strength": 63,
+        "beneficiaries": [
+          "Cyclicals",
+          "Capital Goods"
+        ],
+        "losers": [
+          "—"
+        ]
+      }
+    ],
+    "institutional_dashboard": [
+      {
+        "theme": "Institutional Flows",
+        "state": "n/a",
+        "bias": "🟡 Neutral",
+        "confidence": 59,
+        "horizon": "1–5 Days",
+        "transmission": "Liquidity → Large Caps"
+      },
+      {
+        "theme": "Global Rates (Fed)",
+        "state": "On hold",
+        "bias": "🟡 Neutral",
+        "confidence": 60,
+        "horizon": "Weeks",
+        "transmission": "On hold → rate path data-dependent"
+      },
+      {
+        "theme": "RBI Policy",
+        "state": "On hold",
+        "bias": "🟡 Neutral",
+        "confidence": 65,
+        "horizon": "Weeks",
+        "transmission": "Rates → Banks / Realty"
+      },
+      {
+        "theme": "Oil",
+        "state": "Brent $97 (-3.9%)",
+        "bias": "🟢 Positive",
+        "confidence": 70,
+        "horizon": "Days–Weeks",
+        "transmission": "Inflation → RBI → Banks"
+      },
+      {
+        "theme": "Geopolitics",
+        "state": "36 headline(s)",
+        "bias": "🔴 Bearish",
+        "confidence": 92,
+        "horizon": "Days",
+        "transmission": "Oil Risk"
+      },
+      {
+        "theme": "Inflation",
+        "state": "India Stable, US Rising",
+        "bias": "🔴 Bearish",
+        "confidence": 68,
+        "horizon": "Months",
+        "transmission": "Consumer → Banks"
+      },
+      {
+        "theme": "USDINR",
+        "state": "₹96.6",
+        "bias": "🟡 Neutral",
+        "confidence": 68,
+        "horizon": "Days",
+        "transmission": "Exporters ↑"
+      },
+      {
+        "theme": "AI Theme (Infra)",
+        "state": "AI Infrastructure Mixed — Semis · EMS · Power · Telecom · Software vs IT-Services",
+        "bias": "🟢 EMS / Power / Telecom",
+        "confidence": 74,
+        "horizon": "Quarters",
+        "transmission": "Capex Cycle → Semis/EMS/Power/Data-centres"
+      },
+      {
+        "theme": "AI Services",
+        "state": "AI Substitution",
+        "bias": "🔴 IT Services",
+        "confidence": 70,
+        "horizon": "Quarters",
+        "transmission": "Consulting Pressure"
+      },
+      {
+        "theme": "Market Regime",
+        "state": "🟡 Mixed",
+        "bias": "🔴 Bearish",
+        "confidence": 81,
+        "horizon": "Intraday",
+        "transmission": "Broad Participation"
+      }
+    ]
+  },
+  "engine_stats": {
+    "agreement": 0.86,
+    "n_bull": 2,
+    "n_bear": 6,
+    "conviction": "High",
+    "dissenters": [
+      "oil_pct",
+      "us10y_pct"
+    ]
+  },
+  "overlay_applied": true
+}

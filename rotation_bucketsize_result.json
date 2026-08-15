@@ -1,0 +1,33 @@
+{
+ "sizes": {
+  "Automobile": 5,
+  "Cement": 2,
+  "Consumer Durables": 3,
+  "FMCG": 4,
+  "Financial Services": 11,
+  "Healthcare": 5,
+  "Information Technology": 5,
+  "Metals & Mining": 5,
+  "Oil & Gas": 2,
+  "Power": 2,
+  "Services": 2
+ },
+ "persistence": {
+  "Cement": -0.1737,
+  "Oil & Gas": -0.1008,
+  "Power": -0.023,
+  "Services": -0.0521,
+  "Consumer Durables": -0.1874,
+  "FMCG": 0.0499,
+  "Automobile": -0.1245,
+  "Healthcare": 0.0289,
+  "Information Technology": 0.0114,
+  "Metals & Mining": -0.0668,
+  "Financial Services": 0.0277
+ },
+ "corr_size_vs_r": 0.475,
+ "corr_inv_size_vs_r": -0.459,
+ "mean_small_buckets": -0.1074,
+ "mean_large_buckets": -0.0247,
+ "verdict": "ARTIFACT of thin/stale prices in small buckets -- the reversal shrinks toward zero as the bucket widens, and vanishes on the published indices"
+}

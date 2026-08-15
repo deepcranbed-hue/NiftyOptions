@@ -1,0 +1,542 @@
+{
+ "sample_start": "2018-01-01",
+ "sample_end": "2026-08-10",
+ "horizons": [
+  1,
+  2,
+  5
+ ],
+ "survivors": 18,
+ "total_coefficients": 132,
+ "expected_by_chance": 6.6,
+ "results": {
+  "NIFTYIT_h1": {
+   "beta": {
+    "USDINR": 0.0391,
+    "CRUDE": 0.0054,
+    "VIX": -0.0048,
+    "own_ret": 0.0255
+   },
+   "t": {
+    "USDINR": 0.56,
+    "CRUDE": 1.89,
+    "VIX": -0.95,
+    "own_ret": 1.17
+   },
+   "r2_pct": 0.265,
+   "n": 2296
+  },
+  "NIFTYAUTO_h1": {
+   "beta": {
+    "USDINR": -0.0859,
+    "CRUDE": 0.0056,
+    "VIX": -0.0013,
+    "own_ret": 0.0042
+   },
+   "t": {
+    "USDINR": -1.62,
+    "CRUDE": 3.55,
+    "VIX": -0.4,
+    "own_ret": 0.17
+   },
+   "r2_pct": 0.38,
+   "n": 2296
+  },
+  "NIFTYFMCG_h1": {
+   "beta": {
+    "USDINR": -0.0084,
+    "CRUDE": -0.0112,
+    "VIX": -0.0007,
+    "own_ret": 0.0013
+   },
+   "t": {
+    "USDINR": -0.14,
+    "CRUDE": -3.79,
+    "VIX": -0.21,
+    "own_ret": 0.05
+   },
+   "r2_pct": 1.105,
+   "n": 2296
+  },
+  "NIFTYMETAL_h1": {
+   "beta": {
+    "USDINR": -0.0434,
+    "CRUDE": 0.0128,
+    "VIX": 0.0065,
+    "own_ret": 0.0095
+   },
+   "t": {
+    "USDINR": -0.52,
+    "CRUDE": 2.98,
+    "VIX": 1.34,
+    "own_ret": 0.41
+   },
+   "r2_pct": 0.673,
+   "n": 2296
+  },
+  "NIFTYPHARMA_h1": {
+   "beta": {
+    "USDINR": -0.0107,
+    "CRUDE": -0.013,
+    "VIX": -0.0015,
+    "own_ret": 0.0255
+   },
+   "t": {
+    "USDINR": -0.1,
+    "CRUDE": -3.79,
+    "VIX": -0.33,
+    "own_ret": 0.9
+   },
+   "r2_pct": 0.944,
+   "n": 2296
+  },
+  "NIFTYFIN_h1": {
+   "beta": {
+    "USDINR": -0.0107,
+    "CRUDE": 0.0038,
+    "VIX": 0.0018,
+    "own_ret": 0.0255
+   },
+   "t": {
+    "USDINR": -0.24,
+    "CRUDE": 1.79,
+    "VIX": 0.73,
+    "own_ret": 0.97
+   },
+   "r2_pct": 0.302,
+   "n": 2296
+  },
+  "NIFTYPSU_h1": {
+   "beta": {
+    "USDINR": 0.0058,
+    "CRUDE": 0.0018,
+    "VIX": 0.0022,
+    "own_ret": -0.0203
+   },
+   "t": {
+    "USDINR": 0.07,
+    "CRUDE": 0.67,
+    "VIX": 0.28,
+    "own_ret": -0.83
+   },
+   "r2_pct": 0.063,
+   "n": 2296
+  },
+  "NIFTYREALTY_h1": {
+   "beta": {
+    "USDINR": 0.0195,
+    "CRUDE": -0.0015,
+    "VIX": -0.0094,
+    "own_ret": 0.0638
+   },
+   "t": {
+    "USDINR": 0.26,
+    "CRUDE": -0.61,
+    "VIX": -1.51,
+    "own_ret": 2.1
+   },
+   "r2_pct": 0.669,
+   "n": 2296
+  },
+  "NIFTYENERGY_h1": {
+   "beta": {
+    "USDINR": -0.0443,
+    "CRUDE": 0.0022,
+    "VIX": -0.0014,
+    "own_ret": 0.0475
+   },
+   "t": {
+    "USDINR": -0.72,
+    "CRUDE": 0.54,
+    "VIX": -0.36,
+    "own_ret": 1.73
+   },
+   "r2_pct": 0.298,
+   "n": 2296
+  },
+  "NIFTYCONSUM_h1": {
+   "beta": {
+    "USDINR": -0.0301,
+    "CRUDE": -0.0076,
+    "VIX": -0.0019,
+    "own_ret": -0.0098
+   },
+   "t": {
+    "USDINR": -0.79,
+    "CRUDE": -3.86,
+    "VIX": -0.8,
+    "own_ret": -0.34
+   },
+   "r2_pct": 1.213,
+   "n": 2296
+  },
+  "NIFTYINFRA_h1": {
+   "beta": {
+    "USDINR": -0.0118,
+    "CRUDE": -0.0013,
+    "VIX": 0.0013,
+    "own_ret": 0.0041
+   },
+   "t": {
+    "USDINR": -0.31,
+    "CRUDE": -0.79,
+    "VIX": 0.56,
+    "own_ret": 0.16
+   },
+   "r2_pct": 0.059,
+   "n": 2296
+  },
+  "NIFTYIT_h2": {
+   "beta": {
+    "USDINR": -0.0734,
+    "CRUDE": 0.0059,
+    "VIX": -0.0004,
+    "own_ret": 0.0049
+   },
+   "t": {
+    "USDINR": -0.79,
+    "CRUDE": 1.68,
+    "VIX": -0.05,
+    "own_ret": 0.17
+   },
+   "r2_pct": 0.104,
+   "n": 2295
+  },
+  "NIFTYAUTO_h2": {
+   "beta": {
+    "USDINR": -0.0492,
+    "CRUDE": 0.0052,
+    "VIX": -0.0072,
+    "own_ret": 0.0131
+   },
+   "t": {
+    "USDINR": -0.71,
+    "CRUDE": 2.52,
+    "VIX": -1.46,
+    "own_ret": 0.36
+   },
+   "r2_pct": 0.249,
+   "n": 2295
+  },
+  "NIFTYFMCG_h2": {
+   "beta": {
+    "USDINR": -0.0197,
+    "CRUDE": -0.0086,
+    "VIX": 0.0045,
+    "own_ret": -0.0229
+   },
+   "t": {
+    "USDINR": -0.23,
+    "CRUDE": -2.28,
+    "VIX": 0.75,
+    "own_ret": -0.52
+   },
+   "r2_pct": 0.389,
+   "n": 2295
+  },
+  "NIFTYMETAL_h2": {
+   "beta": {
+    "USDINR": -0.204,
+    "CRUDE": 0.016,
+    "VIX": 0.0043,
+    "own_ret": 0.0257
+   },
+   "t": {
+    "USDINR": -2.0,
+    "CRUDE": 5.27,
+    "VIX": 0.54,
+    "own_ret": 0.79
+   },
+   "r2_pct": 0.653,
+   "n": 2295
+  },
+  "NIFTYPHARMA_h2": {
+   "beta": {
+    "USDINR": 0.0176,
+    "CRUDE": -0.0016,
+    "VIX": 0.0045,
+    "own_ret": 0.0082
+   },
+   "t": {
+    "USDINR": 0.14,
+    "CRUDE": -0.3,
+    "VIX": 0.56,
+    "own_ret": 0.19
+   },
+   "r2_pct": 0.041,
+   "n": 2295
+  },
+  "NIFTYFIN_h2": {
+   "beta": {
+    "USDINR": 0.0364,
+    "CRUDE": 0.0034,
+    "VIX": -0.0006,
+    "own_ret": -0.0268
+   },
+   "t": {
+    "USDINR": 0.58,
+    "CRUDE": 0.83,
+    "VIX": -0.17,
+    "own_ret": -0.74
+   },
+   "r2_pct": 0.158,
+   "n": 2295
+  },
+  "NIFTYPSU_h2": {
+   "beta": {
+    "USDINR": -0.0394,
+    "CRUDE": 0.0086,
+    "VIX": 0.0022,
+    "own_ret": -0.0068
+   },
+   "t": {
+    "USDINR": -0.35,
+    "CRUDE": 2.21,
+    "VIX": 0.2,
+    "own_ret": -0.19
+   },
+   "r2_pct": 0.105,
+   "n": 2295
+  },
+  "NIFTYREALTY_h2": {
+   "beta": {
+    "USDINR": 0.0124,
+    "CRUDE": 0.0076,
+    "VIX": -0.0025,
+    "own_ret": 0.0762
+   },
+   "t": {
+    "USDINR": 0.11,
+    "CRUDE": 3.35,
+    "VIX": -0.32,
+    "own_ret": 1.7
+   },
+   "r2_pct": 0.375,
+   "n": 2295
+  },
+  "NIFTYENERGY_h2": {
+   "beta": {
+    "USDINR": -0.1059,
+    "CRUDE": 0.0031,
+    "VIX": -0.0034,
+    "own_ret": 0.009
+   },
+   "t": {
+    "USDINR": -1.35,
+    "CRUDE": 0.57,
+    "VIX": -0.6,
+    "own_ret": 0.25
+   },
+   "r2_pct": 0.156,
+   "n": 2295
+  },
+  "NIFTYCONSUM_h2": {
+   "beta": {
+    "USDINR": -0.0103,
+    "CRUDE": -0.0054,
+    "VIX": -0.0005,
+    "own_ret": -0.0162
+   },
+   "t": {
+    "USDINR": -0.2,
+    "CRUDE": -2.27,
+    "VIX": -0.14,
+    "own_ret": -0.42
+   },
+   "r2_pct": 0.292,
+   "n": 2295
+  },
+  "NIFTYINFRA_h2": {
+   "beta": {
+    "USDINR": -0.0234,
+    "CRUDE": 0.001,
+    "VIX": 0.0033,
+    "own_ret": -0.0166
+   },
+   "t": {
+    "USDINR": -0.49,
+    "CRUDE": 0.38,
+    "VIX": 0.98,
+    "own_ret": -0.44
+   },
+   "r2_pct": 0.092,
+   "n": 2295
+  },
+  "NIFTYIT_h5": {
+   "beta": {
+    "USDINR": 0.0288,
+    "CRUDE": -0.0021,
+    "VIX": -0.0031,
+    "own_ret": 0.0053
+   },
+   "t": {
+    "USDINR": 0.25,
+    "CRUDE": -0.46,
+    "VIX": -0.34,
+    "own_ret": 0.12
+   },
+   "r2_pct": 0.01,
+   "n": 2292
+  },
+  "NIFTYAUTO_h5": {
+   "beta": {
+    "USDINR": 0.0164,
+    "CRUDE": 0.0136,
+    "VIX": -0.0094,
+    "own_ret": 0.0525
+   },
+   "t": {
+    "USDINR": 0.15,
+    "CRUDE": 3.18,
+    "VIX": -1.2,
+    "own_ret": 0.9
+   },
+   "r2_pct": 0.425,
+   "n": 2292
+  },
+  "NIFTYFMCG_h5": {
+   "beta": {
+    "USDINR": 0.1024,
+    "CRUDE": -0.01,
+    "VIX": 0.0156,
+    "own_ret": -0.0146
+   },
+   "t": {
+    "USDINR": 1.09,
+    "CRUDE": -1.44,
+    "VIX": 1.34,
+    "own_ret": -0.27
+   },
+   "r2_pct": 0.436,
+   "n": 2292
+  },
+  "NIFTYMETAL_h5": {
+   "beta": {
+    "USDINR": -0.2811,
+    "CRUDE": 0.0259,
+    "VIX": -0.003,
+    "own_ret": 0.0286
+   },
+   "t": {
+    "USDINR": -1.83,
+    "CRUDE": 5.57,
+    "VIX": -0.26,
+    "own_ret": 0.53
+   },
+   "r2_pct": 0.6,
+   "n": 2292
+  },
+  "NIFTYPHARMA_h5": {
+   "beta": {
+    "USDINR": 0.1829,
+    "CRUDE": -0.0098,
+    "VIX": 0.0053,
+    "own_ret": 0.0149
+   },
+   "t": {
+    "USDINR": 1.28,
+    "CRUDE": -2.01,
+    "VIX": 0.36,
+    "own_ret": 0.2
+   },
+   "r2_pct": 0.193,
+   "n": 2292
+  },
+  "NIFTYFIN_h5": {
+   "beta": {
+    "USDINR": -0.0378,
+    "CRUDE": 0.0061,
+    "VIX": -0.0041,
+    "own_ret": -0.037
+   },
+   "t": {
+    "USDINR": -0.62,
+    "CRUDE": 1.46,
+    "VIX": -0.59,
+    "own_ret": -0.59
+   },
+   "r2_pct": 0.184,
+   "n": 2292
+  },
+  "NIFTYPSU_h5": {
+   "beta": {
+    "USDINR": -0.1949,
+    "CRUDE": 0.0224,
+    "VIX": -0.0021,
+    "own_ret": 0.031
+   },
+   "t": {
+    "USDINR": -1.1,
+    "CRUDE": 3.25,
+    "VIX": -0.13,
+    "own_ret": 0.63
+   },
+   "r2_pct": 0.301,
+   "n": 2292
+  },
+  "NIFTYREALTY_h5": {
+   "beta": {
+    "USDINR": -0.2408,
+    "CRUDE": 0.0213,
+    "VIX": -0.0094,
+    "own_ret": 0.0858
+   },
+   "t": {
+    "USDINR": -1.71,
+    "CRUDE": 5.87,
+    "VIX": -0.65,
+    "own_ret": 1.43
+   },
+   "r2_pct": 0.517,
+   "n": 2292
+  },
+  "NIFTYENERGY_h5": {
+   "beta": {
+    "USDINR": -0.1704,
+    "CRUDE": 0.0008,
+    "VIX": -0.0047,
+    "own_ret": 0.0038
+   },
+   "t": {
+    "USDINR": -1.78,
+    "CRUDE": 0.19,
+    "VIX": -0.54,
+    "own_ret": 0.06
+   },
+   "r2_pct": 0.128,
+   "n": 2292
+  },
+  "NIFTYCONSUM_h5": {
+   "beta": {
+    "USDINR": 0.0514,
+    "CRUDE": -0.0044,
+    "VIX": 0.0033,
+    "own_ret": 0.0638
+   },
+   "t": {
+    "USDINR": 0.74,
+    "CRUDE": -1.41,
+    "VIX": 0.53,
+    "own_ret": 1.14
+   },
+   "r2_pct": 0.21,
+   "n": 2292
+  },
+  "NIFTYINFRA_h5": {
+   "beta": {
+    "USDINR": -0.1579,
+    "CRUDE": 0.0021,
+    "VIX": 0.0002,
+    "own_ret": 0.0068
+   },
+   "t": {
+    "USDINR": -2.58,
+    "CRUDE": 0.84,
+    "VIX": 0.05,
+    "own_ret": 0.12
+   },
+   "r2_pct": 0.248,
+   "n": 2292
+  }
+ }
+}

@@ -1,0 +1,13 @@
+# News Intelligence Agent MCP server
+# The server itself only needs `mcp` + `jsonschema`; the rest are the existing
+# market_scan.py engine's runtime deps (already in newsindex/requirements.txt).
+
+mcp>=1.2.0
+jsonschema>=4.0.0
+
+# --- inherited from the market_scan.py engine (the Deterministic Core) ---
+feedparser
+requests
+pandas
+yfinance          # optional at import; required for live price fetches
+trafilatura        # full-article extraction for fetch_article (enables body-level macro signals)

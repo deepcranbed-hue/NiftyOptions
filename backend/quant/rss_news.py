@@ -17,6 +17,8 @@ Be a good citizen: set a User-Agent, a timeout, and cache between refreshes.
 from __future__ import annotations
 
 import calendar
+import os
+import urllib.parse
 from datetime import datetime, timezone
 
 import feedparser
@@ -36,6 +38,43 @@ GLOBAL_FEEDS = {
     "CNBC Markets": "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=10000664",
     "Investing Global": "https://www.investing.com/rss/news_25.rss"
 }
+
+# ── TOPIC feeds ───────────────────────────────────────────────────────────────
+# The curated feeds above are BROAD ("markets", "top news"). A specific story only
+# reaches the impact monitor if a general desk happens to run it — so an oil/Hormuz
+# escalation or a single heavyweight's results can be entirely absent from the poll
+# while dominating the actual tape.
+#
+# Google News RSS *search* endpoints are ordinary RSS, so topic coverage needs no code
+# change — just entries here. Each is a standing query, refreshed every poll.
+#
+# Kept deliberately small: these are fetched on EVERY 5-minute poll, so each entry is
+# ~288 requests/day. Add sparingly and prefer one broad query over three narrow ones.
+def _gnews(q: str) -> str:
+    return (f"https://news.google.com/rss/search?q={urllib.parse.quote(q)}"
+            f"&hl=en-IN&gl=IN&ceid=IN:en")
+
+
+TOPIC_FEEDS = {
+    # Oil complex + the Middle-East risk premium that drives it. Split from the
+    # heavyweights because a supply/ceasefire headline moves the whole index via
+    # inflation → RBI, not just the energy names.
+    "Oil & Crude":       _gnews("Brent crude oil price OPEC India"),
+    "Iran / Hormuz":     _gnews("Iran US ceasefire Strait of Hormuz oil supply"),
+    "Red Sea / shipping": _gnews("Red Sea Houthi tanker attack shipping blockade maritime"),
+
+    # Nifty top-15 by weight (68.7% of the index) — grouped, with market-relevant
+    # qualifiers so routine corporate PR is filtered out.
+    "Heavyweights: RIL": _gnews("Reliance Industries results refining Jio share"),
+    "Heavyweights: Banks": _gnews("HDFC Bank OR ICICI Bank OR SBI OR Axis Bank results share"),
+    "Heavyweights: IT":  _gnews("Infosys OR TCS results guidance deal wins share"),
+    "Heavyweights: Rest": _gnews("Bharti Airtel OR ITC OR Larsen Toubro OR Maruti results share"),
+}
+
+# Merged into the default poll. Set NIFTY_TOPIC_FEEDS=0 to disable topic coverage
+# (e.g. if the 5-minute cadence starts drawing rate limits).
+if os.environ.get("NIFTY_TOPIC_FEEDS", "1") != "0":
+    DEFAULT_FEEDS = {**DEFAULT_FEEDS, **TOPIC_FEEDS}
 
 _UA = "Mozilla/5.0 (compatible; SectorNewsBot/1.0)"
 

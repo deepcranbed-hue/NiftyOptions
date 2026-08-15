@@ -22,6 +22,11 @@ USAGE
     python fundamental_data_audit.py
 """
 from __future__ import annotations
+# --- single source for DB connections (D-SC-06, CLAUDE.md) ---
+import os as _os, sys as _sys
+_RT = _os.path.abspath(_os.path.join(_os.path.dirname(__file__), "../.."))
+_RT in _sys.path or _sys.path.insert(0, _RT)
+from db_config import resolve_pg_dsn
 import os
 import sys
 import pandas as pd

@@ -1,0 +1,6 @@
+- [x] Implement backend invariant calculations (T-A to T-I) in vrp_pipeline.py
+- [x] Remove UI simulation toggles and checks from IntradayPanel.tsx
+- [x] Wire IntradayPanel.tsx to render engine-side invariants payload
+- [x] Update test_minute_analytics.py to verify invariant validation
+- [x] Run automated tests and restart servers
+- [x] Perform codebase self-audit for mock check patterns

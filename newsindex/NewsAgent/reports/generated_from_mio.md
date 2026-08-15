@@ -1,0 +1,428 @@
+```
+===================================================
+            NEWS INTELLIGENCE AGENT
+          Institutional Market Intelligence
+===================================================
+```
+> as-of **2026-07-25T09:08:03.618120+00:00** · provider `deterministic` · data **LIVE** · MIO valid True · news: 189 items, **20 full-text**, +132 from search
+
+## 1 · Executive Summary
+
+```
+ Market Phase   : Risk-Off / Defensive
+ Risk           : Bearish
+ Liquidity      : Negative
+ Growth         : Positive
+ Inflation      : Watch
+ AI             : Mixed
+ Oil            : Brent $97 — inflation watch
+```
+
+- **Current market (tape)**: 🟡 Mixed
+- **Engine bias (forward lean)**: mild downside (-2.15% expected)
+- **Forecast confidence**: 86%
+- **Model agreement**: 86%
+- **Driver conflict**: Moderate (2 supporting vs 6 opposing)
+
+**Today's story**
+
+📖 **Market narrative** (model tilt + observed tape): Model favours Capital Goods, Power & Utilities; model penalises Banks / Financials, Realty.
+
+_📊 Quantitative signals — model feature weights, NOT causal claims:_
+- Strongest positive signal: **US rates / Fed path** (model contribution +0.018) · _marginal — not a market mover_
+- Strongest negative signal: **Geopolitics / oil shock** (model contribution -1.800)
+- Dominant model driver: **Geopolitics** (38% of the modeled move)
+- ⚠️ Primary macro risk: 36 headline(s) · SEVERE (closure/war/nuclear risk)
+- 🎯 Notable decouplings: Vedanta (own catalyst vs the **model's** market tilt — not vs the realised tape)
+
+> **⚠️ Why the model could be wrong today**  
+> - Largest uncertainty: geopolitics (36 headline(s) · SEVERE (closure/war/nuclear risk))  
+> - Largest contradictory signal: **Oil** — Oil -3.9% (down) is pulling the OPPOSITE way to the model, which is net **BEARISH (Nifty Down)**; the verdict rests on the other drivers outweighing it  
+> - Relationship currently breaking: **Oil → Downstream OMCs** _(oil -3.9% → rule expected these ↑)_  
+>   - What broke: rule expected them ↑ (up), but BPCL -0.1% did the opposite  
+>     - ⚠️ _near-flat (<1%) — this is within intraday noise, not a meaningful override; treat the 'break' as inconclusive_  
+>     - _Oil is still $97 (crisis zone) — a one-day dip does NOT restore OMC margins; the structural import-cost pressure persists. Level = fundamental, daily move = trading noise; a stock can also just be bouncing after an overshoot._  
+>   - Likely override (**mechanism**, not news-confirmed): **GRM / marketing margins** (structural — not confirmed by today's tape)  
+>     - Why: _GRM, marketing margins and retail fuel-pricing policy dominated today's crude move — the crude-input link is the weak one._  
+>   - _No direct news evidence retrieved — this is the economic mechanism that *can* override, not a confirmed cause. See §7 for the full validation._  
+> - Confidence tempered by: driver conflict **Moderate**, model agreement 86%  
+
+## 2 · Market Regime & Dashboard
+
+_One environment table (macro themes · dominant themes · institutional dashboard merged)._
+
+| Theme | Current | Direction | Strength | Horizon |
+|---|---|---|---:|---|
+| Institutional Flows | n/a | 🟡 Balanced | 59% | 1–5 Days |
+| Global Rates (Fed) | On hold | 🟡 Balanced | 60% | Weeks |
+| RBI Policy | On hold | 🟡 Balanced | 65% | Weeks |
+| Oil | Brent $97 (-3.9%) | 🟢 Positive | 70% | Days–Weeks |
+| Geopolitics | 36 headline(s) | 🔴 Bearish bias | 92% | Days |
+| Inflation | India Stable, US Rising | 🔴 Bearish bias | 68% | Months |
+| USDINR | ₹96.6 | 🟡 Balanced | 68% | Days |
+| AI Theme (Infra) | AI Infrastructure Mixed — Semis · EMS · Power · Telecom · Software vs IT-Services | 🟢 EMS / Power / Telecom | 74% | Quarters |
+| AI Services | AI Substitution | 🔴 IT Services | 70% | Quarters |
+| Market Regime | 🟡 Mixed | 🔴 Bearish bias | 81% | Intraday |
+
+## 3 · Market Narratives — why the market is moving
+
+**Narrative 1 — Geopolitics** _(geopolitics→oil→inflation)_  
+  Geopolitical Risk → Oil → Inflation → RBI / Rates → Banks & Consumer  
+  contribution today **38%**
+
+**Narrative 2 — Geopolitics** _(geopolitics→freight)_  
+  Geopolitical Risk → Freight / Tanker Insurance → Import Landed Cost → Import-reliant Manufacturers  
+  contribution today **38%**
+
+**Narrative 3 — India VIX** _(risk-off)_  
+  India VIX → Risk-Off → High-beta / Leveraged Names  
+  contribution today **17%**
+
+**Narrative 4 — Oil** _(disinflation→easing)_  
+  Oil → Inflation → RBI → Yield Curve → Financial Conditions → Rate-sensitives  
+  contribution today **12%**
+
+## 4 · Macro Drivers
+
+**Geopolitics** — importance 38%
+  Transmission: Geopolitical Risk → Oil → Inflation → RBI / Rates → Banks & Consumer
+  Interactions: Oil × Geopolitics
+
+**India VIX** — importance 17% · level 14.03 (normal) ×1.0
+  Transmission: India VIX → Risk-Off → High-beta / Leveraged Names
+  Interactions: Oil × India-CPI
+
+**Oil** — importance 12% · level $96.78 (crisis zone) ×1.8
+  Transmission: Oil → Inflation → RBI → Yield Curve → Financial Conditions → Rate-sensitives
+  Interactions: Oil × Geopolitics, Oil × India-CPI, Oil × USD
+
+**India CPI** — importance 8%
+  Transmission: India CPI → RBI → Yield Curve → Rate-sensitives
+  Interactions: Oil × India-CPI
+
+## 5 · Sector Intelligence
+
+_Effective weight = base × activation × regime. Context: AI **Neutral**, risk-off **False**, inflation **True**._
+
+| Sector | Lean | Score | Confidence | Top live drivers | Sub-sector check |
+|---|---|---:|---:|---|---|
+| Capital Goods | 🟢 Bullish lean | +1.00 | 3/6 factors live | Government capex; AI infrastructure; China | — |
+| Power & Utilities | 🟢 Bullish lean | +1.00 | 2/5 factors live | AI data centres / electricity demand; Government policy | — |
+| Energy — OMC (downstream) | 🟢 Bullish lean | +0.80 | 2/5 factors live | Brent; Govt retail pricing | — |
+| Pharma | 🟢 Bullish lean | +0.66 | 3/6 factors live | USFDA action; Generic drug pricing; Earnings | Inputs +0.00 ✓ |
+| Metals | 🟢 Bullish lean | +0.49 | 2/7 factors live | China demand / stimulus; USD | — |
+| Telecom | 🟢 Bullish lean | +0.40 | 3/5 factors live | Spectrum / tariff policy; AI infrastructure; Capex intensity | — |
+| FMCG | 🟢 Bullish lean | +0.18 | 2/7 factors live | Crude derivatives — packaging; Earnings | Input cost / margin +0.98 ✓ |
+| IT Services | 🟢 Bullish lean | +0.16 | 3/6 factors live | US enterprise IT spend; Earnings; SOX | — |
+| Auto | 🔴 Bearish bias | -0.21 | 4/7 factors live | Earnings / execution; Fuel prices; Interest rates | ⚠️ **Commercial Vehicles (CV) +2.61** disagrees — sector score is mix-weighted |
+| Energy — Upstream | 🔴 Bearish bias | -0.29 | 4/5 factors live | Brent LEVEL; Brent daily move; Govt policy / windfall tax | — |
+| Realty | 🔴 Bearish bias | -0.47 | 1/6 factors live | RBI rates / mortgage cost | — |
+| Banks / Financials | 🔴 Bearish bias | -0.56 | 5/8 factors live | RBI / rate stress; Earnings; Oil | Margins / quality +0.15 ✓ |
+
+_⚠️ A sector lean is a **weighted mix**. Where a sub-sector disagrees, the relationship's sign flips inside the sector (oil hurts ICE autos but helps EV running-cost economics), so the parent score averages away a real split. Trade the sub-sector, not the sector, on those rows._
+
+## 6 · Company Intelligence
+
+**Heavyweights** (largest index impact first):  
+  HDFC Bank mild downside · Bharti Airtel Balanced · Hindustan Unilever mild downside · ICICI Prudential mild downside
+
+**Other movers:**  
+  NTPC Balanced · LTIMindtree Balanced
+
+**Decoupling** (own catalyst overriding the market):  
+- **Vedanta** — tape down, stock up · _scheme beneficiary_
+
+## 7 · Relationship Validation — state, evidence & why
+
+_Macro drives sectors; sectors drive companies. States: ✅ Confirmed · ⚠️ Partially · 🔄 Overridden · ⏸️ Inactive · ❓ Inconclusive._
+
+| Relationship | Level | Status | Likely override |
+|---|---|---|---|
+| Oil → Downstream OMCs | Company | 🔄 Overridden | GRM (gross refining margin) \* |
+| Oil → Fuel consumers | Company | 🔄 Overridden | Company-specific demand \* |
+| Rising US yields → banks pressured | Macro | 🔄 Overridden | Indirect / mixed transmission |
+| Geopolitics premium → defence up | Company | 🔄 Overridden | Order-timing / stock-specific |
+| Oil/diesel ↑ → cement freight cost | Company | 🔄 Overridden | Stronger concurrent driver \* |
+| Industrial metals cycle → Indian metals producers (by family) | Sector | 🔄 Overridden | China property expectations \* |
+| US semis (SOX) → Indian IT services | Sector | ⚠️ Partially Confirmed | Company results / rupee (idiosyncratic) \* |
+| Oil ↑ → ICE autos pressured (fuel/demand) | Company | ⚠️ Partially Confirmed | Company-specific demand \* |
+| Oil ↑ → chemicals input-cost pressure | Company | ⚠️ Partially Confirmed | Stronger concurrent driver \* |
+| India rate stress → rate-sensitives (banks/NBFC/realty) | Sector | ⚠️ Partially Confirmed | Stock-specific |
+| AI substitution → IT services (regime-gated) | Sector | ⏸️ Inactive | — |
+| Oil → Upstream producers | Company | ✅ Confirmed | — |
+| AI infrastructure → Power (structural) | Structural | ✅ Confirmed | — |
+| AI infrastructure → Telecom (structural) | Structural | ✅ Confirmed | — |
+| Heavyweight leadership → Nifty direction | Index | ✅ Confirmed | — |
+
+_\* structural candidate — the mechanism that *can* override, not confirmed by today's tape. We don't hold per-stock flow/ownership data, so single-name attribution (e.g. "DII bought X") is never asserted._
+
+
+### Index / breadth
+
+- ✅ **Heavyweight leadership → Nifty direction** — Confirmed
+    - Evidence: **HDFC Bank, Bharti Airtel, Infosys** pulled the index DOWN; the other 22 tracked names pulled DOWN. Index weight × move, in index-percentage points:
+
+        | Group | Contribution |
+        |---|---:|
+        | HDFC Bank, Bharti Airtel, Infosys (top 3) | **-21.15%** |
+        | Other 22 heavyweights | -6.03% |
+        | **Net (25 tracked)** | **-27.18%** |
+
+        → Both groups moved the **same way** — a broad, well-participated move.
+        _(Nifty itself -0.44%. The table covers the 25 heavyweights we track, so it approximates rather than reproduces the official index move.)_
+
+### Macro relationships
+
+- 🔄 **Rising US yields → banks pressured** — Overridden · reliability 54% (n=1404, `MARGINAL`)
+    - Expected: banks pressured ↑
+    - Confirmation: 0/2 held (0%)
+    - Observed: HDFC Bank -0.6% ✗, ICICI Bank -0.1% ✗
+    - Override: **Indirect / mixed transmission** — evidenced
+    - **Why:** _US10Y hits Indian banks INDIRECTLY (US yields → global capital flows → INR → India bond yield → banks), so pass-through is mixed, not 1:1._
+
+### Sector relationships
+
+- 🔄 **Industrial metals cycle → Indian metals producers (by family)** — Overridden
+    - Metal sentiment: overall Bullish · tape composite -0.03% · coverage 9/9 metals via web (tradingeconomics) + metal news
+        · tape: Copper -0.1% · Aluminium +0.3% · Zinc +0.1% · Nickel +0.1% · Lead -0.3%
+        · news: Bullish (6↑/2↓ of 14 items)
+            – _…metals on fire: what's driving the unstoppable rally in copper, aluminium, and zinc - the economic times search metals on fire: what's driving the unstoppab…_
+            – _…base metals rally on supply crunch, ai-infra demand; experts see selective upside ahead - moneycontr…_
+    - Expected: Indian metals producers (by family) ↑
+    - Observed: Tata Steel -0.8% ✗
+    - Candidate overrides (ranked): China property expectations ★★★★★ · Domestic steel pricing ★★★★★ · China PMI / industrial activity ★★★★ · Iron ore ★★★ · Coking coal ★★★ · Company-specific positioning / earnings ★★
+    - **Why:** _Indian steel producers are driven primarily by domestic steel prices, China property/infrastructure activity, iron ore and coking coal — copper/aluminium are useful GLOBAL manufacturing-cycle proxies but only indirect signals for Indian steel._
+- ⚠️ **US semis (SOX) → Indian IT services** — Partially Confirmed · reliability 57% (n=1323, `MARGINAL`)
+    - Expected: Indian IT services ↓
+    - Confirmation: 1/4 held (25%)
+    - Observed: TCS +0.5% ✗, Wipro +1.2% ✗, HCL Tech +2.1% ✗, Infosys -1.1% ✓
+    - Likely override: Company results / rupee (idiosyncratic) — _not the chip cause_
+    - **Why:** _Enterprise AI budget rotation is a near-term HEADWIND for Indian IT, so it does NOT explain today's IT rally — IT rose on its own catalyst (results / rupee tailwind). SOX weakness and IT strength are separate stories today._
+- ⚠️ **India rate stress → rate-sensitives (banks/NBFC/realty)** — Partially Confirmed
+    - Expected: rate-sensitives (banks/NBFC/realty) ↓
+    - Confirmation: 2/3 held (67%)
+    - Observed: DLF +0.2% ✗, HDFC Bank -0.6% ✓, ICICI Bank -0.1% ✓
+    - Override: **Stock-specific** — evidenced
+    - **Why:** _rate-sensitive response is stock-specific today — not every bank / NBFC / realty name moved with the rate signal._
+- ⏸️ **AI substitution → IT services (regime-gated)** — Inactive
+    - _Trigger absent or too weak today — relationship not expected to fire._
+
+### Company relationships
+
+- 🔄 **Oil → Downstream OMCs** — Overridden
+    - Expected: Downstream OMCs ↑
+    - Observed: BPCL -0.1% ✗
+    - Candidate overrides (ranked): GRM (gross refining margin) ★★★★★ · Marketing margins ★★★ · Retail fuel-price policy ★★★ · Crude input ★★
+    - **Why:** _GRM, marketing margins and retail fuel-pricing policy dominated today's crude move — the crude-input link is the weak one._
+- 🔄 **Oil → Fuel consumers** — Overridden
+    - Expected: Fuel consumers ↑
+    - Confirmation: 0/2 held (0%)
+    - Observed: Asian Paints -1.2% ✗, IndiGo -0.8% ✗
+    - Likely override: Company-specific demand — _candidate — tape not clearly risk-on_
+    - **Why:** _broad risk-on / company-specific demand outweighed the fuel-cost headwind today._
+- 🔄 **Geopolitics premium → defence up** — Overridden
+    - Expected: defence up ↑
+    - Confirmation: 0/2 held (0%)
+    - Observed: HAL -0.3% ✗, Bharat Electronics -0.1% ✗
+    - Override: **Order-timing / stock-specific** — evidenced
+    - **Why:** _company-specific (order timing, results) — border-security (BEL) and platforms (HAL) are different businesses._
+- 🔄 **Oil/diesel ↑ → cement freight cost** — Overridden
+    - Expected: cement freight cost ↑
+    - Observed: UltraTech -0.5% ✗
+    - Likely override: Stronger concurrent driver — _unspecified_
+- ⚠️ **Oil ↑ → ICE autos pressured (fuel/demand)** — Partially Confirmed · reliability 49% (n=2009, `NOISE`)
+    - Expected: ICE autos pressured (fuel/demand) ↑
+    - Confirmation: 1/3 held (33%)
+    - Observed: Hero MotoCorp -3.1% ✗, Bajaj Auto -1.4% ✗, Maruti +0.3% ✓
+    - Likely override: Company-specific demand — _candidate — tape not clearly risk-on_
+    - **Why:** _strong domestic demand / earnings / EV mix outweighed the fuel-cost concern; PV vs 2W vs CV differ._
+- ⚠️ **Oil ↑ → chemicals input-cost pressure** — Partially Confirmed · reliability 52% (n=1107, `NOISE`)
+    - Expected: chemicals input-cost pressure ↑
+    - Confirmation: 1/2 held (50%)
+    - Observed: Asian Paints -1.2% ✗, SRF +1.6% ✓
+    - Likely override: Stronger concurrent driver — _unspecified_
+- ✅ **Oil → Upstream producers** — Confirmed
+    - Expected: Upstream producers ↓
+    - Observed: ONGC -1.4% ✓
+
+### Structural theme validation
+
+_Multi-year AI-infrastructure themes — context, not a daily trading signal; a single day's move does not confirm or break these._
+
+- ✅ **AI infrastructure → Power (structural)** — Confirmed
+    - Expected: Power (structural) ↓
+    - Confirmation: 2/2 held (100%)
+    - Observed: NTPC -0.4% ✓, Power Grid -0.7% ✓
+- ✅ **AI infrastructure → Telecom (structural)** — Confirmed
+    - Expected: Telecom (structural) ↓
+    - Observed: Bharti Airtel -1.7% ✓
+
+## 8 · Quantitative Appendix
+
+### Interaction terms
+
+| Term | Magnitude | Sign | Mechanism |
+|---|---:|---:|---|
+| Oil × Geopolitics | 1.075 `PRIOR` | -1 | A geopolitical flare-up ON TOP of rising oil is a supply-shock accelerant — the risk premium compounds the price move → inflation + CAD stress beyond either alone. |
+| Oil × India-CPI | 0.978 `PRIOR` | -1 | High oil into an already-hot CPI compounds the inflation signal → RBI stays tighter for longer → rate-sensitives hit harder. |
+| Oil × USD | 0.066 `PRIOR` | -1 | Rising oil AND a strong dollar compound the import-bill + outflow hit — a weaker rupee imports inflation while foreign capital leaves; jointly more bearish than either alone. |
+| US10Y × Dollar | 0.011 `PRIOR` | -1 | Rising US yields with a strengthening dollar is the classic FII-outflow accelerant for EM equity — the combined pull exceeds the sum of parts. |
+
+### Semiconductor cause analysis — why chips moved, mapped to 4 targets
+
+- **Cause**: Enterprise AI budget rotation — _budget constant but redirected to GPUs/servers/networking — software & consulting squeezed. AI demand is NOT weak (Reuters: IBM says spend redirected, not abandoned)._
+- **AI demand**: Strong · **Allocation**: Infrastructure (from software/services)
+
+**Transmission chain**
+
+```
+Enterprise AI budget rotation  (budget flat, destination changes)
+        │
+        ├─► GPU / server / networking spend ↑
+        │        └─► Nvidia · Broadcom · TSMC · Micron
+        │                 └─► EMS / electronics mfg (Dixon, Kaynes, CG Power)
+        │                          └─► data centres
+        │                                   └─► POWER + TELECOM demand ↑
+        │
+        └─► enterprise software / consulting budget ↓
+                 └─► deal pricing pressure, fewer billed hours
+                          └─► INDIAN IT SERVICES revenue headwind
+```
+
+#### A · Structural thesis (multi-quarter — where AI spend is flowing)
+
+_Who benefits over coming quarters. No prices here by design._
+
+- 🟢 Bullish **AI infrastructure (semis/EMS/power)** → 🇮🇳 NTPC, Power Grid, Dixon Tech, Kaynes Tech, CG Power, Polycab · 🌐 Nvidia, TSMC, AMD, Micron, Broadcom
+- 🔴 Bearish **Enterprise software** → 🌐 Microsoft, Oracle, SAP, Salesforce, ServiceNow, Adobe
+    _GLOBAL — no direct Indian-listed proxy (this is the software the budget is rotating AWAY from)_
+- 🔴 Bearish **Indian IT services** → 🇮🇳 Tech Mahindra, Infosys, Wipro, Coforge, TCS, HCL Technologies
+- 🟢 Bullish **AI infrastructure enablers (telecom · power · data-centre)** → 🇮🇳 Bharti Airtel, NTPC, Power Grid, Vodafone Idea, Indus Towers, Tata Power · 🌐 Amazon (AWS), Microsoft (Azure), Alphabet (GCP)
+    _global hyperscalers; Indian proxy = data-centre / telecom / power_
+
+#### B · Today's validation (one session — did the tape agree?)
+
+_Whether today's price action was consistent with the thesis above. A disagreement flags a competing short-term catalyst, **not** a broken thesis._
+
+- **AI infrastructure (semis/EMS/power)** → NTPC -0.4%, Power Grid -0.7%  
+    → 🔄 Overridden by short-term catalyst (0/2 consistent)
+- **Enterprise software** → _no Indian tape (global-only bucket)_
+- **Indian IT services** → Tech Mahindra +0.2%, Infosys -1.1%, Wipro +1.2%, Coforge +2.8%, TCS +0.5%  
+    → ⚠️ Mixed (1/5 consistent)
+- **AI infrastructure enablers (telecom · power · data-centre)** → Bharti Airtel -1.7%, NTPC -0.4%, Power Grid -0.7%  
+    → 🔄 Overridden by short-term catalyst (0/3 consistent)
+
+| Theme | Structural view (quarters) | Today's validation (1 session) |
+|---|---|---|
+| AI infrastructure (semis/EMS/power) | 🟢 Bullish | 🔄 Overridden by short-term catalyst |
+| Enterprise software | 🔴 Bearish | — no tape |
+| Indian IT services | 🔴 Bearish | ⚠️ Mixed |
+| AI infrastructure enablers (telecom · power · data-centre) | 🟢 Bullish | 🔄 Overridden by short-term catalyst |
+
+_The two columns answer different questions and are expected to diverge. 'Overridden' means a stronger short-term catalyst (earnings, rupee, flows) dominated today — the structural thesis is unchanged until the **evidence** changes, not until a single day disagrees._
+
+- **Confidence: Low (0.15)** = evidence quality 1.0 × agreement 0.27 × historical 0.57
+    - Strong supporting evidence (company guidance / news) (1.0)
+    - Low agreement from today's market action (0.27)
+    - Moderate historical support for this linkage (0.57)
+    - _Low agreement drags the product down even when the evidence is strong — that is the formula working, not a weak thesis. Read it as: good reason to believe the mechanism, little confirmation from today's tape._
+- **Capex signal**: AI capex guidance RAISED → demand strong, dip is allocation/positioning
+
+- **Historical analogue** — condition `sox_drop_3` (SOX fell more than 3%)
+
+| Occurrences | Median next-day move | Fell next day |
+|---:|---:|---:|
+| 74 | -0.76% | 66.0% of the time |
+
+### Macro expectations (US · India · Europe)
+
+- 🇺🇸 **Fed On hold** · inflation Rising · jobs Stable · _stocks edge back up as oil prices pause climb but yields hover near highs oil_
+    - inflation: · _there will be price pressures and sustained inflation."\n"note that over the shorter run there can be times when supply is temporarily disrupted and p…_
+    - jobs: no fresh print
+- 🇮🇳 **RBI On hold** · inflation Stable · _rising wholesale inflation in india signals producer price pressure - usthadian.com search rising wholesale inflation in india signals producer price …_
+- 🇪🇺 **ECB On hold (neutral)**
+    - _Nifty read: neutral for Nifty in isolation_
+
+### Sub-sector factor detail
+
+- **Auto**: strongest sub-sector Commercial Vehicles (CV) 🟢 Bullish (+2.61)
+- **Banks/Financials**: strongest sub-sector Margins / quality 🟢 Bullish (+0.15)
+- **Pharma**: strongest sub-sector Inputs 🟡 Neutral (+0.00)
+- **FMCG**: strongest sub-sector Input cost / margin 🟢 Bullish (+0.98)
+
+### Level amplifiers
+
+| Driver | Level | Band | ×Amplifier |
+|---|---|---|---:|
+| Brent | 96.78 | crisis zone | ×1.8 |
+| USDINR | 96.56 | watch (RBI attentive) | ×1.3 |
+| India VIX | 14.03 | normal | ×1.0 |
+
+### Global industrial metals cycle (feeds the Indian-steel relationship)
+
+_Overall: **Bullish** · tape composite -0.03% (Neutral) · coverage 9/9 metals via web (tradingeconomics) + metal news._
+
+| Signal | Bucket | Read | Source |
+|---|---|---:|---|
+| Copper | base_metals | -0.06% | web(TE) |
+| Aluminium | base_metals | +0.33% | web(TE) |
+| Zinc | base_metals | +0.11% | web(TE) |
+| Nickel | base_metals | +0.09% | web(TE) |
+| Lead | base_metals | -0.27% | web(TE) |
+| Steel (China rebar) | steel_complex | +0.36% | web(TE) |
+| HRC Steel | steel_complex | +0.41% | web(TE) |
+| Iron Ore (China) | steel_complex | -0.20% | web(TE) |
+| Coking Coal | steel_complex | -0.90% | web(TE) |
+| Metal news sentiment | news | Bullish (6↑/2↓) | 14 items |
+
+_News evidence:_ _…metals on fire: what's driving the unstoppable rally in copper, aluminium, and zinc - the economic times search metals on fire: what's driving the unstoppab…_ · _…base metals rally on supply crunch, ai-infra demand; experts see selective upside ahead - moneycontr…_ · _…mcx gold down 23%; silver prices dip by nearly ₹200,000 from high in 6 days - business standard sear…_
+
+### Directional lean by horizon (not blended)
+
+| Horizon | Lean | Magnitude |
+|---|---|---:|
+| immediate | mild downside | 0.84 pct_nifty |
+| short | mild downside | 0.84 pct_nifty |
+| medium | Balanced | 0.0 pct_nifty |
+| structural | Balanced | 0.0 pct_nifty |
+
+### Causal graph — 23 nodes · 23 edges (regime Neutral)
+
+| Node | State | Activation | Confirmation |
+|---|---|---:|---|
+| Geopolitical Risk | — | 0.389 | — |
+| Oil | -3.9% | 0.331 | OVERRIDDEN |
+| Freight / Tanker Insurance | — | 0.331 | OVERRIDDEN |
+| Inflation | — | 0.281 | — |
+| Import Landed Cost | — | 0.281 | — |
+| RBI / Rates | — | 0.239 | — |
+| Import-reliant Manufacturers | — | 0.239 | — |
+| Banks & Consumer | — | 0.203 | OVERRIDDEN |
+
+### Calibration source
+
+_events.db (build_events.py linkage_conf + event_stats)_
+
+### Raw market data
+
+**Indices & volatility**
+
+| Instrument | Last | % chg |
+|---|---:|---:|
+
+**Cross-asset / macro**
+
+| Instrument | Last | % chg |
+|---|---:|---:|
+
+**FII / DII flows**
+
+| Category | Net (₹cr) |
+|---|---:|
+| [NSE FII/DII fetch failed: HTTPSConnectionPool(host='www.nseindia.com', port=] |  |
+
+_Positive = net buying. FII and DII are stated in this order everywhere in the report; the net line is what actually hits the tape._
+
+**Earnings / results calendar**
+
+- [NSE fetch failed: HTTPSConnectionPool(host='www.nseindia.com', port=443): Max ] 

@@ -1,0 +1,20 @@
+{
+  "_comment": "LLM backend for the News Intelligence Agent runtime. Copy to llm_config.json and edit. The runtime is model-agnostic — switch 'provider' to point every agent at a different LLM without touching agent code. 'deterministic' needs no LLM and runs the full pipeline off the Core alone (offline, zero cost).",
+
+  "provider": "deterministic",
+
+  "model": "llama3.2:3b",
+  "base_url": null,
+  "api_key_env": "LLM_API_KEY",
+  "temperature": 0.2,
+  "max_tokens": 1200,
+  "max_tool_iters": 4,
+  "request_timeout_s": 60,
+
+  "_provider_notes": {
+    "deterministic": "No LLM. Each agent runs its declared Core tools and returns their outputs. Always available; used as the automatic fallback when an LLM call fails.",
+    "ollama": "Local Ollama. Set model (e.g. 'llama3.2:3b'), base_url defaults to http://localhost:11434. No key. Keeps the no-external-cost / Mac-cooling constraint.",
+    "anthropic": "Claude via Anthropic API. Set model (e.g. 'claude-sonnet-5'), api_key_env to the env var holding your key.",
+    "openai": "OpenAI OR any OpenAI-compatible endpoint (vLLM, LM Studio, Together, Groq, OpenRouter...). Set model, base_url (e.g. 'https://api.openai.com/v1' or your endpoint), api_key_env."
+  }
+}

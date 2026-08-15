@@ -1,0 +1,134 @@
+{
+ "step_min": 15,
+ "forward_min": 30,
+ "sessions": 29,
+ "observations": 1601,
+ "q1_contemporaneous": {
+  "NIFTYIT": {
+   "CRUDEOIL_MCX": 0.023,
+   "USDINR": 0.094,
+   "GOLD": -0.04,
+   "INDIAVIX": 0.008
+  },
+  "NIFTYAUTO": {
+   "CRUDEOIL_MCX": -0.028,
+   "USDINR": -0.021,
+   "GOLD": 0.02,
+   "INDIAVIX": -0.107
+  },
+  "NIFTYFMCG": {
+   "CRUDEOIL_MCX": 0.039,
+   "USDINR": 0.06,
+   "GOLD": -0.031,
+   "INDIAVIX": 0.093
+  },
+  "NIFTYMETAL": {
+   "CRUDEOIL_MCX": 0.017,
+   "USDINR": -0.029,
+   "GOLD": 0.011,
+   "INDIAVIX": 0.128
+  },
+  "NIFTYPHARMA": {
+   "CRUDEOIL_MCX": 0.066,
+   "USDINR": 0.105,
+   "GOLD": -0.026,
+   "INDIAVIX": 0.12
+  },
+  "NIFTYFIN": {
+   "CRUDEOIL_MCX": -0.073,
+   "USDINR": -0.097,
+   "GOLD": 0.069,
+   "INDIAVIX": -0.143
+  },
+  "NIFTYPSU": {
+   "CRUDEOIL_MCX": -0.071,
+   "USDINR": -0.082,
+   "GOLD": 0.011,
+   "INDIAVIX": -0.12
+  },
+  "NIFTYREALTY": {
+   "CRUDEOIL_MCX": -0.024,
+   "USDINR": 0.063,
+   "GOLD": 0.001,
+   "INDIAVIX": -0.102
+  },
+  "NIFTYENERGY": {
+   "CRUDEOIL_MCX": 0.044,
+   "USDINR": 0.037,
+   "GOLD": -0.034,
+   "INDIAVIX": 0.181
+  },
+  "NIFTYCONSUM": {
+   "CRUDEOIL_MCX": 0.01,
+   "USDINR": 0.053,
+   "GOLD": -0.008,
+   "INDIAVIX": -0.012
+  },
+  "NIFTYINFRA": {
+   "CRUDEOIL_MCX": 0.007,
+   "USDINR": -0.023,
+   "GOLD": -0.038,
+   "INDIAVIX": 0.03
+  }
+ },
+ "q2_residualised": {
+  "NIFTYIT": {
+   "raw_r": 0.024,
+   "residual_r": 0.025,
+   "n": 1558
+  },
+  "NIFTYAUTO": {
+   "raw_r": 0.005,
+   "residual_r": 0.002,
+   "n": 1557
+  },
+  "NIFTYFMCG": {
+   "raw_r": -0.037,
+   "residual_r": -0.038,
+   "n": 1557
+  },
+  "NIFTYMETAL": {
+   "raw_r": -0.018,
+   "residual_r": -0.009,
+   "n": 1557
+  },
+  "NIFTYPHARMA": {
+   "raw_r": -0.015,
+   "residual_r": -0.012,
+   "n": 1557
+  },
+  "NIFTYFIN": {
+   "raw_r": -0.043,
+   "residual_r": -0.049,
+   "n": 1557
+  },
+  "NIFTYPSU": {
+   "raw_r": -0.028,
+   "residual_r": -0.034,
+   "n": 1557
+  },
+  "NIFTYREALTY": {
+   "raw_r": 0.084,
+   "residual_r": 0.074,
+   "n": 1557
+  },
+  "NIFTYENERGY": {
+   "raw_r": 0.006,
+   "residual_r": 0.003,
+   "n": 1557
+  },
+  "NIFTYCONSUM": {
+   "raw_r": -0.02,
+   "residual_r": -0.021,
+   "n": 1557
+  },
+  "NIFTYINFRA": {
+   "raw_r": 0.064,
+   "residual_r": 0.063,
+   "n": 1557
+  }
+ },
+ "mean_raw_r": 0.002,
+ "mean_residual_r": 0.0004,
+ "pct_effect_surviving_macro_controls": 18.2
+}

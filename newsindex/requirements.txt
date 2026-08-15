@@ -1,0 +1,11 @@
+feedparser
+yfinance
+pandas
+requests
+numpy
+trafilatura
+lxml_html_clean   # trafilatura needs this since lxml split out the cleaner module
+# optional (heavy) — Playwright fallback for bot-blocked/JS pages (e.g. ET/Indiatimes):
+# playwright   (then run: playwright install chromium)
+# optional — crawl4ai richer backend (LLM-friendly markdown, browser-based):
+# crawl4ai     (then run: crawl4ai-setup   # installs its browser)

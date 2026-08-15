@@ -123,6 +123,9 @@ def main():
                 records.append((isin, 'income', basis, 'yearly', 'full', 'net_profit', period_label, rdate, net_income, None, 'crore', datetime.now()))
             if shares is not None:
                 records.append((isin, 'balance', basis, 'yearly', 'full', 'shares', period_label, rdate, shares, None, 'crore', datetime.now()))
+            if net_income is not None and shares is not None and shares > 0:
+                eps = net_income / shares
+                records.append((isin, 'income', basis, 'yearly', 'full', 'EPS - Diluted', period_label, rdate, eps, None, 'rs', datetime.now()))
                 
         for col, rdate in bs_dates:
             reserves = to_float(df.at[bs_map.get('RESERVES', -1), col]) if 'RESERVES' in bs_map else None

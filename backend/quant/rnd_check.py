@@ -66,7 +66,7 @@ def diagnose(strikes, call_ltp, put_ltp, spot, days, r=0.0655):
         move, dens, grid = s1['sd'], d1, g1
 
     # output sanity
-    area = float(np.trapezoid(dens, grid))
+    area = float(np.trapz(dens, grid))
     print("\n── OUTPUT SANITY ────────────────────────")
     print(f"  density integral : {area:.3f}  ({'OK' if abs(area-1) < 0.02 else 'NOT 1 → renormalize!'})")
     ratio = move / one_sigma

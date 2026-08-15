@@ -60,6 +60,17 @@ def _dict_keys(path, var):
     return re.findall(r'"([A-Z0-9_&\-]+)"\s*:', m.group(1))
 
 
+def _theme_symbols():
+    """Symbols from ai_infra_theme.json. [] if the file is missing or malformed."""
+    import json
+    try:
+        with open(os.path.join(_ROOT, "ai_infra_theme.json")) as f:
+            return [c["symbol"].upper() for c in json.load(f).get("companies", [])
+                    if c.get("symbol")]
+    except (OSError, ValueError, AttributeError):
+        return []
+
+
 def declared():
     """{symbol: [jobs that write it]} — read from the scripts, not assumed."""
     owners = {}
@@ -67,6 +78,11 @@ def declared():
     def add(syms, job):
         for s in syms:
             owners.setdefault(s.upper(), []).append(job)
+
+    def add_if_unowned(syms, job):
+        for s in syms:
+            if s.upper() not in owners:
+                owners[s.upper()] = [job]
 
     csv_path = os.path.join(_ROOT, "nifty-50-stock-list.csv")
     try:
@@ -92,11 +108,31 @@ def declared():
     add(_list_literal(os.path.join(_FETCH, "sync_finnifty_bars_yf.py"), "FINNIFTY"),
         "sync_finnifty_bars_yf")
     add(["CRUDEOIL"], "sync_crudeoil_yf")
+    add(["GOLD_USD", "SILVER_USD", "COPPER_USD"], "sync_metals_usd_yf")
     add(_dict_keys(os.path.join(_FETCH, "sync_commodities.py"), "SYMBOLS_MAP"),
         "sync_commodities")
     # Breeze, from backend/main.py — futures daily, everything else is 1m there.
     add(["NIFTY_FUT_1", "NIFTY_FUT_2"], "sync_nifty50_to_now (Breeze, futures)")
+
+    # The AI-infra theme sync reads its list from ai_infra_theme.json, so there is no
+    # list literal to scrape — read the same file it reads.
+    #
+    # Attributed LAST and only where nothing else already owns the symbol. Three theme
+    # names (BHARTIARTL, LT, POWERGRID) are also Nifty 50 constituents, and the theme
+    # sync does refresh them — but both jobs write identical Yahoo data through the same
+    # sync_symbols() upsert, so calling that "multiple owners, last run wins" would be a
+    # false alarm on the one report whose whole job is to surface real ones.
+    add_if_unowned(_theme_symbols(), "sync_ai_infra_bars_yf")
     return owners
+
+
+def _is_contract(symbol):
+    """GOLD_2026-10-05 -> True. Per-contract series are owned by their product."""
+    try:
+        from continuous import parse_contract
+    except ImportError:
+        return False
+    return parse_contract(symbol) is not None
 
 
 def main():
@@ -117,8 +153,11 @@ def main():
     newest = max(v[1] for v in present.values()) if present else "-"
     con.close()
 
-    covered = sorted(s for s in present if s in owners)
-    orphaned = sorted(s for s in present if s not in owners)
+    # A contract series has the same owner as its product — sync_commodities writes
+    # both. Without this every new contract appears as ORPHANED the day it is created
+    # and the signal that actually matters gets buried.
+    covered = sorted(s for s in present if s in owners or _is_contract(s))
+    orphaned = sorted(s for s in present if s not in owners and not _is_contract(s))
     declared_only = sorted(s for s in owners if s not in present)
 
     print(f"database: {db}")

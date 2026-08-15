@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { PieChart, RefreshCw, ArrowUpDown, ChevronDown, ChevronRight, HelpCircle } from 'lucide-react';
+import { PieChart, RefreshCw, ArrowUpDown, ChevronDown, ChevronRight, HelpCircle, X } from 'lucide-react';
 
 /**
  * Nifty50Panel — index-constituent scan: 1D/1W/6M/1Y returns + a categorical
@@ -12,77 +12,15 @@ import { PieChart, RefreshCw, ArrowUpDown, ChevronDown, ChevronRight, HelpCircle
  * heuristic (vs sector-median P/E, P/B fallback), NOT a fair-value model.
  */
 
-type Verdict = {
-  label: 'rich' | 'in-line' | 'cheap'; metric: string; value?: number;
-  vs_median_pct: number; sector_median: number; basis: string; reversion_pct?: number;
-};
-type Drivers = {
-  position: string; tailwinds: string[]; headwinds: string[];
-  latest_quarter?: { period: string; as_of: string; points: string[] };
-  recent_change?: { as_of: string; points: string[]; verdict: string };
-};
-// MEASURED, not judged: how the stock actually traded the session after results,
-// from earnings_reactions.json (announcement days picked by VOLUME only, so the
-// finding can't be circular). rel = versus NIFTY; sect_rel = versus its sector index.
-type Bias = 'positive' | 'neutral' | 'negative';
-type Reaction = {
-  n_events: number;
-  full_mean_r1d_pct: number; full_mean_rel1d_pct: number;
-  full_positive_share: number; full_bias: Bias;
-  recent_n: number; recent_mean_r1d_pct: number; recent_mean_rel1d_pct: number;
-  recent_mean_sect_rel1d_pct?: number | null;
-  recent_positive_share: number; recent_bias: Bias;
-  diverges?: boolean;
-};
-
-const BIAS_STYLE: Record<Bias, string> = {
-  positive: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-  neutral: 'bg-slate-50 text-slate-500 border-slate-200',
-  negative: 'bg-rose-50 text-rose-700 border-rose-200',
-};
-
-// EXPECTATION — what the market is priced FOR, not what was delivered.
-// implied_eps_growth_pct is trailing P/E / forward P/E - 1: 96x trailing against
-// 59x forward means consensus is priced for ~63% earnings growth. Arithmetic from
-// two multiples, not a weighted score. Target/dispersion/coverage come from
-// expectation_snapshots.json, captured BEFORE a print because consensus is revised
-// continuously and the pre-announcement value cannot be recovered afterwards.
-type Expectation = {
-  implied_eps_growth_pct: number | null;
-  target_mean?: number | null; target_low?: number | null; target_high?: number | null;
-  target_upside_pct?: number | null; dispersion_pct?: number | null;
-  analysts?: number | null; next_earnings?: string | null; as_of?: string | null;
-};
-
-type Row = {
-  symbol: string; name: string; sector: string; weight: number | null;
-  last: number | null; d1_pct: number | null; w1_pct: number | null; m6_pct: number | null; y1_pct: number | null;
-  pos_52w: number | null; hi_52w?: number; lo_52w?: number;
-  up_to_high_pct?: number | null; down_to_low_pct?: number | null; as_of: string | null;
-  pe: number | null; fwd_pe: number | null; pb: number | null; div_yield?: number | null;
-  verdict: Verdict | null; drivers?: Drivers | null;
-  yahoo_symbol?: string | null; symbol_note?: string | null;
-  rel_1w?: number | null; rel_6m?: number | null; rel_1y?: number | null;
-  reaction?: Reaction | null;
-  expectation?: Expectation | null;
-};
-type View = {
-  fetched_at: number;
-  index: { last: number; d1_pct: number | null; w1_pct: number | null; m6_pct: number | null; y1_pct: number | null; as_of: string } | null;
-  rows: Row[]; note: string; mechanism?: string[];
-  drivers_meta?: { as_of: string; note: string } | null;
-  reactions_meta?: { as_of: string; events: number; names: number; diverging: number } | null;
-  expectation_meta?: { captured_at: string; source: string; snapshots: number;
-                       median_implied_eps_growth_pct?: number } | null;
-  index_read?: {
-    weighted_pe: number | null; pe_coverage_pct: number; pe_band: number[];
-    val_label: 'cheap' | 'fair' | 'mildly rich' | 'rich' | null;
-    breadth: Record<string, number>;
-    dma50: number | null; dma200: number | null; above50: boolean; above200: boolean;
-    off_high_pct: number; trend_label: 'uptrend' | 'downtrend' | 'mixed';
-    lean: string; why: string; note: string;
-  } | null;
-};
+// The data contract and the shared tone tables live in nifty50Shared so this panel and
+// the full-page stock view can't drift apart about what the payload means.
+import {
+  type Row, type View, type Verdict,
+  BIAS_STYLE, VERDICT_STYLE, VAL_TONE, LEAN_TONE, card,
+  fmtPct, stockHref, Pct, RangeBar, BAND_STYLE, QUADRANT_STYLE,
+} from './nifty50Shared';
+import { Nifty50StockDetail } from './Nifty50StockPage';
+import { Nifty50QualityGrowth } from './Nifty50QualityGrowth';
 
 type Scenario = { trigger: string; nifty_pct: number[]; horizon: string; anchor: string };
 type Factor = {
@@ -112,6 +50,13 @@ const ROLE_TONE: Record<string, string> = {
   arithmetic: 'bg-slate-50 text-slate-600 border-slate-200',
   cushion: 'bg-emerald-50 text-emerald-700 border-emerald-200',
   support: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+  // A move with no news behind it is a different claim from an explained one. It gets its
+  // own chip so the brief can say "largest drag, cause unknown" without that honesty being
+  // flattened into the same grey fallback as any role the table simply forgot.
+  unattributed: 'bg-violet-50 text-violet-600 border-violet-200',
+  flow: 'bg-sky-50 text-sky-700 border-sky-200',
+  macro: 'bg-indigo-50 text-indigo-600 border-indigo-200',
+  positioning: 'bg-fuchsia-50 text-fuchsia-600 border-fuchsia-200',
 };
 
 const DIR_TONE: Record<Factor['direction'], string> = {
@@ -121,48 +66,16 @@ const DIR_TONE: Record<Factor['direction'], string> = {
   neutral: 'bg-slate-50 text-slate-500 border-slate-200',
 };
 
-const VAL_TONE: Record<string, string> = {
-  cheap: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-  fair: 'bg-blue-50 text-blue-700 border-blue-200',
-  'mildly rich': 'bg-amber-50 text-amber-700 border-amber-200',
-  rich: 'bg-rose-50 text-rose-600 border-rose-200',
-};
-const LEAN_TONE = (lean: string) =>
-  lean.startsWith('constructive but') ? 'bg-amber-50 text-amber-700 border-amber-200'
-    : lean.startsWith('constructive') ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
-    : lean.startsWith('cautious') ? 'bg-rose-50 text-rose-600 border-rose-200'
-    : 'bg-slate-50 text-slate-600 border-slate-200';
-
-const card = 'rounded-2xl border border-slate-200 bg-white p-4 shadow-sm';
-const VERDICT_STYLE: Record<Verdict['label'], string> = {
-  rich: 'bg-rose-50 text-rose-600 border-rose-200',
-  'in-line': 'bg-slate-50 text-slate-500 border-slate-200',
-  cheap: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-};
-
 type SortKey = 'weight' | 'd1_pct' | 'w1_pct' | 'm6_pct' | 'y1_pct' | 'pe' | 'vs_median' | 'rel_6m' | 'implied';
 
-const fmtPct = (v: number | null | undefined) =>
-  v == null ? '—' : `${v >= 0 ? '+' : ''}${v}%`;
-
-function Pct({ v }: { v: number | null | undefined }) {
-  if (v == null) return <span className="text-slate-300">—</span>;
-  return (
-    <span className={`font-mono ${v >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
-      {v >= 0 ? '+' : ''}{v}%
-    </span>
-  );
-}
-
-function RangeBar({ v }: { v: number | null }) {
-  // Position within the 52-week range: 0 = at low, 1 = at high.
-  if (v == null) return <span className="text-slate-300">—</span>;
-  return (
-    <div className="relative h-1.5 w-16 rounded-full bg-slate-100" title={`${Math.round(v * 100)}% of 52-week range`}>
-      <div className="absolute top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-indigo-500" style={{ left: `calc(${v * 100}% - 4px)` }} />
-    </div>
-  );
-}
+// Tab ids: the three fixed panels, plus one `stock:<SYMBOL>` per opened constituent.
+const FIXED_TABS = [['today', "Today's Market"], ['factors', 'Macro Factors'],
+                    ['stocks', 'Nifty Stocks'], ['gap', 'Expectation Gap'],
+                    ['quality', 'Quality Growth']] as const;
+const STOCK_TAB = 'stock:';
+// Past this the strip wraps into a second row and stops reading as a strip, so the
+// oldest tab closes — same instinct as a browser dropping to a scroll, minus the scroll.
+const MAX_STOCK_TABS = 6;
 
 export function Nifty50Panel() {
   const [view, setView] = useState<View | null>(null);
@@ -175,7 +88,9 @@ export function Nifty50Panel() {
   const [sortAsc, setSortAsc] = useState(false);
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const [showMechanism, setShowMechanism] = useState(false);
-  const [tab, setTab] = useState<'today' | 'factors' | 'stocks'>('today');
+  const [tab, setTab] = useState<string>('today');
+  // Symbols with an open tab, oldest first.
+  const [openStocks, setOpenStocks] = useState<string[]>([]);
   const [today, setToday] = useState<TodayBrief | null>(null);
   const [todayLoading, setTodayLoading] = useState(false);
   const [factors, setFactors] = useState<FactorsDoc | null>(null);
@@ -185,7 +100,7 @@ export function Nifty50Panel() {
 
   // Factors are a plain file read (curated nifty_factors.json) — still button-gated.
   const loadFactors = useCallback(async () => {
-    setFactorsLoading(true);
+    setFactorsLoading(true); setErr(null);  // else a previous failure's banner outlives it
     try {
       const r = await fetch('/api/nifty-factors');
       const j = await r.json();
@@ -197,7 +112,7 @@ export function Nifty50Panel() {
 
   // Today's brief: curated nifty_today.json — a file read, still button-gated.
   const loadToday = useCallback(async () => {
-    setTodayLoading(true);
+    setTodayLoading(true); setErr(null);
     try {
       const r = await fetch('/api/nifty-today');
       const j = await r.json();
@@ -220,6 +135,40 @@ export function Nifty50Panel() {
       next.has(sym) ? next.delete(sym) : next.add(sym);
       return next;
     });
+
+  // --- per-stock tabs ---------------------------------------------------------
+  // A left-click on a symbol opens it as a tab in this panel's own strip, beside
+  // Today's Market / Macro Factors / Nifty Stocks. The row click still expands inline
+  // for a quick peek, and cmd/ctrl/middle-click still opens the standalone page — the
+  // symbol stays a real <a href>, so the browser's own affordances keep working.
+  const openStock = useCallback((sym: string) => {
+    setOpenStocks((prev) => {
+      if (prev.includes(sym)) return prev;
+      const next = [...prev, sym];
+      return next.length > MAX_STOCK_TABS ? next.slice(next.length - MAX_STOCK_TABS) : next;
+    });
+    setTab(`${STOCK_TAB}${sym}`);
+  }, []);
+
+  const closeStock = useCallback((sym: string) => {
+    setOpenStocks((prev) => prev.filter((s) => s !== sym));
+    // Closing the tab you're looking at drops you back to the table, not to a blank pane.
+    setTab((t) => (t === `${STOCK_TAB}${sym}` ? 'stocks' : t));
+  }, []);
+
+  // Let the browser handle any click that asks for a new tab/window itself.
+  const onSymbolClick = useCallback((e: React.MouseEvent, sym: string) => {
+    e.stopPropagation();  // don't also toggle the row's inline expand
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+    e.preventDefault();
+    openStock(sym);
+  }, [openStock]);
+
+  const activeStock = tab.startsWith(STOCK_TAB) ? tab.slice(STOCK_TAB.length) : null;
+  const activeRow = useMemo(
+    () => (activeStock && view ? view.rows.find((r) => r.symbol === activeStock) ?? null : null),
+    [activeStock, view],
+  );
 
   // NO auto-run — the scan (bars for 50 names + valuation fetch) runs on button press only.
   const run = useCallback(async (force = false) => {
@@ -524,6 +473,14 @@ export function Nifty50Panel() {
 
       {err && <div className="text-xs text-rose-600">{err}. Is the backend running?</div>}
 
+      {/* An incomplete scan is not cached server-side, but it IS rendered — say so, or a
+          screen full of dashes reads as a market observation. */}
+      {view?.degraded && (
+        <div className="rounded-xl border border-amber-300 bg-amber-50 px-3 py-2 text-[11px] font-bold text-amber-800">
+          Incomplete data — {view.degraded}
+        </div>
+      )}
+
       {/* Index strip + cheap/rich read sit ABOVE the tabs — shared context for all three panels */}
       {!view && !loading && !err && (
         <p className="text-[11px] text-slate-400">
@@ -574,7 +531,8 @@ export function Nifty50Panel() {
                 <span className="text-[11px] text-slate-500">
                   {view.index_read.above50 ? '▲' : '▼'} 50-DMA {view.index_read.dma50?.toLocaleString('en-IN') ?? '—'} ·{' '}
                   {view.index_read.above200 ? '▲' : '▼'} 200-DMA {view.index_read.dma200?.toLocaleString('en-IN') ?? '—'} ·{' '}
-                  {view.index_read.off_high_pct}% off 52W high
+                  {/* off_high_pct is negative by construction — printing it raw read as a double negative */}
+                  {Math.abs(view.index_read.off_high_pct)}% below 52W high
                 </span>
               </div>
               <div className="mt-2.5 flex flex-wrap items-center gap-3">
@@ -587,26 +545,487 @@ export function Nifty50Panel() {
               <div className="mt-1.5 text-[11px] text-slate-500">
                 Breadth: {view.index_read.breadth['cheap'] ?? 0} cheap · {view.index_read.breadth['in-line'] ?? 0} in-line ·{' '}
                 {view.index_read.breadth['rich'] ?? 0} rich vs their own sector peers.
+                {/* A breadth split is a read on the index only if most names were valued —
+                    otherwise it is a read on Yahoo's uptime, and that has to be visible. */}
+                {!!view.index_read.unvalued && (
+                  <span className="text-amber-700"> {view.index_read.unvalued} not valued
+                    {!!view.index_read.fundamentals_failed &&
+                      ` (${view.index_read.fundamentals_failed} because the fundamentals fetch failed)`}.
+                  </span>
+                )}
               </div>
               <p className="text-[9px] text-slate-400 mt-2 leading-snug">{view.index_read.note}</p>
             </div>
           )}
+
+          {/* Earnings growth vs the multiple — what the index is priced for, and the
+              three levers that can break it. Sits under the index read because it is
+              the same question one layer down: not "is it rich" but "on what". */}
+          {view.earnings_vs_valuation && (() => {
+            const e = view.earnings_vs_valuation;
+            return (
+              <div className={card}>
+                <div className="flex flex-wrap items-baseline gap-2 mb-2.5">
+                  <span className="text-[11px] font-black uppercase tracking-wide text-slate-400">
+                    Earnings growth vs the multiple
+                  </span>
+                  <span className="text-[10px] text-slate-400">
+                    {e.names} names · {e.weight_covered_pct}% of weight
+                    {e.excluded.length > 0 && ` · ${e.excluded.join(' & ')} excluded (no trailing P/E)`}
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                  <div className="rounded-xl border border-slate-200 px-3 py-2">
+                    <div className="text-[10px] font-black uppercase text-slate-400">Priced for</div>
+                    <div className="text-lg font-black font-mono text-indigo-700 mt-0.5">
+                      +{Math.round(e.implied_growth_pct)}%
+                    </div>
+                    <div className="text-[10px] text-slate-400 leading-snug mt-0.5">
+                      EPS growth · {e.trailing_pe}× → {e.forward_pe}×
+                    </div>
+                  </div>
+                  <div className="rounded-xl border border-slate-200 px-3 py-2">
+                    <div className="text-[10px] font-black uppercase text-slate-400">Earnings yield</div>
+                    <div className="text-lg font-black font-mono text-slate-800 mt-0.5">{e.earnings_yield_pct}%</div>
+                    <div className="text-[10px] text-slate-400 leading-snug mt-0.5">
+                      forward {e.forward_earnings_yield_pct}%
+                    </div>
+                  </div>
+                  <div className="rounded-xl border border-slate-200 px-3 py-2">
+                    <div className="text-[10px] font-black uppercase text-slate-400">vs 10-yr G-sec</div>
+                    <div className={`text-lg font-black font-mono mt-0.5 ${e.yield_gap_pp < 0 ? 'text-rose-600' : 'text-emerald-700'}`}>
+                      {e.yield_gap_pp > 0 ? '+' : ''}{e.yield_gap_pp}pp
+                    </div>
+                    <div className="text-[10px] text-slate-400 leading-snug mt-0.5">
+                      G-sec {e.gsec_10y_pct}% ({e.gsec_yoy_pp > 0 ? '+' : ''}{e.gsec_yoy_pp}pp y/y)
+                    </div>
+                  </div>
+                  <div className="rounded-xl border border-slate-200 px-3 py-2">
+                    <div className="text-[10px] font-black uppercase text-slate-400">1 turn of P/E</div>
+                    <div className="text-lg font-black font-mono text-slate-800 mt-0.5">{e.pct_per_pe_turn}%</div>
+                    <div className="text-[10px] text-slate-400 leading-snug mt-0.5">
+                      of index value · to 18× is {e.to_band_low_pct}%
+                    </div>
+                  </div>
+                </div>
+
+                {/* The three levers — the taxonomy that separates a de-rating from a dip */}
+                <div className="grid md:grid-cols-3 gap-2 mt-2.5">
+                  <div className="rounded-xl border border-rose-200 bg-rose-50/40 px-3 py-2">
+                    <div className="text-[10px] font-black uppercase text-rose-700">Discount rate — fast, index-wide</div>
+                    <p className="text-[11px] text-slate-600 leading-snug mt-1">
+                      The 10-year is {e.gsec_10y_pct}% and up {e.gsec_yoy_pp}pp in a year, while the index
+                      yields {e.earnings_yield_pct}% on trailing earnings — a gap of {e.yield_gap_pp}pp.
+                      At outright parity the multiple would be {e.parity_pe}× against {e.trailing_pe}× today.
+                      A negative gap is normal for India, but it means the multiple rests on growth, not on
+                      current earnings — and rates move every multiple at once, within days.
+                    </p>
+                  </div>
+                  <div className="rounded-xl border border-amber-200 bg-amber-50/40 px-3 py-2">
+                    <div className="text-[10px] font-black uppercase text-amber-700">Growth — slow, sector by sector</div>
+                    <p className="text-[11px] text-slate-600 leading-snug mt-1">
+                      Competition and demand show up first as a falling FORWARD estimate, not a falling
+                      price. Watch the spread below: the sectors priced for the most growth have the most
+                      to lose from a downgrade, and {e.priced_to_shrink.length > 0
+                        ? `${e.priced_to_shrink.map((c) => c.symbol).join(', ')} ${e.priced_to_shrink.length === 1 ? 'is' : 'are'} already priced to shrink`
+                        : 'nothing is currently priced to shrink'}.
+                    </p>
+                  </div>
+                  <div className="rounded-xl border border-slate-300 bg-slate-50 px-3 py-2">
+                    <div className="text-[10px] font-black uppercase text-slate-600">Earnings level — the denominator</div>
+                    <p className="text-[11px] text-slate-600 leading-snug mt-1">
+                      Crude, input costs and supply shocks cut E rather than the multiple — so the P/E
+                      RISES as the price falls, which is why a cyclical looks dear at the bottom.
+                      Profit-booking and flow are a fourth thing entirely: they move price without touching
+                      rate, growth or earnings, which is why they mean-revert and these three do not.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Reality check against the economy underneath — and the horizon calibration */}
+                {e.macro_check && (() => {
+                  const mc = e.macro_check;
+                  const best = mc.best_fit_horizon.replace('.', '_').replace('_5y', '_5y');
+                  const key = mc.best_fit_horizon === '1y' ? '1y' : mc.best_fit_horizon === '2y' ? '2y' : '1_5y';
+                  return (
+                    <div className="rounded-xl border border-blue-200 bg-blue-50/40 px-3 py-2.5 mt-2.5">
+                      <div className="flex flex-wrap items-baseline gap-2">
+                        <span className="text-[10px] font-black uppercase text-blue-700">
+                          Can the economy carry it?
+                        </span>
+                        <span className="text-[10px] text-slate-400">macro as of {mc.as_of}</span>
+                      </div>
+                      <p className="text-[11px] text-slate-600 leading-snug mt-1">
+                        The <b>+{Math.round(e.implied_growth_pct)}%</b> embedded is a TOTAL change, not an
+                        annual rate. Annualised it reconciles with the published Nifty earnings forecast of{' '}
+                        <b>~{mc.nifty_eps_forecast_fy27_pct}%</b> at a <b>{mc.best_fit_horizon}</b> horizon —
+                        which is the best evidence available that the forward multiple is not a one-year number.
+                      </p>
+                      <div className="grid grid-cols-3 gap-2 mt-2">
+                        {(['1y', '1_5y', '2y'] as const).map((k) => (
+                          <div key={k} className={`rounded-lg border px-2 py-1.5 ${k === key ? 'border-blue-400 bg-white' : 'border-slate-200'}`}>
+                            <div className="text-[9px] font-black uppercase text-slate-400">
+                              over {k.replace('_5y', '.5 yr').replace('1y', '1 yr').replace('2y', '2 yr')}
+                              {k === key && <span className="text-blue-600"> · best fit</span>}
+                            </div>
+                            <div className="text-sm font-black font-mono text-slate-800">
+                              {mc.implied_annualised[k]}%<span className="text-[10px] font-normal text-slate-400">/yr</span>
+                            </div>
+                            <div className="text-[9px] text-slate-400">
+                              {mc.excess_over_nominal_gdp_pp[k] >= 0 ? '+' : ''}{mc.excess_over_nominal_gdp_pp[k]}pp vs GDP
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                      <p className="text-[10px] text-slate-500 leading-snug mt-2">
+                        Nominal GDP: <b>{mc.nominal_gdp_fy26_pct}%</b> in FY26, forecast{' '}
+                        <b>~{mc.nominal_gdp_fy27_pct}%</b> FY27. Earnings outgrowing GDP is India&apos;s
+                        actual regime — Nifty-500 profit-to-GDP has run from{' '}
+                        <b>{mc.profit_to_gdp_fy20_pct}%</b> (FY20) to a record{' '}
+                        <b>{mc.profit_to_gdp_pct}%</b> (FY26) — so it is not implausible. But it compounds
+                        from a record, and that is where mean reversion would bite.
+                      </p>
+                    </div>
+                  );
+                })()}
+
+                {/* Where the growth expectation actually sits */}
+                <div className="mt-2.5 overflow-x-auto">
+                  <table className="w-full text-[11px]">
+                    <thead>
+                      <tr className="text-left text-[9px] uppercase font-black text-slate-400 border-b border-slate-100">
+                        <th className="py-1.5 pr-2">Sector</th>
+                        <th className="py-1.5 px-2 text-right">Wt%</th>
+                        <th className="py-1.5 px-2 text-right">Trailing</th>
+                        <th className="py-1.5 px-2 text-right">Forward</th>
+                        <th className="py-1.5 pl-2 text-right">Priced for</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {e.sectors.map((s) => (
+                        <tr key={s.sector} className="border-b border-slate-50">
+                          <td className="py-1 pr-2 text-slate-600">{s.sector}</td>
+                          <td className="py-1 px-2 text-right font-mono text-slate-500">{s.weight}</td>
+                          <td className="py-1 px-2 text-right font-mono text-slate-500">{s.trailing_pe}</td>
+                          <td className="py-1 px-2 text-right font-mono text-slate-500">{s.forward_pe}</td>
+                          <td className={`py-1 pl-2 text-right font-mono font-bold ${
+                            s.implied_growth_pct < 0 ? 'text-rose-600'
+                              : s.implied_growth_pct >= 50 ? 'text-amber-700' : 'text-slate-700'}`}>
+                            {s.implied_growth_pct >= 0 ? '+' : ''}{s.implied_growth_pct}%
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                <p className="text-[9px] text-slate-400 mt-2 leading-snug">{e.note}</p>
+              </div>
+            );
+          })()}
         </>
       )}
 
-      {/* Sub-panel tabs — Today (daily reasoning) · Factors (macro library) · Stocks (the 50) */}
-      <div className="flex gap-1 bg-slate-100 p-1 rounded-xl w-fit">
-        {([['today', "Today's Market"], ['factors', 'Macro Factors'], ['stocks', 'Nifty Stocks']] as const).map(([id, label]) => (
+      {/* Sub-panel tabs — Today (daily reasoning) · Factors (macro library) · Stocks (the
+          50) · then one tab per constituent the user has opened from the table. */}
+      <div className="flex flex-wrap gap-1 bg-slate-100 p-1 rounded-xl w-fit max-w-full">
+        {FIXED_TABS.map(([id, label]) => (
           <button key={id} onClick={() => setTab(id)}
             className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition ${tab === id ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}>
             {label}
           </button>
         ))}
+        {openStocks.map((sym) => {
+          const on = tab === `${STOCK_TAB}${sym}`;
+          return (
+            <span key={sym}
+              className={`flex items-center rounded-lg transition ${on ? 'bg-white shadow-sm' : 'hover:bg-slate-200/60'}`}>
+              <button onClick={() => setTab(`${STOCK_TAB}${sym}`)}
+                className={`pl-3 pr-1.5 py-1.5 text-xs font-bold ${on ? 'text-indigo-700' : 'text-slate-500 hover:text-slate-700'}`}>
+                {sym}
+              </button>
+              <button onClick={() => closeStock(sym)} title={`Close ${sym}`} aria-label={`Close ${sym}`}
+                className="pr-2 pl-0.5 py-1.5 text-slate-300 hover:text-rose-500">
+                <X className="w-3 h-3" />
+              </button>
+            </span>
+          );
+        })}
+        {openStocks.length > 1 && (
+          <button onClick={() => { setOpenStocks([]); setTab('stocks'); }}
+            className="px-2.5 py-1.5 text-[10px] font-bold text-slate-400 hover:text-slate-700"
+            title="Close every open stock tab">
+            close all
+          </button>
+        )}
       </div>
 
       {tab === 'today' && todaySection}
 
       {tab === 'factors' && factorsSection}
+
+      {/* Quality Growth reads its own artifact (quality_growth.json) and does not need
+          the yfinance scan, so it works whether or not Run scan has been pressed. A
+          symbol click opens the same in-panel stock tab as the table above. */}
+      {tab === 'quality' && <Nifty50QualityGrowth onSymbolClick={openStock} />}
+
+      {tab === 'gap' && !view && !loading && !err && (
+        <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-4 py-8 text-center">
+          <p className="text-sm font-semibold text-slate-600">
+            Press <span className="text-indigo-600">Run scan</span> to compute the expectation gap.
+          </p>
+        </div>
+      )}
+
+      {tab === 'gap' && view && (view.expectation_gap ? (() => {
+        const g = view.expectation_gap;
+        const [loT, hiT] = g.thresholds_pp;
+        return (
+          <div className="space-y-4">
+            <div className={card}>
+              <div className="flex flex-wrap items-baseline gap-2 mb-1">
+                <span className="text-[11px] font-black uppercase tracking-wide text-slate-400">
+                  Expectation gap — the bar against the track record
+                </span>
+                <span className="text-[10px] text-slate-400">{g.names} names</span>
+                {/* Stated at the top, not buried in a footnote: this ranks research
+                    questions. The self-test strip below is why. */}
+                <span className="text-[10px] font-black uppercase tracking-wide px-2 py-0.5 rounded-full border border-slate-300 bg-slate-50 text-slate-500">
+                  guideline · not a signal
+                </span>
+              </div>
+              <p className="text-[12px] text-slate-700 leading-relaxed">
+                Growth <b>priced in</b> minus growth <b>recently delivered</b>, in percentage points.
+                This measures the <b>size of the bet, not its direction</b>. A forward P/E below trailing
+                just means earnings are expected to grow — if consensus is met and the multiple holds,
+                the holder earns roughly that growth. A <b className="text-rose-600">high bar</b> widens
+                the range of outcomes <i>both ways</i>; a <b className="text-emerald-700">low bar</b> is
+                not safety, since it can mean earnings are forecast to fall. What settles it is whether
+                growth persists past the forecast year. Implied growth alone does not discriminate at
+                all: its median is <b>{g.median_implied_pct}%</b> and almost nothing is priced for a
+                decline, so reading a high number as upside marks nearly every name attractive.
+              </p>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-3">
+                <div className="rounded-xl border border-slate-200 px-3 py-2">
+                  <div className="text-[10px] font-black uppercase text-slate-400">Median gap</div>
+                  <div className="text-lg font-black font-mono text-slate-800 mt-0.5">
+                    {g.median_gap_pp >= 0 ? '+' : ''}{g.median_gap_pp}pp
+                  </div>
+                  <div className="text-[10px] text-slate-400 leading-snug mt-0.5">
+                    priced {g.median_implied_pct}% · delivered {g.median_delivered_pct}%
+                  </div>
+                </div>
+                <div className="rounded-xl border border-rose-200 bg-rose-50/40 px-3 py-2">
+                  <div className="text-[10px] font-black uppercase text-rose-700">High bar</div>
+                  <div className="text-lg font-black font-mono text-rose-600 mt-0.5">{g.high_bar}</div>
+                  <div className="text-[10px] text-slate-400 mt-0.5">gap ≥ +{hiT}pp</div>
+                </div>
+                <div className="rounded-xl border border-slate-200 px-3 py-2">
+                  <div className="text-[10px] font-black uppercase text-slate-400">In line</div>
+                  <div className="text-lg font-black font-mono text-slate-700 mt-0.5">{g.in_line}</div>
+                  <div className="text-[10px] text-slate-400 mt-0.5">between {loT} and +{hiT}pp</div>
+                </div>
+                <div className="rounded-xl border border-emerald-200 bg-emerald-50/40 px-3 py-2">
+                  <div className="text-[10px] font-black uppercase text-emerald-700">Low bar</div>
+                  <div className="text-lg font-black font-mono text-emerald-700 mt-0.5">{g.low_bar}</div>
+                  <div className="text-[10px] text-slate-400 mt-0.5">gap ≤ {loT}pp</div>
+                </div>
+              </div>
+              {/* SELF-TEST. The tab measures its own predictive power against the one
+                  non-judgmental dataset in the repo and prints the answer whether or not
+                  it flatters the idea. A ranking that stays silent about its hit rate
+                  invites a confidence it never earned. */}
+              {g.calibration && (() => {
+                const c = g.calibration!;
+                const r = c.r_gap_vs_full_reaction;
+                const bm = c.band_mean_rel_pct || {};
+                return (
+                  <div className={`rounded-xl border px-3 py-2.5 mt-3 ${c.informative
+                    ? 'border-blue-200 bg-blue-50/40' : 'border-slate-200 bg-slate-50/60'}`}>
+                    <div className="flex flex-wrap items-baseline gap-2">
+                      <span className="text-[10px] font-black uppercase tracking-wide text-slate-500">
+                        Does this predict anything?
+                      </span>
+                      <span className="text-[11px] font-mono font-black text-slate-800">
+                        r = {r == null ? '—' : r}
+                      </span>
+                      <span className="text-[10px] text-slate-400">
+                        gap vs measured results-day move (rel. NIFTY) · {c.names} names ·{' '}
+                        {c.events} events
+                      </span>
+                      <span className={`text-[10px] font-black uppercase tracking-wide px-2 py-0.5 rounded-full border ${
+                        c.informative
+                          ? 'border-blue-200 bg-blue-50 text-blue-700'
+                          : 'border-slate-300 bg-white text-slate-500'}`}>
+                        {c.informative ? 'some signal' : 'no measurable edge'}
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-slate-600 leading-snug mt-1.5">
+                      <b>{c.verdict}</b> Band averages —{' '}
+                      <b className="text-rose-600">high bar {bm['high bar'] == null ? '—' : `${bm['high bar']}%`}</b>,{' '}
+                      in line {bm['in line'] == null ? '—' : `${bm['in line']}%`},{' '}
+                      <b className="text-emerald-700">low bar {bm['low bar'] == null ? '—' : `${bm['low bar']}%`}</b>.
+                      {' '}The theory needs high-bar to be the worst of the three; it currently{' '}
+                      {c.bands_ordered_as_theory_predicts ? 'is' : <b>is not</b>}.
+                      {' '}|r| under {c.noise_threshold_r} is indistinguishable from zero here.
+                    </p>
+                    <p className="text-[10px] text-slate-400 leading-snug mt-1">
+                      Not a backtest and cannot be one: the gap is measured today, the reactions
+                      run back to 2018, so nothing is aligned in time. It can only weaken the
+                      "gap is a signal" reading, never confirm it.
+                    </p>
+                  </div>
+                );
+              })()}
+              {/* The normalised comparison is the better one; say so loudly while it's absent
+                  rather than letting a single noisy quarter quietly drive the ranking. */}
+              {!g.normalized_available && (
+                <p className="text-[11px] text-amber-700 bg-amber-50 border border-amber-200 rounded-xl px-3 py-2 mt-2 leading-snug">
+                  <b>Ranking on one quarter.</b> The Normalised columns are empty — run{' '}
+                  <b>data_agent/fundamentals/eps_cagr_backfill.py</b> to build eps_history.json.
+                  Until then a single year-on-year print drives the table, and one bad quarter
+                  (Dr Reddy's −69%) or one huge one (JSW Steel +113%) can dominate it.
+                </p>
+              )}
+              {!!g.normalized_available && (
+                <p className="text-[10px] text-slate-500 mt-2 leading-snug">
+                  Normalised growth available for <b>{g.normalized_available}</b> of {g.names} names.
+                  Mind the units: embedded growth is a TOTAL change while a CAGR is per year, so the
+                  Gap vs CAGR column shows both a 1-year and a 2-year annualisation — at the longer
+                  horizon the gap is roughly halved.
+                </p>
+              )}
+            </div>
+
+            <div className={`${card} overflow-x-auto p-0`}>
+              <table className="w-full text-xs">
+                <thead>
+                  <tr className="text-left text-[10px] uppercase font-black text-slate-400 border-b border-slate-100">
+                    <th className="px-3 py-2.5">Company</th>
+                    <th className="px-2 py-2.5">Sector</th>
+                    <th className="px-2 py-2.5 text-right">Wt%</th>
+                    <th className="px-2 py-2.5 text-right">P/E</th>
+                    <th className="px-2 py-2.5 text-right">Fwd</th>
+                    <th className="px-2 py-2.5 text-right" title="Growth the price already assumes">Priced for</th>
+                    <th className="px-2 py-2.5 text-right" title="Most recent year-on-year earnings growth — one reading, not a trend">Delivered</th>
+                    <th className="px-2 py-2.5 text-right" title="Priced for minus delivered (one quarter). Positive = a promise still to be kept.">Gap 1Q</th>
+                    <th className="px-2 py-2.5 text-right" title="Return on equity, derived as P/B divided by P/E. Backward-looking average over ALL capital — not the return on the next rupee invested — and inflated by leverage and by a thin equity base.">ROE</th>
+                    <th className="px-2 py-2.5 text-right" title="Multi-year EPS CAGR — how fast earnings have actually compounded. Needs eps_history.json.">Normalised</th>
+                    <th className="px-2 py-2.5 text-right" title="Embedded growth annualised MINUS the multi-year CAGR. Two figures: assuming the forward estimate is 1 year out, and 2 years out. A longer horizon halves the gap — the units matter.">Gap vs CAGR</th>
+                    <th className="px-2 py-2.5">Bar · growth / return</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {g.rows.map((r) => (
+                    <tr key={r.symbol} className="border-b border-slate-50 hover:bg-slate-50/60">
+                      <td className="px-3 py-2 whitespace-nowrap">
+                        <a href={stockHref(r.symbol)} onClick={(e) => onSymbolClick(e, r.symbol)}
+                          className="font-black text-slate-800 hover:text-indigo-600 hover:underline decoration-dotted underline-offset-2">
+                          {r.symbol}
+                        </a>
+                        {r.cyclical_caution && (
+                          <span className="ml-1 text-[9px] font-black px-1 py-0.5 rounded bg-amber-50 text-amber-700 border border-amber-200"
+                            title="Delivered growth is negative while implied growth is high — the signature of a cyclical at a trough. Depressed trailing earnings inflate the implied figure mechanically. This gap is the cycle, not necessarily a mispricing.">
+                            cyclical
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-2 py-2 text-slate-500 whitespace-nowrap">{r.sector}</td>
+                      <td className="px-2 py-2 text-right font-mono text-slate-500">{r.weight ?? '—'}</td>
+                      <td className="px-2 py-2 text-right font-mono text-slate-500">{r.trailing_pe}</td>
+                      <td className="px-2 py-2 text-right font-mono text-slate-400">{r.forward_pe}</td>
+                      <td className="px-2 py-2 text-right font-mono text-slate-700">
+                        {r.implied_growth_pct >= 0 ? '+' : ''}{Math.round(r.implied_growth_pct)}%
+                      </td>
+                      <td className={`px-2 py-2 text-right font-mono ${r.delivered_growth_pct < 0 ? 'text-rose-600' : 'text-slate-700'}`}>
+                        {r.delivered_growth_pct >= 0 ? '+' : ''}{Math.round(r.delivered_growth_pct)}%
+                      </td>
+                      <td className={`px-2 py-2 text-right font-mono font-black ${
+                        r.gap_pp >= hiT ? 'text-rose-600' : r.gap_pp <= loT ? 'text-emerald-700' : 'text-slate-600'}`}>
+                        {r.gap_pp >= 0 ? '+' : ''}{Math.round(r.gap_pp)}pp
+                      </td>
+                      <td className="px-2 py-2 text-right font-mono whitespace-nowrap">
+                        {r.roe_pct != null ? (
+                          <span className={r.roe_pct >= 15 ? 'text-slate-800 font-bold' : 'text-slate-500'}
+                            title={r.quality_quadrant ?? undefined}>
+                            {r.roe_pct}%
+                            {r.roe_thin_equity && (
+                              <span className="text-amber-600" title="Very high ROE usually signals a thin equity base — high payout, buybacks, negative working capital — rather than superior operating returns."> †</span>
+                            )}
+                          </span>
+                        ) : <span className="text-slate-300">—</span>}
+                      </td>
+                      <td className="px-2 py-2 text-right font-mono text-slate-600">
+                        {r.normalized_growth_pct != null ? (
+                          <span title={`${r.normalized_basis ?? ''}${r.normalized_sign_change ? ' · series contains a loss year — read with caution' : ''}`}>
+                            {r.normalized_growth_pct >= 0 ? '+' : ''}{Math.round(r.normalized_growth_pct)}%
+                            {r.normalized_sign_change && <span className="text-amber-600"> *</span>}
+                          </span>
+                        ) : <span className="text-slate-300">—</span>}
+                      </td>
+                      <td className="px-2 py-2 text-right font-mono whitespace-nowrap">
+                        {r.gap_vs_normalized_pp != null ? (
+                          <span title={`Embedded ${Math.round(r.implied_growth_pct)}% total. Annualised: ${Math.round(r.implied_annualised_1y_pct ?? 0)}% over 1yr, ${Math.round(r.implied_annualised_2y_pct ?? 0)}% over 2yr.`}>
+                            <b className={r.gap_vs_normalized_pp >= hiT ? 'text-rose-600'
+                              : r.gap_vs_normalized_pp <= loT ? 'text-emerald-700' : 'text-slate-600'}>
+                              {r.gap_vs_normalized_pp >= 0 ? '+' : ''}{Math.round(r.gap_vs_normalized_pp)}
+                            </b>
+                            <span className="text-slate-400 text-[10px]">
+                              {' / '}{r.gap_vs_normalized_2y_pp != null
+                                ? `${r.gap_vs_normalized_2y_pp >= 0 ? '+' : ''}${Math.round(r.gap_vs_normalized_2y_pp)}` : '—'}pp
+                            </span>
+                          </span>
+                        ) : <span className="text-slate-300">—</span>}
+                      </td>
+                      <td className="px-2 py-2 whitespace-nowrap">
+                        <span className={`text-[10px] font-black px-2 py-0.5 rounded-full border ${BAND_STYLE[r.band]}`}>
+                          {r.band}
+                        </span>
+                        {r.quality_quadrant && (
+                          <span className={`ml-1 text-[9px] font-bold px-1.5 py-0.5 rounded-full border ${QUADRANT_STYLE[r.quality_quadrant] ?? ''}`}
+                            title="Embedded growth crossed with return on equity. Descriptive, not a verdict.">
+                            {r.quality_quadrant.replace('priced for ', '').replace(' · ', ' / ')}
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="rounded-xl bg-slate-50 border border-slate-200 px-4 py-3">
+              <p className="text-[10px] text-slate-500 leading-relaxed">
+                <b className="text-slate-600">How to read this:</b> {g.note}
+              </p>
+            </div>
+          </div>
+        );
+      })() : (
+        <div className={card}>
+          <p className="text-[11px] text-slate-400">
+            Expectation gap unavailable — it needs both a forward multiple and a delivered-growth
+            figure. Re-run the scan; if it stays empty, the fundamentals fetch is not returning
+            earningsGrowth.
+          </p>
+        </div>
+      ))}
+
+      {/* A stock tab can only be opened from the table, so `view` is always loaded here —
+          but a re-run that came back thin could still drop the row, hence the fallback. */}
+      {activeStock && (
+        activeRow
+          ? <Nifty50StockDetail row={activeRow} view={view} embedded />
+          : (
+            <div className={card}>
+              <p className="text-sm font-bold text-slate-700">{activeStock} isn't in the current scan.</p>
+              <p className="text-[11px] text-slate-500 mt-1">
+                Re-run the scan, or close this tab.
+              </p>
+            </div>
+          )
+      )}
 
       {tab === 'stocks' && !view && !loading && !err && (
         <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-4 py-8 text-center">
@@ -698,7 +1117,15 @@ export function Nifty50Panel() {
                       {open ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronRight className="w-3.5 h-3.5" />}
                     </td>
                     <td className="px-2 py-2 whitespace-nowrap">
-                      <span className="font-black text-slate-800">{r.symbol}</span>
+                      {/* Left-click opens a tab in this panel's strip; cmd/ctrl/middle-click
+                          falls through to the href and opens the standalone page. The rest
+                          of the row still expands inline for a quick peek. */}
+                      <a href={stockHref(r.symbol)}
+                        onClick={(e) => onSymbolClick(e, r.symbol)}
+                        className="font-black text-slate-800 hover:text-indigo-600 hover:underline decoration-dotted underline-offset-2"
+                        title={`Open ${r.symbol} as a tab — full detail, room to read (⌘/Ctrl-click for its own window)`}>
+                        {r.symbol}
+                      </a>
                       {r.symbol_note && (
                         <span className="ml-1 text-[9px] font-black px-1 py-0.5 rounded bg-amber-50 text-amber-700 border border-amber-200"
                           title={r.symbol_note}>→{r.yahoo_symbol}</span>
@@ -706,6 +1133,12 @@ export function Nifty50Panel() {
                       {r.last == null && (
                         <span className="ml-1 text-[9px] font-black px-1 py-0.5 rounded bg-rose-50 text-rose-600 border border-rose-200"
                           title="No price returned by the data source for any known ticker for this name">no data</span>
+                      )}
+                      {r.last != null && r.partial_history && (
+                        <span className="ml-1 text-[9px] font-black px-1 py-0.5 rounded bg-slate-100 text-slate-500 border border-slate-300"
+                          title={r.history_note ?? `Only ${r.bars ?? 0} sessions of history — windows longer than that are left blank rather than shortened`}>
+                          {r.bars ?? 0}d
+                        </span>
                       )}
                       <div className="text-[10px] text-slate-400">{r.name}</div>
                     </td>
@@ -729,11 +1162,24 @@ export function Nifty50Panel() {
                     <td className="px-2 py-2 text-right font-mono text-slate-400">{r.pb ?? '—'}</td>
                     <td className="px-2 py-2 whitespace-nowrap">
                       {r.verdict ? (
-                        <span className={`text-[10px] font-black px-2 py-0.5 rounded-full border ${VERDICT_STYLE[r.verdict.label]}`}
-                          title={`${r.verdict.metric.toUpperCase()} ${r.verdict.vs_median_pct >= 0 ? '+' : ''}${r.verdict.vs_median_pct}% vs ${r.verdict.basis} median ${r.verdict.sector_median}`}>
+                        /* A dashed border marks an index-median verdict. Zomato at 670x P/E
+                           against the whole-index median of 30x rendered identically to a
+                           real peer comparison; the distinction lived only in the tooltip. */
+                        <span className={`text-[10px] font-black px-2 py-0.5 rounded-full border ${VERDICT_STYLE[r.verdict.label]} ${r.verdict.basis === 'index' ? 'border-dashed opacity-80' : ''}`}
+                          title={r.verdict.basis === 'index'
+                            ? `${r.verdict.metric.toUpperCase()} ${r.verdict.vs_median_pct >= 0 ? '+' : ''}${r.verdict.vs_median_pct}% vs the WHOLE-INDEX median ${r.verdict.sector_median} — ${r.sector} has fewer than 3 valued peers, so this is not a peer comparison. Treat it as weak evidence.`
+                            : `${r.verdict.metric.toUpperCase()} ${r.verdict.vs_median_pct >= 0 ? '+' : ''}${r.verdict.vs_median_pct}% vs ${r.sector} peer median ${r.verdict.sector_median}${r.verdict.peers ? ` (${r.verdict.peers} peers)` : ''}`}>
                           {r.verdict.label} {r.verdict.vs_median_pct >= 0 ? '+' : ''}{r.verdict.vs_median_pct}%
+                          {r.verdict.basis === 'index' && <span className="ml-1 font-normal opacity-70">idx</span>}
                         </span>
-                      ) : <span className="text-slate-300">—</span>}
+                      ) : (
+                        <span className="text-slate-300"
+                          title={r.fundamentals_ok === false
+                            ? 'No verdict — the fundamentals fetch failed for this name (not the same as having no P/E)'
+                            : 'No verdict — P/E and P/B unavailable'}>
+                          {r.fundamentals_ok === false ? '⚠' : '—'}
+                        </span>
+                      )}
                     </td>
                     <td className="px-2 py-2 text-right whitespace-nowrap">
                       {r.expectation?.implied_eps_growth_pct != null ? (
@@ -756,7 +1202,13 @@ export function Nifty50Panel() {
                   {open && (
                     <tr className="border-b border-slate-100 bg-slate-50/50">
                       <td />
-                      <td colSpan={15} className="px-2 py-3">
+                      {/* 17 header columns; the empty chevron cell above covers one, so 16 */}
+                      <td colSpan={16} className="px-2 py-3">
+                        <a href={stockHref(r.symbol)}
+                          onClick={(e) => onSymbolClick(e, r.symbol)}
+                          className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wide text-indigo-600 hover:underline mb-2">
+                          Open full view as a tab →
+                        </a>
                         {/* Price header — current (delayed) price front and centre */}
                         <div className="flex flex-wrap items-center gap-3 mb-3 text-xs">
                           <span className="text-lg font-black text-slate-900 font-mono">
@@ -767,13 +1219,18 @@ export function Nifty50Panel() {
                             {r.as_of ? `as of ${r.as_of} · Yahoo daily close, ~15-min delayed intraday` : ''}
                           </span>
                           {r.hi_52w != null && r.lo_52w != null && (
-                            <span className="text-[10px] text-slate-400 ml-auto">
+                            <span className="text-[10px] text-slate-400 ml-auto"
+                              title="Dividend-adjusted closes, so these sit slightly below NSE's published 52-week extremes — the gap widens with the yield.">
                               52W range ₹{r.lo_52w.toLocaleString('en-IN')} – ₹{r.hi_52w.toLocaleString('en-IN')}
+                              {r.partial_history ? ` (${r.bars ?? 0} sessions only)` : ''}
                             </span>
                           )}
                         </div>
                         {r.symbol_note && (
                           <p className="text-[10px] text-amber-700 mb-3">{r.symbol_note}</p>
+                        )}
+                        {r.history_note && (
+                          <p className="text-[10px] text-amber-700 mb-3">{r.history_note}</p>
                         )}
                         {r.last == null && (
                           <p className="text-[10px] text-rose-600 mb-3">
@@ -794,13 +1251,23 @@ export function Nifty50Panel() {
                                 <b className={r.verdict.vs_median_pct >= 0 ? 'text-rose-600' : 'text-emerald-700'}>
                                   {r.verdict.vs_median_pct >= 0 ? '+' : ''}{r.verdict.vs_median_pct}%
                                 </b>{' '}
-                                vs the {r.verdict.basis === 'sector' ? `${r.sector} peer` : 'whole-index (small sector)'} median of{' '}
+                                vs the {r.verdict.basis === 'sector'
+                                  ? `${r.sector} peer${r.verdict.peers ? ` (${r.verdict.peers} names)` : ''}`
+                                  : 'whole-index (small sector)'} median of{' '}
                                 <b>{r.verdict.sector_median}</b> → <b>{r.verdict.label}</b> (thresholds: ≥+25% rich, ≤−25% cheap).
                                 A premium can be earned (growth/quality) and a discount deserved (weak fundamentals) — this flags the
                                 question, it doesn't answer it.
+                                {r.verdict.basis === 'index' && (
+                                  <b className="text-amber-700"> {r.sector} has fewer than 3 valued peers, so this compares
+                                  the stock to the index as a whole rather than to anything like it — weak evidence, not a peer verdict.</b>
+                                )}
                               </p>
                             ) : (
-                              <p className="text-[11px] text-slate-400">No verdict — P/E and P/B unavailable from the data source.</p>
+                              <p className="text-[11px] text-slate-400">
+                                {r.fundamentals_ok === false
+                                  ? 'No verdict — the fundamentals fetch failed for this name. That is a data gap, not a statement about the company; re-run the scan.'
+                                  : 'No verdict — P/E and P/B unavailable from the data source.'}
+                              </p>
                             )}
                           </div>
                           {/* Upside / downside scenarios */}
@@ -821,6 +1288,8 @@ export function Nifty50Panel() {
                                   <b className={`font-mono ${r.verdict.reversion_pct >= 0 ? 'text-emerald-700' : 'text-rose-600'}`}>
                                     {r.verdict.reversion_pct >= 0 ? '+' : ''}{r.verdict.reversion_pct}%
                                   </b>
+                                ) : r.verdict?.reversion_note ? (
+                                  <span className="text-slate-400 italic">{r.verdict.reversion_note}</span>
                                 ) : <span className="text-slate-300">—</span>}
                               </div>
                               <p className="text-[10px] text-slate-400 leading-snug pt-1">
@@ -846,7 +1315,7 @@ export function Nifty50Panel() {
                             {r.expectation?.implied_eps_growth_pct != null && (
                               <div className="rounded-xl border border-purple-200 bg-purple-50/50 px-3 py-2 mb-3">
                                 <div className="text-[10px] font-black uppercase text-purple-700 mb-1">
-                                  Priced for — the bar this result has to clear
+                                  Priced for — the growth already in the price
                                   {r.expectation.as_of && (
                                     <span className="font-normal text-purple-400 ml-1.5">
                                       analyst data as of {r.expectation.as_of.slice(0, 10)}
@@ -889,8 +1358,10 @@ export function Nifty50Panel() {
                                 </div>
                                 <p className="text-[10px] text-slate-400 mt-1.5">
                                   Trailing P/E ÷ forward P/E − 1. No weights are set by hand — it is what the two
-                                  multiples already imply. This is why a company can report strong absolute growth
-                                  and still fall: good in absolute terms, short of what was priced in.
+                                  multiples already imply. Yahoo's forward P/E is a next-fiscal-year consensus against a
+                                  trailing-twelve-month denominator, so read this as growth embedded over the next one to
+                                  two years, not as a hurdle for the next quarter. It is why a company can report strong
+                                  absolute growth and still fall: good in absolute terms, short of what was priced in.
                                 </p>
                               </div>
                             )}
@@ -1017,6 +1488,36 @@ export function Nifty50Panel() {
           </div>
 
           <div className="rounded-xl bg-slate-50 border border-slate-200 px-4 py-3 space-y-1.5">
+            {/* Provenance for the two measured layers. Both were computed server-side and
+                thrown away here — including the divergence count, which is the whole point
+                of the Results column. */}
+            {(view.reactions_meta || view.expectation_meta) && (
+              <p className="text-[10px] text-slate-500 leading-relaxed">
+                {view.reactions_meta && (
+                  <>
+                    <b className="text-slate-600">Results reactions:</b>{' '}
+                    {view.reactions_meta.events} announcements across {view.reactions_meta.names} names
+                    (measured to {view.reactions_meta.as_of}) —{' '}
+                    <b>{view.reactions_meta.diverging}</b> currently trade results differently from their
+                    own full-sample habit.
+                  </>
+                )}
+                {view.expectation_meta && (
+                  <>
+                    {view.reactions_meta ? ' · ' : ''}
+                    <b className="text-slate-600">Expectation:</b>{' '}
+                    {view.expectation_meta.snapshots} snapshot{view.expectation_meta.snapshots === 1 ? '' : 's'} from{' '}
+                    {view.expectation_meta.source}, captured {String(view.expectation_meta.captured_at).slice(0, 10)}
+                    {view.expectation_meta.median_implied_eps_growth_pct != null && (
+                      <> — index median priced for {fmtPct(view.expectation_meta.median_implied_eps_growth_pct)} EPS growth</>
+                    )}
+                    {view.expectation_meta.snapshots === 1 &&
+                      ' (single capture — targets and dispersion will drift until the pre-print snapshot job runs regularly)'}
+                    .
+                  </>
+                )}
+              </p>
+            )}
             {view.drivers_meta && (
               <p className="text-[10px] text-amber-700 leading-relaxed">
                 <b>Drivers note (as of {view.drivers_meta.as_of}):</b> {view.drivers_meta.note}

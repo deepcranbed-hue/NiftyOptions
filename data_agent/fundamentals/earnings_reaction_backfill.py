@@ -50,6 +50,11 @@ Run:  python3 data_agent/fundamentals/earnings_reaction_backfill.py
 Out:  earnings_reactions.json (repo root)
 """
 from __future__ import annotations
+# --- single source for DB connections (D-SC-06, CLAUDE.md) ---
+import os as _os, sys as _sys
+_RT = _os.path.abspath(_os.path.join(_os.path.dirname(__file__), "../.."))
+_RT in _sys.path or _sys.path.insert(0, _RT)
+from db_config import resolve_writable_db_path
 
 import json
 import os
@@ -73,8 +78,7 @@ _REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__
 # Drive is invisible here until that copy happens.
 #
 # Order: OPTION_CHAINS_DB override -> Drive -> mirror. Never silent about which.
-_DRIVE_DB = ("/Users/deepak/Library/CloudStorage/GoogleDrive-deepcranbed@gmail.com"
-             "/My Drive/option_chains.db")
+_DRIVE_DB = resolve_writable_db_path()
 _MIRROR_DB = os.path.join(_REPO, "option_chains.db")
 
 

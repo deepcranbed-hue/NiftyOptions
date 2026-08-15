@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# --- single source for DB connections (D-SC-06, CLAUDE.md) ---
+import os as _os, sys as _sys
+_RT = _os.path.abspath(_os.path.join(_os.path.dirname(__file__), "../.."))
+_RT in _sys.path or _sys.path.insert(0, _RT)
+from db_config import resolve_db_path
 import os
 import sys
 import argparse
@@ -20,7 +25,7 @@ except Exception:
 
 SQLITE_DB = os.getenv(
     "OPTION_CHAINS_DB",
-    "/Users/deepak/Library/CloudStorage/GoogleDrive-deepcranbed@gmail.com/My Drive/option_chains.db",
+    resolve_db_path(),
 )
 
 TARGET = "BANKNIFTY"

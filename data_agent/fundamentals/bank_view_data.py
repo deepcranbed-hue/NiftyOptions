@@ -12,6 +12,11 @@ USAGE
     python bank_view_data.py            # copy everything between ###JSON_START / ###JSON_END
 """
 from __future__ import annotations
+# --- single source for DB connections (D-SC-06, CLAUDE.md) ---
+import os as _os, sys as _sys
+_RT = _os.path.abspath(_os.path.join(_os.path.dirname(__file__), "../.."))
+_RT in _sys.path or _sys.path.insert(0, _RT)
+from db_config import resolve_db_path, resolve_pg_dsn
 import os, sqlite3, sys, json
 try:
     import numpy as np, pandas as pd
@@ -26,8 +31,7 @@ try:
 except Exception:
     pass
 
-SQLITE_DB = os.getenv("OPTION_CHAINS_DB",
-    "/Users/deepak/Library/CloudStorage/GoogleDrive-deepcranbed@gmail.com/My Drive/option_chains.db")
+SQLITE_DB = resolve_db_path()
 BANKS = ["HDFCBANK", "ICICIBANK", "SBIN", "KOTAKBANK", "AXISBANK", "INDUSINDBK",
          "BANKBARODA", "PNB", "AUBANK", "IDFCFIRSTB", "FEDERALBNK", "BANDHANBNK"]
 INDEX = "BANKNIFTY"

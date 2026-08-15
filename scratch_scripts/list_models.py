@@ -1,0 +1,72 @@
+import time
+import hmac
+import hashlib
+import base64
+import json
+import urllib.request
+
+def generate_token(api_key: str, exp_seconds: int = 300) -> str:
+    try:
+        api_key_id, secret = api_key.split(".")
+    except ValueError:
+        raise ValueError("Invalid API key format")
+        
+    header = {
+        "alg": "HS256",
+        "sign_type": "SIGN"
+    }
+    
+    timestamp = int(time.time() * 1000)
+    payload = {
+        "api_key": api_key_id,
+        "exp": int(time.time()) + exp_seconds,
+        "timestamp": timestamp
+    }
+    
+    def b64url_encode(data: dict) -> str:
+        json_str = json.dumps(data, separators=(',', ':')).encode('utf-8')
+        return base64.urlsafe_b64encode(json_str).replace(b'=', b'').decode('utf-8')
+        
+    segments = [
+        b64url_encode(header),
+        b64url_encode(payload)
+    ]
+    
+    signing_input = ".".join(segments).encode('utf-8')
+    key = secret.encode('utf-8')
+    signature = hmac.new(key, signing_input, hashlib.sha256).digest()
+    
+    signature_b64 = base64.urlsafe_b64encode(signature).replace(b'=', b'').decode('utf-8')
+    segments.append(signature_b64)
+    
+    return ".".join(segments)
+
+def list_models():
+    api_key = "9b04029839064760920d16615bd3b4ae.cys0urAM8ZOUjPa8"
+    token = generate_token(api_key)
+    
+    # Try domestic first
+    urls = [
+        "https://open.bigmodel.cn/api/paas/v4/models",
+        "https://api.z.ai/api/paas/v4/models"
+    ]
+    
+    for url in urls:
+        print(f"\nQuerying: {url}")
+        req = urllib.request.Request(
+            url,
+            headers={"Authorization": f"Bearer {token}"},
+            method="GET"
+        )
+        try:
+            with urllib.request.urlopen(req) as response:
+                resp_data = response.read().decode('utf-8')
+                print("SUCCESS!")
+                print(resp_data)
+        except Exception as e:
+            print(f"Error: {e}")
+            if hasattr(e, "read"):
+                print("Server response:", e.read().decode('utf-8', errors='ignore'))
+
+if __name__ == "__main__":
+    list_models()

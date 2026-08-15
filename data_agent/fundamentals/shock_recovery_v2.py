@@ -18,6 +18,11 @@ USAGE
     python shock_recovery_v2.py
 """
 from __future__ import annotations
+# --- single source for DB connections (D-SC-06, CLAUDE.md) ---
+import os as _os, sys as _sys
+_RT = _os.path.abspath(_os.path.join(_os.path.dirname(__file__), "../.."))
+_RT in _sys.path or _sys.path.insert(0, _RT)
+from db_config import resolve_db_path, resolve_pg_dsn
 import os, sqlite3, sys, json
 try:
     import numpy as np, pandas as pd
@@ -28,8 +33,7 @@ try:
 except Exception:
     pass
 
-SQLITE_DB = os.getenv("OPTION_CHAINS_DB",
-    "/Users/deepak/Library/CloudStorage/GoogleDrive-deepcranbed@gmail.com/My Drive/option_chains.db")
+SQLITE_DB = resolve_db_path()
 FUND_DIR = os.path.dirname(os.path.abspath(__file__))
 MKT, VIX = "NIFTY", "INDIAVIX"
 NON_EQUITY = {"NIFTY", "BANKNIFTY", "NIFTYIT", "FINNIFTY", "INDIAVIX", "USDINR",
@@ -53,7 +57,7 @@ def load_roe():
     import psycopg2
     roe = {}
     try:
-        conn = psycopg2.connect("postgresql://localhost/niftyoptions")
+        conn = psycopg2.connect(resolve_pg_dsn())
         c = conn.cursor()
         c.execute("""
             WITH latest_yearly AS (

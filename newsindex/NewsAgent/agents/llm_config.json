@@ -1,0 +1,10 @@
+{
+  "provider": "openai",
+  "model": "gemma2:2b",
+  "base_url": "http://localhost:11434/v1",
+  "api_key_env": "HF_TOKEN",
+  "temperature": 0.1,
+  "max_tokens": 2048,
+  "max_tool_iters": 4,
+  "request_timeout_s": 120
+}

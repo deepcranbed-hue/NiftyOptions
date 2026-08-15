@@ -1,0 +1,30 @@
+{
+  "Success": [
+    {
+      "strike_price": "24400",
+      "spot_price": "24410.5",
+      "right": "Call",
+      "ltp": "105.5",
+      "open_interest": "11610495",
+      "chnge_oi": "45000",
+      "total_quantity_traded": "230000",
+      "best_bid_price": "104.5",
+      "best_bid_quantity": "1500",
+      "best_offer_price": "106.5",
+      "best_offer_quantity": "2500"
+    },
+    {
+      "strike_price": "24400",
+      "spot_price": "24410.5",
+      "right": "Put",
+      "ltp": "95.5",
+      "open_interest": "15520505",
+      "chnge_oi": "85000",
+      "total_quantity_traded": "310000",
+      "best_bid_price": "94.5",
+      "best_bid_quantity": "1800",
+      "best_offer_price": "96.5",
+      "best_offer_quantity": "1200"
+    }
+  ]
+}

@@ -1,0 +1,130 @@
+{
+  "schema": "newsagent.eval.scorecard/v1",
+  "generated_at": "2026-07-16T18:43:43.885605+00:00",
+  "as_of": "2026-07-16T18:37:04.033417+00:00",
+  "mio_id": "mio_20260716T183704_fii_kcr",
+  "llm_graded": false,
+  "overall_quality": {
+    "score": 9.95,
+    "grade": "Institutional Research",
+    "n_levels_scored": 8
+  },
+  "deterministic": {
+    "contradiction": {
+      "level": "L4 Contradiction detection",
+      "score": 10.0,
+      "contradictions": [],
+      "summary": "no contradictions found"
+    },
+    "coverage": {
+      "level": "L5 Coverage",
+      "score": 10.0,
+      "covered": [
+        "Banks / Financials",
+        "IT Services",
+        "Auto",
+        "Energy / Oil & Gas",
+        "Metals",
+        "Pharma / Health",
+        "FMCG",
+        "Power / Utilities",
+        "Capital Goods",
+        "Telecom",
+        "Realty",
+        "Cement",
+        "Infra"
+      ],
+      "missing": [
+        "Insurance",
+        "Consumer Durables",
+        "Chemicals"
+      ],
+      "missing_core": [],
+      "summary": "10/10 core sectors covered"
+    },
+    "confidence": {
+      "level": "L6 Confidence calibration",
+      "score": 9.6,
+      "reported": 0.79,
+      "recommended": 0.78,
+      "verdict": "well calibrated",
+      "reason": "10 proxy-checks held vs 3 broke (hold-rate 77%); driver agreement 79%."
+    },
+    "probability": {
+      "level": "L8 Probability calibration",
+      "score": 10.0,
+      "bull_pct": 30,
+      "bear_pct": 70,
+      "conviction": "Moderate",
+      "agreement": 0.79,
+      "summary": "Bull 30% / Bear 70% (from 3 bull vs 7 bear drivers)"
+    },
+    "historical": {
+      "level": "L11 Historical consistency",
+      "score": 10.0,
+      "checked": 3,
+      "diverged": [],
+      "summary": "0/3 relationships diverged from their history today"
+    },
+    "news_quality": {
+      "level": "L12 News quality",
+      "score": 10.0,
+      "flagged_background": [],
+      "summary": "no background/non-market-moving evidence detected"
+    },
+    "evidence": {
+      "level": "L13 Evidence / hallucination",
+      "score": 10.0,
+      "audited": 3,
+      "unsupported": [],
+      "summary": "all explanations carry market/inference support"
+    },
+    "report_language": {
+      "level": "L14 Report quality (language)",
+      "score": 10.0,
+      "overcertain_terms": [],
+      "bare_directional_calls": 0,
+      "suggestions": [
+        "language is appropriately probabilistic"
+      ]
+    }
+  },
+  "llm": {
+    "economic_reasoning": {
+      "level": "economic_reasoning",
+      "score": null,
+      "status": "skipped — needs an LLM provider (set provider in llm_config.json)"
+    },
+    "relationship_regime": {
+      "level": "relationship_regime",
+      "score": null,
+      "status": "skipped — needs an LLM provider (set provider in llm_config.json)"
+    },
+    "missing_factors": {
+      "level": "missing_factors",
+      "score": null,
+      "status": "skipped — needs an LLM provider (set provider in llm_config.json)"
+    },
+    "explainability": {
+      "level": "explainability",
+      "score": null,
+      "status": "skipped — needs an LLM provider (set provider in llm_config.json)"
+    },
+    "chief_economist": {
+      "level": "chief_economist",
+      "score": null,
+      "status": "skipped — needs an LLM provider (set provider in llm_config.json)"
+    },
+    "trading_desk": {
+      "level": "trading_desk",
+      "score": null,
+      "status": "skipped — needs an LLM provider (set provider in llm_config.json)"
+    },
+    "portfolio_manager": {
+      "level": "portfolio_manager",
+      "score": null,
+      "status": "skipped — needs an LLM provider (set provider in llm_config.json)"
+    }
+  },
+  "feedback": []
+}

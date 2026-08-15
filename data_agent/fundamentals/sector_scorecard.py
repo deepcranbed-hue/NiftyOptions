@@ -16,12 +16,17 @@ This is the FUNDAMENTAL layer only — the slow backdrop. The daily catalyst
 get combined in the attribution step (next piece).
 
 USAGE
-    export DATABASE_URL="postgresql://postgres@localhost:5432/niftyoptions"
+    export DATABASE_URL="postgresql://localhost/niftyoptions"
     python sector_scorecard.py                 # all sectors present
     python sector_scorecard.py --sector "IT"   # substring match
     python sector_scorecard.py --json          # emit JSON only (for the app)
 """
 from __future__ import annotations
+# --- single source for DB connections (D-SC-06, CLAUDE.md) ---
+import os as _os, sys as _sys
+_RT = _os.path.abspath(_os.path.join(_os.path.dirname(__file__), "../.."))
+_RT in _sys.path or _sys.path.insert(0, _RT)
+from db_config import resolve_pg_dsn
 
 import argparse
 import json

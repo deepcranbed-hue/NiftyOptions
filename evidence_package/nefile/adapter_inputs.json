@@ -1,0 +1,13 @@
+{
+  "status": "No adapter inputs available",
+  "reason": "The subject render was produced using the frontend mock card. No adapter.py execution took place for this state.",
+  "inputs": {
+    "open_ts": null,
+    "curr_ts": null,
+    "expiry_ts": null,
+    "T_open": null,
+    "T_curr": null,
+    "dte_days": null,
+    "expiry_selection": null
+  }
+}

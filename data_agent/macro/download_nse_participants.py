@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# --- single source for DB connections (D-SC-06, CLAUDE.md) ---
+import os as _os, sys as _sys
+_RT = _os.path.abspath(_os.path.join(_os.path.dirname(__file__), "../.."))
+_RT in _sys.path or _sys.path.insert(0, _RT)
+from db_config import resolve_writable_db_path
 import os
 import sys
 import time
@@ -13,7 +18,7 @@ REPO_ROOT = os.path.dirname(os.path.dirname(HERE))
 sys.path.append(REPO_ROOT)
 
 def main():
-    db_path = os.environ.get("SQLITE_DB_PATH", "/Users/deepak/Library/CloudStorage/GoogleDrive-deepcranbed@gmail.com/My Drive/option_chains.db")
+    db_path = resolve_writable_db_path()
     
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",

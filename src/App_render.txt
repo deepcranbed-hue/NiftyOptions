@@ -1,0 +1,381 @@
+  return (
+    <div className="min-h-screen bg-slate-100/80 text-slate-900 font-sans pb-16">
+      {/* Top Header Navigation */}
+      <header className="sticky top-0 z-40 bg-slate-950 text-white border-b border-slate-800 shadow-xl  bg-opacity-95">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-blue-500 flex items-center justify-center font-black text-lg shadow-lg shadow-indigo-500/30">
+              N50
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h1 className="text-base sm:text-lg font-black tracking-tight">
+                  NIFTY Institutional Derivatives Desk <span className="text-xs font-mono text-indigo-400 bg-indigo-950/80 px-2 py-0.5 rounded border border-indigo-800">v2.5</span>
+                </h1>
+              </div>
+              <p className="text-[11px] text-slate-400 hidden sm:block">
+                Terrain positioning, vol complacency gauge, global transmission matrix &amp; quant strategy engine
+              </p>
+            </div>
+          </div>
+
+          {/* Action Tools */}
+          <div className="flex items-center gap-2 sm:gap-3">
+            {captures.length > 0 && (
+              <div className="flex items-center gap-2">
+                <select 
+                  value={selectedCaptureId}
+                  onChange={(e) => {
+                    setSelectedCaptureId(e.target.value);
+                    loadSelectedCapture(e.target.value);
+                  }}
+                  className="bg-slate-900 text-slate-300 text-xs px-2 py-1.5 rounded border border-slate-800 outline-none"
+                >
+                  <option value="">Select Capture...</option>
+                  {captures.map(c => (
+                    <option key={c.capture_id} value={c.capture_id}>
+                      {c.label}
+                    </option>
+                  ))}
+                </select>
+                <button
+                  onClick={handleDeleteCapture}
+                  disabled={!selectedCaptureId}
+                  className="p-1.5 rounded bg-rose-900/40 text-rose-400 hover:bg-rose-900/60 transition cursor-pointer"
+                  title="Delete selected capture"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+            )}
+
+
+
+            <button
+              onClick={() => updateOptionChainAndRun()}
+              disabled={isPipelineRunning}
+              className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-white text-xs font-bold transition shadow-lg cursor-pointer ${isPipelineRunning ? 'bg-slate-600 cursor-not-allowed' : 'bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 shadow-emerald-500/30'
+                }`}
+            >
+              <Activity className={`w-4 h-4 ${isPipelineRunning ? 'animate-spin' : ''}`} />
+              <span>{isPipelineRunning ? 'Running...' : 'Update Option Chain'}</span>
+            </button>
+            <button
+              onClick={updateNews}
+              disabled={isNewsUpdating}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-500 hover:from-blue-500 hover:to-indigo-400 text-white text-xs font-bold transition shadow-lg shadow-blue-500/30 cursor-pointer"
+            >
+              <RefreshCw className={`w-4 h-4 ${isNewsUpdating ? 'animate-spin' : ''}`} />
+              <span className="hidden md:inline">{isNewsUpdating ? 'Updating...' : 'Update News'}</span>
+            </button>
+            <button
+              onClick={updateFlows}
+              disabled={isFlowsUpdating}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-amber-600 to-orange-500 hover:from-amber-500 hover:to-orange-400 text-white text-xs font-bold transition shadow-lg shadow-amber-500/30 cursor-pointer"
+            >
+              <RefreshCw className={`w-4 h-4 ${isFlowsUpdating ? 'animate-spin' : ''}`} />
+              <span className="hidden md:inline">{isFlowsUpdating ? 'Updating...' : 'Update Flows'}</span>
+            </button>
+
+            <button
+              onClick={() => setIsCopilotOpen(true)}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white text-xs font-bold transition shadow-lg shadow-indigo-600/30 cursor-pointer"
+            >
+              <Bot className="w-4 h-4 animate-bounce" />
+              <span>Quant Desk AI Copilot</span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Trust Banner */}
+      {renderTrustBanner()}
+
+      {/* Main Container */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 space-y-6">
+        {/* Error Banner */}
+        {!analytics.success && (
+          <div className="bg-rose-50 border-2 border-rose-300 rounded-2xl p-6 text-rose-900 shadow-md flex items-start gap-4">
+            <AlertTriangle className="w-8 h-8 text-rose-600 shrink-0 mt-0.5" />
+            <div className="space-y-2 flex-1">
+              <h3 className="text-lg font-black">Option Chain Parsing Error</h3>
+              <p className="text-sm">{analytics.error}</p>
+
+            </div>
+          </div>
+        )}
+
+        {/* Live Ticker Quick Bar */}
+        {analytics.success && (
+          <div className="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex flex-wrap items-center justify-between gap-4 text-xs font-bold">
+            <div className="flex items-center gap-6 flex-wrap">
+              <div className="flex items-center gap-2">
+                <span className="text-slate-400 uppercase text-[10px]">Spot Underlying</span>
+                <span className="text-base font-black text-slate-900">₹{(pipelineRes?.chain_meta?.spot || analytics.spot).toLocaleString('en-IN')}</span>
+              </div>
+              <div className="h-6 w-[1px] bg-slate-200 hidden sm:block"></div>
+              <div className="flex items-center gap-2">
+                <span className="text-slate-400 uppercase text-[10px]">Max Pain</span>
+                <span className="text-base font-black text-amber-600">₹{pipelineRes?.chain_meta?.max_pain || analytics.maxPain}</span>
+              </div>
+              <div className="h-6 w-[1px] bg-slate-200 hidden sm:block"></div>
+              <div className="flex items-center gap-2">
+                <span className="text-slate-400 uppercase text-[10px]">PCR (OI)</span>
+                <span className={`text-base font-black ${(pipelineRes?.chain_meta?.pcr || analytics.pcr) >= 1.2 ? 'text-emerald-600' : (pipelineRes?.chain_meta?.pcr || analytics.pcr) <= 0.8 ? 'text-rose-600' : 'text-slate-800'}`}>
+                  {(pipelineRes?.chain_meta?.pcr || analytics.pcr).toFixed(2)}
+                </span>
+              </div>
+              <div className="h-6 w-[1px] bg-slate-200 hidden sm:block"></div>
+              <div className="flex items-center gap-2">
+                <span className="text-slate-400 uppercase text-[10px]">ATM Vol</span>
+                <span className="text-base font-black text-indigo-600">{analytics.atmMeta.iv.toFixed(1)}%</span>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 text-slate-500 font-normal">
+              <Clock className="w-3.5 h-3.5" />
+              <span>NSE Weekly/Monthly Expiry Grid</span>
+            </div>
+          </div>
+        )}
+
+        {/* Tab Selection Navigation */}
+        <div className="bg-white p-2 rounded-2xl border border-slate-200 shadow-sm flex flex-wrap items-center gap-2">
+          <button
+            onClick={() => setActiveTab('oi')}
+            className={`flex-1 min-w-[150px] py-3 px-4 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition cursor-pointer ${activeTab === 'oi' ? 'bg-slate-900 text-white shadow-md' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+              }`}
+          >
+            <BarChart2 className={`w-4 h-4 ${activeTab === 'oi' ? 'text-indigo-400' : 'text-slate-400'}`} />
+            <span>1. OI Positioning</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('complacency')}
+            className={`flex-1 min-w-[150px] py-3 px-4 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition cursor-pointer ${activeTab === 'complacency' ? 'bg-slate-900 text-white shadow-md' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+              }`}
+          >
+            <Activity className={`w-4 h-4 ${activeTab === 'complacency' ? 'text-amber-400' : 'text-slate-400'}`} />
+            <span>2. Vol Complacency</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('global')}
+            className={`flex-1 min-w-[150px] py-3 px-4 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition cursor-pointer ${activeTab === 'global' ? 'bg-slate-900 text-white shadow-md' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+              }`}
+          >
+            <Globe className={`w-4 h-4 ${activeTab === 'global' ? 'text-blue-400' : 'text-slate-400'}`} />
+            <span>3. Global Cues</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('news')}
+            className={`flex-1 min-w-[150px] py-3 px-4 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition cursor-pointer ${activeTab === 'news' ? 'bg-slate-900 text-white shadow-md' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+              }`}
+          >
+            <Newspaper className={`w-4 h-4 ${activeTab === 'news' ? 'text-emerald-400' : 'text-slate-400'}`} />
+            <span>4. Sector News</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('calendar')}
+            className={`flex-1 min-w-[150px] py-3 px-4 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition cursor-pointer ${activeTab === 'calendar' ? 'bg-slate-900 text-white shadow-md' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+              }`}
+          >
+            <Calendar className={`w-4 h-4 ${activeTab === 'calendar' ? 'text-pink-400' : 'text-slate-400'}`} />
+            <span>5. Events</span>
+          </button>
+          
+          <button
+            onClick={() => setActiveTab('earnings')}
+            className={`flex-1 min-w-[150px] py-3 px-4 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition cursor-pointer ${activeTab === 'earnings' ? 'bg-slate-900 text-white shadow-md' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+              }`}
+          >
+            <Briefcase className={`w-4 h-4 ${activeTab === 'earnings' ? 'text-indigo-400' : 'text-slate-400'}`} />
+            <span>6. Earnings</span>
+          </button>
+          
+          <button
+            onClick={() => setActiveTab('flows')}
+            className={`flex-1 min-w-[150px] py-3 px-4 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition cursor-pointer ${activeTab === 'flows' ? 'bg-slate-900 text-white shadow-md' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+              }`}
+          >
+            <Activity className={`w-4 h-4 ${activeTab === 'flows' ? 'text-teal-400' : 'text-slate-400'}`} />
+            <span>7. Flows</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('strategy')}
+            className={`flex-1 min-w-[180px] py-3 px-4 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition cursor-pointer bg-gradient-to-r ${activeTab === 'strategy' ? 'from-indigo-600 to-blue-600 text-white shadow-lg shadow-indigo-500/25 ring-2 ring-indigo-400' : 'from-indigo-50 to-blue-50 text-indigo-900 hover:from-indigo-100 hover:to-blue-100 border border-indigo-200'
+              }`}
+          >
+            <Sparkles className="w-4 h-4 text-amber-400 animate-spin" />
+            <span>8. Strategy Suggester</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('compare')}
+            className={`flex-1 min-w-[150px] py-3 px-4 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition cursor-pointer ${activeTab === 'compare' ? 'bg-slate-900 text-white shadow-md' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+              }`}
+          >
+            <Layers className={`w-4 h-4 ${activeTab === 'compare' ? 'text-indigo-400' : 'text-slate-400'}`} />
+            <span>9. Compare</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('portfolio')}
+            className={`flex-1 min-w-[150px] py-3 px-4 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition cursor-pointer ${activeTab === 'portfolio' ? 'bg-slate-900 text-white shadow-md' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+              }`}
+          >
+            <Briefcase className={`w-4 h-4 ${activeTab === 'portfolio' ? 'text-indigo-400' : 'text-slate-400'}`} />
+            <span>10. Portfolio</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('sync')}
+            className={`flex-1 min-w-[150px] py-3 px-4 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition cursor-pointer ${activeTab === 'sync' ? 'bg-slate-900 text-white shadow-md' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+              }`}
+          >
+            <DownloadCloud className={`w-4 h-4 ${activeTab === 'sync' ? 'text-indigo-400' : 'text-slate-400'}`} />
+            <span>11. Download NSE</span>
+          </button>
+        </div>
+
+        {/* Active Tab Panel Rendering */}
+        {analytics.success && (
+          <div className="transition duration-300">
+            {activeTab === 'oi' && (
+              <OIPositioningPanel
+                rows={analytics.chainRows}
+                spot={analytics.spot}
+                maxPain={analytics.maxPain}
+                pcr={analytics.pcr}
+                reads={analytics.reads}
+                structureContext={analytics.structureContext}
+                breadthInterpretation={pipelineRes?.interpretations?.breadth}
+              />
+            )}
+
+            {activeTab === 'complacency' && (
+              <ComplacencyPanel
+                metrics={analytics.complacencyMetrics}
+                spot={analytics.spot}
+              />
+            )}
+
+            {activeTab === 'global' && (
+              <GlobalCuesPanel
+                cues={analytics.globalCues}
+                pctMap={pctMap}
+                onPctChange={(name, val) => setPctMap((prev) => ({ ...prev, [name]: val }))}
+                onResetDefaults={handleResetPct}
+                pipelineRes={pipelineRes}
+              />
+            )}
+
+            {activeTab === 'news' && (
+              <SectorNewsPanel
+                data={pipelineRes}
+              />
+            )}
+
+            {activeTab === 'calendar' && (
+              <EventCalendarPanel conclusion={pipelineRes?.conclusion} />
+            )}
+
+            {activeTab === 'earnings' && (
+              <SectorEarningsPanel pipelineRes={pipelineRes} />
+            )}
+
+            {activeTab === 'flows' && (
+              <FlowsPanel />
+            )}
+
+            {activeTab === 'sync' && (
+              <>
+                <NSESyncPanel />
+                <BreezeSyncPanel 
+                  onBreezeDataLoaded={(rows, spot) => {
+                    setCsvChainRows(rows);
+                    setSpotOverride(spot);
+                    alert("ICICI Breeze Option Chain Loaded Successfully!");
+                  }} 
+                />
+                <PriceChartPanel />
+              </>
+            )}
+
+            {activeTab === 'compare' && (
+              <CaptureComparePanel captures={captures} />
+            )}
+
+            {activeTab === 'strategy' && (
+              <StrategySuggesterPanel
+                pipelineRes={pipelineRes}
+                rows={analytics.chainRows}
+                spot={analytics.spot}
+                atmIV={analytics.atmMeta.iv}
+                riskConfig={riskConfig}
+                captureId={selectedCaptureId}
+                onRiskConfigChange={setRiskConfig}
+                mockTrade={mockTrade}
+                onMockTradeChange={setMockTrade}
+                selectedOutlook={traderOutlook}
+                onOutlookChange={setTraderOutlook}
+                optWeights={optWeights}
+                setOptWeights={setOptWeights}
+                optBias={optBias}
+                setOptBias={setOptBias}
+                optMinPop={optMinPop}
+                setOptMinPop={setOptMinPop}
+                optAllowUndefined={optAllowUndefined}
+                setOptAllowUndefined={setOptAllowUndefined}
+                optCostPerLeg={optCostPerLeg}
+                setOptCostPerLeg={setOptCostPerLeg}
+                optWindowPts={optWindowPts}
+                setOptWindowPts={setOptWindowPts}
+                optMaxWing={optMaxWing}
+                setOptMaxWing={setOptMaxWing}
+                optTopN={optTopN} 
+                setOptTopN={setOptTopN}
+                optMaxLossBudget={optMaxLossBudget} 
+                setOptMaxLossBudget={setOptMaxLossBudget}
+                optAllowBadRnd={optAllowBadRnd} 
+                setOptAllowBadRnd={setOptAllowBadRnd}
+                onRunPipeline={runQuantPipeline}
+
+                uploadFile={uploadFile}
+                setUploadFile={setUploadFile}
+                uploadSpot={uploadSpot}
+                setUploadSpot={setUploadSpot}
+                uploadExpiryDate={uploadExpiryDate}
+                setUploadExpiryDate={setUploadExpiryDate}
+                uploadVix={uploadVix}
+                setUploadVix={setUploadVix}
+                onUploadPipeline={onUploadPipeline}
+
+              />
+            )}
+          </div>
+        )}
+        {activeTab === 'portfolio' && (
+          <PortfolioPanel captures={captures} />
+        )}
+      </main>
+
+      {/* AI Copilot Modal */}
+      {analytics.success && (
+        <AICopilotModal
+          isOpen={isCopilotOpen}
+          onClose={() => setIsCopilotOpen(false)}
+          dashboardState={{
+            chainRows: analytics.chainRows,
+            spot: analytics.spot,
+            maxPain: analytics.maxPain,
+            pcr: analytics.pcr,
+            complacencyScore: analytics.complacencyMetrics.score,
+            complacencyVerdict: analytics.complacencyMetrics.verdict,
+            globalCues: analytics.globalCues,
+            newsSentiment: pipelineRes ? pipelineRes.sector_sentiment : {},
+            traderOutlook,
+            capital: riskConfig.capital,

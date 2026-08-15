@@ -1,0 +1,5 @@
+Literal Query:
+SELECT * FROM realized_metrics WHERE ts LIKE '2026-07-07%' OR ts LIKE '2026-07-06T13:30%';
+
+Raw Output:
+(Empty - no rows returned)

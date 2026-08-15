@@ -1,0 +1,552 @@
+{
+ "as_of": "2026-08-09",
+ "source": "hand-researched from primary results coverage + market data; see per-name sources",
+ "note": "Researched context for names whose headline multiple does not mean what it appears to mean. This is a DATED judgment layer, not a computation: each note is written against a specific quarter and a specific price, and it goes stale the moment either moves. Refresh each earnings season, the same discipline nifty50_drivers.json needs. Where the computed reads on this page already say something (peer rank, own-history median, results-day behaviour), this file deliberately does not repeat it.",
+ "notes": {
+  "ZOMATO": {
+   "as_of": "2026-08-09",
+   "applies_to": "Eternal Ltd (ex-Zomato) · NSE: ETERNAL",
+   "headline": "670× is a denominator problem, not a price problem.",
+   "summary": "At a ~₹2.90 lakh crore market cap the trailing twelve months carry roughly ₹366-433 crore of net profit — a net margin under 1% on a business running at a ₹20,211 crore quarterly revenue rate. The multiple is measuring an earnings base that has been suppressed by choice and by accounting, not a stock that has run away from its fundamentals.",
+   "why_the_multiple": [
+    "Blinkit was loss-making for most of the trailing window. The quick-commerce build-out dragged consolidated PAT to near zero through FY26 — Q1 FY26 profit fell 90% YoY on dark-store expansion. Blinkit only crossed into adjusted-EBITDA profit in Q1 FY27, moving from −₹162 cr to +₹102 cr YoY.",
+    "Tax normalisation, not operations. Q1 FY27 PBT rose 19% sequentially to ₹272 cr, yet PAT fell 47% to ₹92 cr: accumulated business losses that had sheltered earnings ran out and tax expense went ₹54 cr → ₹180 cr, an effective rate near 66%. Reported earnings take the hit without the business changing.",
+    "The revenue line is grossed up. Blinkit's shift to a 1P inventory model books inventory sales gross rather than commission, which is why revenue grew 182% YoY while GOV grew about 100%. It inflates the top line without proportional profit, so the P/E looks even more extreme sitting beside ₹20,211 cr of quarterly revenue.",
+    "Earnings have been falling, not rising. Annual EPS ran 0.40 (FY24) → 0.58 (FY25) → 0.39 (FY26), a ~31% decline in trailing net income — so the multiple expanded from the bottom even while the share price went nowhere."
+   ],
+   "current_scenario": [
+    "Q1 FY27 was an operational beat: revenue ₹20,211 cr (+182% YoY), adjusted EBITDA a record ₹555 cr (+223%), PAT ₹92 cr (+268% YoY).",
+    "Blinkit is now the biggest revenue driver and contributed roughly 69% of the YoY adjusted-EBITDA improvement (₹264 cr of ₹383 cr). Food delivery remains the largest profit pool at ₹606 cr adjusted EBITDA, up 34%.",
+    "Food delivery growth has slowed to the low-to-mid teens, and Rapido's low-commission entry is a live threat to take-rates — the profitable half of the business is the one facing margin pressure.",
+    "Foreign investors have been reducing: FII/FPI holding is 29.08% as of the Jun 2026 filing, down 3.53pp from the previous quarter.",
+    "The stock sits mid-range — around ₹316 against a 52-week band of ₹212.60-₹368.45 — so the market is neither capitulating nor celebrating."
+   ],
+   "better_lens": {
+    "note": "For a company at an earnings inflection the trailing multiple carries almost no information. These do:",
+    "metrics": [
+     {
+      "label": "P/S on TTM revenue",
+      "value": "~5.3×",
+      "detail": "₹2.90 lakh cr market cap over ₹54,364 cr TTM revenue"
+     },
+     {
+      "label": "P/S on the Q1 run-rate",
+      "value": "~3.6×",
+      "detail": "annualising ₹20,211 cr — the gap between this and the TTM figure IS the 1P gross-up"
+     },
+     {
+      "label": "P/B",
+      "value": "9.3×",
+      "detail": "high, but recognisably a growth multiple rather than a typo"
+     },
+     {
+      "label": "Forward P/E",
+      "value": "82×",
+      "detail": "consensus expects earnings roughly 8× from here — about ₹3,500 cr, against food delivery alone already at ₹606 cr of quarterly adjusted EBITDA"
+     }
+    ]
+   },
+   "what_would_change_it": [
+    "Blinkit holding adjusted-EBITDA profit while still expanding stores — the single biggest swing factor in the denominator.",
+    "The effective tax rate settling toward statutory now that the loss shelter is exhausted; the FY27 rate is the number to watch, not any single quarter's.",
+    "Whether Rapido's entry compresses food-delivery take-rates, which is where the actual profit is.",
+    "Any move on gig-worker rules or FDI scrutiny of the 1P inventory model — the structure the revenue gross-up depends on."
+   ],
+   "caveats": "Written at a share price near ₹316 and against Q1 FY27 (reported 22 July 2026). Trailing P/E is a moving target here precisely because the denominator is small: a single quarter of tax or Blinkit swing moves it by hundreds of turns. Not investment advice.",
+   "sources": [
+    {
+     "title": "IndMoney — Eternal Q1 results, Blinkit's strongest quarter",
+     "url": "https://www.indmoney.com/blog/stocks/eternal-results-blinkit-strongest-quarter"
+    },
+    {
+     "title": "Indian Startup News — Eternal Q1 FY27 revenue ₹20,211 cr, profit +268%",
+     "url": "https://indianstartupnews.com/news/zomato-blinkit-owner-eternal-records-rs-20211-crore-revenue-in-q1-fy27-profit-jumps-268-to-rs-92-crore-12188331"
+    },
+    {
+     "title": "Business Standard — Eternal Q1 FY26 net profit falls 90% YoY on quick-commerce push",
+     "url": "https://www.business-standard.com/companies/news/zomatos-parent-eternal-net-profit-falls-90-yoy-125072101198_1.html"
+    },
+    {
+     "title": "StockAnalysis — Eternal (NSE:ETERNAL) TTM revenue, net income and multiples",
+     "url": "https://stockanalysis.com/quote/nse/ETERNAL/"
+    }
+   ]
+  },
+  "INDIGO": {
+   "as_of": "2026-08-09",
+   "applies_to": "InterGlobe Aviation Ltd (IndiGo) · NSE: INDIGO",
+   "headline": "P/B of 29.6× prices IndiGo's thin lease-accounted equity, not its business.",
+   "summary": "Trailing P/E is blank because IndiGo posted a TTM net loss, so the app falls back to price-to-book. But under Ind AS 116 aircraft leases sit on the balance sheet as right-of-use assets against lease liabilities, and years of buybacks plus loss quarters have shrunk retained equity, so book value per share (~₹167) is a statement about balance-sheet shape rather than a valuation anchor. The 29.58× reading against a 4.86× whole-index median mostly reflects that thin denominator.",
+   "why_the_multiple": [
+    "A TTM net loss of roughly ₹5,045 cr blanks trailing P/E outright; Q1 FY27 alone swung to a ₹238 cr net loss from ₹2,176 cr profit a year earlier as fuel expense jumped 86% YoY to ₹10,833 cr.",
+    "Ind AS 116 capitalises aircraft leases as right-of-use assets funded by lease liabilities, which structurally compresses reported equity for an airline that leases most of its fleet — book value is about ₹167 a share against a ₹5,333 price.",
+    "Return metrics confirm the equity base is the issue, not the assets: ROE is −30.2% and ROCE just 4.92%, so a high P/B here signals a small denominator rather than a premium on durable value.",
+    "The comparison is itself a fallback: the 'Services' bucket holds only two Nifty 50 names, so the app benchmarks IndiGo against the whole-index P/B median, which is set by banks and industrials with entirely different lease and equity structures."
+   ],
+   "current_scenario": [
+    "Q1 FY27 (quarter to June 2026, reported 23 July): revenue ₹24,584 cr (+19.9% YoY), EBITDAR fell to ₹3,833 cr from ₹5,739 cr and margin compressed to 15.6% from 28%, even as yield rose 21.3% YoY to ₹6.04/km.",
+    "Management put the currency-and-fuel-neutral loss at just ₹5.6 cr, attributing the swing to fuel, forex and West Asia network disruption rather than a demand or share problem.",
+    "Domestic market share hit a record 66.3% in June 2026, up from 64.5% a year earlier, while the Air India group's combined share fell to 23.9% from 27.1%.",
+    "The stock sits at ₹5,333, 63% up its 52-week range and ahead of Nifty by 9.56pp over six months, but still −8.82% over a year; FII/FPI holding was trimmed 1.32pp to 20.32% in the June 2026 filing.",
+    "International network is now 45 destinations against roughly 20 three years ago, with damp-leased 787s flying, A321XLRs arriving and the firm A350-900 order doubled from 30 to 60 aircraft."
+   ],
+   "better_lens": {
+    "note": "For a lessee airline, use lenses that do not route through a lease-distorted equity base:",
+    "metrics": [
+     {
+      "label": "EV/EBITDA",
+      "value": "~11.7×",
+      "detail": "Enterprise value already folds in lease liabilities and EBITDA adds back lease rent, so this measures the operating franchise instead of an equity residual — though it sits ~17% above its own 3-year average of 10.1×"
+     },
+     {
+      "label": "Forward P/E",
+      "value": "23.4×",
+      "detail": "Prices earnings once the fuel and FX shock normalises; the trailing figure simply does not exist this quarter"
+     },
+     {
+      "label": "Price / Sales (TTM)",
+      "value": "~2.3×",
+      "detail": "₹2.06 lakh cr market cap over ~₹89,050 cr revenue — revenue is far steadier than a net income line that swung from profit to loss on fuel alone"
+     },
+     {
+      "label": "EBITDAR margin",
+      "value": "15.6%, from 28% a year earlier",
+      "detail": "Tracks core cost recovery before lease structure and financing choices are layered on"
+     },
+     {
+      "label": "Domestic share",
+      "value": "66.3%, a record",
+      "detail": "For a scale-driven LCC, share and capacity growth proxy franchise value better than any book multiple"
+     }
+    ]
+   },
+   "what_would_change_it": [
+    "A full quarter of fuel- and FX-neutral profit becoming the reported number rather than the adjusted one — Q1's currency-stripped loss was already down to ₹5.6 cr — would restore a usable P/E and make the P/B comparison moot.",
+    "Crude or ATF easing, or the rupee stabilising: fuel CASK rose 80.4% YoY in Q1 FY27 and was the single largest driver of the swing.",
+    "Resolution of the Pratt & Whitney powder-metal engine issue, which has periodically grounded A320neo-family aircraft and caps how fast the 900+ order book converts into flying capacity.",
+    "Evidence that the wide-body and long-haul push is lifting the revenue mix — that would register in EV/EBITDA and EBITDAR margin long before it touched P/B."
+   ],
+   "caveats": "Written against the ₹5,333 close in the 2026-08-06 scan and Q1 FY27 results reported 23 July 2026. Ratio figures were pulled from Screener and Alpha Spread the same week and move with each filing. Not investment advice.",
+   "sources": [
+    {
+     "title": "Kotak Neo — IndiGo Q1 FY27: ₹238 cr net loss, fuel +86%, EBITDAR and yield detail",
+     "url": "https://www.kotakneo.com/news/stocks/indigo-q1-fy27-results-interglobe-aviation-reports-238-crore-net-loss-fuel-costs-jump-86-revenue-rises-19-9/"
+    },
+    {
+     "title": "Screener.in — InterGlobe Aviation ratios, ROE/ROCE, TTM revenue and profit",
+     "url": "https://www.screener.in/company/INDIGO/"
+    },
+    {
+     "title": "Alpha Spread — IndiGo EV/EBITDA versus its own history and peers",
+     "url": "https://www.alphaspread.com/security/nse/indigo/relative-valuation/ratio/enterprise-value-to-ebitda"
+    },
+    {
+     "title": "Aviation Week — IndiGo's long-haul expansion and wide-body fleet plans",
+     "url": "https://aviationweek.com/air-transport/airports-networks/indigo-leans-long-haul-growth-international-expansion-accelerates"
+    },
+    {
+     "title": "Aviation A2Z — record domestic share, June 2026",
+     "url": "https://aviationa2z.com/index.php/2026/07/22/indigo-hits-record-market-share-as-air-india-loses-ground/"
+    }
+   ]
+  },
+  "JIOFIN": {
+   "as_of": "2026-08-09",
+   "applies_to": "Jio Financial Services Ltd · NSE: JIOFIN",
+   "headline": "80× earnings but 1.2× book: a large balance sheet not yet put to work.",
+   "summary": "An 80× P/E against a 19.69× Financial Services median looks extreme until you notice P/B is 1.21 — near book value. That combination is the signature of a big, freshly capitalised balance sheet that has not yet been deployed into earning assets. Jio Financial was capitalised in one step at the 2023 demerger from Reliance rather than accreted over decades, so ROE is about 1.2% against 14-20% for mature NBFC peers, and any P/E built on that earnings base is mechanically enormous.",
+   "why_the_multiple": [
+    "ROE is roughly 1.2% versus 20.1% at Muthoot Finance, 18.2% at Bajaj Finance and 14.0% at Shriram Finance — earnings are a sliver of the equity base, so a P/E computed off it says little.",
+    "Book value is about ₹211 a share against a ₹257 price, so the market is paying roughly stated worth for the balance sheet, not a growth premium — the opposite of what 'rich +306%' implies.",
+    "A large part of quarterly profit is still investment and dividend income rather than core lending: Q1 FY27 carried ₹509 cr of dividend income against ₹257 cr of net interest income.",
+    "The equity base is outsized for the current earnings run-rate by construction, not by underperformance — a one-step capitalisation at demerger, against legacy NBFCs whose equity accreted alongside decades of earnings."
+   ],
+   "current_scenario": [
+    "Q1 FY27 (quarter to 30 June 2026, reported 17 July): PAT ₹830 cr (+156% YoY) on operating revenue of ₹2,004 cr (+227% YoY); the stock rose about 4-5% on the print.",
+    "Jio Credit's AUM rose 163% YoY to ₹30,667 cr with disbursements up 173% YoY to ₹11,252 cr — scaling from a near-zero FY24 base.",
+    "The Jio BlackRock AMC joint venture reported ₹14,972 cr across 10 schemes and roughly a million investors as of January 2026, and Jio BlackRock Broking has SEBI approval.",
+    "Across FY26 the core lending, payments and broking businesses rose to 54% of net total income from 20% a year earlier, even as Jio Payments Bank losses and softer treasury income dragged the consolidated line.",
+    "The RBI's Upper Layer NBFC list for 2026-27, published 6 August 2026, does not include Jio Financial or Jio Credit — the lending book is still below the systemic-scale threshold."
+   ],
+   "better_lens": {
+    "note": "For a financial still deploying fresh capital, judge what the equity is earning and how fast the franchise is scaling:",
+    "metrics": [
+     {
+      "label": "P/B",
+      "value": "1.21×",
+      "detail": "₹256.80 against roughly ₹211 of book — near net worth, not a growth premium"
+     },
+     {
+      "label": "ROE",
+      "value": "~1.2%",
+      "detail": "The number that actually has to close, against 14-20% for mature peers; until it does, P/E is uninformative"
+     },
+     {
+      "label": "Jio Credit AUM",
+      "value": "₹30,667 cr, +163% YoY",
+      "detail": "The leading indicator for future net interest income"
+     },
+     {
+      "label": "Disbursements",
+      "value": "₹11,252 cr, +173% YoY",
+      "detail": "How fast the balance sheet is being converted into earning assets"
+     },
+     {
+      "label": "Jio BlackRock AUM",
+      "value": "₹14,972 cr across 10 schemes",
+      "detail": "The second engine — small today, so its trajectory matters more than its size"
+     }
+    ]
+   },
+   "what_would_change_it": [
+    "ROE moving from ~1.2% toward mid-single digits and beyond as capital is deployed, which is what would make a P/E meaningful again.",
+    "Whether AUM and disbursement growth hold up at scale rather than decelerating off a small base.",
+    "Jio Financial or Jio Credit appearing on a future RBI Upper Layer NBFC list, signalling the book has reached systemic scale.",
+    "A falling share of profit coming from dividend and treasury income relative to net interest income — the mix shifting from holding company to operating company."
+   ],
+   "caveats": "Written against the ₹256.80 close in the 2026-08-06 scan and Q1 FY27 results reported 17 July 2026; ROE and book-value figures are as published on Screener in early August 2026 and may be restated. Not investment advice.",
+   "sources": [
+    {
+     "title": "Business Standard — Jio Financial Q1 FY27 PAT more than doubles to ₹830 cr",
+     "url": "https://www.business-standard.com/amp/markets/capital-market-news/jio-financial-edges-higher-after-q1-pat-rises-over-twofold-to-rs-830-crore-in-q1-126071700400_1.html"
+    },
+    {
+     "title": "MediaNama — Q1 FY27: NBFC arm disbursements +173%, payments bank users near 4 million",
+     "url": "https://www.medianama.com/2026/07/223-jio-financial-q1-nbfc-arm-173-rise-loan-disbursements-payments-bank-users-4-million-mark/"
+    },
+    {
+     "title": "Business Today — Jio BlackRock 2026 roadmap: Sector Rotation Fund, ETFs, global plans",
+     "url": "https://www.businesstoday.in/mutual-funds/story/jio-blackrock-unveils-2026-roadmap-with-sector-rotation-fund-etfs-and-global-plans-511760-2026-01-20"
+    },
+    {
+     "title": "Screener.in — Jio Financial Services ROE, P/E, P/B and book value",
+     "url": "https://www.screener.in/company/JIOFIN/consolidated/"
+    },
+    {
+     "title": "Traders Union — RBI Upper Layer NBFC list for 2026-27",
+     "url": "https://tradersunion.com/news/central-banks/show/2920423-rbi-nbfc-upper-layer-list-2026/"
+    }
+   ]
+  },
+  "NESTLEIND": {
+   "as_of": "2026-08-09",
+   "applies_to": "Nestle India Ltd · NSE: NESTLEIND",
+   "headline": "Thin equity explains P/B 58×; a 15-month stub year explains the 'doubled' P/E.",
+   "summary": "Nestle India's P/B near 58× is arithmetic, not mispricing: a 65-75% payout and negative working capital keep book value at roughly ₹27.5 a share against a ~73% ROE. The apparent doubling of trailing P/E — a 35.38 median against ~78-80 today — traces mainly to a genuine change of fiscal year-end that created a non-comparable 15-month 'year', compounded by a real mid-2025 earnings dip on coffee, cocoa and milk costs that has only now reversed. The January 2024 1:10 split is not the cause; it was price- and EPS-neutral.",
+   "why_the_multiple": [
+    "The company pays out roughly 65-75% of profit and runs on negative working capital, so it never needs to retain capital: book value is pinned near ₹27.5 a share against a ₹1,540 price, making a P/B in the 50s the mechanical result of a ~73% ROE (three-year average nearer 92%) on a deliberately starved equity base.",
+    "The January 2024 1:10 split cut price and raised share count together, so it is P/E-neutral and cannot explain the median-versus-current gap once both series are split-adjusted.",
+    "The likelier culprit is the fiscal-year change approved 27 July 2023: Nestle India extended its reporting year to a 15-month stub from 1 January 2023 to 31 March 2024 before settling into an April-March cycle. Any P/E history spanning that transition compares a 15-month earnings figure with 12-month ones.",
+    "A real earnings dip sits on top: Q1 FY26 PAT fell about 12% YoY to ₹659 cr on elevated coffee, cocoa and milk costs, so trailing EPS troughed around mid-2025 while the share price kept climbing to its 52-week high — a depressed denominator against a rising numerator inflates the current multiple.",
+    "A 1:1 bonus issue approved 26 June 2025 had its record date on 8 August 2026 — two days after this scan's price snapshot — doubling the share count again. Any history that is not restated for it will show a spurious break at that date."
+   ],
+   "current_scenario": [
+    "At the 6 August 2026 scan the stock sat at ₹1,540, exactly at its 52-week high (range ₹1,078.37-₹1,540.00), on a trailing P/E near 78× and P/B near 58×.",
+    "Q1 FY27 (reported 22 July 2026): consolidated net profit up about 48% YoY to roughly ₹959 cr on revenue up 25.2% to ₹6,378 cr, with EBITDA margin higher YoY but down sequentially from 26.35% to 24.17%; analysts described the growth as volume-led in Maggi and Nescafe rather than price-led.",
+    "The 1:1 bonus — the company's first ever, issuing 96.4 crore new shares — had a record date of 8 August 2026, so all multiples quoted here are pre-bonus.",
+    "The July 2023 fiscal-year change created the one-off 15-month reporting period that any long-run multiple history has to handle explicitly.",
+    "FII/FPI holding rose 0.55pp to 10.29% in the June 2026 filing, making Nestle one of the few names in the index still seeing net foreign buying at these multiples."
+   ],
+   "better_lens": {
+    "note": "Both P/B and trailing P/E are distorted here — by capital structure and by corporate actions respectively — so cross-check:",
+    "metrics": [
+     {
+      "label": "ROE (trailing / 3-yr avg)",
+      "value": "~73% / ~92%",
+      "detail": "Explains the P/B mechanically: high stable returns on a tiny equity base, untouched by the stub-year noise"
+     },
+     {
+      "label": "Forward P/E vs FMCG median",
+      "value": "62.0× vs 55.9×",
+      "detail": "Cleaner than trailing P/E, since it is not contaminated by the 15-month period or the share-count break"
+     },
+     {
+      "label": "PEG",
+      "value": "~7.6×",
+      "detail": "Cited by analysts as showing the multiple is not supported by forward growth even after the Q1 rebound"
+     },
+     {
+      "label": "Dividend payout",
+      "value": "~65-75% of profit",
+      "detail": "Confirms the no-retained-capital model that keeps book value, and therefore P/B, structurally small"
+     },
+     {
+      "label": "Debt / equity",
+      "value": "~0.09",
+      "detail": "The thin balance sheet is not leverage-driven — it is a payout choice"
+     }
+    ]
+   },
+   "what_would_change_it": [
+    "Whether the data vendor restates EPS and share count for the 15-month stub year, the 2024 split and the August 2026 bonus — if not, the quoted median is unreliable rather than merely shallow.",
+    "Two or three more quarters of EBITDA margin holding above ~25%, which would make the Q1 FY27 rebound a durable cost-relief story rather than a base effect against a weak mid-2025 comparator.",
+    "Continued easing in coffee, cocoa and milk, which is the basis on which several brokerages have raised FY27-29 estimates.",
+    "A clean post-8-August adjustment in which price and EPS both roughly halve with no residual gap in the multiple series."
+   ],
+   "caveats": "Written against the 6 August 2026 scan (₹1,540, P/E 78.13, P/B 57.59) and Q1 FY27 results reported 22 July 2026. The 1:1 bonus record date of 8 August 2026 falls after that snapshot, so every multiple here is pre-bonus and not yet restated. Not investment advice.",
+   "sources": [
+    {
+     "title": "Business Standard — Nestle India Q1 FY27: net profit +48% to ₹958.68 cr, revenue +25%",
+     "url": "https://www.business-standard.com/companies/quarterly-results/nestle-india-q1-result-net-profit-jumps-48-to-958-68-cr-revenue-up-25-126072200495_1.html"
+    },
+    {
+     "title": "MarketScreener — board approves fiscal-year change and a 15-month transition period",
+     "url": "https://www.marketscreener.com/quote/stock/NESTLE-INDIA-LIMITED-6493165/news/Nestle-India-Limited-Approves-Change-the-Financial-Year-of-the-Company-from-1St-January-31St-Dece-44434172/"
+    },
+    {
+     "title": "Angel One — 8 August 2026 record date for the 1:1 bonus issue",
+     "url": "https://www.angelone.in/news/share-market/1-1-bonus-share-nestle-india-sets-record-date-as-august-8-for-bonus-share-issuance"
+    },
+    {
+     "title": "Screener.in — Nestle India P/E, P/B, ROE, EPS, book value and quarterly results",
+     "url": "https://www.screener.in/company/NESTLEIND/"
+    },
+    {
+     "title": "Tradebrains — 'Nestlé India at 75x PE': ROE, payout and brokerage views",
+     "url": "https://tradebrains.in/nestle-india-at-75x-pe-is-the-premium-worth-paying-or-time-to-wait/"
+    }
+   ]
+  },
+  "SBILIFE": {
+   "as_of": "2026-08-09",
+   "applies_to": "SBI Life Insurance Company Ltd · NSE: SBILIFE",
+   "headline": "P/E is the wrong ruler for a life insurer; on P/EV (~2.2×) it reads differently.",
+   "summary": "SBI Life's reported profit is depressed by new business strain — acquisition costs are expensed the moment a policy is written while its profit emerges over decades — which mechanically inflates P/E for a fast-growing insurer. The industry values itself on Embedded Value, Value of New Business and P/EV, not P/E. Bucketing a life insurer with banks and NBFCs under one 'Financial Services' median compares businesses with fundamentally different profit-recognition mechanics.",
+   "why_the_multiple": [
+    "Under Ind AS, writing a policy means expensing commissions and underwriting immediately while the premium and profit are recognised across a 10-40 year life. That timing mismatch is new business strain: the faster new business grows, the more current-year earnings are suppressed — and SBI Life's APE grew 36% YoY in Q1 FY27.",
+    "The peer bucket mixes banks and NBFCs, which recognise spread and fee income in the year it is earned, with an insurer whose annual profit is a small actuarial residual after statutory reserving for decades-long liabilities.",
+    "IRDAI solvency and reserving norms require reserves against future policyholder liabilities before profit is released to shareholders, which is precisely why the industry built Embedded Value — net worth plus the present value of profits on in-force policies — as its balance-sheet measure.",
+    "VNB captures the profit locked in when a policy is sold, free of that timing distortion: VNB grew 29% YoY to ₹1,410 cr in Q1 FY27 while reported PAT grew 22%, so the underlying book is compounding faster than the P&L shows.",
+    "This is structural, not a phase: SBI Life's P/E has sat well above the financial-sector median for years without a valuation collapse, because the analysts who cover it price off P/EV and VNB growth."
+   ],
+   "current_scenario": [
+    "Q1 FY27 (quarter to 30 June 2026): PAT ₹725 cr (+22% YoY), APE ₹5,380 cr (+36% YoY), VNB ₹1,410 cr (+29% YoY), VNB margin 26.2% against 27.4% a year earlier — the low end of the 26-28% FY27 guidance.",
+    "The stock slipped despite the beat because group new-business premium jumped to roughly 37% of new business against a typical 10-12%, and group term carries structurally lower margins than individual retail.",
+    "A GST input-tax-credit drag of about ₹230 cr — roughly 110 bps of margin — hit the quarter following the September 2025 reform that exempted individual life and health premiums from GST but removed insurers' input credit; the opex ratio rose to 7.7% from 6.3%.",
+    "Embedded Value stood at ₹85,290 cr at 30 June 2026 (+15% YoY), or ₹850.2 a share — about 2.18× at the ₹1,855.50 close.",
+    "Persistency improved where it matters: 13th-month 87.7% (+61bps) and 49th-month 69.1% (+68bps), while 61st-month dipped as the COVID-era cohort rolled into that bucket."
+   ],
+   "better_lens": {
+    "note": "Replace P/E with embedded-value metrics — they capture economics that Ind AS net profit cannot:",
+    "metrics": [
+     {
+      "label": "P/EV",
+      "value": "~2.18×",
+      "detail": "Our own calculation: the ₹1,855.50 close over EV per share of ₹850.2 at 30 June 2026. This is the sector's core 'how expensive' multiple"
+     },
+     {
+      "label": "VNB margin",
+      "value": "26.2%, guided 26-28%",
+      "detail": "The profitability earned on each rupee of new business — the insurance equivalent of an operating margin, free of strain"
+     },
+     {
+      "label": "VNB growth",
+      "value": "+29% YoY to ₹1,410 cr",
+      "detail": "What actually drives future embedded-value growth, and comparable across insurers in a way net profit is not"
+     },
+     {
+      "label": "Embedded Value",
+      "value": "₹85,290 cr, +15% YoY",
+      "detail": "Net worth plus in-force value — the base the P/EV multiple applies to"
+     },
+     {
+      "label": "13th-month persistency",
+      "value": "87.7%, +61bps",
+      "detail": "How many policyholders are still paying after a year — a direct read on policy quality that no earnings multiple shows"
+     }
+    ]
+   },
+   "what_would_change_it": [
+    "VNB margin trending back toward 28% in H2 FY27 as the group mix normalises and the GST drag fades, confirming Q1's dip was a one-off.",
+    "Any further IRDAI change to bancassurance or corporate-agent limits that alters SBI Life's privileged access to the SBI branch network.",
+    "The P/EV gap versus HDFC Life and ICICI Prudential Life at the next embedded-value disclosure, showing whether the market is re-rating the growth-versus-margin trade-off.",
+    "61st-month persistency recovering once the COVID-era cohort rolls through, confirming the dip was cohort-driven rather than quality deterioration."
+   ],
+   "caveats": "Written against the ₹1,855.50 close in the 2026-08-06 scan and Q1 FY27 results. EV and VNB are company-reported and not independently re-audited here. The peer P/EV comparison available to us dates from April 2026 and predates the price and EV used for SBI Life's own figure, so treat peer numbers as directional. Not investment advice.",
+   "sources": [
+    {
+     "title": "Outlook Business — SBI Life Q1 FY27: PAT, APE, VNB, embedded value, persistency",
+     "url": "https://www.outlookbusiness.com/corporate/sbi-life-q1-profit-rises-22-yoy-to-720-cr-as-new-business-premium-surges"
+    },
+    {
+     "title": "CompoundingAI — Q1 FY27 earnings call: EV, VNB margin, group-business commentary",
+     "url": "https://compoundingai.in/market-news/sbilife-q1-fy27-earnings-call"
+    },
+    {
+     "title": "Investing.com — Q1 FY27 transcript: why shares were little changed, GST drag, opex ratio",
+     "url": "https://www.investing.com/news/transcripts/earnings-call-transcript-sbi-life-posts-strong-q1-2027-growth-shares-little-changed-93CH-4811607"
+    },
+    {
+     "title": "A2Z Taxcorp — GST exemption on life premiums and the input-tax-credit hit to margins",
+     "url": "https://a2ztaxcorp.net/gst-exemption-boosts-life-insurance-sales-21-in-oct-nov-2025-margins-face-itc-hit/"
+    },
+    {
+     "title": "MoneyMuscle — SBI Life vs HDFC Life vs ICICI Pru: P/EV and RoEV comparison",
+     "url": "https://www.moneymuscle.in/p/sbi-life-vs-hdfc-life-vs-icici-pru-fy26-valuation-analysis"
+    }
+   ]
+  },
+  "TATAMOTORS": {
+   "as_of": "2026-08-09",
+   "applies_to": "Tata Motors Passenger Vehicles Ltd (post-demerger) · NSE: TMPV",
+   "headline": "A cheap-looking P/B misreads a JLR balance sheet; 6.8× forward is a recovery bet.",
+   "summary": "TMPV is a young ticker holding India's PV business plus Jaguar Land Rover, created by the 2025-10-14 demerger of Tata Motors, so anything spanning that date compares two different companies. Trailing P/E is blank because TTM earnings are a loss, forcing a fallback to P/B 1.14 — which looks cheap largely because JLR's capital-heavy, tariff- and China-exposed asset base lifts book value in a way Maruti's or M&M's never does. The number that carries the actual story is the 6.80× forward P/E.",
+   "why_the_multiple": [
+    "The demerger took effect 1 October 2025 with a record date of 14 October, splitting undivided Tata Motors into a Commercial Vehicles entity and TMPV (India PV plus JLR). Every metric that straddles that date compares two different companies.",
+    "TMPV's 52-week range covers only the 205 sessions since listing, so it is not yet a true annual range and cannot be compared like-for-like with peers that have a full year of history.",
+    "Trailing P/E is unavailable because TTM earnings are a loss — FY26 EPS of −₹4.43 against FY25's +₹65.01 — so the app substitutes P/B 1.14 against an Automobile peer median of 4.20 and flags it 'cheap −72.9%'.",
+    "That P/B comparison is weak: JLR dominates the balance sheet with heavy fixed-asset and R&D capital in UK and EU manufacturing plus sterling- and dollar-denominated debt, unlike the asset-lighter, rupee-funded balance sheets of Maruti Suzuki and Mahindra & Mahindra. A low P/B here reflects different capital intensity and currency exposure, not obvious cheapness.",
+    "Forward P/E of 6.80, against an India auto average nearer 27×, implies consensus expects roughly 58% annual EPS growth — the market is pricing a JLR profitability rebound that has not yet appeared in reported numbers."
+   ],
+   "current_scenario": [
+    "14 October 2025: the demerger record date fixed a 1:1 allocation, separating the Commercial Vehicles business from the merged PV-plus-JLR entity.",
+    "2 July 2026: JLR reported Q1 FY27 wholesales of 79,300 units, down 9.2% YoY, citing a supplier fire, the Middle East conflict and the wind-down of outgoing Jaguar models, with China down 26.2% and Europe down 12.1%.",
+    "India PV wholesales for the same quarter were 182,574 units, up 46% YoY, with EV volumes up 112%, helped by the September 2025 GST cuts on small cars.",
+    "Between January and April 2026 Tata held roughly 40% of India's EV passenger-vehicle market against MG Motor and Mahindra, while ranking second in overall PV volumes behind Maruti Suzuki.",
+    "Q1 FY27 consolidated results including JLR were scheduled for around 12-13 August 2026, so at the scan date the market was still trading on FY26 numbers that showed a full-year loss."
+   ],
+   "better_lens": {
+    "note": "Trailing earnings are loss-distorted and P/B blends two very different balance sheets, so look forward and by segment:",
+    "metrics": [
+     {
+      "label": "Forward P/E",
+      "value": "6.80×",
+      "detail": "Against an India auto average nearer 27× — the multiple that actually reflects consensus, unlike the blank trailing figure"
+     },
+     {
+      "label": "FY26 vs FY25 EPS",
+      "value": "−₹4.43 vs +₹65.01",
+      "detail": "Explains directly why trailing P/E is blank and why the app fell back to a less comparable P/B"
+     },
+     {
+      "label": "Implied EPS growth",
+      "value": "~58% a year",
+      "detail": "The specific assumption embedded in that 6.8× — a bet on JLR margin recovery, not yet confirmed"
+     },
+     {
+      "label": "JLR wholesales",
+      "value": "79,300 units, −9.2% YoY",
+      "detail": "The base the recovery thesis has to turn; still contracting in the most recent reported quarter"
+     },
+     {
+      "label": "India PV / EV volumes",
+      "value": "182,574 units +46%; EVs +112%",
+      "detail": "The India franchise is growing fast while JLR drags the consolidated line — a split no blended multiple can show"
+     }
+    ]
+   },
+   "what_would_change_it": [
+    "The Q1 FY27 consolidated print will show whether JLR's margin pressure is narrowing or whether the implied 58% growth is a stretch.",
+    "A sequential rebound in JLR wholesales from the 79,300-unit base would mark the tariff, China and supply drags as temporary rather than structural.",
+    "Once TMPV accumulates a full year of post-demerger history past October 2026, its 52-week range and 1-year return become genuinely comparable to peers.",
+    "Holding roughly 40% India EV share against accelerating Mahindra and MG launches would support the India half of the valuation independent of JLR."
+   ],
+   "caveats": "Any Tata Motors price, ratio or return dated before 2025-10-14 belongs to the undivided pre-demerger company and is not comparable to TMPV. Q1 FY27 consolidated results were not yet published at the 2026-08-06 scan. Not investment advice.",
+   "sources": [
+    {
+     "title": "Business Standard — Tata Motors fixes 14 October as demerger record date",
+     "url": "https://www.business-standard.com/markets/news/tata-motors-fixes-october-14-as-record-date-for-demerger-stock-rallies-5-125100100609_1.html"
+    },
+    {
+     "title": "Business Standard — JLR wholesales decline 9.2% to 79,300 units in Q1",
+     "url": "https://www.business-standard.com/markets/capital-market-news/jlr-wholesales-volumes-decline-9-2-to-79-300-units-in-q1-126070201105_1.html"
+    },
+    {
+     "title": "AutoGuideIndia — Tata Motors EV sales and PV market share, April 2026",
+     "url": "https://www.autoguideindia.com/statistics/tata-motors-ev-sales-april-2026-pv-market-share-india/"
+    },
+    {
+     "title": "Simply Wall St — TMPV forward P/E and analyst growth expectations",
+     "url": "https://simplywall.st/stocks/in/automobiles/nse-tmpv/tata-motors-passenger-vehicles-shares/future"
+    },
+    {
+     "title": "NiftyTrader — TMPV Q1 FY27 results date and sales preview",
+     "url": "https://www.niftytrader.in/markets/tata-motors-pv-q1-fy27-results-on-aug-13/"
+    }
+   ]
+  },
+  "TATASTEEL": {
+   "as_of": "2026-08-09",
+   "applies_to": "Tata Steel Ltd · NSE: TATASTEEL",
+   "headline": "Trailing 21× says rich, forward 10.5× says the opposite — the cyclical P/E trap.",
+   "summary": "A trailing P/E of 21.24 against a Metals & Mining median of 14.37 flags Tata Steel as expensive, but that multiple is inflated by depressed earnings, not by an expensive stock. Forward P/E of 10.48 — less than half — reflects consensus pricing a recovery as India volumes and realisations rise and European losses shrink. That inversion is the normal signature of a commodity cyclical coming off a trough.",
+   "why_the_multiple": [
+    "Trailing P/E divides today's price by the last twelve months of earnings, which were compressed by weak spreads, elevated conversion costs and European losses. A shrunken denominator inflates the multiple even though nothing became more expensive.",
+    "This is the cyclical P/E trap in its textbook form: at a cycle bottom trailing earnings are trough earnings so the P/E looks high, and at the top they are peak earnings so it looks cheap. Buying a single-digit P/E cyclical at the peak is often buying earnings about to fall; a 21× at the trough can precede compression through rising earnings rather than a falling price.",
+    "Forward P/E of 10.48 signals consensus expects consolidated profit to roughly double as Q1 FY27 India deliveries (+11% YoY to 4.85 mt) and realisations (average selling price +12% YoY to about ₹83,624 a tonne) build through the year.",
+    "Consolidated earnings are dragged down by Europe even as India is highly profitable: Q1 FY27 India EBITDA was about ₹9,409 cr against negative ₹302 cr in Europe, so a blended trailing multiple penalises the whole group for a minority segment.",
+    "The peer-median comparison also mixes cycle stages and geographies — some peers sit at a different point in their own earnings cycle, or carry no loss-making overseas arm, so a static P/E gap says less about business quality than about timing."
+   ],
+   "current_scenario": [
+    "Q1 FY27 (quarter to June 2026, reported around 30 July): consolidated PAT up 11.6% YoY to ₹2,318 cr, consolidated net debt ₹84,173 cr, and India PAT of ₹4,668 cr against ₹3,454 cr a year earlier.",
+    "Europe remains a drag with roughly −₹302 cr of EBITDA, though the UK loss narrowed to about ₹340 cr from ₹590 cr in Q4 FY26, and the Netherlands Direct Sheet Plant saw a temporary emissions-related closure.",
+    "The IJmuiden restructuring, in consultation since April 2025, targets over €500 million of cost improvement versus FY25 largely through about 1,600 job cuts, with savings fully realised in FY27; Port Talbot has moved past blast-furnace closure into its electric-arc-furnace setup.",
+    "India's three-year safeguard duty on flat steel imports — 12% from April 2025, stepping down to 11% by April 2028 — has cut import volumes by roughly a third YoY and supported domestic realisations, even as Chinese export offers kept falling through late July 2026.",
+    "On 30 July 2026 the board approved ₹33,873 cr of capex to expand Neelachal to 6.2 MTPA; conversion costs rose about 25% QoQ on a West Asia-linked energy spike, an unplanned headwind of roughly ₹1,200 cr."
+   ],
+   "better_lens": {
+    "note": "For a cyclical integrated steelmaker, forward earnings, EV/EBITDA and the European trajectory beat any trailing P/E snapshot:",
+    "metrics": [
+     {
+      "label": "Forward P/E",
+      "value": "10.48×",
+      "detail": "Prices expected earnings rather than trough earnings — less than half the trailing figure, and the clearer signal of cycle direction"
+     },
+     {
+      "label": "EV/EBITDA (LTM)",
+      "value": "~9.2×",
+      "detail": "Capital-structure-neutral and far less distorted by impairments, forex and restructuring charges than net profit"
+     },
+     {
+      "label": "Europe segment EBITDA",
+      "value": "~−₹302 cr",
+      "detail": "Isolates the Netherlands and UK drag from the profitable India business; the trend toward breakeven is the real re-rating trigger"
+     },
+     {
+      "label": "India segment",
+      "value": "EBITDA ₹9,409 cr, PAT ₹4,668 cr",
+      "detail": "The earnings power of the low-cost captive-ore business that the consolidated multiple obscures"
+     },
+     {
+      "label": "Consolidated net debt",
+      "value": "₹84,173 cr",
+      "detail": "Matters because ₹33,873 cr of new Neelachal capex will be part debt-funded, moving EV and interest cost independently of P/E"
+     }
+    ]
+   },
+   "what_would_change_it": [
+    "European EBITDA turning sustainably positive — the UK loss has already narrowed from ₹590 cr to ₹340 cr sequentially — would remove the main drag on consolidated earnings.",
+    "Conversion and energy costs moderating from the ~25% QoQ spike back toward normal, which would restore margin without needing higher steel prices.",
+    "The safeguard duty continuing to hold back Chinese import volumes through to April 2028, combined with any recovery in global export prices.",
+    "Execution pace and funding mix on the ₹33,873 cr Neelachal expansion, and when its incremental EBITDA starts to land."
+   ],
+   "caveats": "Written against the ₹187.55 close in the 2026-08-06 scan and Q1 FY27 results reported around 30 July 2026. Net debt, segment EBITDA and safeguard-duty terms are as last reported and will move with the next print. Not investment advice.",
+   "sources": [
+    {
+     "title": "Whalesbook — Tata Steel Q1 FY27: segment EBITDA, net debt, Neelachal capex",
+     "url": "https://www.whalesbook.com/corporate-news/English/industrial-goodsservices/Tata-Steel-Q1FY27-India-Operations-Shine-Amidst-European-Setbacks/6a703f9e10bce1fd20396bb7"
+    },
+    {
+     "title": "Business Standard — Netherlands restructuring and roughly 1,600 job cuts",
+     "url": "https://www.business-standard.com/companies/news/tata-steel-to-transform-netherlands-operations-plans-to-cut-1-600-jobs-125040901157_1.html"
+    },
+    {
+     "title": "Business Standard — safeguard duty of up to 12% on flat steel imports",
+     "url": "https://www.business-standard.com/economy/news/govt-imposes-up-to-12-safeguard-duty-on-steel-flat-product-imports-125123100448_1.html"
+    },
+    {
+     "title": "stockanalysis.com — Tata Steel EV/EBITDA, P/E, forward P/E and P/B",
+     "url": "https://stockanalysis.com/quote/bom/500470/statistics/"
+    },
+    {
+     "title": "Business Standard — Q1 net profit +11.6%, ₹33,873 cr Neelachal expansion approved",
+     "url": "https://www.business-standard.com/companies/quarterly-results/tata-steel-q1-net-profit-up-11-6-approves-33-873-cr-neelachal-expansion-126073001546_1.html"
+    },
+    {
+     "title": "Steel Market Update (CRU) — global steel export prices under pressure, China offers falling",
+     "url": "https://www.steelmarketupdate.com/2026/07/31/cru-global-steel-export-prices-under-pressure-as-demand-weakens/"
+    }
+   ]
+  }
+ }
+}

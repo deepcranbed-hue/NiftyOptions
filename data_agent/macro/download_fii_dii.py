@@ -1,9 +1,14 @@
 #!/usr/bin/env python3
+# --- single source for DB connections (D-SC-06, CLAUDE.md) ---
+import os as _os, sys as _sys
+_RT = _os.path.abspath(_os.path.join(_os.path.dirname(__file__), "../.."))
+_RT in _sys.path or _sys.path.insert(0, _RT)
+from db_config import resolve_writable_db_path, resolve_pg_dsn
 import os
 import sys
 import requests
 import sqlite3
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
 # Add parent paths so we can import upstox_auth
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -13,8 +18,31 @@ sys.path.append(os.path.join(REPO_ROOT, "scratch_scripts"))
 
 from upstox_auth import get_upstox_token
 
+IST = timezone(timedelta(hours=5, minutes=30))
+
+
+def _flow_date(ts_ms):
+    """Epoch millis -> the IST trading date, or None if it is not a trading day.
+
+    WHY THE None BRANCH EXISTS
+    --------------------------
+    Upstox returns a record dated SUNDAY whose payload is byte-identical to the
+    following Monday — 7 of 41 rows on 2026-08-09, six of them exact duplicates. Any
+    weekly aggregate therefore double-counted Monday. FII/DII flows only exist on
+    trading days, so a weekend row is wrong whatever produced it.
+
+    The conversion is also done properly here: the previous version added a raw 5:30
+    timedelta to a datetime still labelled UTC. It happened to yield the right date,
+    but it is the kind of thing that is right by accident.
+    """
+    if not ts_ms:
+        return None
+    d = datetime.fromtimestamp(ts_ms / 1000, tz=IST).date()
+    return None if d.weekday() >= 5 else d
+
+
 def main():
-    db_url = os.environ.get("DATABASE_URL", "postgresql://localhost/niftyoptions")
+    db_url = resolve_pg_dsn()
     token = get_upstox_token()
     if not token:
         print("Error: No Upstox access token found.")
@@ -45,7 +73,9 @@ def main():
             for x in data:
                 ts = x.get("time_stamp")
                 if not ts: continue
-                dt = datetime.fromtimestamp(ts / 1000, tz=timezone.utc).date()
+                dt = _flow_date(ts)
+                if dt is None:
+                    continue
                 if dt not in flows_by_date:
                     flows_by_date[dt] = {
                         "fii_buy": 0.0, "fii_sell": 0.0, "fii_net": 0.0,
@@ -72,7 +102,9 @@ def main():
         for x in dii_data:
             ts = x.get("time_stamp")
             if not ts: continue
-            dt = datetime.fromtimestamp(ts / 1000, tz=timezone.utc).date()
+            dt = _flow_date(ts)
+            if dt is None:
+                continue
             if dt not in flows_by_date:
                 flows_by_date[dt] = {
                     "fii_buy": 0.0, "fii_sell": 0.0, "fii_net": 0.0,
@@ -87,7 +119,7 @@ def main():
             flows_by_date[dt]["dii_net"] = buy - sell
 
     # Connect and upsert to SQLite
-    db_path = os.environ.get("SQLITE_DB_PATH", "/Users/deepak/Library/CloudStorage/GoogleDrive-deepcranbed@gmail.com/My Drive/option_chains.db")
+    db_path = resolve_writable_db_path()
     with sqlite3.connect(db_path) as conn:
         cur = conn.cursor()
         

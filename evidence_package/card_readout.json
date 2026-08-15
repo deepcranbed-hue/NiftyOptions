@@ -1,0 +1,19 @@
+{
+  "RR_floating_level": -1.20,
+  "dRR_floating": -0.10,
+  "RR_fixed_level": -0.912,
+  "dRR_fixed": -0.05,
+  "artifact_share": 0.24,
+  "put_leg_dIV_vpt": 0.80,
+  "call_leg_dIV_vpt": -0.40,
+  "anchor_strikes": {"put25": 24200, "call25": 24500},
+  "atm_strike": 24400,
+  "forward_used": 24408.5,
+  "expiry_measured": "2026-07-09",
+  "reference_window": "60m",
+  "invariants": {
+    "passed": true,
+    "checked": ["T-A", "T-B", "T-C", "T-D", "T-E", "T-F", "T-G", "T-H", "T-I"],
+    "failures": []
+  }
+}

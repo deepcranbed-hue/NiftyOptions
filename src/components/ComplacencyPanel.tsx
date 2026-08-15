@@ -107,14 +107,30 @@ export const ComplacencyPanel: React.FC<Props> = ({ metrics, spot }) => {
             <span>Put Writing Bursts (&gt;100% OI)</span>
             <span className="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">±250 ATM</span>
           </div>
-          <div className="text-3xl font-bold text-emerald-600 flex items-baseline gap-2">
-            {metrics.bursts} <span className="text-sm font-normal text-slate-400">strikes near spot</span>
-          </div>
-          <div className="text-xs font-semibold text-slate-700">
-            Max Burst Velocity: <span className="text-emerald-700 font-bold">+{metrics.max_burst.toFixed(0)}%</span>
-          </div>
-          <div className="text-[11px] text-slate-400 leading-tight">
-            Writers aggressively crowding ATM support strikes.
+          {!metrics.has_oi_data ? (
+            <div className="text-sm font-semibold text-slate-400 py-2">
+              OI-change unavailable
+            </div>
+          ) : (
+            <>
+              <div className="text-3xl font-bold text-emerald-600 flex items-baseline gap-2">
+                {metrics.bursts} <span className="text-sm font-normal text-slate-400">strikes near spot</span>
+              </div>
+              <div className="text-xs font-semibold text-slate-700">
+                Max Burst Velocity: <span className="text-emerald-700 font-bold">+{metrics.max_burst.toFixed(0)}%</span>
+              </div>
+            </>
+          )}
+          <div className="text-[11px] text-slate-500 leading-snug">
+            {metrics.oi_flow_summary ? (
+              <span>{metrics.oi_flow_summary}</span>
+            ) : (
+              <span>
+                OI-change data unavailable. Max Put Support is at{" "}
+                <strong className="text-emerald-700 font-bold">{metrics.max_put_oi_strike}</strong>, Call Resistance is at{" "}
+                <strong className="text-rose-700 font-bold">{metrics.max_call_oi_strike}</strong>.
+              </span>
+            )}
           </div>
         </div>
 

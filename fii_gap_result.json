@@ -1,0 +1,127 @@
+{
+ "n": 217,
+ "variance": {
+  "gap_share": 0.67,
+  "intraday_share": 0.502,
+  "cov_share": -0.168,
+  "check_sums_to_one": 1.004,
+  "corr_gap_intraday": -0.145
+ },
+ "split_half": {
+  "first_half": {
+   "opt_dir_z": {
+    "r": 0.2024,
+    "t": 2.71
+   },
+   "put_net_z": {
+    "r": -0.1742,
+    "t": -2.64
+   },
+   "act_pcr_z": {
+    "r": -0.1124,
+    "t": -1.04
+   },
+   "span": "2025-09-22 -> 2026-02-26  n=108"
+  },
+  "second_half": {
+   "opt_dir_z": {
+    "r": 0.1214,
+    "t": 1.44
+   },
+   "put_net_z": {
+    "r": -0.1385,
+    "t": -1.79
+   },
+   "act_pcr_z": {
+    "r": -0.1448,
+    "t": -1.68
+   },
+   "span": "2026-02-27 -> 2026-08-10  n=109"
+  }
+ },
+ "prev_return_control": {
+  "opt_dir_z": {
+   "t_alone": 2.65,
+   "t_with_control": 2.68,
+   "t_on_r_prev": -1.44,
+   "beta_shrink": 1.462
+  },
+  "put_net_z": {
+   "t_alone": -2.86,
+   "t_with_control": -2.42,
+   "t_on_r_prev": -1.21,
+   "beta_shrink": 1.362
+  },
+  "act_pcr_z": {
+   "t_alone": -1.98,
+   "t_with_control": -2.06,
+   "t_on_r_prev": -0.25,
+   "beta_shrink": 0.965
+  }
+ },
+ "tradability": {
+  "opt_dir_z|r_gap": {
+   "r": 0.1526,
+   "t": 2.65,
+   "p": 0.0385,
+   "reachable": false,
+   "n": 217
+  },
+  "opt_dir_z|r_oc": {
+   "r": 0.0329,
+   "t": 0.47,
+   "p": 0.6552,
+   "reachable": true,
+   "n": 217
+  },
+  "opt_dir_z|r_gap2": {
+   "r": -0.0731,
+   "t": -1.39,
+   "p": 0.3165,
+   "reachable": true,
+   "n": 217
+  },
+  "put_net_z|r_gap": {
+   "r": -0.1504,
+   "t": -2.86,
+   "p": 0.0435,
+   "reachable": false,
+   "n": 217
+  },
+  "put_net_z|r_oc": {
+   "r": 0.0465,
+   "t": 0.7,
+   "p": 0.5148,
+   "reachable": true,
+   "n": 217
+  },
+  "put_net_z|r_gap2": {
+   "r": 0.1081,
+   "t": 1.67,
+   "p": 0.1125,
+   "reachable": true,
+   "n": 217
+  },
+  "act_pcr_z|r_gap": {
+   "r": -0.1319,
+   "t": -1.98,
+   "p": 0.0338,
+   "reachable": false,
+   "n": 217
+  },
+  "act_pcr_z|r_oc": {
+   "r": -0.0548,
+   "t": -0.87,
+   "p": 0.406,
+   "reachable": true,
+   "n": 217
+  },
+  "act_pcr_z|r_gap2": {
+   "r": 0.0861,
+   "t": 1.41,
+   "p": 0.172,
+   "reachable": true,
+   "n": 217
+  }
+ }
+}

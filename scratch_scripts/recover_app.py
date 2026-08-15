@@ -1,0 +1,524 @@
+import os
+
+lines_1_to_519 = """import React, { useState, useMemo } from 'react';
+import { OptionRow } from './types';
+import { SAMPLE_CHAIN, GLOBAL_MAP, SAMPLE_NEWS, CONFIG } from './lib/constants';
+import {
+  parseChain,
+  estimateSpot,
+  calculateMaxPain,
+  calculateATM,
+  calculatePCR,
+  generateReads,
+  generateStructureContext,
+  calculateComplacency,
+  generateGlobalCues,
+} from './lib/analytics';
+import { OIPositioningPanel } from './components/OIPositioningPanel';
+import { ComplacencyPanel } from './components/ComplacencyPanel';
+import { GlobalCuesPanel } from './components/GlobalCuesPanel';
+import { SectorNewsPanel } from './components/SectorNewsPanel';
+import { EventCalendarPanel } from './components/EventCalendarPanel';
+import { SectorEarningsPanel } from './components/SectorEarningsPanel';
+import { StrategySuggesterPanel } from './components/StrategySuggesterPanel';
+import { PortfolioPanel } from './components/PortfolioPanel';
+import { FlowsPanel } from './components/FlowsPanel';
+import { NSESyncPanel } from './components/NSESyncPanel';
+import { BreezeSyncPanel } from './components/BreezeSyncPanel';
+import { PriceChartPanel } from './components/PriceChartPanel';
+import { AICopilotModal } from './components/AICopilotModal';
+import { CaptureComparePanel } from './components/CaptureComparePanel';
+import {
+  BarChart2,
+  Activity,
+  Globe,
+  Newspaper,
+  Sparkles,
+  Bot,
+  Database,
+  Layers,
+  AlertTriangle,
+  RefreshCw,
+  TrendingUp,
+  Clock,
+  ExternalLink,
+  Calendar,
+  Briefcase,
+  DownloadCloud,
+  PieChart,
+  Trash2,
+} from 'lucide-react';
+import { Info, AlertOctagon } from 'lucide-react';
+
+export default function App() {
+  const [rawChain, setRawChain] = useState<string>(SAMPLE_CHAIN);
+  const [spotOverride, setSpotOverride] = useState<number>(0);
+
+  // Global index % moves state
+  const [pctMap, setPctMap] = useState<Record<string, number>>(() => {
+    const init: Record<string, number> = {};
+    for (const [key, val] of Object.entries(GLOBAL_MAP)) {
+      init[key] = val.defaultPct;
+    }
+    return init;
+  });
+
+  const [activeTab, setActiveTab] = useState<'oi' | 'complacency' | 'global' | 'news' | 'calendar' | 'earnings' | 'flows' | 'strategy' | 'sync' | 'compare' | 'portfolio'>('oi');
+
+  // Modals & Drawers
+  const [isCopilotOpen, setIsCopilotOpen] = useState(false);
+
+  const [traderOutlook, setTraderOutlook] = useState<'bullish' | 'bearish' | 'neutral' | 'volatile'>('neutral');
+
+  const [riskConfig, setRiskConfig] = useState({
+    capital: 1000000.0,
+    risk_per_trade_pct: 0.015,
+    max_portfolio_heat_pct: 0.06,
+    max_net_delta_units: 150.0,
+    max_net_vega_rupees: 50000.0,
+    max_drawdown_pct: 0.10,
+    lot_size: CONFIG.lot_size,
+    complacency_block: 70.0,
+    complacency_halve: 55.0
+  });
+
+  // Quant Pipeline State
+  
+  const [uploadFile, setUploadFile] = useState<File | null>(null);
+  const [uploadSpot, setUploadSpot] = useState<number>(0);
+  const [uploadExpiryDate, setUploadExpiryDate] = useState<string>('');
+  const [uploadVix, setUploadVix] = useState<number | undefined>(undefined);
+
+  const [csvChainRows, setCsvChainRows] = useState<OptionRow[] | null>(null);
+
+
+  const [pipelineRes, setPipelineRes] = useState<any>(null);
+  const [isPipelineRunning, setIsPipelineRunning] = useState(false);
+  const [isNewsUpdating, setIsNewsUpdating] = useState(false);
+  const [isFlowsUpdating, setIsFlowsUpdating] = useState(false);
+  const [daysToExpiry, setDaysToExpiry] = useState<number>(5.0); // 30th June Expiry
+  const [loadedExpiry, setLoadedExpiry] = useState<string>(''); // Dynamically loaded expiry
+
+  const [captures, setCaptures] = useState<any[]>([]);
+  const [selectedCaptureId, setSelectedCaptureId] = useState<string>('');
+
+  const [pendingPipelineRun, setPendingPipelineRun] = useState(false);
+
+  const fetchCaptures = async (autoLoadFirst = false) => {
+    try {
+      const r = await fetch('http://127.0.0.1:8000/api/captures');
+      const d = await r.json();
+      if (d.success && d.captures) {
+        setCaptures(d.captures);
+        if (d.captures.length > 0) {
+          const firstId = d.captures[0].capture_id.toString();
+          setSelectedCaptureId(firstId);
+          if (autoLoadFirst) {
+            loadSelectedCapture(firstId);
+          }
+        }
+      }
+    } catch(e) {
+      console.error("Failed to load captures", e);
+    }
+  };
+
+  React.useEffect(() => {
+    fetchCaptures(true); // Auto-load on initial mount
+  }, []);
+
+  const loadSelectedCapture = async (capId: string) => {
+    if (!capId) return;
+    try {
+      const res = await fetch(`http://127.0.0.1:8000/api/load-capture/${capId}`);
+      if (!res.ok) throw new Error("Failed to load capture");
+      const data = await res.json();
+      if (data.success && data.capture) {
+        // Need to parse it back into the format expected by the app.
+        // The chain_store returns the raw parsed dictionary. We can populate csvChainRows.
+        const cap = data.capture;
+        const rows: OptionRow[] = [];
+        for (let i = 0; i < cap.strikes.length; i++) {
+          rows.push({
+            strike: cap.strikes[i],
+            call_oi: cap.call_oi[i] || 0,
+            call_oi_chg_pct: 0,
+            call_ltp: cap.call_ltp[i] || 0,
+            call_iv: cap.call_iv[i] || 0,
+            put_oi: cap.put_oi[i] || 0,
+            put_oi_chg_pct: 0,
+            put_ltp: cap.put_ltp[i] || 0,
+            put_iv: cap.put_iv[i] || 0,
+          } as any);
+        }
+        setCsvChainRows(rows);
+        setSpotOverride(cap.spot);
+      }
+    } catch(e) {
+      console.error(e);
+      alert("Error loading capture");
+    }
+  };
+
+  const handleDeleteCapture = async () => {
+    if (!selectedCaptureId) return;
+    if (!confirm("Are you sure you want to delete this capture?")) return;
+    try {
+      const res = await fetch(`http://127.0.0.1:8000/api/captures/${selectedCaptureId}`, {
+        method: "DELETE"
+      });
+      if (!res.ok) throw new Error("Failed to delete");
+      alert("Capture deleted successfully");
+      fetchCaptures();
+    } catch (e: any) {
+      console.error(e);
+      alert("Error deleting capture: " + e.message);
+    }
+  };
+
+  // Analytics Calculation Pipeline
+  const analytics = useMemo(() => {
+    try {
+      const chainRows = csvChainRows || parseChain(rawChain);
+      console.log('Analytics Re-run. USING CSV?', !!csvChainRows, 'Rows:', chainRows.length);
+      const spot = spotOverride > 0 ? spotOverride : estimateSpot(chainRows);
+      const maxPain = calculateMaxPain(chainRows);
+      const atmMeta = calculateATM(chainRows, spot);
+      const pcr = calculatePCR(chainRows);
+      const readsMeta = generateReads(chainRows, spot, maxPain, atmMeta);
+      const structureContext = generateStructureContext(readsMeta.resRow, readsMeta.supRow);
+      const complacencyMetrics = calculateComplacency(chainRows, spot, atmMeta.iv);
+      const globalCues = generateGlobalCues(pctMap);
+
+      return {
+        success: true as const,
+        chainRows,
+        spot,
+        maxPain,
+        atmMeta,
+        pcr,
+        reads: readsMeta.reads,
+        resRow: readsMeta.resRow,
+        supRow: readsMeta.supRow,
+        structureContext,
+        complacencyMetrics,
+        globalCues,
+      };
+    } catch (err: any) {
+      return {
+        success: false as const,
+        error: err.message || "Failed to parse options dashboard metrics.",
+      };
+    }
+  }, [rawChain, spotOverride, pctMap, csvChainRows]);
+
+  const handleResetPct = () => {
+    const reset: Record<string, number> = {};
+    for (const [key, val] of Object.entries(GLOBAL_MAP)) {
+      reset[key] = val.defaultPct;
+    }
+    setPctMap(reset);
+  };
+
+  const [optWeights, setOptWeights] = useState({ev: 0.5, pop: 0.3, rr: 0.05, oi: 0.15});
+  const [optBias, setOptBias] = useState(0.0);
+  const [optMinPop, setOptMinPop] = useState(0.0);
+  const [optAllowUndefined, setOptAllowUndefined] = useState(false);
+  const [optCostPerLeg, setOptCostPerLeg] = useState(20.0);
+  const [optWindowPts, setOptWindowPts] = useState(500);
+  const [optMaxWing, setOptMaxWing] = useState(300);
+  const [optTopN, setOptTopN] = useState(6);
+  const [optMaxLossBudget, setOptMaxLossBudget] = useState(0.0);
+  const [optAllowBadRnd, setOptAllowBadRnd] = useState(false);
+
+  const [mockTrade, setMockTrade] = useState({
+    drawdown_pct: 0.0,
+    trade_max_loss_pts: 120.0,
+    trade_delta: 25.0,
+    trade_vega: -1200.0,
+    trade_structure: "",
+    is_premium_sell: false
+  });
+
+  const updateNews = async () => {
+    setIsNewsUpdating(true);
+    try {
+      const res = await fetch('/api/update-news', { method: 'POST' });
+      const data = await res.json();
+      if (!data.success) alert("News Update Failed: " + data.detail);
+      else {
+        const hasGeminiDown = data.state?.articles?.some((a: any) => a.gemini_down);
+        if (hasGeminiDown) {
+          alert("News updated (GEMINI DOWN - used keyword fallback)");
+        } else {
+          alert("News updated successfully!");
+        }
+        if (pipelineRes) {
+          runQuantPipeline();
+        }
+      }
+    } catch (err) {
+      alert("Error updating news: " + err);
+    } finally {
+      setIsNewsUpdating(false);
+    }
+  };
+
+  const updateFlows = async () => {
+    setIsFlowsUpdating(true);
+    try {
+      const res = await fetch('/api/update-flows', { method: 'POST' });
+      const data = await res.json();
+      if (!data.success) alert("Flows Update Failed: " + data.detail);
+      else alert("Flows updated successfully!");
+    } catch (err) {
+      alert("Error updating flows: " + err);
+    } finally {
+      setIsFlowsUpdating(false);
+    }
+  };
+
+
+  const onUploadPipeline = async (optConfig?: any) => {
+    if (!uploadFile || uploadSpot <= 0 || !uploadExpiryDate) {
+      alert("Please provide a CSV file, Spot Price, and Expiry Date.");
+      return;
+    }
+    setIsPipelineRunning(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", uploadFile);
+      formData.append("spot", uploadSpot.toString());
+      formData.append("expiry", uploadExpiryDate);
+      if (uploadVix !== undefined && !isNaN(uploadVix)) {
+        formData.append("vix", uploadVix.toString());
+      }
+      
+      const cleanOptConfig = (optConfig && optConfig._reactName) ? {} : (optConfig || {});
+      const payload = {
+        half_life_hours: 12.0,
+        risk_cfg: riskConfig,
+        book: [],
+        
+        current_drawdown_pct: mockTrade.drawdown_pct,
+        trade_max_loss_pts: mockTrade.trade_max_loss_pts,
+        trade_delta: mockTrade.trade_delta,
+        trade_vega: mockTrade.trade_vega,
+        override_structure: mockTrade.trade_structure || undefined,
+        override_is_premium_sell: mockTrade.is_premium_sell,
+        opt_weights: optWeights,
+        opt_bias: optBias,
+        opt_min_pop: optMinPop,
+        opt_allow_undefined: optAllowUndefined,
+        opt_cost_per_leg: optCostPerLeg,
+        opt_window_pts: optWindowPts,
+        opt_max_wing: optMaxWing,
+        opt_top_n: optTopN,
+        opt_max_loss_budget: optMaxLossBudget,
+        opt_allow_bad_rnd: optAllowBadRnd,
+
+        ...cleanOptConfig
+      };
+      formData.append("payload", JSON.stringify(payload));
+
+      const res = await fetch("http://127.0.0.1:8000/api/upload-chain", {
+        method: "POST",
+        body: formData
+      });
+      if (!res.ok) {
+        throw new Error(`Pipeline API Error: ${res.statusText}`);
+      }
+      const data = await res.json();
+      setPipelineRes(data);
+      if (data.chain_meta && data.chain_meta.rows) {
+        setCsvChainRows(data.chain_meta.rows);
+      }
+      fetchCaptures(); // Refresh dropdown
+    } catch (err: any) {
+      console.error(err);
+      alert(`Pipeline failed: ${err.message}`);
+    } finally {
+      setIsPipelineRunning(false);
+    }
+  };
+
+  const updateOptionChainAndRun = async () => {
+    setIsPipelineRunning(true);
+    try {
+      const r = await fetch('http://127.0.0.1:8000/api/captures');
+      const d = await r.json();
+      if (d.success && d.captures && d.captures.length > 0) {
+        const latestId = d.captures[0].capture_id.toString();
+        // If we are already on the latest, just run
+        if (selectedCaptureId === latestId && csvChainRows) {
+          runQuantPipeline();
+          return;
+        }
+        
+        setCaptures(d.captures);
+        setSelectedCaptureId(latestId);
+        
+        const res = await fetch(`http://127.0.0.1:8000/api/load-capture/${latestId}`);
+        const data = await res.json();
+        if (data.success && data.capture) {
+          const cap = data.capture;
+          const rows: OptionRow[] = [];
+          for (let i = 0; i < cap.strikes.length; i++) {
+            rows.push({
+              strike: cap.strikes[i],
+              call_oi: cap.call_oi[i] || 0,
+              call_oi_chg_pct: 0,
+              call_ltp: cap.call_ltp[i] || 0,
+              call_iv: cap.call_iv[i] || 0,
+              put_oi: cap.put_oi[i] || 0,
+              put_oi_chg_pct: 0,
+              put_ltp: cap.put_ltp[i] || 0,
+              put_iv: cap.put_iv[i] || 0,
+            } as any);
+          }
+          setCsvChainRows(rows);
+          setSpotOverride(cap.spot);
+          setLoadedExpiry(cap.expiry || "");
+          setPendingPipelineRun(true); // Wait for React to apply the rows, then run
+        } else {
+          setIsPipelineRunning(false);
+        }
+      } else {
+        setIsPipelineRunning(false);
+      }
+    } catch (err) {
+      console.error(err);
+      setIsPipelineRunning(false);
+      alert("Failed to update option chain");
+    }
+  };
+
+  React.useEffect(() => {
+    if (pendingPipelineRun && analytics.success) {
+      runQuantPipeline();
+      setPendingPipelineRun(false);
+    }
+  }, [pendingPipelineRun, analytics]);
+
+  const runQuantPipeline = async () => {
+    if (!analytics.success) return;
+    setIsPipelineRunning(true);
+    try {
+      // Build option chain payload
+      const strikes = analytics.chainRows.map(r => r.strike);
+      const call_ltp = analytics.chainRows.map(r => r.call_ltp);
+      const put_ltp = analytics.chainRows.map(r => r.put_ltp);
+      const put_oichg = analytics.chainRows.map(r => r.put_oichg);
+      const call_oi = analytics.chainRows.map(r => r.call_oi);
+      const put_oi = analytics.chainRows.map(r => r.put_oi);
+      const call_oichg = analytics.chainRows.map(r => r.call_oichg);
+      
+      const chainPayload = {
+        strikes,
+        call_ltp,
+        put_ltp,
+        put_oichg,
+        call_oi,
+        put_oi,
+        call_oi_chg_pct: call_oichg,
+        put_oi_chg_pct: put_oichg,
+        pcr: analytics.pcr,
+        atm_iv: analytics.atmMeta.iv,
+        spot: analytics.spot,
+        days: daysToExpiry,
+        r: 0.0655,
+        expiry: loadedExpiry
+      };
+
+      // No articlesPayload needed—backend fetches RSS itself.
+      const res = await fetch('/api/run-pipeline', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chain: chainPayload,
+          prev_regime: null,
+          risk_cfg: riskConfig,
+          book: [],
+          current_drawdown_pct: mockTrade.drawdown_pct,
+          trade_max_loss_pts: mockTrade.trade_max_loss_pts,
+          trade_delta: mockTrade.trade_delta,
+          trade_vega: mockTrade.trade_vega,
+          override_structure: mockTrade.trade_structure || undefined,
+          override_is_premium_sell: mockTrade.is_premium_sell,
+          force_news_refresh: false,
+          opt_weights: optWeights,
+          opt_bias: optBias,
+          opt_min_pop: optMinPop,
+          opt_allow_undefined: optAllowUndefined,
+          opt_cost_per_leg: optCostPerLeg,
+          opt_window_pts: optWindowPts,
+          opt_max_wing: optMaxWing,
+          opt_top_n: optTopN,
+          opt_max_loss_budget: optMaxLossBudget,
+          opt_allow_bad_rnd: optAllowBadRnd
+        })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setPipelineRes(data.result);
+        setActiveTab('strategy');
+      } else {
+        alert("Pipeline failed: " + data.detail);
+      }
+    } catch (err) {
+      alert("Error running pipeline: " + err);
+    } finally {
+      setIsPipelineRunning(false);
+    }
+  };
+
+  const renderTrustBanner = () => {
+    if (!pipelineRes || !pipelineRes.provenance) return null;
+    const { overall, headline, degraded, records } = pipelineRes.provenance;
+    
+    // Check for GEMINI-DOWN
+    const hasGeminiDown = records.some((r: any) => r.detail && r.detail.gemini_down === true);
+
+    if (hasGeminiDown) {
+      return (
+        <div className="w-full bg-rose-600 text-white px-4 py-2 flex items-center justify-center gap-2 text-sm font-bold shadow-md">
+          <AlertOctagon className="w-5 h-5 animate-pulse" />
+          ⛔ GEMINI DOWN — sentiment running on keyword fallback; bias UNRELIABLE
+        </div>
+      );
+    }
+
+    if (overall === 'PRIMARY') {
+      return (
+        <div className="w-full bg-emerald-600 text-white px-4 py-1.5 flex items-center justify-center gap-2 text-xs font-medium shadow-sm opacity-90">
+          <Info className="w-4 h-4" />
+          {headline}
+        </div>
+      );
+    }
+
+    const isFallback = overall === 'FALLBACK' || overall === 'UNAVAILABLE';
+    const bgColor = isFallback ? 'bg-rose-600' : 'bg-amber-600';
+
+    return (
+      <div className={`w-full ${bgColor} text-white px-4 py-2 shadow-md`}>
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-2">
+          <div className="flex items-center gap-2 font-bold text-sm">
+            <AlertTriangle className="w-4 h-4" />
+            {headline}
+          </div>
+          <div className="flex flex-wrap gap-2 text-xs opacity-90">
+            {degraded.map((r: any, i: number) => (
+              <span key={i} className="bg-white/20 px-2 py-0.5 rounded">
+                <strong className="uppercase">{r.component}:</strong> {r.quality} ({r.reason.split('—')[0].trim()})
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+"""
+with open("src/App_top.txt", "w") as f:
+    f.write(lines_1_to_519)

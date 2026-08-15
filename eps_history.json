@@ -1,0 +1,2782 @@
+{
+ "as_of": "2026-08-14",
+ "generated_at": "2026-08-14T19:14:02",
+ "source": "fundamentals.financials (annual EPS), yfinance fallback",
+ "note": "Normalised EPS growth: compound annual rate across reported annual EPS. A CAGR is a PER-YEAR rate, whereas embedded growth from trailing/forward P/E is a TOTAL change between two EPS figures \u2014 annualise the embedded number before differencing them or the gap is overstated. A CAGR requires both endpoints positive: names with a loss year carry cagr=None and sign_change=true rather than a fabricated rate. Fewer than 3 annual observations are omitted entirely.",
+ "history": {
+  "ADANIENT": {
+   "cagr_3y_pct": 57.7,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": 58.8,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 28.3,
+   "eps_start": 8.02,
+   "eps_end": 75.66,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": false,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 8.02
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 6.15
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 5.82
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 9.24
+    },
+    {
+     "period": "2021-03-31",
+     "eps": 7.49
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 6.3
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 19.3
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 25.37
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 55.02
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 75.66
+    }
+   ],
+   "source": "postgres"
+  },
+  "ADANIPORTS": {
+   "cagr_3y_pct": 33.3,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": 18.8,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 13.3,
+   "eps_start": 18.89,
+   "eps_end": 58.23,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": false,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 18.89
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 17.74
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 19.27
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 18.52
+    },
+    {
+     "period": "2021-03-31",
+     "eps": 24.58
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 23.13
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 24.58
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 37.55
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 51.35
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 58.23
+    }
+   ],
+   "source": "postgres"
+  },
+  "APOLLOHOSP": {
+   "cagr_3y_pct": 33.3,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": 66.8,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 26.8,
+   "eps_start": 15.89,
+   "eps_end": 135.04,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": false,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 15.89
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 8.44
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 16.97
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 32.7
+    },
+    {
+     "period": "2021-03-31",
+     "eps": 10.46
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 73.41
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 56.96
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 62.49
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 100.55
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 135.04
+    }
+   ],
+   "source": "postgres"
+  },
+  "ASIANPAINT": {
+   "cagr_3y_pct": 1.8,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": 6.6,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 9.3,
+   "eps_start": 20.22,
+   "eps_end": 45.12,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": false,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 20.22
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 21.26
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 22.48
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 28.2
+    },
+    {
+     "period": "2021-03-31",
+     "eps": 32.73
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 31.59
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 42.81
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 56.92
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 38.23
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 45.12
+    }
+   ],
+   "source": "postgres"
+  },
+  "AXISBANK": {
+   "cagr_3y_pct": 34.2,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": 31.7,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 20.9,
+   "eps_start": 15.36,
+   "eps_end": 85.04,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": false,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 15.36
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 1.07
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 18.19
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 5.77
+    },
+    {
+     "period": "2021-03-31",
+     "eps": 21.51
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 42.43
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 35.2
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 85.01
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 90.18
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 85.04
+    }
+   ],
+   "source": "postgres"
+  },
+  "BAJAJ-AUTO": {
+   "cagr_3y_pct": 21.5,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": 18.0,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 11.8,
+   "eps_start": 140.96,
+   "eps_end": 384.41,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": false,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 140.96
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 145.78
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 170.27
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 180.09
+    },
+    {
+     "period": "2021-03-31",
+     "eps": 167.83
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 213.06
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 214.14
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 272.7
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 262.0
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 384.41
+    }
+   ],
+   "source": "postgres"
+  },
+  "BAJFINANCE": {
+   "cagr_3y_pct": 17.1,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": 33.0,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 27.9,
+   "eps_start": 3.34,
+   "eps_end": 30.56,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": false,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 3.34
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 4.32
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 6.91
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 8.75
+    },
+    {
+     "period": "2021-03-31",
+     "eps": 7.33
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 11.61
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 19.01
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 235.98
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 26.82
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 30.56
+    }
+   ],
+   "source": "postgres"
+  },
+  "BAJAJFINSV": {
+   "cagr_3y_pct": 15.0,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": 16.9,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 17.6,
+   "eps_start": 14.21,
+   "eps_end": 61.23,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": false,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 14.21
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 16.65
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 20.23
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 21.17
+    },
+    {
+     "period": "2021-03-31",
+     "eps": 28.09
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 28.63
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 40.29
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 50.7
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 55.0
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 61.23
+    }
+   ],
+   "source": "postgres"
+  },
+  "BEL": {
+   "cagr_3y_pct": 26.6,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": 23.6,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 16.7,
+   "eps_start": 2.07,
+   "eps_end": 8.29,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": false,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 2.07
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 1.96
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 2.58
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 2.5
+    },
+    {
+     "period": "2021-03-31",
+     "eps": 2.87
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 3.28
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 4.08
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 5.45
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 7.28
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 8.29
+    }
+   ],
+   "source": "postgres"
+  },
+  "BHARTIARTL": {
+   "cagr_3y_pct": 43.0,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": null,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 22.8,
+   "eps_start": 6.91,
+   "eps_end": 43.81,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": true,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 6.91
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 2.0
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 0.74
+    },
+    {
+     "period": "2020-03-31",
+     "eps": -55.06
+    },
+    {
+     "period": "2021-03-31",
+     "eps": -25.63
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 7.23
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 14.97
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 12.8
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 56.04
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 43.81
+    }
+   ],
+   "source": "postgres"
+  },
+  "CIPLA": {
+   "cagr_3y_pct": 11.4,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": 10.0,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 16.1,
+   "eps_start": 12.51,
+   "eps_end": 48.02,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": false,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 12.51
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 17.52
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 18.96
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 19.18
+    },
+    {
+     "period": "2021-03-31",
+     "eps": 29.82
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 31.19
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 34.71
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 51.01
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 65.24
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 48.02
+    }
+   ],
+   "source": "postgres"
+  },
+  "COALINDIA": {
+   "cagr_3y_pct": -0.7,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": 19.6,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 14.5,
+   "eps_start": 14.95,
+   "eps_end": 50.46,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": false,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 14.95
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 11.34
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 28.34
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 27.12
+    },
+    {
+     "period": "2021-03-31",
+     "eps": 20.61
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 28.17
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 51.54
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 60.69
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 57.37
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 50.46
+    }
+   ],
+   "source": "postgres"
+  },
+  "DRREDDY": {
+   "cagr_3y_pct": -2.3,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": 16.5,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 13.9,
+   "eps_start": 15.59,
+   "eps_end": 50.41,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": false,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 15.59
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 11.41
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 23.49
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 24.38
+    },
+    {
+     "period": "2021-03-31",
+     "eps": 23.47
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 26.23
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 54.14
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 66.87
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 67.77
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 50.41
+    }
+   ],
+   "source": "postgres"
+  },
+  "EICHERMOT": {
+   "cagr_3y_pct": 23.6,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": 32.5,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 14.1,
+   "eps_start": 61.27,
+   "eps_end": 201.09,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": false,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 61.27
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 71.89
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 80.75
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 66.91
+    },
+    {
+     "period": "2021-03-31",
+     "eps": 49.28
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 61.32
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 106.54
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 146.13
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 172.66
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 201.09
+    }
+   ],
+   "source": "postgres"
+  },
+  "ZOMATO": {
+   "cagr_3y_pct": null,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": null,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": null,
+   "eps_start": -3456.0,
+   "eps_end": 0.4,
+   "years": 8.0,
+   "n_years": 9,
+   "first": "2018-03-31",
+   "last": "2026-03-31",
+   "sign_change": true,
+   "series": [
+    {
+     "period": "2018-03-31",
+     "eps": -3456.0
+    },
+    {
+     "period": "2019-03-31",
+     "eps": -32165.0
+    },
+    {
+     "period": "2020-03-31",
+     "eps": -78905.33
+    },
+    {
+     "period": "2021-03-31",
+     "eps": -20320.0
+    },
+    {
+     "period": "2022-03-31",
+     "eps": -1.54
+    },
+    {
+     "period": "2023-03-31",
+     "eps": -1.2
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 0.4
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 0.55
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 0.4
+    }
+   ],
+   "source": "postgres"
+  },
+  "GRASIM": {
+   "cagr_3y_pct": -10.1,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": 2.9,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 1.2,
+   "eps_start": 65.64,
+   "eps_end": 72.98,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": false,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 65.64
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 39.43
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 24.91
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 64.9
+    },
+    {
+     "period": "2021-03-31",
+     "eps": 63.3
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 110.96
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 100.33
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 85.41
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 54.46
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 72.98
+    }
+   ],
+   "source": "postgres"
+  },
+  "HCLTECH": {
+   "cagr_3y_pct": 3.9,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": 8.4,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 8.2,
+   "eps_start": 30.16,
+   "eps_end": 61.46,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": false,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 30.16
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 31.32
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 37.31
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 40.75
+    },
+    {
+     "period": "2021-03-31",
+     "eps": 41.07
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 49.74
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 54.73
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 57.86
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 64.08
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 61.46
+    }
+   ],
+   "source": "postgres"
+  },
+  "HDFCBANK": {
+   "cagr_3y_pct": -15.7,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": 11.9,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 14.9,
+   "eps_start": 14.19,
+   "eps_end": 49.5,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": false,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 14.19
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 16.85
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 19.35
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 23.94
+    },
+    {
+     "period": "2021-03-31",
+     "eps": 28.22
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 33.33
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 82.64
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 90.01
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 46.2
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 49.5
+    }
+   ],
+   "source": "postgres"
+  },
+  "HDFCLIFE": {
+   "cagr_3y_pct": 11.4,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": 5.6,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 8.0,
+   "eps_start": 4.44,
+   "eps_end": 8.86,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": false,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 4.44
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 5.5
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 6.33
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 6.43
+    },
+    {
+     "period": "2021-03-31",
+     "eps": 6.73
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 6.28
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 6.41
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 7.32
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 8.41
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 8.86
+    }
+   ],
+   "source": "postgres"
+  },
+  "HINDALCO": {
+   "cagr_3y_pct": 10.3,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": 31.2,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 24.4,
+   "eps_start": 8.47,
+   "eps_end": 60.31,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": false,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 8.47
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 27.1
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 24.48
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 16.77
+    },
+    {
+     "period": "2021-03-31",
+     "eps": 15.5
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 61.1
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 44.93
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 45.19
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 71.2
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 60.31
+    }
+   ],
+   "source": "postgres"
+  },
+  "HINDUNILVR": {
+   "cagr_3y_pct": 14.1,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": 13.5,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 13.4,
+   "eps_start": 20.68,
+   "eps_end": 64.01,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": false,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 20.68
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 24.09
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 27.97
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 31.17
+    },
+    {
+     "period": "2021-03-31",
+     "eps": 34.03
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 37.79
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 43.07
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 43.74
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 45.32
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 64.01
+    }
+   ],
+   "source": "postgres"
+  },
+  "ICICIBANK": {
+   "cagr_3y_pct": 15.8,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": 26.5,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 19.5,
+   "eps_start": 15.3,
+   "eps_end": 75.89,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": false,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 15.3
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 10.54
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 5.22
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 12.25
+    },
+    {
+     "period": "2021-03-31",
+     "eps": 23.41
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 33.59
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 48.86
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 61.96
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 71.14
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 75.89
+    }
+   ],
+   "source": "postgres"
+  },
+  "ITC": {
+   "cagr_3y_pct": 2.3,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": 9.1,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 7.7,
+   "eps_start": 8.47,
+   "eps_end": 16.51,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": false,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 8.47
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 9.24
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 10.27
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 12.45
+    },
+    {
+     "period": "2021-03-31",
+     "eps": 10.69
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 12.37
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 15.44
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 16.39
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 27.77
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 16.51
+    }
+   ],
+   "source": "postgres"
+  },
+  "INFY": {
+   "cagr_3y_pct": 7.5,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": 9.5,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 9.6,
+   "eps_start": 31.24,
+   "eps_end": 71.58,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": false,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 31.24
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 36.69
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 35.26
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 38.96
+    },
+    {
+     "period": "2021-03-31",
+     "eps": 45.42
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 52.56
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 57.63
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 63.2
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 64.32
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 71.58
+    }
+   ],
+   "source": "postgres"
+  },
+  "INDIGO": {
+   "cagr_3y_pct": null,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": null,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": null,
+   "eps_start": 45.9,
+   "eps_end": -61.88,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": true,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 45.9
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 58.33
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 4.09
+    },
+    {
+     "period": "2020-03-31",
+     "eps": -6.07
+    },
+    {
+     "period": "2021-03-31",
+     "eps": -150.86
+    },
+    {
+     "period": "2022-03-31",
+     "eps": -159.92
+    },
+    {
+     "period": "2023-03-31",
+     "eps": -7.93
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 211.72
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 187.85
+    },
+    {
+     "period": "2026-03-31",
+     "eps": -61.88
+    }
+   ],
+   "source": "postgres"
+  },
+  "JSWSTEEL": {
+   "cagr_3y_pct": 74.7,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": 22.8,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 22.6,
+   "eps_start": 14.57,
+   "eps_end": 91.43,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": false,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 14.57
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 25.71
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 31.6
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 16.67
+    },
+    {
+     "period": "2021-03-31",
+     "eps": 32.73
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 85.49
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 17.14
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 36.03
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 14.33
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 91.43
+    }
+   ],
+   "source": "postgres"
+  },
+  "JIOFIN": {
+   "cagr_3y_pct": -65.6,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": null,
+   "cagr_5y_years": null,
+   "cagr_full_pct": -65.6,
+   "eps_start": 60.46,
+   "eps_end": 2.46,
+   "years": 3.0,
+   "n_years": 4,
+   "first": "2023-03-31",
+   "last": "2026-03-31",
+   "sign_change": false,
+   "series": [
+    {
+     "period": "2023-03-31",
+     "eps": 60.46
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 2.53
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 2.54
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 2.46
+    }
+   ],
+   "source": "postgres"
+  },
+  "KOTAKBANK": {
+   "cagr_3y_pct": -36.3,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": 22.5,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 20.2,
+   "eps_start": 3.71,
+   "eps_end": 19.4,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": false,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 3.71
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 4.29
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 5.1
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 6.22
+    },
+    {
+     "period": "2021-03-31",
+     "eps": 7.03
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 8.64
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 74.96
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 91.42
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 22.26
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 19.4
+    }
+   ],
+   "source": "postgres"
+  },
+  "LT": {
+   "cagr_3y_pct": 16.2,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": 7.2,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 11.7,
+   "eps_start": 43.17,
+   "eps_end": 116.92,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": false,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 43.17
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 52.59
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 63.49
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 68.02
+    },
+    {
+     "period": "2021-03-31",
+     "eps": 82.46
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 61.7
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 74.51
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 95.0
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 109.36
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 116.92
+    }
+   ],
+   "source": "postgres"
+  },
+  "M&M": {
+   "cagr_3y_pct": 18.5,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": 56.7,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 18.5,
+   "eps_start": 29.77,
+   "eps_end": 137.51,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": false,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 29.77
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 60.41
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 42.76
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 1.02
+    },
+    {
+     "period": "2021-03-31",
+     "eps": 14.58
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 52.91
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 82.68
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 90.62
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 115.91
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 137.51
+    }
+   ],
+   "source": "postgres"
+  },
+  "MARUTI": {
+   "cagr_3y_pct": 19.8,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": 26.3,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 7.3,
+   "eps_start": 248.59,
+   "eps_end": 466.91,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": false,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 248.59
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 260.84
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 253.2
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 187.88
+    },
+    {
+     "period": "2021-03-31",
+     "eps": 145.29
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 128.42
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 271.8
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 429.01
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 461.2
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 466.91
+    }
+   ],
+   "source": "postgres"
+  },
+  "MAXHEALTH": {
+   "cagr_3y_pct": 9.3,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": null,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 54.6,
+   "eps_start": 0.29,
+   "eps_end": 14.83,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": true,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 0.29
+    },
+    {
+     "period": "2018-03-31",
+     "eps": -0.47
+    },
+    {
+     "period": "2019-03-31",
+     "eps": -0.06
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 1.1
+    },
+    {
+     "period": "2021-03-31",
+     "eps": -1.42
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 6.24
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 11.37
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 10.88
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 11.07
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 14.83
+    }
+   ],
+   "source": "postgres"
+  },
+  "NTPC": {
+   "cagr_3y_pct": 16.9,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": 13.1,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 11.1,
+   "eps_start": 10.83,
+   "eps_end": 27.9,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": false,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 10.83
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 10.66
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 13.88
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 11.72
+    },
+    {
+     "period": "2021-03-31",
+     "eps": 15.09
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 17.2
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 17.44
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 21.46
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 24.16
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 27.9
+    }
+   ],
+   "source": "postgres"
+  },
+  "NESTLEIND": {
+   "cagr_3y_pct": null,
+   "cagr_3y_years": null,
+   "cagr_5y_pct": null,
+   "cagr_5y_years": null,
+   "cagr_full_pct": 7.1,
+   "eps_start": 15.55,
+   "eps_end": 18.15,
+   "years": 2.2,
+   "n_years": 4,
+   "first": "2023-12-31",
+   "last": "2026-03-31",
+   "sign_change": false,
+   "series": [
+    {
+     "period": "2023-12-31",
+     "eps": 15.55
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 40.79
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 33.27
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 18.15
+    }
+   ],
+   "source": "postgres"
+  },
+  "ONGC": {
+   "cagr_3y_pct": 5.3,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": 20.5,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 6.3,
+   "eps_start": 19.03,
+   "eps_end": 32.93,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": false,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 19.03
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 17.23
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 24.28
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 8.59
+    },
+    {
+     "period": "2021-03-31",
+     "eps": 12.96
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 36.19
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 28.17
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 39.06
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 28.8
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 32.93
+    }
+   ],
+   "source": "postgres"
+  },
+  "POWERGRID": {
+   "cagr_3y_pct": 1.1,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": 5.8,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 8.8,
+   "eps_start": 8.01,
+   "eps_end": 17.13,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": false,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 8.01
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 8.82
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 10.79
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 11.89
+    },
+    {
+     "period": "2021-03-31",
+     "eps": 12.94
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 18.09
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 16.58
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 16.74
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 16.69
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 17.13
+    }
+   ],
+   "source": "postgres"
+  },
+  "RELIANCE": {
+   "cagr_3y_pct": 6.6,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": 9.0,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 12.0,
+   "eps_start": 21.55,
+   "eps_end": 59.69,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": false,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 21.55
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 26.69
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 29.28
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 29.1
+    },
+    {
+     "period": "2021-03-31",
+     "eps": 38.75
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 44.87
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 49.29
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 51.45
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 51.47
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 59.69
+    }
+   ],
+   "source": "postgres"
+  },
+  "SBILIFE": {
+   "cagr_3y_pct": 12.7,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": 11.1,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 11.1,
+   "eps_start": 9.55,
+   "eps_end": 24.63,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": false,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 9.55
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 11.5
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 13.27
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 14.22
+    },
+    {
+     "period": "2021-03-31",
+     "eps": 14.56
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 15.05
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 17.19
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 18.91
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 24.08
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 24.63
+    }
+   ],
+   "source": "postgres"
+  },
+  "SHRIRAMFIN": {
+   "cagr_3y_pct": 18.4,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": 24.7,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 20.4,
+   "eps_start": 10.0,
+   "eps_end": 53.29,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": false,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 10.0
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 20.14
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 20.36
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 19.86
+    },
+    {
+     "period": "2021-03-31",
+     "eps": 17.71
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 20.12
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 32.11
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 39.2
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 50.81
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 53.29
+    }
+   ],
+   "source": "postgres"
+  },
+  "SBIN": {
+   "cagr_3y_pct": 13.5,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": 31.9,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 24.0,
+   "eps_start": 13.15,
+   "eps_end": 91.16,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": true,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 13.15
+    },
+    {
+     "period": "2018-03-31",
+     "eps": -7.34
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 0.97
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 16.23
+    },
+    {
+     "period": "2021-03-31",
+     "eps": 22.87
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 35.49
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 62.35
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 75.17
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 86.91
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 91.16
+    }
+   ],
+   "source": "postgres"
+  },
+  "SUNPHARMA": {
+   "cagr_3y_pct": 10.6,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": 31.6,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 5.7,
+   "eps_start": 29.03,
+   "eps_end": 47.8,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": false,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 29.03
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 8.73
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 11.11
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 15.69
+    },
+    {
+     "period": "2021-03-31",
+     "eps": 12.1
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 13.64
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 35.32
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 39.91
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 45.55
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 47.8
+    }
+   ],
+   "source": "postgres"
+  },
+  "TCS": {
+   "cagr_3y_pct": 5.7,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": 9.2,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 8.2,
+   "eps_start": 66.71,
+   "eps_end": 136.01,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": false,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 66.71
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 67.46
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 83.87
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 86.18
+    },
+    {
+     "period": "2021-03-31",
+     "eps": 87.67
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 104.74
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 115.18
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 126.88
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 134.19
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 136.01
+    }
+   ],
+   "source": "postgres"
+  },
+  "TATACONSUM": {
+   "cagr_3y_pct": 7.7,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": 11.7,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 11.3,
+   "eps_start": 5.94,
+   "eps_end": 15.59,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": false,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 5.94
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 7.56
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 6.23
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 4.8
+    },
+    {
+     "period": "2021-03-31",
+     "eps": 8.95
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 9.78
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 12.48
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 11.63
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 12.92
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 15.59
+    }
+   ],
+   "source": "postgres"
+  },
+  "TATAMOTORS": {
+   "cagr_3y_pct": 9.4,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": null,
+   "cagr_5y_years": null,
+   "cagr_full_pct": 9.4,
+   "eps_start": 6.29,
+   "eps_end": 8.23,
+   "years": 3.0,
+   "n_years": 4,
+   "first": "2023-03-31",
+   "last": "2026-03-31",
+   "sign_change": false,
+   "series": [
+    {
+     "period": "2023-03-31",
+     "eps": 6.29
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 81.88
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 78.8
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 8.23
+    }
+   ],
+   "source": "postgres"
+  },
+  "TATASTEEL": {
+   "cagr_3y_pct": 6.5,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": 6.7,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": null,
+   "eps_start": -3.76,
+   "eps_end": 8.65,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": true,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": -3.76
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 11.93
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 9.07
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 1.38
+    },
+    {
+     "period": "2021-03-31",
+     "eps": 6.26
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 32.88
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 7.17
+    },
+    {
+     "period": "2024-03-31",
+     "eps": -3.55
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 2.74
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 8.65
+    }
+   ],
+   "source": "postgres"
+  },
+  "TECHM": {
+   "cagr_3y_pct": 3.1,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": 3.5,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 7.3,
+   "eps_start": 28.88,
+   "eps_end": 54.28,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": false,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 28.88
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 38.79
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 43.7
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 41.75
+    },
+    {
+     "period": "2021-03-31",
+     "eps": 45.73
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 57.28
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 49.6
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 24.14
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 43.43
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 54.28
+    }
+   ],
+   "source": "postgres"
+  },
+  "TITAN": {
+   "cagr_3y_pct": 16.0,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": 39.1,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 24.4,
+   "eps_start": 8.01,
+   "eps_end": 57.14,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": false,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 8.01
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 12.73
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 15.82
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 16.91
+    },
+    {
+     "period": "2021-03-31",
+     "eps": 10.96
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 24.48
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 36.61
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 39.38
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 37.62
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 57.14
+    }
+   ],
+   "source": "postgres"
+  },
+  "TRENT": {
+   "cagr_3y_pct": 79.7,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": null,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 45.0,
+   "eps_start": 1.7,
+   "eps_end": 48.37,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": true,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 1.7
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 1.74
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 1.95
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 2.3
+    },
+    {
+     "period": "2021-03-31",
+     "eps": -2.74
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 1.98
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 8.34
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 27.88
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 29.01
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 48.37
+    }
+   ],
+   "source": "postgres"
+  },
+  "ULTRACEMCO": {
+   "cagr_3y_pct": 16.5,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": 8.0,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 12.2,
+   "eps_start": 98.9,
+   "eps_end": 277.62,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": false,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 98.9
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 80.92
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 87.53
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 199.42
+    },
+    {
+     "period": "2021-03-31",
+     "eps": 189.23
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 254.39
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 175.41
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 242.64
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 204.92
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 277.62
+    }
+   ],
+   "source": "postgres"
+  },
+  "WIPRO": {
+   "cagr_3y_pct": -15.3,
+   "cagr_3y_years": 3.0,
+   "cagr_5y_pct": 5.0,
+   "cagr_5y_years": 5.0,
+   "cagr_full_pct": 7.5,
+   "eps_start": 6.55,
+   "eps_end": 12.58,
+   "years": 9.0,
+   "n_years": 10,
+   "first": "2017-03-31",
+   "last": "2026-03-31",
+   "sign_change": false,
+   "series": [
+    {
+     "period": "2017-03-31",
+     "eps": 6.55
+    },
+    {
+     "period": "2018-03-31",
+     "eps": 6.63
+    },
+    {
+     "period": "2019-03-31",
+     "eps": 7.46
+    },
+    {
+     "period": "2020-03-31",
+     "eps": 8.51
+    },
+    {
+     "period": "2021-03-31",
+     "eps": 9.85
+    },
+    {
+     "period": "2022-03-31",
+     "eps": 11.15
+    },
+    {
+     "period": "2023-03-31",
+     "eps": 20.73
+    },
+    {
+     "period": "2024-03-31",
+     "eps": 10.57
+    },
+    {
+     "period": "2025-03-31",
+     "eps": 12.56
+    },
+    {
+     "period": "2026-03-31",
+     "eps": 12.58
+    }
+   ],
+   "source": "postgres"
+  }
+ }
+}

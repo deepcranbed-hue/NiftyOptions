@@ -8,6 +8,11 @@ Since US markets close overnight, this signal is lagged by 1 session to provide
 a tradeable trigger for the next morning's India open.
 """
 from __future__ import annotations
+# --- single source for DB connections (D-SC-06, CLAUDE.md) ---
+import os as _os, sys as _sys
+_RT = _os.path.abspath(_os.path.join(_os.path.dirname(__file__), "../.."))
+_RT in _sys.path or _sys.path.insert(0, _RT)
+from db_config import resolve_db_path
 
 import argparse
 import json
@@ -23,7 +28,7 @@ except ImportError:
 
 SQLITE_DB = os.getenv(
     "OPTION_CHAINS_DB",
-    "/Users/deepak/Library/CloudStorage/GoogleDrive-deepcranbed@gmail.com/My Drive/option_chains.db",
+    resolve_db_path(),
 )
 
 GLOBAL_SERVICES = ["ACN", "CTSH", "EPAM", "WIT_ADR", "INFY_ADR"]

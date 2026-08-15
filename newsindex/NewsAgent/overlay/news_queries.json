@@ -1,0 +1,34 @@
+{
+  "_comment": "Editable topic-search queries for news_fetch.py. Each string is a Google News RSS search — the engine actively pulls matching articles (bodies included) so the classifiers get the evidence they need, not just whatever the fixed market feeds carry. Add/remove freely; no code change needed. Set NEWSAGENT_SEARCH=0 to disable search entirely.",
+
+  "_comment_oil_geo": "OIL & MIDDLE-EAST block: the NewsAgent report should carry the STORY, not just the Brent price — ceasefire status, Hormuz traffic, Red Sea shipping, OPEC. Split by driver so reason_discovery gets specific evidence. (The 5-min impact banner also covers these via rss_news.py TOPIC_FEEDS; this set is for the fuller report.)",
+
+  "queries": [
+    "IBM OR Accenture AI software budget shift",
+    "hyperscaler AI capex guidance Microsoft Amazon Google Meta",
+    "cloud spending growth AI infrastructure",
+    "AI deflation Indian IT services TCS Infosys",
+    "SOX semiconductor Nvidia demand",
+    "US CPI PPI inflation Fed rate decision",
+    "US jobs report nonfarm payrolls unemployment Fed",
+    "ECB European Central Bank rate decision Lagarde guidance",
+    "India CPI WPI RBI monetary policy",
+    "Union Cabinet PLI scheme India manufacturing",
+    "USFDA India pharma warning letter approval",
+    "FII DII flows India equities",
+
+    "Brent crude oil price OPEC forecast",
+    "Iran US ceasefire negotiations Middle East",
+    "Strait of Hormuz shipping traffic blockade tanker",
+    "Red Sea Houthi tanker attack shipping",
+    "Israel Iran strike escalation retaliation",
+    "OPEC+ production output supply Gulf",
+    "India crude oil imports refiners ONGC BPCL",
+
+    "China stimulus property manufacturing PMI",
+    "MCX base metals copper aluminium zinc price India",
+    "LME copper aluminium steel demand China",
+    "India steel prices Tata Steel JSW Hindalco Vedanta",
+    "iron ore coking coal steel margins India"
+  ]
+}

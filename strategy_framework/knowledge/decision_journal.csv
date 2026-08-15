@@ -1,0 +1,4 @@
+date,regime,gates,familiarity_pct,chosen,chosen_pnl,best_structure,best_pnl,regret
+2026-07-23,compression,none,46.0,straddle,14688.0,straddle,14688.0,0.0
+2026-07-29,compressed-gamma,L1 FATAL: coverage 0.01 < 0.05 → NO TRADE (nothing overrides),37.0,STAND_ASIDE,0,fly,-13303.0,0.0
+2026-08-03,compression,none,39.0,STAND_ASIDE,0,straddle,599.0,599.0

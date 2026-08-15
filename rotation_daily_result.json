@@ -1,0 +1,95 @@
+{
+ "n_days": 35,
+ "noise_band": 0.331,
+ "corr": {
+  "NIFTYIT": {
+   "fii_net": -0.029,
+   "dii_net": -0.174,
+   "CRUDEOIL_MCX": -0.055,
+   "USDINR": -0.184,
+   "GOLD": -0.142,
+   "INDIAVIX": -0.012
+  },
+  "NIFTYAUTO": {
+   "fii_net": -0.116,
+   "dii_net": -0.132,
+   "CRUDEOIL_MCX": 0.028,
+   "USDINR": -0.021,
+   "GOLD": 0.269,
+   "INDIAVIX": -0.008
+  },
+  "NIFTYFMCG": {
+   "fii_net": -0.234,
+   "dii_net": -0.009,
+   "CRUDEOIL_MCX": 0.039,
+   "USDINR": 0.336,
+   "GOLD": 0.402,
+   "INDIAVIX": 0.036
+  },
+  "NIFTYMETAL": {
+   "fii_net": 0.243,
+   "dii_net": -0.179,
+   "CRUDEOIL_MCX": -0.072,
+   "USDINR": 0.04,
+   "GOLD": 0.361,
+   "INDIAVIX": 0.116
+  },
+  "NIFTYPHARMA": {
+   "fii_net": -0.111,
+   "dii_net": 0.03,
+   "CRUDEOIL_MCX": -0.067,
+   "USDINR": 0.101,
+   "GOLD": 0.018,
+   "INDIAVIX": 0.206
+  },
+  "NIFTYFIN": {
+   "fii_net": 0.073,
+   "dii_net": -0.064,
+   "CRUDEOIL_MCX": 0.009,
+   "USDINR": -0.033,
+   "GOLD": 0.16,
+   "INDIAVIX": -0.061
+  },
+  "NIFTYPSU": {
+   "fii_net": -0.037,
+   "dii_net": 0.046,
+   "CRUDEOIL_MCX": -0.151,
+   "USDINR": -0.079,
+   "GOLD": 0.115,
+   "INDIAVIX": -0.16
+  },
+  "NIFTYREALTY": {
+   "fii_net": -0.006,
+   "dii_net": 0.267,
+   "CRUDEOIL_MCX": -0.314,
+   "USDINR": -0.033,
+   "GOLD": -0.04,
+   "INDIAVIX": -0.343
+  },
+  "NIFTYENERGY": {
+   "fii_net": -0.075,
+   "dii_net": -0.011,
+   "CRUDEOIL_MCX": 0.119,
+   "USDINR": 0.268,
+   "GOLD": 0.134,
+   "INDIAVIX": 0.34
+  },
+  "NIFTYCONSUM": {
+   "fii_net": -0.116,
+   "dii_net": -0.127,
+   "CRUDEOIL_MCX": -0.192,
+   "USDINR": 0.298,
+   "GOLD": 0.374,
+   "INDIAVIX": -0.04
+  },
+  "NIFTYINFRA": {
+   "fii_net": -0.078,
+   "dii_net": 0.048,
+   "CRUDEOIL_MCX": -0.072,
+   "USDINR": 0.099,
+   "GOLD": 0.424,
+   "INDIAVIX": -0.02
+  }
+ },
+ "note": "n=35: a null here means 'cannot see', not 'nothing there'."
+}

@@ -51,6 +51,7 @@ _NAME_OVERRIDES = {
     "TCS": "TCS", "HCLTech": "HCLTECH", "ONGC": "ONGC", "Power Grid": "POWERGRID",
     "Sun Pharma": "SUNPHARMA", "Adani Ports": "ADANIPORTS",
     "HDFC Life Insurance": "HDFCLIFE", "Max Healthcare": "MAXHEALTH",
+    "Eternal": "ZOMATO",
 }
 
 

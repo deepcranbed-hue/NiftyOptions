@@ -1,0 +1,74 @@
+{
+ "n_days": 247,
+ "noise_band": 0.125,
+ "corr": {
+  "NIFTYIT": {
+   "d_idx_net": -0.007,
+   "d_stk_net": 0.132,
+   "idx_net": -0.091,
+   "d_idx_net_lag1": 0.015
+  },
+  "NIFTYAUTO": {
+   "d_idx_net": 0.132,
+   "d_stk_net": 0.026,
+   "idx_net": 0.244,
+   "d_idx_net_lag1": 0.098
+  },
+  "NIFTYFMCG": {
+   "d_idx_net": -0.151,
+   "d_stk_net": -0.019,
+   "idx_net": -0.18,
+   "d_idx_net_lag1": -0.072
+  },
+  "NIFTYMETAL": {
+   "d_idx_net": -0.071,
+   "d_stk_net": -0.022,
+   "idx_net": -0.071,
+   "d_idx_net_lag1": 0.004
+  },
+  "NIFTYPHARMA": {
+   "d_idx_net": -0.335,
+   "d_stk_net": -0.063,
+   "idx_net": -0.33,
+   "d_idx_net_lag1": -0.084
+  },
+  "NIFTYFIN": {
+   "d_idx_net": 0.095,
+   "d_stk_net": -0.049,
+   "idx_net": 0.192,
+   "d_idx_net_lag1": 0.081
+  },
+  "NIFTYPSU": {
+   "d_idx_net": 0.039,
+   "d_stk_net": 0.088,
+   "idx_net": 0.126,
+   "d_idx_net_lag1": 0.069
+  },
+  "NIFTYREALTY": {
+   "d_idx_net": 0.177,
+   "d_stk_net": 0.053,
+   "idx_net": 0.257,
+   "d_idx_net_lag1": 0.004
+  },
+  "NIFTYENERGY": {
+   "d_idx_net": -0.251,
+   "d_stk_net": -0.185,
+   "idx_net": -0.189,
+   "d_idx_net_lag1": 0.002
+  },
+  "NIFTYCONSUM": {
+   "d_idx_net": -0.075,
+   "d_stk_net": -0.067,
+   "idx_net": 0.001,
+   "d_idx_net_lag1": 0.013
+  },
+  "NIFTYINFRA": {
+   "d_idx_net": -0.145,
+   "d_stk_net": -0.07,
+   "idx_net": -0.002,
+   "d_idx_net_lag1": 0.025
+  }
+ },
+ "stars_observed": 15,
+ "stars_expected": 2.2
+}

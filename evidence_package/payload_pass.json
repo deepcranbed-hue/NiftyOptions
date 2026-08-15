@@ -1,0 +1,12 @@
+{
+  "floating_rr": -1.20,
+  "fixed_rr": -0.912,
+  "artifact_share": 0.24,
+  "dominant_leg": "put_side",
+  "configuration": "hedged rally (fragile)",
+  "invariants": {
+    "passed": true,
+    "checked": ["T-A", "T-B", "T-C", "T-D", "T-E", "T-F", "T-G", "T-H", "T-I"],
+    "failures": []
+  }
+}

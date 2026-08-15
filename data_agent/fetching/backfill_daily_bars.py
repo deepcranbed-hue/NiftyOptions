@@ -50,6 +50,11 @@ USAGE  (must run where Yahoo is reachable — i.e. your machine)
         --symbols TATAMOTORS,ZOMATO --replace --dry-run
 """
 from __future__ import annotations
+# --- single source for DB connections (D-SC-06, CLAUDE.md) ---
+import os as _os, sys as _sys
+_RT = _os.path.abspath(_os.path.join(_os.path.dirname(__file__), "../.."))
+_RT in _sys.path or _sys.path.insert(0, _RT)
+from db_config import resolve_writable_db_path
 
 import argparse
 import csv
@@ -76,8 +81,7 @@ _CSV = os.path.join(_ROOT, "nifty-50-stock-list.csv")
 
 
 
-CANONICAL_DB = os.getenv("OPTION_CHAINS_DB",
-    "/Users/deepak/Library/CloudStorage/GoogleDrive-deepcranbed@gmail.com/My Drive/option_chains.db")
+CANONICAL_DB = resolve_writable_db_path()
 MIRROR_DB = os.path.join(_ROOT, "option_chains.db")
 
 _DB = None

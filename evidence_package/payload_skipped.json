@@ -1,0 +1,18 @@
+{
+  "floating_rr": null,
+  "fixed_rr": -0.912,
+  "artifact_share": null,
+  "dominant_leg": "put_side",
+  "configuration": "unclassified — mixed tape",
+  "invariants": {
+    "passed": false,
+    "checked": ["T-A", "T-B", "T-C", "T-D", "T-E", "T-F", "T-G", "T-H", "T-I"],
+    "failures": [
+      {
+        "id": "T-A",
+        "status": "skipped",
+        "reason": "Missing required field: floating_rr"
+      }
+    ]
+  }
+}

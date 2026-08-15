@@ -8,3 +8,40 @@ coverage/
 !.env.example
 global_cues_cache.json
 sector_news_cache.json
+
+# Python caches
+__pycache__/
+*.pyc
+
+# Databases & archives
+*.db
+*.db-journal
+*.zip
+
+# Environments
+*_env/
+*_env_3.10/
+newsindex/*_env/
+newsindex/*_env_3.10/
+
+# Sessions & states
+breezesession/
+zerodhasession/
+.state/
+.agents/
+
+# Generated reports
+newsindex/reports/
+
+# never version these
+# NOTE: git only honours '#' at the START of a line — inline comments become part
+# of the pattern and silently match nothing. Keep every comment on its own line.
+
+# abandoned PG datadir; the live cluster is /opt/homebrew/var/postgresql@18
+pg_data/
+# vendored MIT reference checkout (HKUDS Vibe-Trading), not our code
+Vibe-Trading-main/
+# working backups taken before edits
+scratch/
+# retired files awaiting deletion
+_to_delete/

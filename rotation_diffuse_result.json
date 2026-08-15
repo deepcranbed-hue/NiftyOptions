@@ -1,0 +1,23 @@
+{
+ "observed": {
+  "mean_persistence_r": -0.0356,
+  "frac_cells_negative": 0.655,
+  "breaches": 72
+ },
+ "null_median": {
+  "mean_persistence_r": 0.0004,
+  "frac_cells_negative": 0.511,
+  "breaches": 28.0
+ },
+ "p_values": {
+  "mean_persistence": 0.0,
+  "frac_negative": 0.0,
+  "breach_count": 0.0
+ },
+ "n_permutations": 300,
+ "survives": [
+  "mean persistence",
+  "share negative",
+  "breach count"
+ ]
+}

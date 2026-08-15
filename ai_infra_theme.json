@@ -1,0 +1,3171 @@
+{
+ "theme": "AI Infrastructure — India-listed beneficiaries",
+ "as_of": "2026-08-13",
+ "thesis": "India's AI/data-centre buildout creates a multi-year capex chain: land & shells -> power generation/transmission -> transformers/switchgear/gensets -> cooling -> cables/fibre/networking -> servers/GPU compute. As of August 2026 the demand side is no longer in doubt - Cummins reports data centres at 40% of powergen revenue, Blue Star booked Rs1,500 cr of DC MEP orders in one quarter, Hitachi Energy named 560 MVA + 800 MVA of DC transformer orders, and L&T won a Rs10,000-15,000 cr NVIDIA B300 AI Factory contract. Two things have changed the shape of the thesis. First, POWER is the binding constraint, not land: the government's own AI data-centre load estimate DOUBLED to 26.3 GW by FY32 (from 13.56 GW in March 2026), while facilities build in 12-18 months against 3-5 years for grid. Second, the August 2026 share-price move was triggered by a US trade action - a DRAFT FCC ban on Chinese optical transceivers - not by India demand, which means much of this basket is now levered to US policy follow-through it does not control.",
+ "method_note": "Per SECTOR_INTELLIGENCE_FRAMEWORK.md: evidence is temporal and decays. Every evidence item is dated; order-win items have a half-life of roughly 1-3 weeks (interpretation) to quarters (earnings/guidance), while structural items (capacity plans, policy) last years. Exposure ratings are categorical states, not scores. Nothing here is a fair-value model - it is the L1 evidence layer for an AI-infra hypothesis set. The 12-month grade added on 2026-08-13 deliberately stores its THREE INPUTS separately (evidence quality, exposure purity, how much is priced in) rather than combining them into a number, because the framework's own rule is 'explicit categorical states + evidence, not invented scores'.",
+ "hypotheses": [
+  {
+   "id": "H1",
+   "text": "India AI-infra capex is a real, multi-year cycle (not a one-off)",
+   "supporting": [
+    "Cummins India Q1 FY27: data centres = 40% of powergen revenue, 23% of domestic powergen; NO customer has asked to postpone DC genset delivery - they are asking for earlier (2026-08)",
+    "Blue Star: ~Rs1,500 cr DC MEP order inflow in Q1 alone, ~Rs3,000 cr FY27 target, ~20% of revenue by FY29 (2026-08)",
+    "Hitachi Energy India: 560 MVA power + 800 MVA dry-type transformers explicitly for DC projects; customer mix shifted from 96% utilities to 38% (2026-08)",
+    "L&T won a Rs10,000-15,000 cr NVIDIA B300 AI Factory order from Together AI - 10,000 GPUs, 250 MW phase 1, gigawatt-scale site (2026-08)",
+    "Black Box order backlog +83% YoY to Rs8,986 cr including a first $131mn US Tier-1 hyperscaler DC win (2026-08)",
+    "Bank of Baroda tracker: Rs26.75 trn of investment announced Apr-Aug 2026, ITeS 56% of it, ~99% of that data centres and AI (2026-08)",
+    "Government doubled its own AI-DC load estimate to 26.3 GW by FY32, from 13.56 GW in March 2026 (2026-07)",
+    "ABB India: Electrification orders +77% YoY on data centres; management says DC demand may STRAIN SUPPLY in 2027-2028 (2026-07)"
+   ],
+   "contradicting": [
+    "Hyperscaler free cash flow is collapsing even as capex accelerates - Meta Q2 FCF Rs/$784mn, -91% YoY, capex consuming ~98% of operating cash flow (2026-07)",
+    "~$549bn gap between 2026 hyperscaler capex (~$760bn) and 2026 D&A (~$211bn) sits on balance sheets awaiting future expensing; Microsoft extended DC useful life from 15 to 25 years effective FY2027, which flatters reported earnings rather than cash (2026-07)",
+    "Bank for International Settlements warned Big Tech's spending risks becoming a prolonged investment bust on >$1trn deployed 2025-26 (2026-08)",
+    "Precedent for how fast this unwinds: on 8 June 2026 a single Broadcom guidance headline sent STLTECH and HFCL to 5% lower circuits, Netweb -8.3%, Black Box -6.2%, Anant Raj -5.7% - the India basket has very high beta to US AI sentiment with no domestic buffer",
+    "Less than 20% of announced Indian DC capacity is currently operational; timelines extend to 2028+"
+   ],
+   "status": "supported"
+  },
+  {
+   "id": "H2",
+   "text": "Picks-and-shovels (power gear, cooling, cables) capture the economics earlier and with less risk than DC operators",
+   "supporting": [
+    "Named DC revenue is being disclosed by suppliers (Cummins 40% of powergen, Blue Star Rs1,500 cr Q1 inflow, Hitachi Energy MVA figures) while operators still show small DC revenue against capex committed",
+    "Anant Raj FY27 adds only 35 MW of IT load against a 357 MW FY32 target; Techno Electric guided just Rs40-50 cr of FY27 DC revenue against ~Rs1,000 cr of capex (2026-08)",
+    "RailTel guides ~Rs300 cr FY27 DC revenue with the 10 MW Noida facility not commissioning until May 2027 (2026-07)"
+   ],
+   "contradicting": [
+    "Operator scarcity value: the Anant Raj demerger into a separately listed Ashok Cloud may re-rate the operator faster than suppliers",
+    "Not all 'picks and shovels' are exposed - Polycab, KEI, RR Kabel and Finolex have all declined to quantify any data-centre revenue, and sector work implies wires and cables capture only a low-single-digit share of DC capex"
+   ],
+   "status": "supported"
+  },
+  {
+   "id": "H3",
+   "text": "The August 2026 India AI-infra rally was triggered by a US TRADE action, not by India demand or policy",
+   "supporting": [
+    "On 4 August 2026 Reuters reported the FCC is preparing an import ban on Chinese optical transceiver modules for US data centres; US optical names ripped (AAOI +20%, Coherent +18%, Lumentum +14%)",
+    "On 5 August STLTECH and HFCL each hit 5% upper circuits, explicitly attributed to those proposed curbs",
+    "No India policy event in the window is large enough to explain a sector-wide 10-33% move; the CBDT tax-relief FAQ (5 Aug) is real but technical and conditional on Parliament passing the bill",
+    "The Nifty went nowhere over the same period (24,570 on 7 Aug to 24,436 on 12 Aug) - this was a stock-specific move, not an index re-rating"
+   ],
+   "contradicting": [
+    "Q1 FY27 results were genuinely strong across the basket and several prints (Black Box, TD Power, Hitachi Energy, Finolex) landed inside the window with real order-book evidence",
+    "Smallcaps outperformed broadly (+2.7% in the 3-7 Aug week), so some of the move is a size effect rather than a theme effect"
+   ],
+   "status": "supported",
+   "note": "THE MEASURE IS STILL A DRAFT. No final FCC order, implementation schedule or product definition has been published; target implementation is before end-2026. If it is dropped, the August catalyst disappears."
+  },
+  {
+   "id": "H4",
+   "text": "EMS and electronics-assembly names are on the WRONG side of the AI capex cycle - AI demand bids away the memory and wafer capacity they buy",
+   "supporting": [
+    "Kaynes' own Q1 FY27 deck states that AI and data-centre demand crowds out memory and wafer capacity, with component inflation of 30-35% and PCB prices up ~3x; revenue grew 40.5% while PAT FELL 24.4% (2026-08)",
+    "Dixon Q1 FY27: cost of materials rose to 94.2% of revenue from 92.5% on higher memory chip prices; revenue +21% but adjusted PAT -3%, and margin recovery guided only from FY28 (2026-07)",
+    "Amazon attributed part of its 2026 capex increase to higher memory costs (2026-07)"
+   ],
+   "contradicting": [
+    "Kaynes' OSAT and PCB businesses are a genuine long-term semiconductor play; they simply generate no commercial revenue until Q3 FY27",
+    "Netweb, which assembles AI systems, shows the opposite pattern - AI systems revenue +484% YoY - so 'electronics assembly' is not one category"
+   ],
+   "status": "supported",
+   "note": "This inverts the naive framing that classifies Kaynes and Dixon as AI beneficiaries. Both are held rather than sold only because their de-ratings (-50% and -23% from 52-week highs) have already priced much of it."
+  },
+  {
+   "id": "H5",
+   "text": "Power - not land, capital or demand - is the binding constraint on India's DC buildout, and it is worsening",
+   "supporting": [
+    "MoS Power told Parliament that AI data centres will add 26.3 GW by FY2031-32, DOUBLE the 13.56 GW the same ministry estimated in March 2026 (2026-07)",
+    "Mint: securing reliable power has become harder than acquiring land; DCs build in 12-18 months while power infrastructure takes 3-5 years (2026-08)",
+    "Power Grid FY27 capex guidance Rs37,000 cr with Q1 capitalisation more than 3x YoY, works-in-hand Rs1.75 lakh cr and a bidding pipeline over Rs1.19 lakh cr (2026-08)",
+    "Adani Green Q1 EBITDA was cut 5-7% by grid curtailment - the constraint already showing in reported numbers (2026-07)"
+   ],
+   "contradicting": [
+    "Power Grid's own Q1 PAT fell 0.9% on tariff-order timing, so the capex cycle is not yet reaching its earnings",
+    "Transmission-order timing slippage was flagged by Hitachi Energy for H1 FY27"
+   ],
+   "status": "supported",
+   "note": "This is the single most actionable change since the 2026-07-31 version: it argues for the transmission and power-equipment layer over DC operators, and it is why POWERGRID carries the highest-conviction buy in this file despite being the cheapest name in it."
+  }
+ ],
+ "segments": [
+  {
+   "id": "dc",
+   "label": "Data centres & colocation"
+  },
+  {
+   "id": "compute",
+   "label": "AI compute, servers & semis"
+  },
+  {
+   "id": "connectivity",
+   "label": "Telecom & connectivity"
+  },
+  {
+   "id": "fibre",
+   "label": "Optical fibre & cables"
+  },
+  {
+   "id": "wires",
+   "label": "Power & data cables"
+  },
+  {
+   "id": "power_eq",
+   "label": "Power equipment & electrification"
+  },
+  {
+   "id": "power_gen",
+   "label": "Generation & transmission"
+  },
+  {
+   "id": "cooling",
+   "label": "Cooling & HVAC"
+  },
+  {
+   "id": "backup",
+   "label": "Gensets, UPS & batteries"
+  },
+  {
+   "id": "networking",
+   "label": "Networking & integration"
+  },
+  {
+   "id": "epc",
+   "label": "EPC & construction"
+  }
+ ],
+ "companies": [
+  {
+   "symbol": "ANANTRAJ",
+   "name": "Anant Raj",
+   "segment": "dc",
+   "mcap_bucket": "mid",
+   "exposure": "significant",
+   "fno": false,
+   "thesis": "NCR realty developer converting its land bank into the 'Ashok Cloud' DC + cloud platform (target ~307-310 MW IT load by FY32); board-approved demerger into a separately listed DC pure-play adds direct optionality.",
+   "evidence": [
+    {
+     "date": "2025-07",
+     "note": "Second Panchkula DC launched; portfolio building toward 310 MW target",
+     "source": "indianinfrastructure.com"
+    },
+    {
+     "date": "2025-11",
+     "note": "H1 FY26 DC revenue ₹58 cr — small but scaling; ₹4,500 cr Andhra DC project announced",
+     "source": "scanx.trade"
+    },
+    {
+     "date": "2026-07",
+     "note": "Demerger of DC & cloud business into Ashok Cloud approved for separate listing",
+     "source": "business-standard.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "Q1 FY27: revenue Rs631 cr (+6.6% YoY), PAT Rs149 cr (+18.5%); described as net-debt-free",
+     "source": "whalesbook.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "Demerger detail: post-split ARL keeps 51% of Ashok Cloud, shareholders get 49% direct. IT-load roadmap +35 MW FY27, 117 MW FY28, 357 MW FY32. Still needs creditor/exchange/NCLT approval",
+     "source": "scanx.trade"
+    }
+   ],
+   "risk": "DC still a tiny slice of a realty P&L; multi-year MW ramp needs heavy capex, tenants and power tie-ups.",
+   "outlook_3m": {
+    "stance": "sideways",
+    "confidence": "medium",
+    "rationale": "Fell ~30% from its 2026 peak and is rebuilding; the July demerger approval is a positive but value unlock is slow (NCLT) and DC revenue is still tiny vs the ₹1,200 cr FY27 ambition, capping near-term re-rating.",
+    "catalysts": [
+     {
+      "when": "2026-08",
+      "note": "Demerger scheme filing / NCLT process updates"
+     },
+     {
+      "when": "2026-10",
+      "note": "Q2 FY27 — first clean read on DC revenue ramp vs FY27 target"
+     }
+    ],
+    "watch": "Large hyperscaler tenancy contract or faster demerger timeline flips this to up.",
+    "as_of": "2026-08-02",
+    "valid_till": "2026-11-02",
+    "reviewed_at": "2026-08-13"
+   },
+   "grade_12m": {
+    "grade": "hold",
+    "conviction": "medium",
+    "evidence_strength": "announced-only",
+    "exposure": "significant",
+    "priced_in": "partly",
+    "valuation": {
+     "pe_ttm": 38.2,
+     "pe_note": "TTM, consolidated",
+     "last": 627.05,
+     "from_52w_hi_pct": -14.6,
+     "y1_pct": 17.23,
+     "m3_pct": 31.88,
+     "source": "screener.in unless stated; prices from yfinance",
+     "as_of": "2026-08-13"
+    },
+    "rationale": "Demerger is progressing and the MW roadmap is now explicit, but FY27 adds only 35 MW and DC revenue stays small against a realty P&L. At 38x with the value-unlock gated on NCLT timing, the re-rating needs a tenant contract, not a scheme filing.",
+    "changes_if": "A named hyperscaler tenancy at Manesar or Andhra, or NCLT approval landing inside FY27.",
+    "as_of": "2026-08-13",
+    "valid_till": "2027-08-13"
+   }
+  },
+  {
+   "symbol": "TECHNOE",
+   "name": "Techno Electric & Engineering",
+   "segment": "dc",
+   "mcap_bucket": "small",
+   "exposure": "significant",
+   "fno": false,
+   "thesis": "Power T&D EPC firm turned DC owner-operator: Techno Digital's $1bn / ~250 MW platform (Chennai live, Kolkata, edge DCs) earns both as developer and as electrical EPC for the AI power buildout.",
+   "evidence": [
+    {
+     "date": "2024-05",
+     "note": "Unveiled $1bn / 250 MW Techno Digital data-centre plan",
+     "source": "datacenterdynamics.com"
+    },
+    {
+     "date": "2025-08",
+     "note": "Commissioned 36 MW AI-ready hyperscale DC in Chennai (Siruseri)",
+     "source": "datacenterdynamics.com"
+    },
+    {
+     "date": "2026-05",
+     "note": "Record order book with DC + T&D momentum flagged on FY26 call",
+     "source": "investing.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "Q1 FY27: revenue Rs630 cr (+20% YoY), PAT Rs93 cr. YTD order inflow Rs2,200 cr plus Rs2,100 cr L1 = Rs4,300 cr, ahead of the Rs4,000 cr annual target",
+     "source": "investing.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "DC guidance disappointed: ~Rs1,000 cr capex planned but only Rs40-50 cr of DC revenue in FY27. Chennai IT load being stretched 24 MW -> 35-40 MW organically. Stock fell ~7% on the call",
+     "source": "investing.com"
+    }
+   ],
+   "risk": "Capital-hungry DC pivot for a mid-cap; sub-scale vs AdaniConneX/Nxtra/CtrlS; lease-up risk on new capacity.",
+   "outlook_3m": {
+    "stance": "sideways",
+    "confidence": "medium",
+    "rationale": "The 12 Aug call reset the DC timeline: Rs1,000 cr of capex against Rs40-50 cr of FY27 DC revenue, and the market marked it down 7%. Core EPC and smart metering are delivering and order inflow beat the annual target, so the floor is solid, but the DC re-rating is a FY29 story on these numbers.",
+    "catalysts": [
+     {
+      "when": "2026-10",
+      "note": "Q2 FY27 - whether Chennai expansion converts to contracted load"
+     },
+     {
+      "when": "2026-11",
+      "note": "Smart-meter annuity ramp as MP completes"
+     }
+    ],
+    "watch": "A signed colocation contract at Chennai, or DC revenue guidance moving up from Rs40-50 cr.",
+    "as_of": "2026-08-13",
+    "valid_till": "2026-11-13",
+    "reviewed_at": "2026-08-13"
+   },
+   "grade_12m": {
+    "grade": "hold",
+    "conviction": "medium",
+    "evidence_strength": "announced-only",
+    "exposure": "significant",
+    "priced_in": "little",
+    "valuation": {
+     "pe_ttm": 26.5,
+     "pe_note": "TTM, consolidated; screener mcap Rs11,427 cr reconciles with reported EPS, tickertape's Rs12,305 cr does not",
+     "last": 983.6,
+     "from_52w_hi_pct": -36.5,
+     "y1_pct": -33.75,
+     "m3_pct": -17.07,
+     "source": "screener.in unless stated; prices from yfinance",
+     "as_of": "2026-08-13"
+    },
+    "rationale": "Cheapest of the DC names at 26x and 36% below its 52-week high, with an order book beating target and near-zero debt. But management has just told you the DC monetisation is years out, and working capital at 430 days is the real constraint. Cheap for a reason that is now disclosed rather than hidden.",
+    "changes_if": "DC revenue guidance for FY28 above Rs300 cr, or working-capital days below 350.",
+    "as_of": "2026-08-13",
+    "valid_till": "2027-08-13"
+   }
+  },
+  {
+   "symbol": "RAILTEL",
+   "name": "RailTel Corporation",
+   "segment": "dc",
+   "mcap_bucket": "small",
+   "exposure": "partial",
+   "fno": false,
+   "thesis": "PSU with 62,000+ km rail-side fibre backbone, Tier-III DCs and an edge-DC rollout; govt AI/cloud digitisation orders (AI surveillance, cloud, DC builds) feed a record order book.",
+   "evidence": [
+    {
+     "date": "2025-11",
+     "note": "Won first international DC build (Addis Ababa, Ethiopia)",
+     "source": "scanx.trade"
+    },
+    {
+     "date": "2026-04",
+     "note": "FY26 revenue ~₹4,277 cr (+23%); record order book ~₹11,466 cr with DC/cloud push",
+     "source": "scanx.trade"
+    },
+    {
+     "date": "2026-05",
+     "note": "AI video-surveillance order (New Delhi station) + ₹25 cr AI/ML fraud-detection order",
+     "source": "scanx.trade"
+    },
+    {
+     "date": "2026-07",
+     "note": "Q1 FY27: operating revenue Rs893 cr (+20% YoY) but PAT flat at Rs66 cr on expected-credit-loss provisions against debtor ageing. Order book Rs11,747 cr; Q1 intake Rs1,688 cr vs Rs721 cr YoY",
+     "source": "sarkaritel.com"
+    },
+    {
+     "date": "2026-07",
+     "note": "DC guidance: ~Rs300 cr FY27 scaling to ~Rs500 cr FY28; 10 MW Noida facility to commission by May 2027; managed-services model rather than pure colocation",
+     "source": "investing.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "Two fresh orders: Rs119 cr from Department of Posts for PLI cloud services, Rs63 cr from Deendayal Port Authority",
+     "source": "business-standard.com"
+    }
+   ],
+   "risk": "Low-margin PSU project mix; AI/DC is a minority of the order book; government execution timelines slip.",
+   "outlook_3m": {
+    "stance": "sideways",
+    "confidence": "medium",
+    "rationale": "Q1 FY27 grew ~20% but profit slipped on a low-margin project mix and the stock fell on results; steady small orders support the floor but are too small to re-rate a cooled PSU-telecom trade.",
+    "catalysts": [
+     {
+      "when": "Aug-Oct 2026",
+      "note": "Kavach / BharatNet tender awards"
+     },
+     {
+      "when": "2026-10",
+      "note": "Q2 FY27 — margin trajectory after the Q1 slip"
+     }
+    ],
+    "watch": "A ₹500 cr+ Kavach/DC order or clear margin recovery turns it up; another margin miss turns it down.",
+    "as_of": "2026-08-02",
+    "valid_till": "2026-11-02",
+    "reviewed_at": "2026-08-13"
+   },
+   "grade_12m": {
+    "grade": "hold",
+    "conviction": "medium",
+    "evidence_strength": "disclosed-orders",
+    "exposure": "partial",
+    "priced_in": "partly",
+    "valuation": {
+     "pe_ttm": 25.7,
+     "pe_note": "TTM; sources split 24.8 (screener) to 26.6 (tickertape) on standalone vs consolidated basis",
+     "last": 285.2,
+     "from_52w_hi_pct": -28.1,
+     "y1_pct": -16.94,
+     "m3_pct": -9.98,
+     "source": "screener.in unless stated; prices from yfinance",
+     "as_of": "2026-08-13"
+    },
+    "rationale": "Order book and intake are genuinely strong and the DC number is disclosed rather than aspirational, but PAT went nowhere because receivables are deteriorating - debtors at 175 days with ECL provisions now hitting the P&L. A PSU collecting slowly from government customers is a working-capital story before it is an AI story.",
+    "changes_if": "Debtor days falling below 140, or the Noida 10 MW commissioning pulling forward.",
+    "as_of": "2026-08-13",
+    "valid_till": "2027-08-13"
+   }
+  },
+  {
+   "symbol": "BBOX",
+   "name": "Black Box (Essar)",
+   "segment": "networking",
+   "mcap_bucket": "small",
+   "exposure": "significant",
+   "fno": false,
+   "thesis": "Global digital-infrastructure integrator (structured cabling, networking, DC commissioning) with hyperscaler clients — AI DC construction in the US flows directly into its bookings.",
+   "evidence": [
+    {
+     "date": "2026-01",
+     "note": "Q3 FY26 growth driven by data-centre and networking demand from AI buildout",
+     "source": "essar.com"
+    },
+    {
+     "date": "2026-05",
+     "note": "FY26 order bookings crossed $1bn, DC vertical the key driver",
+     "source": "essar.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "Q1 FY27 record: revenue Rs1,719 cr (+24% YoY), EBITDA Rs160 cr (+38%), PAT Rs56 cr (+18%). Order backlog Rs8,986 cr (~$949mn), +83% YoY against a historical $450-500mn range",
+     "source": "marketscreener.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "US$131mn (Rs1,240 cr) contract from a NEW US Tier-1 hyperscaler for a major US data-centre project - first breakthrough with that customer. Stock +8%",
+     "source": "businesstoday.in"
+    },
+    {
+     "date": "2026-08",
+     "note": "FY27 guidance: order bookings $1.3-1.5bn (+32-45%), year-end backlog $1.3-1.4bn (+65-75% YoY)",
+     "source": "marketscreener.com"
+    }
+   ],
+   "risk": "Thin single-digit margins; heavy US/hyperscaler concentration — a hyperscaler construction pause hits bookings fast.",
+   "outlook_3m": {
+    "stance": "up",
+    "confidence": "medium",
+    "rationale": "The 12-13 Aug print is the strongest evidence in the whole theme: backlog +83% to an all-time high, a first-time Tier-1 hyperscaler win at $131mn, and explicit FY27 booking guidance. Execution is the only question left, not demand.",
+    "catalysts": [
+     {
+      "when": "2026-11",
+      "note": "Q2 FY27 - whether the backlog converts at the guided margin"
+     },
+     {
+      "when": "2026-10",
+      "note": "Follow-on orders from the new hyperscaler customer"
+     }
+    ],
+    "watch": "A US hyperscaler capex pause would hit this harder than any India-facing name.",
+    "as_of": "2026-08-13",
+    "valid_till": "2026-11-13",
+    "reviewed_at": "2026-08-13"
+   },
+   "grade_12m": {
+    "grade": "buy",
+    "conviction": "medium",
+    "evidence_strength": "disclosed-orders",
+    "exposure": "significant",
+    "priced_in": "partly",
+    "valuation": {
+     "pe_ttm": 51.8,
+     "pe_note": "TTM, consolidated; valueresearch shows 65.8 and EV/EBITDA 24.4 on a different earnings base",
+     "last": 832.5,
+     "from_52w_hi_pct": -22.8,
+     "y1_pct": 77.16,
+     "m3_pct": -10.98,
+     "source": "screener.in unless stated; prices from yfinance",
+     "as_of": "2026-08-13"
+    },
+    "rationale": "Backlog nearly doubled and the company now has a named Tier-1 hyperscaler relationship it did not have a quarter ago. At 52x that is not cheap, but the multiple is against a backlog with 65-75% visible growth guided, and the stock sits 23% below its 52-week high. The risk is concentration: this is a levered bet on US data-centre construction with no India buffer.",
+    "changes_if": "US hyperscaler capex guidance turning down, or backlog conversion slipping two consecutive quarters.",
+    "as_of": "2026-08-13",
+    "valid_till": "2027-08-13"
+   }
+  },
+  {
+   "symbol": "NETWEB",
+   "name": "Netweb Technologies",
+   "segment": "compute",
+   "mcap_bucket": "mid",
+   "exposure": "pure-play",
+   "fno": false,
+   "thesis": "India's leading homegrown AI/HPC server OEM (Tyrone; NVIDIA partner) — domestic AI compute capex converts almost one-for-one into its order book; FY26 AI-systems revenue grew ~460%.",
+   "evidence": [
+    {
+     "date": "2025-09",
+     "note": "₹1,734 cr order for NVIDIA Blackwell-based AI servers",
+     "source": "business-standard.com"
+    },
+    {
+     "date": "2026-04",
+     "note": "FY26 revenue ~₹2,184 cr (+~90% YoY), AI systems segment +459%",
+     "source": "univest.in"
+    },
+    {
+     "date": "2026-07",
+     "note": "Q1 FY27 revenue +172% YoY, PAT +180% (₹85 cr)",
+     "source": "upstox.com"
+    },
+    {
+     "date": "2026-07",
+     "note": "Q1 FY27: revenue Rs820 cr (+172% YoY), PAT Rs85 cr, EBITDA margin 14.7%. AI Systems Rs511 cr = 62% of revenue, +484% YoY. Order book Rs2,507 cr, L1 Rs848 cr, pipeline Rs10,410 cr with ~60% expected to convert in 18-24 months",
+     "source": "investing.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "No company-specific news since 31 July; stock at its 52-week high",
+     "source": "research check 2026-08-13"
+    }
+   ],
+   "risk": "Lumpy tender-driven orders; NVIDIA GPU allocation dependence; very rich post-rally valuation.",
+   "outlook_3m": {
+    "stance": "up",
+    "confidence": "medium",
+    "rationale": "Blowout Q1 FY27 (PAT +180%, order book ₹2,507 cr) with broker buys, while the stock has already corrected ~20% from its June high — froth partly worked off with fundamentals accelerating. Risk: ~66x forward P/E and working capital.",
+    "catalysts": [
+     {
+      "when": "Aug-Oct 2026",
+      "note": "New AI/HPC orders and GPU-system deliveries converting the order book"
+     },
+     {
+      "when": "2026-10",
+      "note": "Q2 FY27 — sustaining triple-digit growth, working-capital normalization"
+     }
+    ],
+    "watch": "GPU supply constraints or an order-book stall invalidates the case at 66x forward.",
+    "as_of": "2026-08-02",
+    "valid_till": "2026-11-02",
+    "reviewed_at": "2026-08-13"
+   },
+   "grade_12m": {
+    "grade": "hold",
+    "conviction": "medium",
+    "evidence_strength": "disclosed-revenue",
+    "exposure": "pure-play",
+    "priced_in": "fully",
+    "valuation": {
+     "pe_ttm": 113.0,
+     "pe_note": "TTM, consolidated per screener; tickertape's 134 has not rolled in Q1 FY27",
+     "last": 5181.0,
+     "from_52w_hi_pct": 0.0,
+     "y1_pct": 144.26,
+     "m3_pct": 36.21,
+     "source": "screener.in unless stated; prices from yfinance",
+     "as_of": "2026-08-13"
+    },
+    "rationale": "The cleanest listed AI-compute pure-play in India and the delivery is real - AI systems are 62% of revenue, up nearly 5x. But at 113x and 41x book, sitting at its 52-week high after +144% in a year, the price already assumes the pipeline converts. Nothing new since 29 July to extend the story.",
+    "changes_if": "Pipeline conversion running below the guided 60%, or a large IndiaAI order landing.",
+    "as_of": "2026-08-13",
+    "valid_till": "2027-08-13"
+   }
+  },
+  {
+   "symbol": "E2E",
+   "name": "E2E Networks",
+   "segment": "compute",
+   "mcap_bucket": "small",
+   "exposure": "pure-play",
+   "fno": false,
+   "thesis": "Listed Indian GPU-cloud pure-play (H100/H200/B200 clusters, TIR platform), L&T-backed — a direct proxy for sovereign/IndiaAI GPU demand and enterprise AI training/inference.",
+   "evidence": [
+    {
+     "date": "2024-11",
+     "note": "L&T acquired ~21% for ~₹1,400 cr; partners on IndiaAI Mission bids",
+     "source": "business-standard.com"
+    },
+    {
+     "date": "2025-09",
+     "note": "₹177 cr MeitY order for GPUs/AI compute under IndiaAI Mission",
+     "source": "business-standard.com"
+    },
+    {
+     "date": "2025-12",
+     "note": "1,024-GPU NVIDIA B200 cluster added at Chennai DC",
+     "source": "datacenterdynamics.com"
+    },
+    {
+     "date": "2026-07",
+     "note": "Q1 FY27: revenue Rs157 cr (+334% YoY), EBITDA margin 75.2%, PAT Rs44 cr. GPU fleet scaled to ~5,100 units, B200 cluster deployed",
+     "source": "businessupturn.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "Only post-31-July item is a senior VP appointment for capacity and infrastructure. No orders, capex figure or guidance update",
+     "source": "scanx.trade"
+    }
+   ],
+   "risk": "GPU capex depreciates fast across chip generations; hyperscaler/Yotta price competition can crush GPU-hour yields.",
+   "outlook_3m": {
+    "stance": "sideways",
+    "confidence": "low",
+    "rationale": "The business is inflecting hard - revenue up 334% at 75% EBITDA margin - but nothing has been added to the story since 22 July, and the shares are up 110% in three months and 208% in a year. The next three months are about whether Q2 confirms the run-rate, with no catalyst scheduled in between.",
+    "catalysts": [
+     {
+      "when": "2026-10",
+      "note": "Q2 FY27 - whether the GPU fleet monetises at the Q1 margin"
+     }
+    ],
+    "watch": "A disclosed capex plan or a large sovereign/enterprise GPU contract.",
+    "as_of": "2026-08-13",
+    "valid_till": "2026-11-13",
+    "reviewed_at": "2026-08-13"
+   },
+   "grade_12m": {
+    "grade": "sell",
+    "conviction": "medium",
+    "evidence_strength": "disclosed-revenue",
+    "exposure": "pure-play",
+    "priced_in": "beyond-delivery",
+    "valuation": {
+     "pe_ttm": 413.0,
+     "pe_note": "TTM ~412-416 (screener/groww); tickertape shows negative on an FY26 loss basis. Built on a ~Rs31 cr TTM profit base - not a stable multiple",
+     "last": 635.0,
+     "from_52w_hi_pct": 0.0,
+     "y1_pct": 207.71,
+     "m3_pct": 109.96,
+     "source": "screener.in unless stated; prices from yfinance",
+     "as_of": "2026-08-13"
+    },
+    "rationale": "This is a valuation call, not a business call. Revenue growth is genuine and the margin is extraordinary, but trailing ROCE is still negative, the TTM profit base is about Rs31 cr, and the shares are up 208% in a year. At 400x-plus any multiple is arithmetic noise; you are underwriting FY29 with no disclosed capex plan to check it against.",
+    "changes_if": "A disclosed multi-year capex and contracted-revenue plan that makes the forward multiple computable.",
+    "as_of": "2026-08-13",
+    "valid_till": "2027-08-13"
+   }
+  },
+  {
+   "symbol": "KAYNES",
+   "name": "Kaynes Technology",
+   "segment": "compute",
+   "mcap_bucket": "mid",
+   "exposure": "significant",
+   "fno": true,
+   "thesis": "High-mix EMS player that became one of India's first OSAT (chip packaging/test) operators — ₹3,300 cr Sanand plant in production since Mar-2026 puts it inside the AI-era semiconductor supply chain.",
+   "evidence": [
+    {
+     "date": "2026-03",
+     "note": "PM inaugurated Kaynes Semicon's ₹3,300 cr Sanand OSAT; production started",
+     "source": "newsonair.gov.in"
+    },
+    {
+     "date": "2026-06",
+     "note": "Chip supply-chain JV expansion plans under India Semiconductor Mission 2.0",
+     "source": "sahi.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "Q1 FY27: revenue Rs946 cr (+40.5% YoY) but PAT Rs56 cr, DOWN 24.4%; EBITDA margin 15.6% vs 16.8%. Order book Rs8,904 cr (+20.3%)",
+     "source": "cofacto.ai"
+    },
+    {
+     "date": "2026-08",
+     "note": "AI demand is a COST headwind here: the company's own deck states AI and data-centre demand crowds out memory and wafer capacity, with component inflation of 30-35% and PCB prices up ~3x",
+     "source": "investing.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "OSAT and PCB will not generate commercial revenue until Q3 FY27; FY27 capex Rs850 cr",
+     "source": "investing.com"
+    }
+   ],
+   "risk": "OSAT ramp is capital-hungry with unproven yields/customers; steep multiples price flawless execution.",
+   "outlook_3m": {
+    "stance": "sideways",
+    "confidence": "medium",
+    "rationale": "Q1 inverted the thesis: revenue grew 40% but profit fell 24%, because AI data-centre demand is bidding away the memory and wafer capacity Kaynes buys. The stock has already de-rated 50% from its high, so the damage is done, but OSAT revenue is deferred to Q3 FY27 and there is no margin catalyst before then.",
+    "catalysts": [
+     {
+      "when": "2026-11",
+      "note": "Q3 FY27 - first commercial OSAT and PCB revenue"
+     },
+     {
+      "when": "2026-10",
+      "note": "Q2 FY27 - whether component inflation has peaked"
+     }
+    ],
+    "watch": "Component costs normalising, or ISM 2.0 JV applications being accepted.",
+    "as_of": "2026-08-13",
+    "valid_till": "2026-11-13",
+    "reviewed_at": "2026-08-13"
+   },
+   "grade_12m": {
+    "grade": "hold",
+    "conviction": "medium",
+    "evidence_strength": "none",
+    "exposure": "significant",
+    "priced_in": "partly",
+    "valuation": {
+     "pe_ttm": 72.6,
+     "pe_note": "TTM, consolidated; tickertape shows 68.7 on a different basis",
+     "last": 3760.5,
+     "from_52w_hi_pct": -50.5,
+     "y1_pct": -38.52,
+     "m3_pct": 20.6,
+     "source": "screener.in unless stated; prices from yfinance",
+     "as_of": "2026-08-13"
+    },
+    "rationale": "Classified in this theme as an AI beneficiary, but its own Q1 deck says the opposite - AI demand is raising its input costs. At 73x with profit falling and the OSAT payoff deferred to Q3 FY27, the multiple is paying for a semiconductor story that has not started. The 50% de-rating already reflects most of this, which is why it is not a sell.",
+    "changes_if": "OSAT revenue landing on time in Q3 FY27 with margins holding above 15%.",
+    "as_of": "2026-08-13",
+    "valid_till": "2027-08-13"
+   }
+  },
+  {
+   "symbol": "DIXON",
+   "name": "Dixon Technologies",
+   "segment": "compute",
+   "mcap_bucket": "large",
+   "exposure": "partial",
+   "fno": true,
+   "thesis": "Largest Indian EMS extending into IT hardware: Chennai JV with a Taiwanese ODM to localize servers/notebooks under PLI 2.0, explicitly targeting AI/cloud infrastructure demand.",
+   "evidence": [
+    {
+     "date": "2026-06",
+     "note": "Server/IT-hardware partnership with major Taiwanese ODM for Chennai facility (HP, ASUS first)",
+     "source": "whalesbook.com"
+    },
+    {
+     "date": "2026-07",
+     "note": "Q1 FY27 revenue +50% YoY to ₹16,076 cr",
+     "source": "investywise.com"
+    },
+    {
+     "date": "2026-07",
+     "note": "Q1 FY27: revenue Rs15,548 cr (+21% YoY) but adjusted PAT Rs218 cr, -3% YoY; EBITDA margin ~3.0%, down ~80bps. Headline PAT of Rs663 cr is inflated by Rs528 cr of other income vs Rs2 cr a year earlier",
+     "source": "investing.com"
+    },
+    {
+     "date": "2026-07",
+     "note": "Margin driver is higher memory chip prices - the same AI-capex squeeze hitting Kaynes - plus expiry of Mobile PLI 1.0. Margin recovery guided only from FY28",
+     "source": "investing.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "Motilal Oswal stays positive, two-year-forward target Rs16,100, cuts FY27 estimates 4%",
+     "source": "whalesbook.com"
+    }
+   ],
+   "risk": "Servers are a low-single-digit % of revenue at thin ODM margins; core mobile assembly faces PLI expiry.",
+   "outlook_3m": {
+    "stance": "sideways",
+    "confidence": "medium",
+    "rationale": "Same inversion as Kaynes: AI demand raises memory prices, which is a cost line for Dixon, not a revenue line. Q1 revenue grew 21% while adjusted profit fell 3%, and management has pushed margin recovery out to FY28. No data-centre order flow at all.",
+    "catalysts": [
+     {
+      "when": "2026-10",
+      "note": "Q2 FY27 - smartphone volumes against the 9.0-9.2mn guide"
+     },
+     {
+      "when": "2026-11",
+      "note": "Mobile PLI 2.0 and Vivo JV progress"
+     }
+    ],
+    "watch": "Memory prices easing, or a genuine data-centre hardware line being disclosed.",
+    "as_of": "2026-08-02",
+    "valid_till": "2026-11-02",
+    "reviewed_at": "2026-08-13"
+   },
+   "grade_12m": {
+    "grade": "hold",
+    "conviction": "low",
+    "evidence_strength": "none",
+    "exposure": "partial",
+    "priced_in": "partly",
+    "valuation": {
+     "pe_ttm": 45.8,
+     "pe_note": "TTM consolidated per screener; tickertape shows 59.6. The gap is likely the Rs528 cr one-off other income - do not rely on either without checking the base",
+     "last": 14035.0,
+     "from_52w_hi_pct": -23.4,
+     "y1_pct": -13.28,
+     "m3_pct": 30.19,
+     "source": "screener.in unless stated; prices from yfinance",
+     "as_of": "2026-08-13"
+    },
+    "rationale": "Belongs in this theme only as a partial-exposure name and Q1 argues it belongs on the wrong side of it. A 3% EBITDA margin business at 46x, with the headline profit flattered by a one-off and management deferring recovery to FY28, is not where the AI capex cycle pays you.",
+    "changes_if": "A disclosed data-centre or server-assembly revenue line, or EBITDA margin back above 3.5%.",
+    "as_of": "2026-08-13",
+    "valid_till": "2027-08-13"
+   }
+  },
+  {
+   "symbol": "TATACOMM",
+   "name": "Tata Communications",
+   "segment": "connectivity",
+   "mcap_bucket": "mid",
+   "exposure": "partial",
+   "fno": true,
+   "thesis": "Global enterprise network (~30% of world internet routes) layering an AI stack on top: Vayu cloud fabric + NVIDIA GPU-as-a-Service — monetises AI east-west traffic and sovereign-cloud demand.",
+   "evidence": [
+    {
+     "date": "2024-10",
+     "note": "NVIDIA partnership: Hopper GPUs by end-2024, Blackwell expansion 2025 for AI cloud in India",
+     "source": "businesstoday.in"
+    },
+    {
+     "date": "2025-06",
+     "note": "Commercial GPUaaS (H100-class) and AI cloud live on Vayu fabric",
+     "source": "tatacommunications.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "No company-specific news since 31 July. Q1 FY27 (22 July, pre-window) showed net profit down 43.9% YoY on an exceptional loss",
+     "source": "research check 2026-08-13"
+    }
+   ],
+   "risk": "AI cloud is a small slice of a connectivity-dominated ₹23,000 cr revenue base; GPUaaS returns unproven vs hyperscaler pricing.",
+   "outlook_3m": {
+    "stance": "sideways",
+    "confidence": "medium",
+    "rationale": "Q1 FY27 missed estimates even with digital growing ~17%; brokerages kept Buys only with trimmed targets — the AI/data-platform re-rating needs digital-margin proof. Range-bound until Q2 shows inflection.",
+    "catalysts": [
+     {
+      "when": "Aug-Oct 2026",
+      "note": "AI-cloud / Vayu platform customer wins"
+     },
+     {
+      "when": "2026-10",
+      "note": "Q2 FY27 — digital portfolio margin trajectory"
+     }
+    ],
+    "watch": "Digital EBITDA margin turning up, or a large sovereign-AI contract, moves this to up.",
+    "as_of": "2026-08-02",
+    "valid_till": "2026-11-02",
+    "reviewed_at": "2026-08-13"
+   },
+   "grade_12m": {
+    "grade": "sell",
+    "conviction": "low",
+    "evidence_strength": "none",
+    "exposure": "partial",
+    "priced_in": "fully",
+    "valuation": {
+     "pe_ttm": 47.5,
+     "pe_note": "TTM, consolidated; screener also flags Rs18,056 cr of contingent liabilities",
+     "last": 1758.2,
+     "from_52w_hi_pct": -14.7,
+     "y1_pct": 4.68,
+     "m3_pct": 6.34,
+     "source": "screener.in unless stated; prices from yfinance",
+     "as_of": "2026-08-13"
+    },
+    "rationale": "Sold ~74% of its data-centre business to STT GDC and retains 26% - this is a connectivity play, not a DC landlord, and the theme label overstates it. Profit fell 44% last quarter, the multiple is 48x, and nothing has been added since. The Rs8,400 cr DC-interconnect opportunity management cites is a target, not revenue.",
+    "changes_if": "DC-interconnect revenue being disclosed as a separate line, or the contingent-liability overhang resolving.",
+    "as_of": "2026-08-13",
+    "valid_till": "2027-08-13"
+   }
+  },
+  {
+   "symbol": "BHARTIARTL",
+   "name": "Bharti Airtel (Nxtra)",
+   "segment": "connectivity",
+   "mcap_bucket": "large",
+   "exposure": "partial",
+   "fno": true,
+   "thesis": "Nxtra is one of India's largest DC platforms, now explicitly AI-geared: $1bn PE raise and ~1 GW capacity target make Airtel the low-risk large-cap proxy for Indian AI DC + connectivity demand.",
+   "evidence": [
+    {
+     "date": "2026-03",
+     "note": "Raised $1bn for Nxtra from Carlyle/Alpha Wave for AI-ready DC expansion",
+     "source": "cnbc.com"
+    },
+    {
+     "date": "2026-03",
+     "note": "Plan to scale Nxtra ~4-5x to ~1 GW",
+     "source": "thetechcapital.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "Q1 FY27: revenue Rs58,539 cr (+18.4% YoY), consolidated EBITDA margin 57.4%, net profit Rs8,167 cr (+37.3%). Net debt down 35% to Rs81,852 cr; net debt/EBITDA 1.17x vs 1.70x",
+     "source": "business-standard.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "Nxtra target formalised: scale from ~120-130 MW to 1 GW, aiming at ~25% of the Indian DC market, Mumbai as primary hub",
+     "source": "whalesbook.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "Nxtra to acquire up to 85% in Rochak Systems and Rovision Tech Hub - pre-revenue land-development vehicles for DC sites",
+     "source": "outlookbusiness.com"
+    }
+   ],
+   "risk": "Nxtra is single-digit % of EBITDA — the stock trades on telecom ARPU/capex, not the AI story.",
+   "outlook_3m": {
+    "stance": "up",
+    "confidence": "medium",
+    "rationale": "Steady ARPU-led compounding; Q1 FY27 (Aug 4) expected to show continued ARPU/5G momentum, and the market is positioning for the next tariff hike in H2 2026. Near highs but valuation is earnings-supported, not narrative.",
+    "catalysts": [
+     {
+      "when": "2026-08",
+      "note": "Q1 FY27 results Aug 4 — ARPU, 5G monetization"
+     },
+     {
+      "when": "Aug-Oct 2026",
+      "note": "Expected industry tariff hike; Nxtra capacity expansion updates"
+     }
+    ],
+    "watch": "Tariff-hike delay past 2026 or a soft ARPU print shifts it to sideways.",
+    "as_of": "2026-08-02",
+    "valid_till": "2026-11-02",
+    "reviewed_at": "2026-08-13"
+   },
+   "grade_12m": {
+    "grade": "buy",
+    "conviction": "low",
+    "evidence_strength": "disclosed-orders",
+    "exposure": "partial",
+    "priced_in": "partly",
+    "valuation": {
+     "pe_ttm": 38.8,
+     "pe_note": "TTM, consolidated. Screener's Jun-2026 PAT of Rs10,012 cr includes minority interest; reported attributable PAT is Rs8,167 cr",
+     "last": 1939.1,
+     "from_52w_hi_pct": -9.2,
+     "y1_pct": 4.79,
+     "m3_pct": 1.31,
+     "source": "screener.in unless stated; prices from yfinance",
+     "as_of": "2026-08-13"
+    },
+    "rationale": "The Nxtra 1 GW ambition is funded, the land vehicles are being bought, and the core telecom business is deleveraging fast with ARPU still rising. Buy the compounding and treat the DC arm as free optionality - but be honest that at Rs12 lakh cr market cap the DC piece cannot move the P&L for years. This is not a clean expression of the AI-infra trade.",
+    "changes_if": "Nxtra being carved out or separately funded at a disclosed valuation.",
+    "as_of": "2026-08-13",
+    "valid_till": "2027-08-13"
+   }
+  },
+  {
+   "symbol": "STLTECH",
+   "name": "Sterlite Technologies",
+   "segment": "fibre",
+   "mcap_bucket": "mid",
+   "exposure": "pure-play",
+   "fno": false,
+   "thesis": "Largest Indian optical fibre/cable maker pivoted into AI-DC connectivity: DC & Cloud was 61%+ of revenue in Q1 FY27, anchored by a $1.11bn multi-year hyperscaler award and the Neuralis AI-DC portfolio.",
+   "evidence": [
+    {
+     "date": "2026-05",
+     "note": "$1.11bn (~₹10,000 cr) multi-year hyperscaler award for AI-DC optical connectivity (FY27-29)",
+     "source": "business-standard.com"
+    },
+    {
+     "date": "2026-07",
+     "note": "Q1 FY27: revenue ₹1,910 cr (+87%), order book ₹18,618 cr, DC & Cloud 61% of revenue",
+     "source": "investing.com"
+    },
+    {
+     "date": "2026-06",
+     "note": "₹1,500 cr capacity expansion committed on AI/DC fibre demand",
+     "source": "broadcastandcablesat.co.in"
+    },
+    {
+     "date": "2026-08",
+     "note": "Rs960 cr multi-year OFC supply order from a domestic telecom operator for FY28-FY29; stock hit upper circuit",
+     "source": "tipranks.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "~$210mn long-term international high-density OFC agreement, execution CY27-CY29",
+     "source": "business-standard.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "Rallied ~5% alongside HFCL on reports the US FCC is preparing an import ban on Chinese optical transceivers - a DRAFT measure, no final order published",
+     "source": "archyde.com"
+    }
+   ],
+   "risk": "Single-hyperscaler concentration on a levered balance sheet; stock up ~4x in 2026 — execution slippage punished hard.",
+   "outlook_3m": {
+    "stance": "sideways",
+    "confidence": "medium",
+    "rationale": "The August orders add ~Rs2,800 cr to an Rs18,618 cr book that was already disclosed in the 24 July results - real but incremental. The move since has been driven by a US trade action that is still only a draft FCC rule. With the stock at its 52-week high after +390% in a year, the next three months hinge on whether that rule is finalised, not on India demand.",
+    "catalysts": [
+     {
+      "when": "2026-10",
+      "note": "Q2 FY27 - whether the 23% EBITDA margin guide holds"
+     },
+     {
+      "when": "2026-12",
+      "note": "FCC final order on Chinese optical transceivers, targeted before end-2026"
+     }
+    ],
+    "watch": "The FCC proposal being finalised would extend this; being dropped would remove the August catalyst entirely.",
+    "as_of": "2026-08-13",
+    "valid_till": "2026-11-13",
+    "reviewed_at": "2026-08-13"
+   },
+   "grade_12m": {
+    "grade": "hold",
+    "conviction": "low",
+    "evidence_strength": "disclosed-orders",
+    "exposure": "pure-play",
+    "priced_in": "beyond-delivery",
+    "valuation": {
+     "pe_ttm": 142.0,
+     "pe_note": "TTM, consolidated; FY26 PAT was only Rs56 cr so the trailing multiple is against a very low base",
+     "last": 660.8,
+     "from_52w_hi_pct": 0.0,
+     "y1_pct": 390.24,
+     "m3_pct": 56.62,
+     "source": "screener.in unless stated; prices from yfinance",
+     "as_of": "2026-08-13"
+    },
+    "rationale": "This is a valuation hold, not a scepticism hold. The $1.11bn hyperscaler award and an Rs18,618 cr order book against Rs4,745 cr of FY26 revenue is a genuine inflection. But at 142x and 14x book, the price already discounts FY27-FY29 delivery, and on 8 June 2026 this stock hit a 5% lower circuit on a single Broadcom guidance headline. High beta to US AI sentiment with no domestic buffer.",
+    "changes_if": "Two quarters of delivery at the guided 23% margin would justify buying it; a US AI-capex scare would take it down 30% first.",
+    "as_of": "2026-08-13",
+    "valid_till": "2027-08-13"
+   }
+  },
+  {
+   "symbol": "HFCL",
+   "name": "HFCL",
+   "segment": "fibre",
+   "mcap_bucket": "mid",
+   "exposure": "significant",
+   "fno": true,
+   "thesis": "OFC + telecom gear maker winning repeated export orders for high-count DC-interconnect fibre; management frames AI-led DC construction as the key driver of its OFC capacity expansion.",
+   "evidence": [
+    {
+     "date": "2025-12",
+     "note": "~₹656 cr OFC export orders (US/overseas)",
+     "source": "business-standard.com"
+    },
+    {
+     "date": "2026-07",
+     "note": "₹496 cr export order for DC fibre connectivity + further ₹441 cr OFC export order; MD cites AI-DC boom",
+     "source": "businesstoday.in"
+    },
+    {
+     "date": "2026-08",
+     "note": "Export orders worth $54.81mn (~Rs523 cr) for OFC, execution by January 2027",
+     "source": "upstox.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "Board approved Rs400 cr capex to expand optical fibre and OFC manufacturing capacity",
+     "source": "business-standard.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "Rallied ~5% with STLTECH on the draft US FCC restriction on Chinese optical transceivers",
+     "source": "archyde.com"
+    }
+   ],
+   "risk": "Commoditised, cyclical fibre pricing; large low-margin BharatNet/EPC book; governance history adds volatility.",
+   "outlook_3m": {
+    "stance": "sideways",
+    "confidence": "medium",
+    "rationale": "Incremental news since 31 July is ~Rs523 cr of export orders against an Rs21,200 cr book, plus a capex approval and a US policy headline that is still speculative. Everything structural - the $1.10bn five-year contract and the Q1 swing to profit - was already in the price before August. Screener flags capacity constraints impacting order conversion, which is exactly what the Rs400 cr capex addresses but not before FY28.",
+    "catalysts": [
+     {
+      "when": "2026-10",
+      "note": "Q2 FY27 - order-book conversion rate"
+     },
+     {
+      "when": "2026-12",
+      "note": "FCC final order on Chinese optical transceivers"
+     }
+    ],
+    "watch": "Conversion improving would re-rate it; the March contract counterparty has still never been identified as a hyperscaler in any filing.",
+    "as_of": "2026-08-13",
+    "valid_till": "2026-11-13",
+    "reviewed_at": "2026-08-13"
+   },
+   "grade_12m": {
+    "grade": "hold",
+    "conviction": "low",
+    "evidence_strength": "disclosed-orders",
+    "exposure": "significant",
+    "priced_in": "fully",
+    "valuation": {
+     "pe_ttm": 59.2,
+     "pe_note": "CONFLICTED: screener 59.2 vs tickertape 105.2 on the same day. Likely consolidated vs standalone around the Q1 swing to profit - do not rely on either without checking the base",
+     "last": 227.36,
+     "from_52w_hi_pct": 0.0,
+     "y1_pct": 220.28,
+     "m3_pct": 62.76,
+     "source": "screener.in unless stated; prices from yfinance",
+     "as_of": "2026-08-13"
+    },
+    "rationale": "Order book is real and large, but conversion is the disclosed bottleneck and the Rs400 cr capex to fix it only lands in FY28. The stock is up 220% in a year at its 52-week high, and I could not resolve the P/E to better than a 59-105x range. The buyer of the $1.10bn contract has never been named as a hyperscaler in a filing - that characterisation comes from secondary sources only.",
+    "changes_if": "Identifying the March contract counterparty, or order conversion visibly accelerating.",
+    "as_of": "2026-08-13",
+    "valid_till": "2027-08-13"
+   }
+  },
+  {
+   "symbol": "VINDHYATEL",
+   "name": "Vindhya Telelinks",
+   "segment": "fibre",
+   "mcap_bucket": "small",
+   "exposure": "partial",
+   "fno": false,
+   "thesis": "MP Birla OFC/cable maker + telecom EPC, merging Birla Cable into itself for optical fibre scale just as BharatNet III and DC-interconnect fibre demand accelerate.",
+   "evidence": [
+    {
+     "date": "2025-11",
+     "note": "Board approved Birla Cable amalgamation (10:115 swap) to consolidate cable capacity",
+     "source": "scanx.trade"
+    },
+    {
+     "date": "2025-09",
+     "note": "OFC capacity expansion announced on surging fibre demand",
+     "source": "sundayguardianlive.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "Q1 FY27: cable division EBITDA Rs42.9 cr vs Rs15.9 cr YoY - a genuine step-up. But EPC revenue fell to Rs517 cr from Rs704 cr on slow government fund release, with receivables at Rs733 cr",
+     "source": "sahi.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "Rs475 cr order for smart LED street lighting in Andhra Pradesh; order backlog ~Rs4,850 cr excluding O&M",
+     "source": "multibagg.ai"
+    }
+   ],
+   "risk": "EPC-heavy working-capital business; DC exposure is indirect fibre demand, not contracted AI orders; merger/NCLT timeline.",
+   "outlook_3m": {
+    "stance": "sideways",
+    "confidence": "low",
+    "rationale": "Thinly covered holdco/cables-EPC proxy with no company-specific news flow and no identifiable Aug-Oct catalyst beyond BharatNet III EPC hopes; trades on holdco-discount math, not the AI narrative.",
+    "catalysts": [
+     {
+      "when": "Aug-Oct 2026",
+      "note": "BharatNet Phase 3 EPC awards to the Birla cables ecosystem"
+     },
+     {
+      "when": "2026-10",
+      "note": "Q2 FY27 results"
+     }
+    ],
+    "watch": "A sizeable BharatNet/utility EPC win or holdco-discount narrowing sparks a re-rate.",
+    "as_of": "2026-08-02",
+    "valid_till": "2026-11-02",
+    "reviewed_at": "2026-08-13"
+   },
+   "grade_12m": {
+    "grade": "hold",
+    "conviction": "low",
+    "evidence_strength": "none",
+    "exposure": "partial",
+    "priced_in": "little",
+    "valuation": {
+     "pe_ttm": 13.0,
+     "pe_note": "TTM, consolidated - but FY26 earnings include Rs257 cr of other income, so the operating business is materially dearer than 13x suggests. Debtor days 212",
+     "last": 2460.4,
+     "from_52w_hi_pct": -4.7,
+     "y1_pct": 67.65,
+     "m3_pct": 53.87,
+     "source": "screener.in unless stated; prices from yfinance",
+     "as_of": "2026-08-13"
+    },
+    "rationale": "Optically the cheapest name in the theme at 13x and below book, and the cable division genuinely doubled EBITDA. But the P/E is flattered by Rs257 cr of other income, EPC is shrinking on government payment delays, and receivables are Rs733 cr against a Rs3,056 cr market cap. No data-centre or hyperscaler order at all - the AI-infra link here is indirect.",
+    "changes_if": "EPC revenue recovering as government funds release, or receivables falling materially.",
+    "as_of": "2026-08-13",
+    "valid_till": "2027-08-13"
+   }
+  },
+  {
+   "symbol": "POLYCAB",
+   "name": "Polycab India",
+   "segment": "wires",
+   "mcap_bucket": "large",
+   "exposure": "partial",
+   "fno": true,
+   "thesis": "India's #1 cables & wires maker (~26% organized share) with a dedicated DC cabling portfolio; brokerages size India DC cable demand at ₹3,500-4,000 cr per GW built — Polycab is the largest beneficiary.",
+   "evidence": [
+    {
+     "date": "2025-12",
+     "note": "Motilal Oswal top pick on DC-led cables demand supercycle",
+     "source": "business-standard.com"
+    },
+    {
+     "date": "2026-07",
+     "note": "Q1 FY27 record revenue ₹8,210 cr (+39% YoY)",
+     "source": "investing.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "No company-specific news since 31 July. Named in sector commentary as positioned for AI data-centre, solar and grid demand, with no figures attached",
+     "source": "businesstoday.in"
+    }
+   ],
+   "risk": "DC still single-digit % of revenue; new entrants (Adani, UltraTech) could compress cable margins.",
+   "outlook_3m": {
+    "stance": "up",
+    "confidence": "low",
+    "rationale": "Strong Q1 FY27 (revenue +39%) with brokerages retaining Buys (targets ₹10,160-11,100), but the stock sold off on results after a 21% one-month run at 42x FY27E — fundamentals argue up, extended positioning argues consolidation first.",
+    "catalysts": [
+     {
+      "when": "2026-10",
+      "note": "Q2 FY27 — margin recovery after 70 bps Q1 contraction"
+     },
+     {
+      "when": "Aug-Oct 2026",
+      "note": "DC/power-capex institutional cable orders; copper price moves"
+     }
+    ],
+    "watch": "A copper spike or Q2 margin miss at 42x converts this to a valuation de-rate.",
+    "as_of": "2026-08-02",
+    "valid_till": "2026-11-02",
+    "reviewed_at": "2026-08-13"
+   },
+   "grade_12m": {
+    "grade": "hold",
+    "conviction": "low",
+    "evidence_strength": "none",
+    "exposure": "partial",
+    "priced_in": "fully",
+    "valuation": {
+     "pe_ttm": 49.0,
+     "pe_note": "TTM, consolidated",
+     "last": 9297.0,
+     "from_52w_hi_pct": -7.8,
+     "y1_pct": 34.02,
+     "m3_pct": 2.08,
+     "source": "screener.in unless stated; prices from yfinance",
+     "as_of": "2026-08-13"
+    },
+    "rationale": "Q1 was strong (revenue +39%, PAT +33%) but reported before this window and driven by housing and infra wiring, not data centres. Management has never quantified a DC revenue share. Sector work implies wires and cables capture only a low-single-digit share of DC capex spread across the whole industry, so at 49x you are paying a premium multiple for a thematic label the company has not claimed.",
+    "changes_if": "Management quantifying data-centre revenue as a disclosed segment.",
+    "as_of": "2026-08-13",
+    "valid_till": "2027-08-13"
+   }
+  },
+  {
+   "symbol": "KEI",
+   "name": "KEI Industries",
+   "segment": "wires",
+   "mcap_bucket": "mid",
+   "exposure": "partial",
+   "fno": true,
+   "thesis": "EHV/HT cable specialist with 5+ years of DC execution; management sizes India's DC cable opportunity at ₹25,000 cr by FY31 and targets an ₹2,500-3,000 cr share.",
+   "evidence": [
+    {
+     "date": "2026-02",
+     "note": "Chairman: DC cable TAM ₹25,000 cr by FY31 as India goes 1.5→8-10 GW; KEI targets 11-13% share",
+     "source": "tradebrains.in"
+    },
+    {
+     "date": "2025-12",
+     "note": "Motilal Oswal buy as core DC cable play alongside Polycab",
+     "source": "business-standard.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "No company-specific news since 31 July. Latest broker action is CLSA initiating at Hold on 28 July, before the window",
+     "source": "investing.com"
+    }
+   ],
+   "risk": "Valuation already prices the DC story; copper swings and EPC mix can dent margins.",
+   "outlook_3m": {
+    "stance": "up",
+    "confidence": "medium",
+    "rationale": "Surged into its Q1 FY27 results (board Aug 3) with management targeting 20% growth as Sanand capacity ramps into the power/DC capex surge — momentum, capacity and demand aligned near term.",
+    "catalysts": [
+     {
+      "when": "2026-08",
+      "note": "Q1 FY27 results Aug 3, call Aug 4 — 20% growth target, EHV book"
+     },
+     {
+      "when": "Aug-Oct 2026",
+      "note": "Sanand ramp; EHV/export order announcements"
+     }
+    ],
+    "watch": "A growth/margin miss vs the guided 20%, or a copper shock, stalls the run.",
+    "as_of": "2026-08-02",
+    "valid_till": "2026-11-02",
+    "reviewed_at": "2026-08-13"
+   },
+   "grade_12m": {
+    "grade": "hold",
+    "conviction": "low",
+    "evidence_strength": "announced-only",
+    "exposure": "partial",
+    "priced_in": "fully",
+    "valuation": {
+     "pe_ttm": 55.0,
+     "pe_note": "TTM, consolidated",
+     "last": 5789.0,
+     "from_52w_hi_pct": 0.0,
+     "y1_pct": 51.96,
+     "m3_pct": 13.78,
+     "source": "screener.in unless stated; prices from yfinance",
+     "as_of": "2026-08-13"
+    },
+    "rationale": "The most credible DC quantification in the cables group is still the chairman's February comment about capturing Rs2,500-3,000 cr of a ~Rs25,000 cr multi-year opportunity - an opportunity, not revenue. Q1 exports actually fell 7.3%. At 55x with a Hold initiation from CLSA and nothing new in six weeks, the AI premium is doing the work.",
+    "changes_if": "EHV or DC cable disclosed as a revenue segment with a growth rate attached.",
+    "as_of": "2026-08-13",
+    "valid_till": "2027-08-13"
+   }
+  },
+  {
+   "symbol": "RRKABEL",
+   "name": "RR Kabel",
+   "segment": "wires",
+   "mcap_bucket": "small",
+   "exposure": "partial",
+   "fno": false,
+   "thesis": "W&C maker targeting the DC buildout via Project RRise (₹1,200 cr capacity capex) across LT power and data-communication cables.",
+   "evidence": [
+    {
+     "date": "2025-11",
+     "note": "Record H1 FY26 (PAT +81%); DC cables flagged as key growth vector under Project RRise",
+     "source": "scanx.trade"
+    },
+    {
+     "date": "2026-07",
+     "note": "Q1 FY27 net profit +129% YoY",
+     "source": "scanx.trade"
+    },
+    {
+     "date": "2026-08",
+     "note": "No news found since 31 July; Q1 FY27 and the final dividend were both 27 July. Coverage limited - several sources blocked, so treat as none found rather than none exists",
+     "source": "research check 2026-08-13"
+    }
+   ],
+   "risk": "Predominantly retail/housing wires today — DC exposure aspirational vs Polycab/KEI institutional franchises.",
+   "outlook_3m": {
+    "stance": "sideways",
+    "confidence": "medium",
+    "rationale": "Spectacular Q1 FY27 (PAT +129%) but the stock is parabolic — +112% in three months to new highs, with analysts themselves flagging valuation; growth is real but fully priced for the next quarter. Risk/reward favors consolidation.",
+    "catalysts": [
+     {
+      "when": "Aug-Oct 2026",
+      "note": "W&C demand data; capacity expansion announcements"
+     },
+     {
+      "when": "2026-10",
+      "note": "Q2 FY27 — must sustain 50%+ growth to hold the multiple"
+     }
+    ],
+    "watch": "A shallow pullback holding support with Q2 growth intact turns it up; growth normalization triggers sharp mean-reversion.",
+    "as_of": "2026-08-02",
+    "valid_till": "2026-11-02",
+    "reviewed_at": "2026-08-13"
+   },
+   "grade_12m": {
+    "grade": "hold",
+    "conviction": "low",
+    "evidence_strength": "none",
+    "exposure": "partial",
+    "priced_in": "fully",
+    "valuation": {
+     "pe_ttm": 52.2,
+     "pe_note": "TTM; MarketsMojo showed EV/EBITDA 36.65x as of 27 July at a Rs2,522 price, so the current figure is higher",
+     "last": 2834.2,
+     "from_52w_hi_pct": 0.0,
+     "y1_pct": 135.15,
+     "m3_pct": 45.87,
+     "source": "screener.in unless stated; prices from yfinance",
+     "as_of": "2026-08-13"
+    },
+    "rationale": "Up 46% in three months and 135% in a year with no disclosed data-centre revenue, no order announcement and no news at all in six weeks. At 52x earnings and roughly 37x EV/EBITDA this is a housing and consumer-wiring business carrying an AI-infra multiple. Held rather than sold only because there is no company-specific negative to point at.",
+    "changes_if": "Any disclosed data-centre or EHV order, or the multiple compressing toward the sector.",
+    "as_of": "2026-08-13",
+    "valid_till": "2027-08-13"
+   }
+  },
+  {
+   "symbol": "FINCABLES",
+   "name": "Finolex Cables",
+   "segment": "wires",
+   "mcap_bucket": "small",
+   "exposure": "partial",
+   "fno": false,
+   "thesis": "Only large Indian cable maker with both electrical wires and in-house optical fibre/LAN cables — twin exposure to DC power distribution and DC/campus fibre, on a net-cash balance sheet.",
+   "evidence": [
+    {
+     "date": "2026-05",
+     "note": "Q4 FY26 profit up as communication-cable (OFC/LAN) volumes recover on fibre/DC demand",
+     "source": "multibagg.ai"
+    },
+    {
+     "date": "2026-08",
+     "note": "Q1 FY27: standalone revenue Rs2,013 cr (+44.3% YoY), PAT Rs221 cr (+59.4%), EBITDA +62%. Stock +15.7% to a 52-week high; Jefferies called it a strong beat",
+     "source": "business-standard.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "Growth attributed to agricultural, industrial and solar demand plus optic-fibre volumes and realisations - NO data-centre disclosure. Copper rods segment down 98% on an idle plant (LPG/PNG shortage)",
+     "source": "businesstoday.in"
+    },
+    {
+     "date": "2026-08",
+     "note": "Fibre draw expansion on schedule; full capacity of 4mn fibre-km expected on stream by Q3 FY27",
+     "source": "upstox.com"
+    }
+   ],
+   "risk": "Slow-growth execution culture and group litigation overhang; comms segment has lagged peers.",
+   "outlook_3m": {
+    "stance": "up",
+    "confidence": "low",
+    "rationale": "A 59% profit beat took it to a 52-week high and it is up 25% since the 2 August call. The fibre capacity coming on stream in Q3 FY27 is the near-term driver. But note what management actually credited: agriculture, industrial and solar - not data centres.",
+    "catalysts": [
+     {
+      "when": "2026-11",
+      "note": "Q3 FY27 - the 4mn fibre-km line commissioning"
+     },
+     {
+      "when": "2026-10",
+      "note": "Q2 FY27 - whether pricing actions hold against copper"
+     }
+    ],
+    "watch": "Copper rod plant restarting would add back a line that went to near-zero.",
+    "as_of": "2026-08-13",
+    "valid_till": "2026-11-13",
+    "reviewed_at": "2026-08-13"
+   },
+   "grade_12m": {
+    "grade": "hold",
+    "conviction": "low",
+    "evidence_strength": "none",
+    "exposure": "partial",
+    "priced_in": "partly",
+    "valuation": {
+     "pe_ttm": 27.1,
+     "pe_note": "TTM, consolidated; screener's Rs1,248 price lags the 12 Aug intraday high, so the true multiple is slightly higher",
+     "last": 1249.3,
+     "from_52w_hi_pct": -2.4,
+     "y1_pct": 55.25,
+     "m3_pct": 22.13,
+     "source": "screener.in unless stated; prices from yfinance",
+     "as_of": "2026-08-13"
+    },
+    "rationale": "Genuinely the cheapest well-run name here at 27x with a 59% profit beat, and the fibre expansion is real. The problem is category: management attributes growth to agriculture, industrial and solar, and has never mentioned data centres. It is a good business at a fair price that does not belong in an AI-infra basket - which is why the grade is hold rather than buy on this thesis.",
+    "changes_if": "A disclosed data-centre or hyperscaler fibre order would move this to buy on the theme.",
+    "as_of": "2026-08-13",
+    "valid_till": "2027-08-13"
+   }
+  },
+  {
+   "symbol": "CGPOWER",
+   "name": "CG Power & Industrial Solutions",
+   "segment": "power_eq",
+   "mcap_bucket": "large",
+   "exposure": "partial",
+   "fno": true,
+   "thesis": "Transformers/switchgear/motors maker exporting directly into the US DC buildout (₹900 cr Tallgrass DC transformer order) while CG Semi's Sanand OSAT adds a chip-packaging adjacency.",
+   "evidence": [
+    {
+     "date": "2026-01",
+     "note": "Largest-ever export order: ~₹900 cr power transformers for a US data-centre project",
+     "source": "cgglobal.com"
+    },
+    {
+     "date": "2026-06",
+     "note": "CG Semi began commercial production at Sanand OSAT (~200mn chips 2026 target)",
+     "source": "verdict.co.uk"
+    },
+    {
+     "date": "2026-08",
+     "note": "No substantive news since 31 July - only routine ESOP allotments. Q1 FY27 (24-25 July, pre-window) showed order book Rs17,333 cr (+45%) and CG Semi OSAT commercial production starting",
+     "source": "tickertape.in"
+    },
+    {
+     "date": "2026-07",
+     "note": "Latest broker action remains Jefferies at Hold, target Rs855, dated 28 July - below the current price",
+     "source": "tipranks.com"
+    }
+   ],
+   "risk": "US DC order overhang (Tallgrass/Crusoe project churn); OSAT is legacy-node with long payback; rich valuation.",
+   "outlook_3m": {
+    "stance": "sideways",
+    "confidence": "medium",
+    "rationale": "Strong Q1 FY27 (PAT +27%, order book +45%) and near highs, but ~90-120x P/E plus the unresolved ₹900 cr Tallgrass/Crusoe US DC order overhang cap near-term upside; execution is priced in.",
+    "catalysts": [
+     {
+      "when": "Aug-Oct 2026",
+      "note": "Clarity on the Tallgrass order after Crusoe's Cheyenne exit"
+     },
+     {
+      "when": "Aug-Oct 2026",
+      "note": "New export/DC transformer orders; OSAT ramp updates"
+     }
+    ],
+    "watch": "Tallgrass contract confirmed (or replaced) flips to up; cancellation triggers a de-rate.",
+    "as_of": "2026-08-02",
+    "valid_till": "2026-11-02",
+    "reviewed_at": "2026-08-13"
+   },
+   "grade_12m": {
+    "grade": "hold",
+    "conviction": "medium",
+    "evidence_strength": "disclosed-orders",
+    "exposure": "partial",
+    "priced_in": "fully",
+    "valuation": {
+     "pe_ttm": 109.0,
+     "pe_note": "TTM, consolidated; tickertape shows 115 on a standalone basis",
+     "last": 886.55,
+     "from_52w_hi_pct": -9.2,
+     "y1_pct": 33.42,
+     "m3_pct": 9.62,
+     "source": "screener.in unless stated; prices from yfinance",
+     "as_of": "2026-08-13"
+    },
+    "rationale": "Order book +45% and the US data-centre transformer order (Rs900 cr, January) is real, but at 109x earnings and 17x book the multiple demands flawless execution across transformers, switchgear and a new semiconductor venture simultaneously. The only dated broker target on file sits below the current price.",
+    "changes_if": "Another US data-centre export order of comparable size, or CG Semi revenue being disclosed separately.",
+    "as_of": "2026-08-13",
+    "valid_till": "2027-08-13"
+   }
+  },
+  {
+   "symbol": "POWERINDIA",
+   "name": "Hitachi Energy India",
+   "segment": "power_eq",
+   "mcap_bucket": "large",
+   "exposure": "significant",
+   "fno": null,
+   "thesis": "India arm of the global grid-tech leader (transformers, HVDC, grid automation) — management targets ~30% of India's total data-centre electrification spend on top of a record grid backlog.",
+   "evidence": [
+    {
+     "date": "2026-05",
+     "note": "Management target: ~30% share of India DC electrification spending",
+     "source": "business-standard.com"
+    },
+    {
+     "date": "2025-06",
+     "note": "Major 765 kV transformer order from Power Grid",
+     "source": "hitachienergy.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "Q1 FY27: revenue Rs2,494 cr (+68.6% YoY), PAT Rs294 cr (+123.5%), operational EBITDA margin 16.0% vs 11.5%. Order backlog Rs32,222 cr, highest ever",
+     "source": "hitachienergy.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "Data-centre orders named explicitly: over 560 MVA of power transformers plus 800 MVA of dry-type transformers for DC projects. Customer mix shifted from 96% utilities to 38%, with industries at 34%",
+     "source": "investing.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "Construction started on 20th plant at Karjan/Vadodara, ~Rs4,000 cr programme, completion December 2028. First BESS order, 165 MW / 330 MWh",
+     "source": "investing.com"
+    }
+   ],
+   "risk": "Very rich valuation; transformer capacity/execution constraints.",
+   "outlook_3m": {
+    "stance": "up",
+    "confidence": "medium",
+    "rationale": "The clearest DC order disclosure of any power-equipment name - specific MVA figures, not commentary - alongside record backlog and margin expansion of 450bps. The customer mix shifting out of utilities into industry is the AI-infra transition showing up in the order book itself.",
+    "catalysts": [
+     {
+      "when": "2026-11",
+      "note": "Q2 FY27 - order inflow ex-HVDC base effect"
+     },
+     {
+      "when": "2026-11",
+      "note": "Barmer 6 GW HVDC bid conclusion, guided within 3-6 months"
+     }
+    ],
+    "watch": "Transmission-order timing slippage, which management already flagged for H1 FY27.",
+    "as_of": "2026-08-13",
+    "valid_till": "2026-11-13",
+    "reviewed_at": "2026-08-13"
+   },
+   "grade_12m": {
+    "grade": "hold",
+    "conviction": "medium",
+    "evidence_strength": "disclosed-orders",
+    "exposure": "significant",
+    "priced_in": "beyond-delivery",
+    "valuation": {
+     "pe_ttm": 134.0,
+     "pe_note": "TTM, consolidated. P/B 30.8x",
+     "last": 35360.0,
+     "from_52w_hi_pct": -8.0,
+     "y1_pct": 73.38,
+     "m3_pct": 7.8,
+     "source": "screener.in unless stated; prices from yfinance",
+     "as_of": "2026-08-13"
+    },
+    "rationale": "Best-evidenced name in the power layer and the operational delivery is outstanding. The grade is entirely a price problem: 134x earnings and 31x book means the Karjan capacity completing in December 2028 is already in the stock. You are buying excellent execution at a multiple that requires it to continue uninterrupted for four years.",
+    "changes_if": "A de-rating toward 90x on unchanged fundamentals, or the Barmer HVDC award landing.",
+    "as_of": "2026-08-13",
+    "valid_till": "2027-08-13"
+   }
+  },
+  {
+   "symbol": "ABB",
+   "name": "ABB India",
+   "segment": "power_eq",
+   "mcap_bucket": "large",
+   "exposure": "partial",
+   "fno": true,
+   "thesis": "MV switchgear, UPS, drives and electrification for data centres — one of its fastest-growing verticals; record CY2025 order intake repeatedly cites DC demand.",
+   "evidence": [
+    {
+     "date": "2026-02",
+     "note": "Record CY2025 orders; Q4 CY25 intake +52% YoY with data centres a key sector",
+     "source": "abb.com"
+    },
+    {
+     "date": "2026-07",
+     "note": "Q2 CY2026: order inflow +50% YoY, revenue +21%, H1 order inflow Rs8,600 cr (+36%). Operational EBITDA margin 12.6%, down ~100bps on copper and forex",
+     "source": "investing.com"
+    },
+    {
+     "date": "2026-07",
+     "note": "Strongest qualitative DC signal in the theme: Electrification orders +77% YoY driven by data centres, and management said DC demand could become multifold in coming quarters and may STRAIN SUPPLY in 2027 and 2028",
+     "source": "scanx.trade"
+    }
+   ],
+   "risk": "DC is one of many verticals; parent portfolio decisions; premium valuation.",
+   "outlook_3m": {
+    "stance": "sideways",
+    "confidence": "medium",
+    "rationale": "July was strong (record Q2 CY26 orders +50%, ₹90 special dividend) but margins are tightening, consensus is Hold with targets below spot, and valuation downgrades persist.",
+    "catalysts": [
+     {
+      "when": "Aug-Oct 2026",
+      "note": "Conversion of the record order book; margin commentary"
+     },
+     {
+      "when": "2026-10",
+      "note": "Q3 CY26 results — do margins stabilize?"
+     }
+    ],
+    "watch": "Two straight quarters of margin recovery justifies a re-rating; cost/competition pressure keeps it capped.",
+    "as_of": "2026-08-02",
+    "valid_till": "2026-11-02",
+    "reviewed_at": "2026-08-13"
+   },
+   "grade_12m": {
+    "grade": "hold",
+    "conviction": "medium",
+    "evidence_strength": "disclosed-orders",
+    "exposure": "partial",
+    "priced_in": "fully",
+    "valuation": {
+     "pe_ttm": 107.0,
+     "pe_note": "TTM; tickertape shows 97. Screener flags Rs1,799 cr of other income inflating reported earnings, so the operating multiple is higher than either figure",
+     "last": 7710.0,
+     "from_52w_hi_pct": 0.0,
+     "y1_pct": 55.72,
+     "m3_pct": 21.63,
+     "source": "screener.in unless stated; prices from yfinance",
+     "as_of": "2026-08-13"
+    },
+    "rationale": "Management's supply-strain comment for 2027-28 is the most bullish forward statement any company in this basket has made, and Electrification orders +77% on data centres backs it. But margins are compressing on copper, the headline P/E is flattered by Rs1,799 cr of other income, and 107x leaves nothing for the cycle turning.",
+    "changes_if": "Margin recovery as copper pass-through catches up, or a de-rating that reflects the other-income distortion.",
+    "as_of": "2026-08-13",
+    "valid_till": "2027-08-13"
+   }
+  },
+  {
+   "symbol": "ENRIN",
+   "name": "Siemens Energy India",
+   "segment": "power_eq",
+   "mcap_bucket": "large",
+   "exposure": "partial",
+   "fno": null,
+   "thesis": "Demerged pure T&D/energy play levered to grid capex that DC load growth is accelerating; parent's grid-to-chip DC power push (incl. with TCS) supports the India franchise.",
+   "evidence": [
+    {
+     "date": "2025-06",
+     "note": "Listed after demerger from Siemens Ltd as focused energy/T&D company",
+     "source": "siemens-energy-india.com"
+    },
+    {
+     "date": "2026-06",
+     "note": "TCS-Siemens Energy partnership for AI-ready DC infrastructure in India",
+     "source": "datacenterdynamics.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "Q3 FY26 (June quarter): revenue Rs2,486 cr (+39.3% YoY), PAT Rs441 cr (+67.8%), operating margin 21.9%, up 430bps. Order backlog Rs19,331 cr (+16.4%)",
+     "source": "solarquarter.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "No data-centre-specific order, no export order and no capacity announcement disclosed; quarterly order inflow value was not published",
+     "source": "research check 2026-08-13"
+    }
+   ],
+   "risk": "Among the richest cap-goods valuations; direct named DC orders still limited.",
+   "outlook_3m": {
+    "stance": "sideways",
+    "confidence": "medium",
+    "rationale": "Consolidating ~10-15% below its post-listing high; consensus Hold with average target near spot (~96x P/E), though last quarter's ~80% profit jump keeps downside limited.",
+    "catalysts": [
+     {
+      "when": "2026-08",
+      "note": "Quarterly results (Sept-FY co., early Aug)"
+     },
+     {
+      "when": "Aug-Oct 2026",
+      "note": "HVDC/grid order wins; ₹2,060 cr transformer capacity expansion progress"
+     }
+    ],
+    "watch": "A large HVDC order or big quarterly beat pushes it out of the range upward.",
+    "as_of": "2026-08-02",
+    "valid_till": "2026-11-02",
+    "reviewed_at": "2026-08-13"
+   },
+   "grade_12m": {
+    "grade": "hold",
+    "conviction": "medium",
+    "evidence_strength": "announced-only",
+    "exposure": "partial",
+    "priced_in": "fully",
+    "valuation": {
+     "pe_ttm": 83.0,
+     "pe_note": "TTM. P/B 26.4x, ROCE 67.8%",
+     "last": 3561.2,
+     "from_52w_hi_pct": -8.0,
+     "y1_pct": 12.41,
+     "m3_pct": 16.35,
+     "source": "screener.in unless stated; prices from yfinance",
+     "as_of": "2026-08-13"
+    },
+    "rationale": "Operationally the best margin story in the group - 430bps of expansion with PAT up 68% - and the returns on capital are genuinely exceptional. But it has disclosed no data-centre order at all, did not publish quarterly order inflow, and trades at 83x and 26x book. The AI-infra attribution here is inference from the grid-transition narrative, not from anything the company has said.",
+    "changes_if": "A disclosed data-centre or grid-for-DC order, or order inflow being published.",
+    "as_of": "2026-08-13",
+    "valid_till": "2027-08-13"
+   }
+  },
+  {
+   "symbol": "SCHNEIDER",
+   "name": "Schneider Electric Infrastructure",
+   "segment": "power_eq",
+   "mcap_bucket": "mid",
+   "exposure": "significant",
+   "fno": false,
+   "thesis": "Listed Indian arm of Schneider's MV grid business — management says the India DC business is outgrowing the rest of the company as AI campuses order MV gear.",
+   "evidence": [
+    {
+     "date": "2026-05",
+     "note": "Management: India DC business outpacing core growth; AI DC 'now real business'",
+     "source": "business-standard.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "Has NOT reported the June quarter - Q1 FY27 results and analyst call scheduled for 17 August 2026",
+     "source": "quartr.com"
+    },
+    {
+     "date": "2026-05",
+     "note": "Last reported period FY26: net profit Rs213 cr, down 20.7% YoY; Q4 PAT Rs22 cr, down 59.8%",
+     "source": "research check 2026-08-13"
+    }
+   ],
+   "risk": "Unlisted parent entity keeps the LV/secure-power DC business, capping listed-entity exposure.",
+   "outlook_3m": {
+    "stance": "sideways",
+    "confidence": "low",
+    "rationale": "Up ~110% in a year to ~120x P/E while FY26 profit actually fell ~21% — a fragile combination; the DC/T&D narrative supports the price but earnings must catch up. Choppy consolidation with downside risk on any weak print.",
+    "catalysts": [
+     {
+      "when": "2026-08",
+      "note": "Q1 FY27 — does the FY26 profit decline reverse?"
+     },
+     {
+      "when": "Aug-Oct 2026",
+      "note": "Grid-automation / substation order announcements"
+     }
+    ],
+    "watch": "A strong profit rebound validates the multiple; another decline likely triggers a sharp correction.",
+    "as_of": "2026-08-02",
+    "valid_till": "2026-11-02",
+    "reviewed_at": "2026-08-13"
+   },
+   "grade_12m": {
+    "grade": "sell",
+    "conviction": "medium",
+    "evidence_strength": "none",
+    "exposure": "significant",
+    "priced_in": "beyond-delivery",
+    "valuation": {
+     "pe_ttm": 148.0,
+     "pe_note": "TTM. P/B 42.6x - the highest in this basket on both measures",
+     "last": 1379.1,
+     "from_52w_hi_pct": -8.1,
+     "y1_pct": 58.34,
+     "m3_pct": 14.82,
+     "source": "screener.in unless stated; prices from yfinance",
+     "as_of": "2026-08-13"
+    },
+    "rationale": "The most expensive name in the theme at 148x earnings and 43x book, on trailing profits that FELL 21% in FY26 with a Q4 down 60%. It has disclosed no data-centre order, no export order and no capacity expansion, and it has not yet reported the June quarter. A 148x multiple on declining earnings with no evidence attached is the clearest risk-reward mismatch in the list.",
+    "changes_if": "The 17 August Q1 print showing a genuine earnings inflection with DC orders named.",
+    "as_of": "2026-08-13",
+    "valid_till": "2027-08-13"
+   }
+  },
+  {
+   "symbol": "TARIL",
+   "name": "Transformers & Rectifiers India",
+   "segment": "power_eq",
+   "mcap_bucket": "small",
+   "exposure": "partial",
+   "fno": null,
+   "thesis": "Pure-play transformer maker riding the grid-capex supercycle that DC load growth (India + US transformer shortage) is extending; record order book.",
+   "evidence": [
+    {
+     "date": "2026-07",
+     "note": ">₹1,000 cr Power Grid transformer order; Q1 FY27 inflow ~₹2,400 cr, record book",
+     "source": "energetica-india.net"
+    },
+    {
+     "date": "2025-06",
+     "note": "~$250M orders incl. exports amid global DC-driven transformer shortage",
+     "source": "transformer-magazine.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "No material news since 31 July - only an AGM extension and an investor-conference intimation. Q1 FY27 (21 July, pre-window): revenue +8.1% YoY, record order book Rs6,630 cr",
+     "source": "scanx.trade"
+    }
+   ],
+   "risk": "Indirect DC exposure — essentially a grid cyclical; CRGO steel and execution sensitivity.",
+   "outlook_3m": {
+    "stance": "sideways",
+    "confidence": "low",
+    "rationale": "Already down 45% from its 52-week high, which is most of a de-rating from a much richer multiple. The order book is at a record but revenue grew only 8% and there has been no news for six weeks. At 34x the fall has done its work; there is no visible catalyst either way over three months.",
+    "catalysts": [
+     {
+      "when": "2026-10",
+      "note": "Q2 FY27 - whether the record order book starts converting to revenue growth"
+     }
+    ],
+    "watch": "Order-book conversion showing up in revenue, or a data-centre transformer order being named.",
+    "as_of": "2026-08-13",
+    "valid_till": "2026-11-13",
+    "reviewed_at": "2026-08-13"
+   },
+   "grade_12m": {
+    "grade": "hold",
+    "conviction": "low",
+    "evidence_strength": "announced-only",
+    "exposure": "partial",
+    "priced_in": "little",
+    "valuation": {
+     "pe_ttm": 33.8,
+     "pe_note": "TTM, consolidated",
+     "last": 292.0,
+     "from_52w_hi_pct": -45.5,
+     "y1_pct": -42.26,
+     "m3_pct": -0.15,
+     "source": "screener.in unless stated; prices from yfinance",
+     "as_of": "2026-08-13"
+    },
+    "rationale": "The cheapest transformer name after the 45% drawdown, with a record Rs6,630 cr order book that has not yet reached the revenue line - 8% growth against a book that size is the disconnect to watch. No DC order has ever been named. This is a recovery candidate rather than an AI-infra holding.",
+    "changes_if": "Revenue growth accelerating into double digits as the order book converts.",
+    "as_of": "2026-08-13",
+    "valid_till": "2027-08-13"
+   }
+  },
+  {
+   "symbol": "VOLTAMP",
+   "name": "Voltamp Transformers",
+   "segment": "power_eq",
+   "mcap_bucket": "small",
+   "exposure": "partial",
+   "fno": false,
+   "thesis": "Leading dry-type transformer maker — the standard inside data centres — benefiting from industrial + DC electrification, with Gujarat capacity expansion underway.",
+   "evidence": [
+    {
+     "date": "2025-12",
+     "note": "Nuvama Buy initiation citing dry-type transformer demand from data centres",
+     "source": "business-standard.com"
+    },
+    {
+     "date": "2026-07",
+     "note": "Q1 FY27: revenue Rs544 cr (+28.4% YoY), PAT Rs91 cr (+14.7%) - profit growing at half the revenue rate as raw material costs rose 41.9%",
+     "source": "business-standard.com"
+    },
+    {
+     "date": "2026-07",
+     "note": "Board approved Rs90 cr greenfield capex near Vadodara for DRY-TYPE transformers, completion in 12-14 months, funded from internal accruals - dry-type is the format used inside data-centre buildings",
+     "source": "investywise.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "CARE reaffirmed bank facilities at AA/Stable",
+     "source": "screener.in"
+    }
+   ],
+   "risk": "Legacy fixed-price orders hit margins; no named DC order disclosures.",
+   "outlook_3m": {
+    "stance": "up",
+    "confidence": "low",
+    "rationale": "The Rs90 cr dry-type transformer plant is a direct, self-funded bet on the format data centres actually buy, and it is sized for demand over five to six years. Revenue grew 28% and the company is net cash. The offset is margin: input costs rose 42% against 28% revenue growth, and Voltamp does not disclose an order book, so there is no visibility between quarters.",
+    "catalysts": [
+     {
+      "when": "2026-10",
+      "note": "Q2 FY27 - whether margin compression continues"
+     },
+     {
+      "when": "2027-09",
+      "note": "Dry-type facility commissioning, 12-14 months out"
+     }
+    ],
+    "watch": "Voltamp discloses no order book, so a quarterly miss arrives without warning.",
+    "as_of": "2026-08-13",
+    "valid_till": "2026-11-13",
+    "reviewed_at": "2026-08-13"
+   },
+   "grade_12m": {
+    "grade": "buy",
+    "conviction": "low",
+    "evidence_strength": "announced-only",
+    "exposure": "partial",
+    "priced_in": "little",
+    "valuation": {
+     "pe_ttm": 32.0,
+     "pe_note": "TTM. Net cash, so EV/EBITDA is materially below the P/E would imply - I could not retrieve a quoted figure and have not estimated one",
+     "last": 10039.5,
+     "from_52w_hi_pct": -18.9,
+     "y1_pct": 28.55,
+     "m3_pct": 10.0,
+     "source": "screener.in unless stated; prices from yfinance",
+     "as_of": "2026-08-13"
+    },
+    "rationale": "Cheapest credible way into the transformer layer at 32x, net cash, and the only company here putting its own money specifically into the dry-type format data centres use. It sits 19% below its 52-week high while the rest of the power group is at or near highs. The risk is real: margins compressed hard in Q1 and there is no order book to check the trajectory against.",
+    "changes_if": "A second quarter of raw-material-driven margin compression would take this back to hold.",
+    "as_of": "2026-08-13",
+    "valid_till": "2027-08-13"
+   }
+  },
+  {
+   "symbol": "TDPOWERSYS",
+   "name": "TD Power Systems",
+   "segment": "power_eq",
+   "mcap_bucket": "small",
+   "exposure": "significant",
+   "fno": false,
+   "thesis": "AC generators for turbines/engines — US data centres turning to engine-based prime/bridge power have driven a surge in export generator orders; DC demand is now a primary growth engine.",
+   "evidence": [
+    {
+     "date": "2025-11",
+     "note": "Q2 FY26: record order book on US DC gas-engine/turbine generator demand",
+     "source": "alphaspread.com"
+    },
+    {
+     "date": "2026-05",
+     "note": "FY26 call: order-book expansion attributed substantially to DC-driven generator demand",
+     "source": "alphaspread.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "Q1 FY27: revenue Rs640 cr (+72.1% YoY), PAT Rs86 cr (+72.3%), EBITDA margin 19.0%. Highest-ever quarterly order inflow Rs734 cr (+87%). Stock +14.7% on the day",
+     "source": "business-standard.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "Exports 93% of order inflow, with management citing large-volume REPEAT orders from leading global OEMs for US data-centre applications in gas engine generators",
+     "source": "investing.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "FY27 revenue guidance raised to Rs2,600 cr; capacity targeted at Rs3,200 cr by FY28 on Rs50 cr capex. Share subdivision approved at the AGM",
+     "source": "investing.com"
+    }
+   ],
+   "risk": "Customer-concentrated export cycle; a US DC capex pause or engine-OEM destocking hits orders quickly.",
+   "outlook_3m": {
+    "stance": "sideways",
+    "confidence": "medium",
+    "rationale": "Outstanding quarter and a guidance raise - but the stock has already taken it, up 33% in eleven days. Note the qualifier the market glossed over: domestic inflow collapsed to Rs50 cr as the company deliberately prioritised export margin. That makes the whole story a bet on US data-centre demand, and the news is now out.",
+    "catalysts": [
+     {
+      "when": "2026-11",
+      "note": "Q2 FY27 - whether Rs734 cr inflow was a one-quarter spike or a run-rate"
+     },
+     {
+      "when": "2026-09",
+      "note": "Share subdivision record date"
+     }
+    ],
+    "watch": "Repeat orders from the same global OEMs would confirm the run-rate; a US capex pause removes 93% of the inflow.",
+    "as_of": "2026-08-13",
+    "valid_till": "2026-11-13",
+    "reviewed_at": "2026-08-13"
+   },
+   "grade_12m": {
+    "grade": "hold",
+    "conviction": "medium",
+    "evidence_strength": "disclosed-revenue",
+    "exposure": "significant",
+    "priced_in": "fully",
+    "valuation": {
+     "pe_ttm": 84.1,
+     "pe_note": "TTM, consolidated, pre-split; the standalone screener view shows 90.3",
+     "last": 1481.6,
+     "from_52w_hi_pct": 0.0,
+     "y1_pct": 191.98,
+     "m3_pct": 11.68,
+     "source": "screener.in unless stated; prices from yfinance",
+     "as_of": "2026-08-13"
+    },
+    "rationale": "The evidence is close to best-in-class - named repeat orders from global OEMs for US data-centre gensets, 87% inflow growth, guidance raised. The grade is a timing call: 84x after +33% in eleven days and +192% in a year, with domestic orders deliberately shrunk to Rs50 cr. Everything now depends on US data-centre construction with essentially no India buffer.",
+    "changes_if": "A second quarter at similar inflow would justify paying up; any US hyperscaler capex wobble hits this first.",
+    "as_of": "2026-08-13",
+    "valid_till": "2027-08-13"
+   }
+  },
+  {
+   "symbol": "APARINDS",
+   "name": "Apar Industries",
+   "segment": "power_eq",
+   "mcap_bucket": "mid",
+   "exposure": "partial",
+   "fno": null,
+   "thesis": "Conductors, specialty cables and transformer oils — US grid-hardening and DC buildout lift premium conductor/cable exports; DC campuses use its E-beam cables and oils.",
+   "evidence": [
+    {
+     "date": "2026-04",
+     "note": "EBITDA strength supported by accelerating DC-linked cable/conductor demand",
+     "source": "tradebrains.in"
+    },
+    {
+     "date": "2026-08",
+     "note": "Launched a Rs2,500 cr QIP - all-primary, ~16.89 lakh fresh shares at an indicative Rs14,805, a 9.99% discount to the prior close. Use of proceeds was NOT disclosed in available sources",
+     "source": "indiaipo.in"
+    },
+    {
+     "date": "2026-07",
+     "note": "Q1 FY27 (24 July, pre-window): revenue Rs6,591 cr (+29.1% YoY), consolidated net profit Rs467 cr (+77.8%), with management flagging a robust export order book and data-centre demand",
+     "source": "equitybulls.com"
+    }
+   ],
+   "risk": "US tariff/trade policy and aluminium/copper swings; DC a minority of revenue.",
+   "outlook_3m": {
+    "stance": "sideways",
+    "confidence": "medium",
+    "rationale": "Up 17% since the 2 August call, and the identifiable driver is the QIP announced 10 August rather than any operating news - results were 24 July. A Rs2,500 cr primary raise at a 10% discount is dilution with an undisclosed purpose, which is not usually what a stock rallies on. The next three months are about what the money is for.",
+    "catalysts": [
+     {
+      "when": "2026-08",
+      "note": "QIP pricing and allotment, trading from ~18 August"
+     },
+     {
+      "when": "2026-10",
+      "note": "Q2 FY27 - export order book and DC-linked conductor demand"
+     }
+    ],
+    "watch": "Disclosure of the QIP use of proceeds - capacity expansion would read very differently from debt reduction.",
+    "as_of": "2026-08-13",
+    "valid_till": "2026-11-13",
+    "reviewed_at": "2026-08-13"
+   },
+   "grade_12m": {
+    "grade": "hold",
+    "conviction": "low",
+    "evidence_strength": "announced-only",
+    "exposure": "partial",
+    "priced_in": "fully",
+    "valuation": {
+     "pe_ttm": 57.4,
+     "pe_note": "TTM, consolidated at a Rs17,225 price; the stock was moving intraday on 13 Aug. Will dilute on QIP allotment",
+     "last": 17225.0,
+     "from_52w_hi_pct": -4.3,
+     "y1_pct": 101.1,
+     "m3_pct": 41.72,
+     "source": "screener.in unless stated; prices from yfinance",
+     "as_of": "2026-08-13"
+    },
+    "rationale": "Q1 was genuinely strong with profit up 78% and management naming data-centre demand. But you are being asked to buy after a 17% move driven by a dilutive raise whose purpose has not been disclosed, at 57x, with the share count about to increase. Wait for the use of proceeds.",
+    "changes_if": "QIP proceeds earmarked for conductor or cable capacity serving data centres.",
+    "as_of": "2026-08-13",
+    "valid_till": "2027-08-13"
+   }
+  },
+  {
+   "symbol": "MARINE",
+   "name": "Marine Electricals",
+   "segment": "power_eq",
+   "mcap_bucket": "micro",
+   "exposure": "significant",
+   "fno": false,
+   "thesis": "Small-cap LV/MV switchgear and power-distribution maker whose fastest-growing order stream is DC power-distribution systems — repeat wins from Princeton Digital Group.",
+   "evidence": [
+    {
+     "date": "2026-01",
+     "note": "₹284 cr power-distribution orders incl. DC customers",
+     "source": "scanx.trade"
+    },
+    {
+     "date": "2026-07",
+     "note": "₹142 cr PDG order (~16% of FY26 revenue) for DC power distribution",
+     "source": "tradebrains.in"
+    },
+    {
+     "date": "2026-08",
+     "note": "Responded to an exchange query on unusual price movement and volume, stating there is NO undisclosed information and no pending corporate action",
+     "source": "screener.in"
+    },
+    {
+     "date": "2026-08",
+     "note": "Has NOT reported Q1 FY27 - the most recent quarter on file is March 2026. No board-meeting intimation for results was filed",
+     "source": "screener.in"
+    },
+    {
+     "date": "2026-07",
+     "note": "Rs141.74 cr order from Princeton Digital Group for a data-centre power distribution system, 10-month execution (announced 28 July, just before this window)",
+     "source": "scanx.trade"
+    }
+   ],
+   "risk": "Micro-cap with customer concentration (PDG, Siemens, Navy) and lumpy project execution.",
+   "outlook_3m": {
+    "stance": "down",
+    "confidence": "medium",
+    "rationale": "Up 29% in eleven days with no results, no order announcement, and the company itself telling the exchange on 10 August that nothing is pending. The only identifiable driver is a Rs141.74 cr order from 28 July that was already public. A micro-cap at ~85x with an unexplained move and an exchange query on file is a poor risk-reward into results it has not yet scheduled.",
+    "catalysts": [
+     {
+      "when": "2026-08",
+      "note": "Q1 FY27 results, not yet scheduled - last year they came on 13 August"
+     },
+     {
+      "when": "2027-05",
+      "note": "Princeton Digital Group order execution, 10 months from July"
+     }
+    ],
+    "watch": "A results date being announced, or a second named data-centre order.",
+    "as_of": "2026-08-13",
+    "valid_till": "2026-11-13",
+    "reviewed_at": "2026-08-13"
+   },
+   "grade_12m": {
+    "grade": "sell",
+    "conviction": "medium",
+    "evidence_strength": "announced-only",
+    "exposure": "significant",
+    "priced_in": "beyond-delivery",
+    "valuation": {
+     "pe_ttm": 87.0,
+     "pe_note": "TTM, ~84-90 depending on consolidated vs standalone and an intraday-moving price",
+     "last": 371.2,
+     "from_52w_hi_pct": 0.0,
+     "y1_pct": 124.22,
+     "m3_pct": 65.99,
+     "source": "screener.in unless stated; prices from yfinance",
+     "as_of": "2026-08-13"
+    },
+    "rationale": "The clearest case in the basket of price arriving without evidence. Up 29% in eleven days and 124% in a year, at roughly 85-90x, on a micro-cap that has not reported the June quarter and has formally told the exchange there is nothing to disclose. The Princeton Digital order is real and encouraging at Rs142 cr - but it is one order, pre-dates the move, and does not support the multiple.",
+    "changes_if": "Q1 FY27 results showing the DC order converting, plus a second named customer.",
+    "as_of": "2026-08-13",
+    "valid_till": "2027-08-13"
+   }
+  },
+  {
+   "symbol": "TATAPOWER",
+   "name": "Tata Power",
+   "segment": "power_gen",
+   "mcap_bucket": "large",
+   "exposure": "partial",
+   "fno": true,
+   "thesis": "Integrated utility positioned as power partner for the Mumbai DC cluster and the Tata group's ~1 GW HyperVault AI-DC buildout; already supplies PDG's Mumbai DC via 25-yr renewable PPA.",
+   "evidence": [
+    {
+     "date": "2026-02",
+     "note": "TCS + TPG $1bn HyperVault AI DCs (~1 GW, up to $7bn) — Tata Power natural energy partner",
+     "source": "tata.com"
+    },
+    {
+     "date": "2023-06",
+     "note": "25-year renewable PPA for PDG's 48 MW Mumbai DC",
+     "source": "princetondg.com"
+    },
+    {
+     "date": "2026-07",
+     "note": "Acquired Ryapte Power Transmission (Rs10.87 cr) - a ~250 km Karnataka transmission SPV on a Rs3,200 cr BOOT project evacuating a 2,000 MW solar park; reported 5 August",
+     "source": "solarquarter.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "No company-specific news since 31 July. No data-centre PPA or hyperscaler agreement found in the window",
+     "source": "research check 2026-08-13"
+    }
+   ],
+   "risk": "DC supply is a small share of a large regulated utility; regulated returns cap upside.",
+   "outlook_3m": {
+    "stance": "sideways",
+    "confidence": "medium",
+    "rationale": "Q1 FY27 beat (PAT +11%) yet the stock slipped — range-bound for a year at ~35x; Citi's bullish call argues eventual upside but near-term triggers before November are modest.",
+    "catalysts": [
+     {
+      "when": "Aug-Oct 2026",
+      "note": "Renewables/pumped-hydro commissioning; group DC power tie-ups"
+     },
+     {
+      "when": "2026-10",
+      "note": "Pre-Q2 operational updates; regulatory developments"
+     }
+    ],
+    "watch": "A breakout on a large transmission/DC-power win confirms the bull case; weak monsoon power demand keeps the range.",
+    "as_of": "2026-08-02",
+    "valid_till": "2026-11-02",
+    "reviewed_at": "2026-08-13"
+   },
+   "grade_12m": {
+    "grade": "hold",
+    "conviction": "low",
+    "evidence_strength": "none",
+    "exposure": "partial",
+    "priced_in": "partly",
+    "valuation": {
+     "pe_ttm": 31.1,
+     "pe_note": "TTM, consolidated",
+     "last": 382.8,
+     "from_52w_hi_pct": -16.6,
+     "y1_pct": -0.03,
+     "m3_pct": -4.74,
+     "source": "screener.in unless stated; prices from yfinance",
+     "as_of": "2026-08-13"
+    },
+    "rationale": "Reasonably priced at 31x for a diversified utility with a genuine renewables and transmission pipeline, and it would benefit from data-centre load in aggregate. But it has signed no disclosed data-centre PPA, and the theme attribution is generic - any Indian generator benefits if 26 GW of DC load arrives. Held as a utility, not as an AI-infra expression.",
+    "changes_if": "A named data-centre or hyperscaler power purchase agreement.",
+    "as_of": "2026-08-13",
+    "valid_till": "2027-08-13"
+   }
+  },
+  {
+   "symbol": "ADANIGREEN",
+   "name": "Adani Green Energy",
+   "segment": "power_gen",
+   "mcap_bucket": "large",
+   "exposure": "partial",
+   "fno": true,
+   "thesis": "Largest Indian renewables developer supplying the RTC clean power hyperscalers require; contracted with Google and feeds AdaniConneX DC JV demand.",
+   "evidence": [
+    {
+     "date": "2024-10",
+     "note": "Google clean-energy deal: 61.4 MW Khavda solar-wind for India cloud/DC ops",
+     "source": "adani.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "Bernstein initiated/reiterated Underperform with a Rs1,000 target - the lowest on the street - on valuation. Stock down ~16% from its July high",
+     "source": "businesstoday.in"
+    },
+    {
+     "date": "2026-08",
+     "note": "Axis Capital Buy at Rs1,704 on 13.5x FY31 run-rate EV/EBITDA, explicitly assuming one-year transmission delays; Elara Accumulate Rs1,502; Macquarie Rs1,800",
+     "source": "businesstoday.in"
+    },
+    {
+     "date": "2026-08",
+     "note": "Bear case: transferring the 4 GW merchant portfolio and 10 GWh BESS to Adani Energy Solutions moves long-term upside away from AGEL; grid curtailment cut Q1 EBITDA 5-7%",
+     "source": "indiainfoline.com"
+    }
+   ],
+   "risk": "Leverage and group-governance overhang; DC PPAs a small share of a 50 GW pipeline.",
+   "outlook_3m": {
+    "stance": "down",
+    "confidence": "medium",
+    "rationale": "Analyst targets span Rs1,000 to Rs1,800 - a 1.8x spread that tells you the valuation is unanchored. The specific issues are dated and real: grid curtailment already cost 5-7% of Q1 EBITDA, transmission delays are being modelled by the bulls as a base case, and the merchant and BESS portfolios are being moved to a sibling entity.",
+    "catalysts": [
+     {
+      "when": "2026-10",
+      "note": "Q2 FY27 - whether curtailment normalises as management guided for H2"
+     },
+     {
+      "when": "2026-10",
+      "note": "Clarity on the merchant/BESS transfer terms"
+     }
+    ],
+    "watch": "Curtailment normalising in H2 FY27 as guided would remove the largest identified drag.",
+    "as_of": "2026-08-13",
+    "valid_till": "2026-11-13",
+    "reviewed_at": "2026-08-13"
+   },
+   "grade_12m": {
+    "grade": "sell",
+    "conviction": "medium",
+    "evidence_strength": "none",
+    "exposure": "partial",
+    "priced_in": "beyond-delivery",
+    "valuation": {
+     "pe_ttm": 114.0,
+     "pe_note": "TTM, consolidated per screener; tickertape shows 136 - I could not reconcile them",
+     "last": 1319.0,
+     "from_52w_hi_pct": -17.8,
+     "y1_pct": 43.76,
+     "m3_pct": -3.65,
+     "source": "screener.in unless stated; prices from yfinance",
+     "as_of": "2026-08-13"
+    },
+    "rationale": "At 114x with 20 GW operational, the equity is priced on FY31 capacity that depends on transmission the government's own planning has not built. The value being moved to Adani Energy Solutions is the specific problem: you hold the capex and someone else holds the merchant upside. Curtailment is already showing in the numbers, and no disclosed data-centre PPA exists.",
+    "changes_if": "A named data-centre PPA, or the merchant/BESS transfer being priced transparently.",
+    "as_of": "2026-08-13",
+    "valid_till": "2027-08-13"
+   }
+  },
+  {
+   "symbol": "POWERGRID",
+   "name": "Power Grid Corporation",
+   "segment": "power_gen",
+   "mcap_bucket": "large",
+   "exposure": "partial",
+   "fno": true,
+   "thesis": "Monopoly interstate transmission utility whose accelerating capex cycle is partly driven by connecting DC hubs (Mumbai/Chennai/Hyderabad) — the grid layer of India's AI buildout.",
+   "evidence": [
+    {
+     "date": "2026-05",
+     "note": "FY27 capex guided ~₹45,000 cr; ~₹9.2 trn national grid capex to 2032, DCs among drivers",
+     "source": "psuwatch.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "Q1 FY27: consolidated PAT Rs3,598 cr, -0.9% YoY, hit by ~Rs560 cr of regulatory drag from tariff-order timing (lower normative depreciation plus interest differential) - a timing effect, not a demand miss. Stock fell ~4%",
+     "source": "investing.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "FY27 capex guidance Rs37,000 cr and capitalisation guidance Rs30,000 cr. Q1 capitalisation Rs5,277 cr vs Rs1,683 cr YoY, more than 3x. Works-in-hand Rs1.75 lakh cr; bidding pipeline over Rs1.19 lakh cr",
+     "source": "investing.com"
+    },
+    {
+     "date": "2026-07",
+     "note": "Government DOUBLED its own AI data-centre load estimate: 26.3 GW additional by FY32, up from 13.56 GW estimated in March 2026 - the grid planner's own numbers moving, in a written parliamentary reply",
+     "source": "business-standard.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "Won India's first synchronous condenser scheme under competitive bidding - a new asset class for renewable-heavy grids",
+     "source": "investing.com"
+    }
+   ],
+   "risk": "Regulated returns dilute AI upside; tariff-based competition eroding project wins.",
+   "outlook_3m": {
+    "stance": "up",
+    "confidence": "low",
+    "rationale": "Fell 7% since the 2 August call on a Q1 miss that was regulatory timing, not demand - while the government simultaneously doubled its own estimate of AI data-centre load to 26.3 GW by FY32. Capitalisation tripled YoY and FY27 guidance is Rs37,000 cr of capex. The setup is a de-rated price against an upgraded structural driver.",
+    "catalysts": [
+     {
+      "when": "2026-11",
+      "note": "Q2 FY27 - whether the Rs560 cr tariff drag reverses"
+     },
+     {
+      "when": "2026-10",
+      "note": "TBCB awards against the Rs1.19 lakh cr bidding pipeline"
+     }
+    ],
+    "watch": "Further regulatory or tariff-order adverse timing would push the recovery out another quarter.",
+    "as_of": "2026-08-13",
+    "valid_till": "2026-11-13",
+    "reviewed_at": "2026-08-13"
+   },
+   "grade_12m": {
+    "grade": "buy",
+    "conviction": "medium",
+    "evidence_strength": "disclosed-revenue",
+    "exposure": "partial",
+    "priced_in": "little",
+    "valuation": {
+     "pe_ttm": 15.8,
+     "pe_note": "TTM, consolidated. Dividend yield 3.3%, P/B 2.5x - by far the lowest multiple in this basket",
+     "last": 266.6,
+     "from_52w_hi_pct": -16.9,
+     "y1_pct": -4.64,
+     "m3_pct": -10.1,
+     "source": "screener.in unless stated; prices from yfinance",
+     "as_of": "2026-08-13"
+    },
+    "rationale": "Power is the binding constraint on India's data-centre build - facilities take 12-18 months, the grid takes 3-5 years - and the government just doubled its own AI load estimate to 26.3 GW by FY32. Power Grid is the monopoly builder of that grid, guiding Rs37,000 cr of FY27 capex with Rs1.75 lakh cr of work in hand, and it trades at 15.8x with a 3.3% yield after falling on a timing-driven quarter. The cheapest name here with the most direct claim on the constraint everyone else is competing around.",
+    "changes_if": "Capitalisation slipping below the Rs30,000 cr guide, or regulated ROE being cut in the next tariff period.",
+    "as_of": "2026-08-13",
+    "valid_till": "2027-08-13"
+   }
+  },
+  {
+   "symbol": "BLUESTARCO",
+   "name": "Blue Star",
+   "segment": "cooling",
+   "mcap_bucket": "mid",
+   "exposure": "partial",
+   "fno": null,
+   "thesis": "MEP/electro-mechanical leader building a DC cooling franchise — chillers, precision cooling and turnkey DC HVAC feed a record ₹6,900+ cr order book.",
+   "evidence": [
+    {
+     "date": "2025-11",
+     "note": "Developing hi-tech cooling products specifically for data centres (Q2 FY26 call)",
+     "source": "informistmedia.com"
+    },
+    {
+     "date": "2026-05",
+     "note": "Q4 FY26 order book ₹6,923 cr, DC + industrial driving EMP segment",
+     "source": "univest.in"
+    },
+    {
+     "date": "2026-08",
+     "note": "Q1 FY27 miss: revenue Rs3,378 cr (+13.3% YoY) but PAT Rs103 cr, -15.3%. Room AC (UCP) EBIT margin COLLAPSED to 2.9% from 5.8% - only ~5% of a planned 13% price increase could be passed through",
+     "source": "upstox.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "Data-centre disclosure is the second-best in this basket: ~Rs1,500 cr of DC MEP order inflow in Q1 alone, targeting ~Rs3,000 cr for FY27, and management projects data centres at ~20% of total revenue by FY29 (~Rs4,000 cr) - higher-margin, shorter-cycle, better payment terms",
+     "source": "investing.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "Motilal Oswal Neutral, target Rs1,580; cut FY27/FY28 EBITDA and EPS on the weak quarter",
+     "source": "investmentguruindia.com"
+    }
+   ],
+   "risk": "Room-AC margin pressure; DC cooling competes with Vertiv/Stulz/Daikin.",
+   "outlook_3m": {
+    "stance": "sideways",
+    "confidence": "medium",
+    "rationale": "Two businesses moving in opposite directions. Room AC margins halved on commodity inflation, a short summer and dealer inventory - that is what took the stock down 12%. Meanwhile the data-centre MEP business booked Rs1,500 cr in a single quarter against a Rs3,000 cr full-year target. Over three months the RAC cycle dominates; the DC story is a FY29 argument.",
+    "catalysts": [
+     {
+      "when": "2026-11",
+      "note": "Q2 FY27 - whether RAC inventory clears and pricing sticks"
+     },
+     {
+      "when": "2026-10",
+      "note": "DC MEP inflow against the Rs3,000 cr FY27 target"
+     }
+    ],
+    "watch": "RAC margin recovering toward the guided 6.5% EBIT would flip this back to up.",
+    "as_of": "2026-08-13",
+    "valid_till": "2026-11-13",
+    "reviewed_at": "2026-08-13"
+   },
+   "grade_12m": {
+    "grade": "hold",
+    "conviction": "medium",
+    "evidence_strength": "disclosed-revenue",
+    "exposure": "partial",
+    "priced_in": "partly",
+    "valuation": {
+     "pe_ttm": 57.9,
+     "pe_note": "TTM, consolidated - on depressed earnings after the Q1 fall, so the multiple overstates the rating",
+     "last": 1514.0,
+     "from_52w_hi_pct": -24.6,
+     "y1_pct": -14.78,
+     "m3_pct": -6.88,
+     "source": "screener.in unless stated; prices from yfinance",
+     "as_of": "2026-08-13"
+    },
+    "rationale": "Genuinely the best-quantified data-centre revenue path of any name here: Rs1,500 cr booked in one quarter, a Rs3,000 cr FY27 target, and 20% of revenue guided by FY29 at better margins and payment terms. The problem is that two-thirds of the company is a room-AC business whose margins just halved, and at 58x on already-depressed earnings you are paying a full price to own that cycle while you wait for the DC piece.",
+    "changes_if": "RAC margin stabilising, or the DC segment being reported separately so it can be valued on its own.",
+    "as_of": "2026-08-13",
+    "valid_till": "2027-08-13"
+   }
+  },
+  {
+   "symbol": "VOLTAS",
+   "name": "Voltas",
+   "segment": "cooling",
+   "mcap_bucket": "mid",
+   "exposure": "partial",
+   "fno": true,
+   "thesis": "Tata HVAC/MEP major expanding into DC cooling (chillers, CRAH, turnkey HVAC) with the group's HyperVault ~1 GW DC plan as a captive demand pipeline.",
+   "evidence": [
+    {
+     "date": "2026-03",
+     "note": "Projects expansion into the emerging DC cooling market",
+     "source": "voltas.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "Has NOT reported Q1 FY27 - results scheduled for 14 August 2026",
+     "source": "upstox.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "No data-centre revenue disclosure exists in any source found. The business is dominated by room air conditioning, which faced the same commodity inflation and short-summer conditions that halved Blue Star's UCP margin",
+     "source": "research check 2026-08-13"
+    }
+   ],
+   "risk": "DC cooling nascent vs its consumer-AC core where share/margin pressure dominates the story.",
+   "outlook_3m": {
+    "stance": "sideways",
+    "confidence": "low",
+    "rationale": "Reports on 14 August into the same conditions that just cut Blue Star's room-AC EBIT margin from 5.8% to 2.9%. Voltas is more RAC-weighted than Blue Star and has disclosed no offsetting data-centre business, so the read-across is unfavourable and lands within days.",
+    "catalysts": [
+     {
+      "when": "2026-08",
+      "note": "Q1 FY27 results, 14 August - direct read-across from the Blue Star RAC miss"
+     }
+    ],
+    "watch": "A Q1 print showing pricing held better than Blue Star's would invalidate the read-across.",
+    "as_of": "2026-08-13",
+    "valid_till": "2026-11-13",
+    "reviewed_at": "2026-08-13"
+   },
+   "grade_12m": {
+    "grade": "sell",
+    "conviction": "medium",
+    "evidence_strength": "none",
+    "exposure": "partial",
+    "priced_in": "beyond-delivery",
+    "valuation": {
+     "pe_ttm": 108.0,
+     "pe_note": "TTM, consolidated - on trough earnings (FY26 PAT Rs370 cr, -55.7%), so the high multiple is an earnings-trough artifact rather than a re-rating. ROE 6.1%",
+     "last": 1289.5,
+     "from_52w_hi_pct": -17.1,
+     "y1_pct": 1.47,
+     "m3_pct": 3.25,
+     "source": "screener.in unless stated; prices from yfinance",
+     "as_of": "2026-08-13"
+    },
+    "rationale": "Carries no disclosed data-centre revenue at all, so its presence in this basket is thematic association rather than evidence. It trades at 108x on trough earnings with ROE at 6.1%, and it reports tomorrow into exactly the conditions that just produced a 15% profit decline and a 12% share fall at its closest comparable. Nothing here is an AI-infrastructure holding.",
+    "changes_if": "A disclosed data-centre cooling order or segment - otherwise this should probably leave the theme.",
+    "as_of": "2026-08-13",
+    "valid_till": "2027-08-13"
+   }
+  },
+  {
+   "symbol": "CUMMINSIND",
+   "name": "Cummins India",
+   "segment": "backup",
+   "mcap_bucket": "large",
+   "exposure": "significant",
+   "fno": true,
+   "thesis": "HHP genset market leader — standard backup (and increasingly bridge) power for DCs; management calls the DC pipeline its strongest multi-year driver, with exports feeding the global genset shortage.",
+   "evidence": [
+    {
+     "date": "2026-02",
+     "note": "Q3 FY26: strong DC order pipeline; expects 3-4 more years of sector-driven growth",
+     "source": "cummins.com"
+    },
+    {
+     "date": "2025-11",
+     "note": "Q2 FY26 powergen strength on HHP genset demand incl. DCs",
+     "source": "business-standard.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "Q1 FY27: sales Rs3,375 cr (+18% YoY), domestic powergen Rs1,424 cr (+35%). PAT Rs609 cr against Rs604 cr - essentially flat",
+     "source": "investywise.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "Best data-centre revenue disclosure in the entire theme: data centres contributed 40% of overall powergen revenue and 23% of domestic powergen revenue. Management stated NO customer has requested delivery postponements for DC gensets - customers are asking for EARLIER delivery. Execution extends into FY28 and FY29",
+     "source": "cofacto.ai"
+    },
+    {
+     "date": "2026-08",
+     "note": "Managing Director Shveta Arya resigned effective 31 August 2026, successor search underway. Margin guidance cautious: gross margins will not quickly return to historical 36-37%",
+     "source": "investywise.com"
+    }
+   ],
+   "risk": "Parent allocation of export DC orders; BESS displacing diesel backup over time.",
+   "outlook_3m": {
+    "stance": "sideways",
+    "confidence": "medium",
+    "rationale": "The demand disclosure is the strongest anywhere in this basket - 40% of powergen revenue is data centres and customers want gensets sooner, not later. But profit was flat year-on-year because margins have not recovered, management explicitly guided that they will not recover quickly, and the MD leaves at the end of this month. Demand is not the constraint; conversion to profit is.",
+    "catalysts": [
+     {
+      "when": "2026-11",
+      "note": "Q2 FY27 - whether the Q2 price increase reaches the margin line"
+     },
+     {
+      "when": "2026-09",
+      "note": "MD succession announcement"
+     }
+    ],
+    "watch": "Gross margin moving back toward 36% would make this an up call immediately.",
+    "as_of": "2026-08-13",
+    "valid_till": "2026-11-13",
+    "reviewed_at": "2026-08-13"
+   },
+   "grade_12m": {
+    "grade": "hold",
+    "conviction": "medium",
+    "evidence_strength": "disclosed-revenue",
+    "exposure": "significant",
+    "priced_in": "fully",
+    "valuation": {
+     "pe_ttm": 61.0,
+     "pe_note": "TTM, consolidated. P/B 17.6x, ROCE 39.5%, payout ~70%",
+     "last": 5315.0,
+     "from_52w_hi_pct": -11.1,
+     "y1_pct": 42.25,
+     "m3_pct": 1.14,
+     "source": "screener.in unless stated; prices from yfinance",
+     "as_of": "2026-08-13"
+    },
+    "rationale": "If you want proof the India data-centre capex cycle is real and being delivered, this is the disclosure that proves it - 40% of powergen revenue, with customers pulling delivery forward. The reason it is not a buy is arithmetic: PAT was flat YoY, management has guided margins will not recover quickly, and it trades at 61x with the MD departing. Excellent demand already fully paid for.",
+    "changes_if": "Gross margin recovery showing up in Q2, or a credible MD successor being named.",
+    "as_of": "2026-08-13",
+    "valid_till": "2027-08-13"
+   }
+  },
+  {
+   "symbol": "KIRLOSENG",
+   "name": "Kirloskar Oil Engines",
+   "segment": "backup",
+   "mcap_bucket": "small",
+   "exposure": "partial",
+   "fno": false,
+   "thesis": "Leading indigenous engine/genset maker that just broke into DC power with a marquee 192 MW order — a new high-growth vertical beyond agri/industrial engines.",
+   "evidence": [
+    {
+     "date": "2026-06",
+     "note": "192 MW DC power-systems order from HyperNext for AI-ready campuses; stock hit 20% UC",
+     "source": "dsij.in"
+    },
+    {
+     "date": "2026-08",
+     "note": "Q1 FY27: standalone revenue Rs1,461 cr (+16% YoY) but standalone EBITDA margin fell 230bps to 11.2% and consolidated PAT fell 17% to Rs111 cr. International revenue -11% on Middle East disruption; employee costs +39%",
+     "source": "investing.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "On the 192 MW hyperscale data-centre order: management called it a reference point rather than an end point, with genset revenue recognition in FY27 and a 5-6 year O&M contract. No DC revenue share was disclosed",
+     "source": "finance.yahoo.com"
+    }
+   ],
+   "risk": "Single-customer concentration in the new DC vertical; competes with Cummins/Caterpillar at high HP.",
+   "outlook_3m": {
+    "stance": "sideways",
+    "confidence": "medium",
+    "rationale": "Revenue beat and profit missed - 230bps of margin erosion with employee costs up 39% and exports down 11%. The 192 MW hyperscale order is genuine and is the right kind of evidence, but management would not put a revenue share on data centres, and the Middle East disruption hitting exports has a three-to-six-month recovery horizon by their own estimate.",
+    "catalysts": [
+     {
+      "when": "2026-11",
+      "note": "Q2 FY27 - margin recovery and international normalisation"
+     },
+     {
+      "when": "2026-10",
+      "note": "192 MW order revenue recognition beginning"
+     }
+    ],
+    "watch": "International revenue recovering, which management guided within three to six months.",
+    "as_of": "2026-08-02",
+    "valid_till": "2026-11-02",
+    "reviewed_at": "2026-08-13"
+   },
+   "grade_12m": {
+    "grade": "hold",
+    "conviction": "medium",
+    "evidence_strength": "disclosed-orders",
+    "exposure": "partial",
+    "priced_in": "partly",
+    "valuation": {
+     "pe_ttm": 52.6,
+     "pe_note": "TTM, consolidated",
+     "last": 2059.9,
+     "from_52w_hi_pct": -19.5,
+     "y1_pct": 128.5,
+     "m3_pct": 21.43,
+     "source": "screener.in unless stated; prices from yfinance",
+     "as_of": "2026-08-13"
+    },
+    "rationale": "The 192 MW HyperNext order is real evidence and the O&M tail is valuable, but the quarter showed the cost of getting there - margins down 230bps, profit down 17%, exports down 11%. At 53x you are paying a growth multiple for a business whose profits fell. Cheaper and better-disclosed exposure to the same genset demand exists at Cummins.",
+    "changes_if": "Margin recovery plus a disclosed data-centre revenue share.",
+    "as_of": "2026-08-13",
+    "valid_till": "2027-08-13"
+   }
+  },
+  {
+   "symbol": "ARE&M",
+   "name": "Amara Raja Energy & Mobility",
+   "segment": "backup",
+   "mcap_bucket": "mid",
+   "exposure": "partial",
+   "fno": null,
+   "thesis": "Top-two battery maker whose industrial division (VRLA/UPS) supplies DC and telecom backup power; lithium gigafactory adds future BESS-for-DC optionality.",
+   "evidence": [
+    {
+     "date": "2025-11",
+     "note": "Q2 FY26: industrial battery (UPS/DC backup) demand growth flagged",
+     "source": "bseindia.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "Q1 FY27: consolidated revenue Rs4,215 cr (+24% YoY), PAT Rs191 cr (+16%); EBITDA margin 9.6% vs 10.7% on alloy, sulphuric acid, freight and brand costs. Shares rose ~8% on the print",
+     "source": "tradebrains.in"
+    },
+    {
+     "date": "2026-08",
+     "note": "New-energy segment revenue Rs209 cr vs Rs121 cr (+72.5%), with segment losses NARROWING to Rs22 cr from Rs35 cr. Lithium-ion still only ~5% of total. BESS facility 10 GWh targeted operational Q3 FY27; Giga Cell plant targeting 16 GW by FY30",
+     "source": "investing.com"
+    }
+   ],
+   "risk": "Weakest direct DC disclosure in this list — exposure inferred via UPS batteries; lead price and EV-transition risk.",
+   "outlook_3m": {
+    "stance": "up",
+    "confidence": "low",
+    "rationale": "The new-energy segment is finally scaling with losses narrowing rather than widening - Rs22 cr from Rs35 cr on 72% revenue growth - and the 10 GWh BESS facility is targeted operational in Q3 FY27. The market took the print up 8%. Margin compression in the core lead-acid business is the offset.",
+    "catalysts": [
+     {
+      "when": "2026-11",
+      "note": "Q3 FY27 - BESS facility becoming operational"
+     },
+     {
+      "when": "2026-10",
+      "note": "Q2 FY27 - whether new-energy losses keep narrowing"
+     }
+    ],
+    "watch": "New-energy losses widening again would remove the reason to own it.",
+    "as_of": "2026-08-13",
+    "valid_till": "2026-11-13",
+    "reviewed_at": "2026-08-13"
+   },
+   "grade_12m": {
+    "grade": "hold",
+    "conviction": "low",
+    "evidence_strength": "announced-only",
+    "exposure": "partial",
+    "priced_in": "little",
+    "valuation": {
+     "pe_ttm": 23.8,
+     "pe_note": "TTM, consolidated - the second-lowest multiple in this basket. P/B 2.14x, but ROE only 7.2%",
+     "last": 948.8,
+     "from_52w_hi_pct": -8.7,
+     "y1_pct": 0.76,
+     "m3_pct": 17.96,
+     "source": "screener.in unless stated; prices from yfinance",
+     "as_of": "2026-08-13"
+    },
+    "rationale": "Cheap at 24x with the new-energy pivot showing genuine operating leverage for the first time - losses narrowing on 72% growth is the number that matters. But the data-centre link is indirect: BESS serves grid and commercial storage, and the connection to AI infrastructure is inference rather than disclosure. Lithium is still 5% of the company against a Rs95bn capex commitment.",
+    "changes_if": "A BESS order specifically for data-centre backup, or lithium reaching 10% of revenue.",
+    "as_of": "2026-08-13",
+    "valid_till": "2027-08-13"
+   }
+  },
+  {
+   "symbol": "TEJASNET",
+   "name": "Tejas Networks",
+   "segment": "networking",
+   "mcap_bucket": "small",
+   "exposure": "partial",
+   "fno": null,
+   "thesis": "Tata-backed optical/wireless gear maker building 400G/800G DWDM and IP-MPLS for AI-cloud interconnect; near-term P&L hostage to lumpy BSNL orders.",
+   "evidence": [
+    {
+     "date": "2026-04",
+     "note": "Order book ₹1,514 cr (+49% YoY); 400G/800G roadmap 'driven by AI cloud interconnect'",
+     "source": "scanx.trade"
+    },
+    {
+     "date": "2026-07",
+     "note": "Losses persist post-BSNL 4G rollout gap (FY26 loss ₹909 cr)",
+     "source": "investing.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "No substantive news since 31 July. Q1 FY27 (27-28 July, pre-window) showed a PAT loss of Rs202 cr on Rs402 cr of revenue, with net debt of Rs4,277 cr and an order book of Rs1,529 cr",
+     "source": "research check 2026-08-13"
+    }
+   ],
+   "risk": "Revenue cliff after BSNL 4G completion; AI-interconnect revenue is roadmap, not booked.",
+   "outlook_3m": {
+    "stance": "down",
+    "confidence": "medium",
+    "rationale": "Q1 FY27 net loss widened to ~₹202 cr even as revenue doubled off a weak base; near 52-week lows after the BSNL 4G order tapered with no comparable follow-on in hand — momentum, earnings and order visibility all negative into Q2.",
+    "catalysts": [
+     {
+      "when": "Aug-Oct 2026",
+      "note": "BSNL Phase 2 / 5G tender decisions; export order wins"
+     },
+     {
+      "when": "2026-10",
+      "note": "Q2 FY27 — path to breakeven, order-book replenishment"
+     }
+    ],
+    "watch": "A large BSNL follow-on or export order sharply reverses the down call.",
+    "as_of": "2026-08-02",
+    "valid_till": "2026-11-02",
+    "reviewed_at": "2026-08-13"
+   },
+   "grade_12m": {
+    "grade": "sell",
+    "conviction": "medium",
+    "evidence_strength": "none",
+    "exposure": "partial",
+    "priced_in": "partly",
+    "valuation": {
+     "pe_ttm": null,
+     "pe_note": "No meaningful P/E - TTM net profit is negative at approximately -Rs917 cr. P/B ~3.2x on book value of Rs165, ROCE -14.6%, ROE -26.8%",
+     "last": 540.2,
+     "from_52w_hi_pct": -14.6,
+     "y1_pct": -2.63,
+     "m3_pct": 23.7,
+     "source": "screener.in unless stated; prices from yfinance",
+     "as_of": "2026-08-13"
+    },
+    "rationale": "Loss-making at the operating level with Rs4,277 cr of net debt against an Rs1,529 cr order book, and no data-centre revenue disclosed. BSNL and BharatNet order flow - the actual driver of this business - produced nothing in the window. A levered, loss-making equipment maker is the wrong vehicle for a capex theme regardless of how strong the theme is.",
+    "changes_if": "A return to operating profit, or a BharatNet award large enough to cover the debt service.",
+    "as_of": "2026-08-13",
+    "valid_till": "2027-08-13"
+   }
+  },
+  {
+   "symbol": "ITI",
+   "name": "ITI Ltd",
+   "segment": "networking",
+   "mcap_bucket": "mid",
+   "exposure": "partial",
+   "fno": false,
+   "thesis": "State-owned telecom manufacturer riding BSNL 4G/BharatNet order flow, operating its own Tier-3 DCs (Bengaluru 6 MW, Naini) as a sovereign/govt-cloud vendor.",
+   "evidence": [
+    {
+     "date": "2026-07",
+     "note": "₹856 cr BSNL 4G Phase-IX expansion order (7,613 sites)",
+     "source": "itiltd.in"
+    },
+    {
+     "date": "2026-08",
+     "note": "Strategic MoU with Airtel Business for enterprise digital transformation; the exchange separately sought clarification on news coverage of the shares",
+     "source": "screener.in"
+    },
+    {
+     "date": "2026-08",
+     "note": "India Ratings assigned BB+/Positive with the outlook revised to Positive",
+     "source": "screener.in"
+    },
+    {
+     "date": "2026-08",
+     "note": "Q1 FY27 board meeting held 13 August; results not published as of this update. The March 2026 quarter carried an outsized Rs436 cr net profit on only Rs628 cr of sales, which makes any trailing multiple unstable",
+     "source": "screener.in"
+    }
+   ],
+   "risk": "Chronically weak profitability, PSU execution; DC business tiny and government-dependent.",
+   "outlook_3m": {
+    "stance": "down",
+    "confidence": "low",
+    "rationale": "Consensus expects another Q1 FY27 loss on declining revenue; the big Q4 FY26 profit looks one-off and moves are speculative circuit-driven spikes. Loss-making PSU at a speculative valuation with no confirmed catalyst leans negative.",
+    "catalysts": [
+     {
+      "when": "Aug-Oct 2026",
+      "note": "BharatNet Phase 3 execution/order news; govt capital support"
+     },
+     {
+      "when": "2026-10",
+      "note": "Q2 FY27 — whether losses narrow"
+     }
+    ],
+    "watch": "A major BharatNet allocation or revival package triggers a circuit-driven rally and voids the down call.",
+    "as_of": "2026-08-02",
+    "valid_till": "2026-11-02",
+    "reviewed_at": "2026-08-13"
+   },
+   "grade_12m": {
+    "grade": "sell",
+    "conviction": "low",
+    "evidence_strength": "none",
+    "exposure": "partial",
+    "priced_in": "beyond-delivery",
+    "valuation": {
+     "pe_ttm": null,
+     "pe_note": "Not usable. Screener leaves P/E blank (implying negative TTM earnings on its basis) while stockanalysis quoted 94.06 a month ago. P/B 14.9x, ROCE 1.43%, ROE -9.13%",
+     "last": 281.4,
+     "from_52w_hi_pct": -21.1,
+     "y1_pct": -3.4,
+     "m3_pct": -1.0,
+     "source": "screener.in unless stated; prices from yfinance",
+     "as_of": "2026-08-13"
+    },
+    "rationale": "ROE of -9.1% and ROCE of 1.4% at 14.9x book, with a trailing profit figure so distorted by a one-off that no source agrees on a P/E. The Airtel MoU is a positive but carries no disclosed value, and the credit rating is still sub-investment grade at BB+. There is no data-centre revenue here at all.",
+    "changes_if": "Q1 FY27 results showing sustainable operating profit, or the Airtel MoU being quantified.",
+    "as_of": "2026-08-13",
+    "valid_till": "2027-08-13"
+   }
+  },
+  {
+   "symbol": "LT",
+   "name": "Larsen & Toubro",
+   "segment": "epc",
+   "mcap_bucket": "large",
+   "exposure": "partial",
+   "fno": true,
+   "thesis": "Dominant EPC builds hyperscale DC shells/power/cooling end-to-end AND owns its own DC + AI-cloud business (Cloudfiniti / L&T-Vyoma) with an NVIDIA partnership for GW-scale AI infrastructure.",
+   "evidence": [
+    {
+     "date": "2025-10",
+     "note": "NVIDIA partnership for AI/GPU cloud and hyperscale AI DC infrastructure in India",
+     "source": "datacentremagazine.com"
+    },
+    {
+     "date": "2026-02",
+     "note": "Gujarat agreement with L&T-Vyoma for an AI data centre at Dholera",
+     "source": "newsonair.gov.in"
+    },
+    {
+     "date": "2026-08",
+     "note": "Won an order worth Rs10,000-15,000 cr ($1.05-1.57bn) from Together AI to build an NVIDIA B300 AI Factory at its Chennai campus - 10,000 B300 GPUs, described as the largest such deployment in India. Phase 1 is 250 MW with 150 MVA power readiness, on a site designed for gigawatt-scale expansion",
+     "source": "business-standard.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "Ultra-mega offshore order from ADNOC (L&T classifies ultra-mega as above Rs15,000 cr) and major offshore orders from ONGC, reported at up to Rs10,000 cr",
+     "source": "larsentoubro.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "Sold its data-centre business to Vyoma.AI for Rs1,400 cr as internal restructuring ahead of the AI-infra push; date approximate",
+     "source": "scanx.trade"
+    }
+   ],
+   "risk": "DC/AI is a small slice of a giant order book; GPU-cloud venture carries obsolescence risk.",
+   "outlook_3m": {
+    "stance": "up",
+    "confidence": "medium",
+    "rationale": "Three large orders inside two weeks, one of them the single biggest AI-infrastructure contract awarded to an Indian company. The Together AI order converts L&T from an EPC contractor near the theme into a named principal in it, and the Chennai site is designed for gigawatt expansion beyond phase 1.",
+    "catalysts": [
+     {
+      "when": "2026-10",
+      "note": "Q2 FY27 - order inflow including the AI Factory"
+     },
+     {
+      "when": "2027-03",
+      "note": "AI Factory phase 1 execution milestones"
+     }
+    ],
+    "watch": "Together AI is a single counterparty for a very large order - counterparty funding is the risk to watch.",
+    "as_of": "2026-08-13",
+    "valid_till": "2026-11-13",
+    "reviewed_at": "2026-08-13"
+   },
+   "grade_12m": {
+    "grade": "buy",
+    "conviction": "medium",
+    "evidence_strength": "disclosed-orders",
+    "exposure": "partial",
+    "priced_in": "little",
+    "valuation": {
+     "pe_ttm": 31.4,
+     "pe_note": "TTM, consolidated. Note Q1 PAT is reported three different ways across outlets - Rs3,926 cr, Rs4,123 cr and Rs4,988 cr - and I could not resolve which is right",
+     "last": 4070.7,
+     "from_52w_hi_pct": -7.0,
+     "y1_pct": 11.79,
+     "m3_pct": 4.92,
+     "source": "screener.in unless stated; prices from yfinance",
+     "as_of": "2026-08-13"
+    },
+    "rationale": "At 31x with a Rs7.78 lakh cr order book, this is the one way to hold the AI-infra build where a disappointment does not break the thesis - hydrocarbon, infrastructure and defence carry it regardless. The Together AI award adds a genuine, named, gigawatt-scale AI franchise on top, at a multiple less than a quarter of what the pure-plays cost. Diversification is the whole argument.",
+    "changes_if": "AI Factory execution slipping, or the Together AI counterparty running into funding trouble.",
+    "as_of": "2026-08-13",
+    "valid_till": "2027-08-13"
+   }
+  }
+ ],
+ "excluded_watch": [
+  {
+   "name": "Sify Technologies",
+   "why": "NASDAQ ADR only — not investible on NSE/BSE. $5bn AI-DC expansion plan; DC arm IPO/spin-off in progress (2026-07)."
+  },
+  {
+   "name": "Yotta (Hiranandani), CtrlS, AdaniConneX, NTT India, Princeton Digital Group",
+   "why": "Unlisted DC operators — visible as customers/competitors in the evidence chain, not investible directly."
+  }
+ ],
+ "disclaimer": "Curated research snapshot (web sources, compiled 2026-07-31, refreshed 2026-08-13), NOT investment advice and not a recommendation to buy or sell any security. Market-cap buckets and exposure ratings are editorial. The 12-month grades are judgment calls built from the three inputs recorded in each grade_12m block - read those inputs and disagree with them rather than reading the grade alone. Valuation multiples are trailing, collected 2026-08-12/13, and several are distorted by one-off income or trough earnings as noted per name. EV/EBITDA and forward P/E were unavailable on free sources for essentially the whole list.",
+ "outlook_note": "3-month directional leans (up / sideways / down) are JUDGMENT CALLS assembled from momentum, catalysts and valuation - priors with low/medium/high conviction, not validated predictions (per the framework: this platform explains and manages hypotheses; daily/quarterly directional accuracy is unmeasured). Reviewed 2026-08-13 against Q1 FY27 results and the August news flow: 20 of 38 stances were revised and carry the new date; the other 18 keep their 2026-08-02 as_of so the original call stays checkable against realized price. Every lean carries a 'watch' condition that would change it. Not investment advice.",
+ "grading_note": "grade_12m is a 12-month judgment call, not a model output and not investment advice. It is assembled from three named inputs, each stored so you can disagree with the weighting: (1) evidence_strength - disclosed-revenue (company quantifies DC revenue or share) > disclosed-orders (named DC contracts with values) > announced-only (capacity or intent, no contracted revenue) > none (thematic association only); (2) the existing exposure field - pure-play / significant / partial; (3) priced_in - little / partly / fully / beyond-delivery, from trailing P/E, distance from the 52-week high and the one-year move. Valuation figures are trailing and were collected 2026-08-12/13, mostly from screener.in; where two sources disagreed materially the conflict is recorded in pe_note rather than silently resolved. EV/EBITDA and forward P/E were UNAVAILABLE for essentially every name on free sources, so the multiple used is trailing P/E - which is distorted for any company with large one-off other income (ABB, DIXON, VINDHYATEL) or a trough/negative earnings base (VOLTAS, E2E, TEJASNET, ITI). Those distortions are named in pe_note. Grades are valid to 2027-08-13 and are stale after.",
+ "hypothesis_links": [
+  {
+   "hypothesis": "H1",
+   "symbol": "CUMMINSIND",
+   "role": "supporting",
+   "weight": "load-bearing",
+   "claim": "Data centres = 40% of powergen revenue, 23% of domestic powergen; no customer has asked to postpone a DC genset — they want earlier delivery"
+  },
+  {
+   "hypothesis": "H1",
+   "symbol": "BLUESTARCO",
+   "role": "supporting",
+   "weight": "load-bearing",
+   "claim": "~Rs1,500 cr of DC MEP order inflow in a single quarter against a ~Rs3,000 cr FY27 target"
+  },
+  {
+   "hypothesis": "H1",
+   "symbol": "POWERINDIA",
+   "role": "supporting",
+   "weight": "load-bearing",
+   "claim": "560 MVA power plus 800 MVA dry-type transformers named explicitly for DC projects; customer mix moved from 96% utilities to 38%"
+  },
+  {
+   "hypothesis": "H1",
+   "symbol": "LT",
+   "role": "supporting",
+   "weight": "load-bearing",
+   "claim": "Rs10,000-15,000 cr NVIDIA B300 AI Factory order from Together AI — 10,000 GPUs, 250 MW phase 1"
+  },
+  {
+   "hypothesis": "H1",
+   "symbol": "BBOX",
+   "role": "supporting",
+   "weight": "load-bearing",
+   "claim": "Order backlog +83% YoY to Rs8,986 cr including a first $131mn US Tier-1 hyperscaler DC win"
+  },
+  {
+   "hypothesis": "H1",
+   "symbol": "ABB",
+   "role": "supporting",
+   "weight": "minor",
+   "claim": "Electrification orders +77% YoY on data centres; management expects DC demand to strain supply in 2027-2028"
+  },
+  {
+   "hypothesis": "H1",
+   "symbol": "STLTECH",
+   "role": "contradicting",
+   "weight": "minor",
+   "claim": "Fell to a 5% lower circuit on a single Broadcom guidance headline (8 Jun 2026) — the theme has high beta to US AI sentiment with no domestic buffer"
+  },
+  {
+   "hypothesis": "H1",
+   "symbol": "HFCL",
+   "role": "contradicting",
+   "weight": "minor",
+   "claim": "Same 8 Jun 2026 lower circuit — evidence the India basket trades on US AI sentiment rather than India demand"
+  },
+  {
+   "hypothesis": "H1",
+   "symbol": "NETWEB",
+   "role": "contradicting",
+   "weight": "minor",
+   "claim": "-8.3% on 8 Jun 2026 on the same US headline"
+  },
+  {
+   "hypothesis": "H1",
+   "symbol": "ANANTRAJ",
+   "role": "contradicting",
+   "weight": "minor",
+   "claim": "-5.7% on 8 Jun 2026 on the same US headline"
+  },
+  {
+   "hypothesis": "H2",
+   "symbol": "CUMMINSIND",
+   "role": "supporting",
+   "weight": "load-bearing",
+   "claim": "A supplier quantifying DC revenue while operators still cannot"
+  },
+  {
+   "hypothesis": "H2",
+   "symbol": "BLUESTARCO",
+   "role": "supporting",
+   "weight": "load-bearing",
+   "claim": "Supplier booking DC orders at scale today, ahead of any operator's revenue"
+  },
+  {
+   "hypothesis": "H2",
+   "symbol": "POWERINDIA",
+   "role": "supporting",
+   "weight": "load-bearing",
+   "claim": "Supplier with named DC orders and a record backlog"
+  },
+  {
+   "hypothesis": "H2",
+   "symbol": "ANANTRAJ",
+   "role": "supporting",
+   "weight": "load-bearing",
+   "claim": "Operator adds only 35 MW of IT load in FY27 against a 357 MW FY32 target — the ramp is slow and capital-hungry"
+  },
+  {
+   "hypothesis": "H2",
+   "symbol": "TECHNOE",
+   "role": "supporting",
+   "weight": "load-bearing",
+   "claim": "Operator guided ~Rs1,000 cr of DC capex against just Rs40-50 cr of FY27 DC revenue"
+  },
+  {
+   "hypothesis": "H2",
+   "symbol": "RAILTEL",
+   "role": "supporting",
+   "weight": "minor",
+   "claim": "Operator guides ~Rs300 cr FY27 DC revenue with the 10 MW Noida facility not commissioning until May 2027"
+  },
+  {
+   "hypothesis": "H2",
+   "symbol": "ANANTRAJ",
+   "role": "contradicting",
+   "weight": "minor",
+   "claim": "Demerger into a separately listed Ashok Cloud may re-rate the operator faster than any supplier"
+  },
+  {
+   "hypothesis": "H2",
+   "symbol": "POLYCAB",
+   "role": "contradicting",
+   "weight": "load-bearing",
+   "claim": "A 'picks and shovels' name that has never quantified any DC revenue — the category does not guarantee exposure"
+  },
+  {
+   "hypothesis": "H2",
+   "symbol": "KEI",
+   "role": "contradicting",
+   "weight": "load-bearing",
+   "claim": "Only quantification is a multi-year sector OPPORTUNITY of Rs2,500-3,000 cr, not revenue"
+  },
+  {
+   "hypothesis": "H2",
+   "symbol": "RRKABEL",
+   "role": "contradicting",
+   "weight": "minor",
+   "claim": "No DC disclosure of any kind, yet carries an AI-infra multiple"
+  },
+  {
+   "hypothesis": "H2",
+   "symbol": "FINCABLES",
+   "role": "contradicting",
+   "weight": "minor",
+   "claim": "Management credits agriculture, industrial and solar — data centres are not mentioned at all"
+  },
+  {
+   "hypothesis": "H3",
+   "symbol": "STLTECH",
+   "role": "supporting",
+   "weight": "load-bearing",
+   "claim": "Hit a 5% upper circuit on 5 Aug 2026 explicitly on the draft FCC ban on Chinese optical transceivers"
+  },
+  {
+   "hypothesis": "H3",
+   "symbol": "HFCL",
+   "role": "supporting",
+   "weight": "load-bearing",
+   "claim": "Same 5% upper circuit on the same draft US measure, on the same day"
+  },
+  {
+   "hypothesis": "H3",
+   "symbol": "BBOX",
+   "role": "contradicting",
+   "weight": "load-bearing",
+   "claim": "Its move is explained by its own 12-13 Aug results and a named hyperscaler order, not by the FCC story"
+  },
+  {
+   "hypothesis": "H3",
+   "symbol": "TDPOWERSYS",
+   "role": "contradicting",
+   "weight": "load-bearing",
+   "claim": "Moved on a 12 Aug results beat and guidance raise, both company-specific"
+  },
+  {
+   "hypothesis": "H3",
+   "symbol": "POWERINDIA",
+   "role": "contradicting",
+   "weight": "minor",
+   "claim": "Record backlog and DC order disclosure on 7 Aug is India-side evidence inside the same window"
+  },
+  {
+   "hypothesis": "H3",
+   "symbol": "FINCABLES",
+   "role": "contradicting",
+   "weight": "minor",
+   "claim": "+15.7% on an 11 Aug earnings beat with no US or DC linkage at all"
+  },
+  {
+   "hypothesis": "H4",
+   "symbol": "KAYNES",
+   "role": "supporting",
+   "weight": "load-bearing",
+   "claim": "Its own Q1 deck states AI and data-centre demand crowds out memory and wafer capacity; revenue +40.5% while PAT fell 24.4%"
+  },
+  {
+   "hypothesis": "H4",
+   "symbol": "DIXON",
+   "role": "supporting",
+   "weight": "load-bearing",
+   "claim": "Cost of materials rose to 94.2% of revenue on higher memory chip prices; revenue +21% but adjusted PAT -3%"
+  },
+  {
+   "hypothesis": "H4",
+   "symbol": "NETWEB",
+   "role": "contradicting",
+   "weight": "load-bearing",
+   "claim": "Assembles AI systems and shows the opposite pattern — AI systems revenue +484% YoY — so 'electronics assembly' is not one category"
+  },
+  {
+   "hypothesis": "H4",
+   "symbol": "KAYNES",
+   "role": "contradicting",
+   "weight": "minor",
+   "claim": "OSAT and PCB are a genuine long-term semiconductor play; they simply produce no commercial revenue until Q3 FY27"
+  },
+  {
+   "hypothesis": "H5",
+   "symbol": "POWERGRID",
+   "role": "supporting",
+   "weight": "load-bearing",
+   "claim": "FY27 capex guidance Rs37,000 cr with Q1 capitalisation more than 3x YoY, works-in-hand Rs1.75 lakh cr, bidding pipeline over Rs1.19 lakh cr"
+  },
+  {
+   "hypothesis": "H5",
+   "symbol": "ADANIGREEN",
+   "role": "supporting",
+   "weight": "load-bearing",
+   "claim": "Grid curtailment already cut Q1 EBITDA by 5-7% — the constraint showing up in reported numbers"
+  },
+  {
+   "hypothesis": "H5",
+   "symbol": "TATAPOWER",
+   "role": "supporting",
+   "weight": "minor",
+   "claim": "Acquiring transmission SPVs (Ryapte, ~250 km on a Rs3,200 cr BOOT project) as evacuation capacity becomes the bottleneck"
+  },
+  {
+   "hypothesis": "H5",
+   "symbol": "POWERGRID",
+   "role": "contradicting",
+   "weight": "minor",
+   "claim": "Its own Q1 PAT fell 0.9% on tariff-order timing, so the capex cycle is not yet reaching earnings"
+  },
+  {
+   "hypothesis": "H5",
+   "symbol": "POWERINDIA",
+   "role": "contradicting",
+   "weight": "minor",
+   "claim": "Flagged transmission and rail/metro order timing slippage for H1 FY27"
+  }
+ ],
+ "hypothesis_links_note": "Flat edge list, not nested — the same company legitimately appears on both sides of one hypothesis (ANANTRAJ supports and contradicts H2; POWERGRID and KAYNES each counter the hypothesis they most support) and in several at once. weight='load-bearing' means the hypothesis materially weakens if that claim fails; 'minor' is corroborating detail. Read the both-sides entries first — they are where the thesis is actually thin."
+}

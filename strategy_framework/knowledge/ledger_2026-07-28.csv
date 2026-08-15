@@ -1,0 +1,16 @@
+date,ckpt_ist,spot,straddle,coverage,straddle_chg_vs_1000_pct,book,book_pnl_inr,breached_shorts,action,detail
+2026-07-22,10:00,24015.0,322.8,0.06,0.0,flat,,,STAND ASIDE,familiarity 21%<40
+2026-07-22,13:00,23998.0,314.1,0.8,-2.7,flat,,,—,
+2026-07-22,15:20,23996.0,305.1,0.8,-5.5,flat,,,—,
+2026-07-23,10:00,23941.0,266.5,0.19,0.0,straddle,-340.0,P23950,ENTER straddle,fam 45% regime compression | legs C23950@131.45 P23950@135.1
+2026-07-23,13:00,23849.0,266.9,0.71,0.1,straddle,-1357.0,P23950,HOLD,breach but no trend confirm — do not chase
+2026-07-23,15:20,23767.0,279.3,1.04,4.8,straddle,92.0,P23950,DEFEND (sided) | NIGHT-FLAG,breach + trend-expansion confirmed
+2026-07-24,10:00,23645.0,263.6,0.69,0.0,straddle,-5839.0,P23950,STAND ASIDE,familiarity 11%<40
+2026-07-24,13:00,23795.0,244.9,0.49,-7.1,straddle,-35.0,P23950,HOLD,breach but no trend confirm — do not chase
+2026-07-24,15:20,23767.0,238.2,1.22,-9.6,straddle,684.0,P23950,HOLD | HOLD NIGHT,breach but no trend confirm — do not chase
+2026-07-27,10:00,23929.0,152.3,0.24,0.0,straddle+strangle,6746.0,P23950,ENTER strangle,fam 40% regime compression | legs C24000@49.8 P23900@58.35
+2026-07-27,13:00,23949.0,133.0,0.46,-12.7,straddle+strangle,9141.0,P23950,HOLD,breach but no trend confirm — do not chase
+2026-07-27,15:20,23985.0,125.5,0.15,-17.6,straddle+strangle,8088.0,C23950,HOLD | HOLD NIGHT,breach but no trend confirm — do not chase
+2026-07-28,10:00,24011.0,75.8,0.18,0.0,straddle+strangle,14575.0,"C23950,C24000",NO NEW ENTRY,expiry day (pin-risk gate)
+2026-07-28,13:00,24005.0,52.3,0.11,-31.0,straddle+strangle,16941.0,"C23950,C24000",HOLD,breach but no trend confirm — do not chase
+2026-07-28,15:20,23985.0,13.0,1.4,-82.8,straddle+strangle,21378.0,C23950,SETTLE ₹+21378,expiry intrinsic

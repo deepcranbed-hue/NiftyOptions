@@ -389,6 +389,212 @@ def merge_symbols(db, old, new, timeframe, dry=True, tol=0.002):
     con.close()
 
 
+from daily_bars import PLAUSIBLE_1M_FLOOR   # defined once, beside SYMBOL_EXCHANGE
+
+
+def drop_implausible_1m(db, dry=True, symbols=None):
+    """Delete 1m bars too cheap to be the instrument they are filed under.
+
+    Deleted, not moved to a quarantine symbol: an option series stored under any
+    name is still an option series in a table of commodity prices, and the next
+    person to glob the symbol list finds it.
+
+    Rows are written to a CSV beside the database first. That is not a hedge against
+    the criterion being wrong — it is that 8,402 rows is too many to reconstruct if
+    it is.
+    """
+    import csv as _csv
+    con = sqlite3.connect(db)
+    total = 0
+    for sym, floor in sorted(PLAUSIBLE_1M_FLOOR.items()):
+        if symbols and sym not in symbols:
+            continue
+        rows = con.execute(
+            "select rowid, exchange, ts, open, high, low, close, volume, open_interest "
+            "from price_bars where symbol=? and timeframe='1m' and close < ? "
+            "order by ts", (sym, floor)).fetchall()
+        if not rows:
+            continue
+        kept = con.execute(
+            "select count(*) from price_bars where symbol=? and timeframe='1m' "
+            "and close >= ?", (sym, floor)).fetchone()[0]
+        print(f"{sym}: {len(rows):,} bars below {floor:,} "
+              f"({rows[0][2]} .. {rows[-1][2]}), {kept:,} plausible bars remain")
+        if dry:
+            print(f"   dry-run — nothing deleted")
+            total += len(rows)
+            continue
+        out = os.path.join(os.path.dirname(os.path.abspath(db)),
+                           f"{sym}_1m_implausible_dropped.csv")
+        with open(out, "w", newline="") as f:
+            w = _csv.writer(f)
+            w.writerow(["exchange", "ts", "open", "high", "low", "close",
+                        "volume", "open_interest"])
+            w.writerows(r[1:] for r in rows)
+        # by rowid: a predicate omitting `exchange` cannot use the index, which is
+        # keyed leftmost on it, and full-scans a 300MB+ table instead.
+        con.executemany("delete from price_bars where rowid=?",
+                        [(r[0],) for r in rows])
+        con.commit()
+        print(f"   deleted {len(rows):,}; saved to {out}")
+        total += len(rows)
+    con.close()
+    if not total:
+        print("No implausible 1m bars found.")
+    return total
+
+
+
+# Products whose DAILY bars are only meaningful when the contract traded.
+UNTRADED_1D_SYMBOLS = ["GOLD", "SILVER", "COPPER", "CRUDEOIL_MCX"]
+
+
+def drop_untraded_1d(db, dry=True, symbols=None, min_volume=0):
+    """Delete daily bars on MCX products where nothing traded.
+
+    MCX carries the previous price forward on a day with no trade, so an untraded
+    session still produces a bar. It is a MARK, not a price, and a return computed
+    across two marks is noise wearing the shape of data.
+
+    Measured, not assumed. CRUDEOIL_MCX daily begins 2026-02-20 on a contract nobody
+    had traded yet — February and March are 100% zero-volume — and those 26 bars
+    dragged its correlation with WTI from +0.985 down to +0.558:
+
+        from 2026-02-20  +0.558      Feb  100% zero-volume
+        from 2026-05-01  +0.903      Mar  100% zero-volume
+        from 2026-06-01  +0.974      Jun  median volume 1,816
+        from 2026-06-29  +0.985      Aug  median volume 65,554
+
+    A backtest over that window is not measuring the market.
+
+    DAILY ONLY, DELIBERATELY. A zero-volume MINUTE is ordinary even in a liquid
+    contract — no trade in that particular minute — and dropping those would shred
+    the intraday series that algo work depends on. At daily scale, a whole session
+    with no trade means the contract was not live yet.
+
+    Contract series (GOLD_2026-10-05 and friends) are left untouched: they are the
+    raw record of what the exchange published, and continuous.py already excludes
+    untraded bars when deriving. Raw stays raw; the derived series is the clean one.
+    """
+    import csv as _csv
+    con = sqlite3.connect(db)
+    total = 0
+    for sym in (symbols or UNTRADED_1D_SYMBOLS):
+        # `volume = 0` alone is too narrow. SILVER's apparent 40% one-day crash sits
+        # between a 3-lot print and an 8-lot print — both technically trades, neither
+        # a price anyone could have transacted size at. So the cut is a threshold,
+        # and the dry run shows what each one costs rather than picking for you.
+        if dry:
+            dist = con.execute(
+                "select sum(coalesce(volume,0) = 0), sum(coalesce(volume,0) between 1 and 9), "
+                "sum(coalesce(volume,0) between 10 and 99), sum(coalesce(volume,0) >= 100), "
+                "count(*) from price_bars where symbol=? and timeframe='1d'",
+                (sym,)).fetchone()
+            print(f"{sym}: {dist[4]:,} daily bars —  0 vol: {dist[0]:,}   "
+                  f"1-9: {dist[1]:,}   10-99: {dist[2]:,}   100+: {dist[3]:,}")
+        rows = con.execute(
+            "select rowid, exchange, ts, open, high, low, close, volume, open_interest "
+            "from price_bars where symbol=? and timeframe='1d' "
+            "and coalesce(volume, -1) >= 0 and coalesce(volume, 0) <= ? "
+            "order by ts", (sym, min_volume)).fetchall()
+        kept = con.execute(
+            "select count(*) from price_bars where symbol=? and timeframe='1d' "
+            "and (volume is null or volume > ?)", (sym, min_volume)).fetchone()[0]
+        if not rows:
+            print(f"   nothing at or below volume {min_volume} ({kept:,} bars kept)")
+            continue
+        print(f"   at min_volume={min_volume}: drop {len(rows):,} bars "
+              f"({rows[0][2][:10]} .. {rows[-1][2][:10]}), {kept:,} traded bars remain")
+        if dry:
+            print("   dry-run — nothing deleted")
+            total += len(rows)
+            continue
+        out = os.path.join(os.path.dirname(os.path.abspath(db)),
+                           f"{sym}_1d_untraded_dropped.csv")
+        with open(out, "w", newline="") as f:
+            w = _csv.writer(f)
+            w.writerow(["exchange", "ts", "open", "high", "low", "close",
+                        "volume", "open_interest"])
+            w.writerows(r[1:] for r in rows)
+        con.executemany("delete from price_bars where rowid=?", [(r[0],) for r in rows])
+        con.commit()
+        print(f"   deleted {len(rows):,}; saved to {out}")
+        total += len(rows)
+    con.close()
+    return total
+
+
+
+def wipe_legacy_commodities(db, dry=True, symbols=None):
+    """Delete the MCX product series outright, so they can only be re-derived.
+
+    WHAT THIS DELETES: every row under GOLD, SILVER, COPPER and CRUDEOIL_MCX, both
+    timeframes. NOT the per-contract series (GOLD_2026-10-05 and friends), NOT the
+    USD series, NOT USDINR or GIFTNIFTY.
+
+    WHY IT IS SAFE NOW, HAVING NOT BEEN EARLIER
+    -------------------------------------------
+    The argument against was a year of unrecoverable history. Measuring it removed
+    the argument:
+
+      * most of it never traded. GOLD had 72 zero-volume daily bars and 55 more
+        under 10 lots; SILVER 77 and 64. Its famous 40% one-day "crash" was a 3-lot
+        print followed by an 8-lot print on a contract nobody was trading.
+      * what remained was an unlabelled splice across contracts, so returns across
+        every roll were carry rather than market.
+      * the long clean history now lives in GOLD_USD / SILVER_USD / COPPER_USD —
+        2,162 daily bars each from Yahoo, rolled and back-adjusted, 2018 onward.
+
+    So this deletes roughly four months of genuinely traded Indian daily bars, and
+    replaces them with a series that is short but true. Everything written from here
+    is contract-labelled, front-month only, volume-filtered and ratio-adjusted.
+
+    AFTER THIS, RUN continuous.py FOR BOTH TIMEFRAMES. Until you do, these symbols
+    are empty — that is deliberate. An empty series is visibly empty; a stale one
+    looks fine.
+    """
+    import csv as _csv
+    targets = symbols or ["GOLD", "SILVER", "COPPER", "CRUDEOIL_MCX"]
+    con = sqlite3.connect(db)
+    total = 0
+    for sym in targets:
+        rows = con.execute(
+            "select rowid, exchange, symbol, timeframe, ts, open, high, low, close, "
+            "volume, open_interest from price_bars where symbol=? order by timeframe, ts",
+            (sym,)).fetchall()
+        if not rows:
+            print(f"{sym}: already empty")
+            continue
+        by_tf = {}
+        for r in rows:
+            by_tf.setdefault(r[3], []).append(r)
+        desc = ", ".join(f"{tf} {len(v):,} bars {v[0][4][:10]}..{v[-1][4][:10]}"
+                         for tf, v in sorted(by_tf.items()))
+        print(f"{sym}: {desc}")
+        if dry:
+            total += len(rows)
+            continue
+        out = os.path.join(os.path.dirname(os.path.abspath(db)),
+                           f"{sym}_legacy_wiped.csv")
+        with open(out, "w", newline="") as f:
+            w = _csv.writer(f)
+            w.writerow(["exchange", "symbol", "timeframe", "ts", "open", "high",
+                        "low", "close", "volume", "open_interest"])
+            w.writerows(r[1:] for r in rows)
+        con.executemany("delete from price_bars where rowid=?", [(r[0],) for r in rows])
+        con.commit()
+        print(f"   deleted {len(rows):,}; saved to {out}")
+        total += len(rows)
+    con.close()
+    if dry:
+        print(f"\n{total:,} rows would be deleted. Contract series are untouched.")
+    else:
+        print(f"\n{total:,} rows deleted. NOW REBUILD:")
+        print("   python data_agent/fetching/continuous.py --apply")
+        print("   python data_agent/fetching/continuous.py --timeframe 1m --apply")
+    return total
+
+
 MERGES = [
     # (old, new, timeframe) — verified supersets with identical values, 2026-08-08
     ("CNXIT", "NIFTYIT", "1m"),
@@ -408,6 +614,18 @@ def main():
                          "(minute bars written with timeframe='1d')")
     ap.add_argument("--fold-ts", action="store_true",
                     help="collapse symbols carrying two ts spellings onto the canonical one")
+    ap.add_argument("--drop-implausible-1m", action="store_true",
+                    help="delete 1m bars too cheap to be their own instrument "
+                         "(a wrong MCX key returning option premium)")
+    ap.add_argument("--min-volume", type=int, default=0,
+                    help="with --drop-untraded-1d: drop daily bars at or below this "
+                         "volume (0 = only genuinely untraded)")
+    ap.add_argument("--wipe-legacy-commodities", action="store_true",
+                    help="delete GOLD/SILVER/COPPER/CRUDEOIL_MCX entirely so they "
+                         "can only be re-derived from contract series")
+    ap.add_argument("--drop-untraded-1d", action="store_true",
+                    help="delete MCX daily bars where volume is 0 (carried-forward "
+                         "marks, not trades)")
     ap.add_argument("--fold-exchange", action="store_true",
                     help="collapse symbols stored under two exchanges onto one")
     args = ap.parse_args()
@@ -432,6 +650,24 @@ def main():
         if not args.apply:
             print("\n--dry-run (default). Re-run with --apply to write.")
         return
+    if args.drop_implausible_1m:
+        drop_implausible_1m(db, dry=not args.apply)
+        if not args.apply:
+            print("\nDry run. Re-run with --apply to delete.")
+        return
+
+    if args.wipe_legacy_commodities:
+        wipe_legacy_commodities(db, dry=not args.apply)
+        if not args.apply:
+            print("Dry run. Re-run with --apply to delete.")
+        return
+
+    if args.drop_untraded_1d:
+        drop_untraded_1d(db, dry=not args.apply, min_volume=args.min_volume)
+        if not args.apply:
+            print("\nDry run. Re-run with --apply to delete.")
+        return
+
     if args.fold_exchange:
         fold_forked_exchange(db, dry=not args.apply)
         if not args.apply:

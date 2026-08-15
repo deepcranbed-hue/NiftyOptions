@@ -20,6 +20,15 @@ Translates the pipeline's final synthesized view into actionable parameters.
 - **Comparison:** Renders `pipelineRes.comparison` to contrast the sentiment regime with the options structure.
 - **Suggestion:** Renders `pipelineRes.suggestion` (e.g., specific spread recommendations).
 - **RND Context:** Renders `pipelineRes.rnd` outputs including standard deviation, skew, and probabilities (below/above spot).
+- **Leg Execution Matrix (Custom Strikes):** Exposes `<select>` dropdowns for every leg, injected dynamically with strikes from the chain. Mutating a strike automatically pipes through `evaluateStrategyMetrics` to rebuild the P&L curve, max profit, and max loss dynamically in real-time.
+
+### Strategy Desk / Backtest (`DeskStrategyView.tsx`)
+A separate view driven by the `strategy_framework` subsystem (not the news pipeline), talking to `/api/strategy/*`. Two controls added here map straight onto backtest params:
+- **Cost-edge gate (1σ ÷ round-trip cost):** dropdown (Off / 1× / 1.5× / 2× / 3×) → `min_edge_cost_mult`. Stands a trade aside if the expected 1σ move can't clear N× the round-trip cost.
+- **MPS0 max-profit benchmark:** dropdown (Off / Gross / Net) → `mps_benchmark`. Descriptive/PRIOR-only perfect-hindsight ceiling.
+- **Capture% chip:** results render `metrics.capture_pct` (with `mps0_basis`) as an "MPS0 capture" chip — % of the max-profit ceiling achieved.
+
+Behaviour and math are owned by the framework docs — see [strategy_framework/SKILL.md](../strategy_framework/SKILL.md); do not re-derive here.
 
 ### Global Cues Tab
 A standalone contextual region.

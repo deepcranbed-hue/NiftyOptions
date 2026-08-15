@@ -1,0 +1,5 @@
+{
+  "_README": "Integration hook for your NiftyOptions quant stack. Add one key per signal, each an object with a 'lean' (label) and a 'score' from -1 (bearish) to +1 (bullish). market_scan.py's load_external_signals() reads this file and folds every entry that has a 'score' into the Signal Scoreboard's combined score. Entries WITHOUT a 'score' (like this _README and the _example_* keys) are ignored, so the file is inert until you add real signals. Replace the examples with values written by your quant pipeline (option chain, momentum, VRP, IC/hit-ratio, RND, VWAP, etc.).",
+  "_example_Option chain": {"lean": "Bullish", "how_to_activate": "rename key to 'Option chain' and add: \"score\": 0.28"},
+  "_example_Momentum": {"lean": "Bearish", "how_to_activate": "add: \"score\": -0.41"}
+}

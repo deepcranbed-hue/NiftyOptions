@@ -1,0 +1,138 @@
+{
+ "as_of": "2026-08-13",
+ "headline": "CLOSE 24,395.85, down 40 points (-0.16%) — and that number hides the day. Nifty bottomed at 24,311 and recovered 84 points to close 70% of the way up its range, with breadth POSITIVE at 28 up / 22 down. The average stock rose (+0.09% equal-weighted) while the index fell (-0.13% cap-weighted): this was not a decline, it was heavyweight financials outvoting everything else.",
+ "structure": "One sector did all the damage. Financial Services, 34.75% of the index, took -53.1 points on its own — more than the entire 40-point fall — through ICICI Bank (-1.74%, -35.3 pts), HDFC Bank (-0.55%, -15.6) and Axis (-0.67%, -5.1). Every other large block was positive: FMCG +21.0 points, Automobile +12.8, IT +11.4, Construction +11.1. The Tata complex, which led the previous two sessions down, REBOUNDED +18.1 points — TCS +1.08% (+10.5 pts, second-biggest positive contributor on the day), Tata Consumer +2.69%, Tata Motors +1.92%. Reliance closed -0.90% (-20.3 pts) after being down 1.49% intraday. Across three sessions the index is still -188 points (-0.76%), and there the damage IS broad: financials -77.6, IT -29.3, FMCG -18.5, Metals -17.0, Cement -16.2. IMPORTANT: the 'recovery' into the close was mostly the CLOSING AUCTION, not trading — the continuous session ended at 15:15 on 24,353.35, and the auction printed 24,395.85, adding +42.5 points in one tick. Without it the day was -82.6, not -40.1. India VIX fell again to 11.39, -2.40% on the day and -7.62% over the three sessions — implied volatility has now fallen through the entire decline.",
+ "drivers": [
+  {
+   "rank": 1,
+   "role": "primary drag",
+   "title": "Financials were the whole decline — ICICI Bank alone was 88% of it",
+   "detail": "Financial Services contributed -53.1 index points against a total index fall of 40.1, meaning every other sector combined was net positive. ICICI Bank -1.74% is -35.3 points on its own; HDFC Bank -0.55% is -15.6; Axis -0.67% is -5.1; SBI Life -0.98%. Against that, SBI was +0.09% and Jio Financial held its gains. Over three sessions financials are -77.6 points of the -188 total. This is a weight story, not a breadth story: at 34.75% of the index, financials moving -0.4% outvotes 40 other names moving up. Nothing in the news cache attributes the ICICI move to a company-specific item — it reads as a sector de-rating rather than a single event.",
+   "source": "price_bars 1m closes 13 Aug; weights from nifty-50-stock-list.csv"
+  },
+  {
+   "rank": 2,
+   "role": "flow",
+   "title": "RESOLVED — Reliance fell on an MSCI rejig, not on anything about Reliance",
+   "detail": "An earlier version of this brief flagged Reliance as the largest drag with no attributable cause. The cause is now known: MSCI's August 2026 Index Review, announced 12 August and effective at the close of 31 August, adds 12 names to MSCI India against 3 removals. India gains roughly $2.3bn of net passive inflow overall — but because 12 new constituents dilute every existing weight, Reliance as the largest Indian weight absorbs the largest absolute outflow, reported at about $523 million. Nothing changed about the company; its share of a bigger index simply shrank. The tape confirms the mechanism: Reliance ROSE 0.39% on 12 August, then on 13 August opened essentially flat (-0.09%), fell to -1.62% within fifteen minutes of the open as passive trackers adjusted, and recovered to close -0.90% (-20.3 index points). No overnight gap, selling concentrated at the open, partial recovery — that is mechanical index flow, not a view. Note the announcement landed about two hours AFTER the newest article in the news cache (12 Aug 20:22 UTC), which is why it was correctly labelled unattributed rather than blamed on crude. The 31 August effective date means the flow itself is still ahead.",
+   "source": "MSCI August 2026 Index Review (announced 12 Aug, effective close 31 Aug); MSCI India rebalance estimates via Kotak Neo / Outlook Business; RIL outflow figure via MSN/Mint report; price action from price_bars 1m"
+  },
+  {
+   "rank": 3,
+   "role": "support",
+   "title": "The Tata complex rebounded — CORRECTING this brief's earlier intraday read",
+   "detail": "An earlier version of this brief, written from an 11:46 IST snapshot, ranked the Tata Sons chairmanship vacancy as the day's primary drag. At the close it was the day's largest positive block: the six Tata names added +18.1 index points, led by TCS +1.08% (+10.5 pts), Tata Consumer +2.69% and Tata Motors +1.92%. Titan (-0.69%) and Tata Steel (-0.73%) stayed soft. The governance overhang is real and unresolved — Chandrasekaran stays until 20 February 2027, the Tata Trusts search committee met today, and the AGM is 18 August, the same day as the weekly expiry — but the market took one session to price it and then bought the names back. Over three sessions the complex is still -30.0 points, so the discount has not gone; it has stopped widening.",
+   "source": "price_bars 1m closes; Business Standard / Bloomberg, 12 Aug 2026"
+  },
+  {
+   "rank": 4,
+   "role": "arithmetic",
+   "title": "The index fell while the average stock rose",
+   "detail": "Breadth closed 28 up / 22 down. Equal-weighted, the Nifty 50 gained +0.09%; cap-weighted it lost -0.13%. That 0.22pp gap is the entire story of the session and it is pure weight arithmetic — the decline lives in three bank stocks carrying 23% of the index between them. The practical consequence: a read of 'many stocks are falling so the index will fall' would have been wrong today in both directions, first because the index recovered 84 points off its low, and second because more stocks rose than fell. Index direction and constituent damage are separate measurements and this session separated them cleanly.",
+   "source": "computed from 50 constituent 1m closes vs 12 Aug closes"
+  },
+  {
+   "rank": 5,
+   "role": "positioning",
+   "title": "India VIX 11.39 — implied vol has fallen through the entire three-day decline",
+   "detail": "VIX closed 11.39, down 2.40% on the day and 7.62% from Monday's 12.33, across a 188-point index fall. That is the opposite of a fear-driven tape: it says the market treated the last three sessions as specific names being repriced, not as a risk event requiring hedges. For a premium seller this cuts two ways and the repo has measured both — realised/implied sits at 0.673 across every VIX bucket, so a low VIX does not by itself mean thin compensation; but the overnight gap is now 71.8% of daily variance in 2026 against 27% in 2023, so the risk that a falling VIX is not pricing is the one that arrives between sessions.",
+   "source": "INDIAVIX 1m closes; VRP and gap-share figures from StrategyBacktesting/Hypotheses.md #29, #33"
+  },
+  {
+   "rank": 6,
+   "role": "flow",
+   "title": "The UltraTech block cleared better than it looked at midday",
+   "detail": "Pilani Investment sold 1.7 million UltraTech shares worth Rs 1,908 crore today at roughly a 3% discount. UltraTech closed -1.56% (-4.6 index points), against -2.04% at the 11:46 snapshot — it absorbed roughly a quarter of the intraday damage back. Cement remains the weakest small sector at -7.9 points on the day and -16.2 over three sessions, with Grasim -1.54% carrying its own results story. The overhang now has a defined end: a block that prices and trades through without a tail removes the supply, and the recovery into the close is what that looks like.",
+   "source": "Business Standard / ETMarkets 12 Aug; price_bars 1m closes"
+  },
+  {
+   "rank": 7,
+   "role": "arithmetic",
+   "title": "Good results are still being sold — measured over three sessions, not one",
+   "detail": "Apollo Hospitals reported PAT +38.4% YoY and is -3.46% over three sessions; Grasim reported consolidated PAT +51% and is -2.42%. Both beat comfortably against zero and both fell. The repo now computes the reason arithmetically: Apollo's multiple already implied ~59.2% earnings growth against 38.4% delivered, a -20.8pp miss against the priced-in hurdle; Grasim implied ~101% against 51%, a -50.0pp miss. Tata Motors, whose +83.3% was flattered by a one-time Tata Capital gain, has no usable trailing P/E so no hurdle can be computed — and it rose 1.92% today. Read a print against implied EPS growth, never against zero.",
+   "source": "backend/quant/news_fundamentals.py; expectation_snapshots.json captured 2026-08-08"
+  },
+  {
+   "rank": 8,
+   "role": "arithmetic",
+   "title": "Valuation does NOT explain today — and that is what makes ICICI odd",
+   "detail": "Joining every constituent's move to the fundamentals layer: correlation between today's return and P/E percentile is -0.110, against implied EPS growth +0.115, against analyst target upside -0.057. All inside noise at n=49, and the P/E sign flips to +0.299 over three sessions — a one-session cross-section cannot be explained by valuation, and this one is not. Intraday moves are macro, positioning and news; that is the correct read. What the layer DOES change is what a move could mean. ICICI Bank, the day's largest drag at -35.3 points, sits at the 25th percentile of its own three-year P/E range with only ~22% earnings growth implied — it is at the cheap end of its own history, so a de-rating story does not fit. Running the other way, L&T was the richest name among the movers (75th percentile, ~50% implied growth) and rose the most. 'Expensive gets sold' did not happen today. Coverage: implied growth computable for 48 of 50, P/E percentile for 49.",
+   "source": "backend/quant/news_fundamentals.py joined to 1m closes; expectation_snapshots.json captured 2026-08-08, pe_history.json"
+  },
+  {
+   "rank": 9,
+   "role": "macro",
+   "title": "Soft US CPI, Brent near $88 — and the rupee at 95.45",
+   "detail": "US inflation eased for a second consecutive month and traders now lean to a September Fed hold, softening the standing hawkish headwind written around the 29 July hold with three dissents FOR a hike. Working the other way: Brent near $88 with US-Iran talks deadlocked (WTI $83.07 in this database — it carries WTI, not Brent), and a $42bn 10-year Treasury auction that cleared at the highest yield since 2007. The rupee closed 95.45, +0.14% on the day and historically weak, with RBI intervention reported Wednesday. Note the repo's own constraint on this section: the daily macro-to-index regression was retired at R-squared 0.036. These items explain the tape; they have not been shown to forecast it.",
+   "source": "Reuters / Bloomberg via sector_news_cache.json; USDINR and CRUDEOIL from price_bars"
+  }
+ ],
+ "sector_math": {
+  "weights": [
+   {
+    "sector": "Financial Services",
+    "weight_pct": "34.75"
+   },
+   {
+    "sector": "Information Technology",
+    "weight_pct": "13.00"
+   },
+   {
+    "sector": "Oil & Gas",
+    "weight_pct": "10.30"
+   },
+   {
+    "sector": "FMCG",
+    "weight_pct": "8.10"
+   },
+   {
+    "sector": "Automobile",
+    "weight_pct": "7.00"
+   },
+   {
+    "sector": "Metals & Mining",
+    "weight_pct": "4.80"
+   },
+   {
+    "sector": "Telecommunication",
+    "weight_pct": "4.30"
+   },
+   {
+    "sector": "Healthcare",
+    "weight_pct": "4.15"
+   }
+  ],
+  "rule": "Point contributions at the close (13 Aug vs 12 Aug): Financial Services -53.1, Oil & Gas -19.3, Cement -7.9, Metals -7.5, Telecom -3.2, Healthcare -1.8; positive were FMCG +21.0, Automobile +12.8, IT +11.4, Construction +11.1, Power +2.2. The sum of the negatives alone is -93, against an index that fell 40 — the positives cancelled more than half the damage. Over three sessions the ranking changes completely: financials -77.6, IT -29.3, FMCG -18.5, Metals -17.0, Cement -16.2, Automobile -15.1, Oil & Gas -17.5, with only Power, Capital Goods and Consumer Services positive. One session and three sessions tell different stories, and a brief that quotes only one of them is quoting the one that suits it. Bottom-up contributions sum to -33 against an actual -40 today, an ~18% residual from the rounded weights in nifty-50-stock-list.csv."
+ },
+ "monitor": [
+  {
+   "rank": 1,
+   "item": "Whether the ICICI Bank move is company-specific or a financials de-rating. -35.3 points on the day with no matching news item, in the sector carrying 34.75% of the index. This is the single largest unexplained contributor and it replaces Reliance, which recovered into the close."
+  },
+  {
+   "rank": 2,
+   "item": "Whether the Tata rebound holds. The complex added +18.1 points today after two sessions of losses, but the chairmanship is unresolved until 20 February 2027 and the AGM falls on 18 August — the same day as the weekly expiry."
+  },
+  {
+   "rank": 3,
+   "item": "India VIX at 11.39 after falling through a 188-point decline. If the index keeps falling and VIX keeps falling, the market is repricing specific names. If VIX turns up on a flat index, something is being hedged that is not yet visible."
+  },
+  {
+   "rank": 4,
+   "item": "The breadth-versus-weight gap. Equal-weighted +0.09% against cap-weighted -0.13% today. If breadth stays positive while the index falls, the decline is three bank stocks; if breadth turns with it, the character changes."
+  },
+  {
+   "rank": 5,
+   "item": "Max Healthcare Q1 call on 14 August — the last of the pending prints flagged in nifty50_drivers.json, alongside Apollo and Grasim which have now reported and been sold."
+  },
+  {
+   "rank": 6,
+   "item": "The 18 August expiry. Chain positioning below is from an 11:52 IST capture and is now STALE — the option-chain capture stopped mid-session and did not resume, so max pain and the OI walls have not been re-read since midday."
+  },
+  {
+   "rank": 7,
+   "item": "Brent near $88 with US-Iran talks deadlocked. The factor library still carries oil as a fragile tailwind written at $83; sustained $90+ flips it through CPI, the current account and auto/paint/OMC margins."
+  }
+ ],
+ "note": "END-OF-DAY brief, built from 13 August closing prices. It REPLACES an earlier version written from an 11:46 IST intraday snapshot, which materially misread the session: it put the index at 24,347.65 / -88 points when the close was 24,395.85 / -40, ranked the Tata complex as the primary drag when it closed as the largest positive block (+18.1 points), and called Reliance the single largest drag when ICICI Bank was, Reliance having recovered 0.59pp into the close. Cause: the price capture stopped at 11:59 IST and the brief was written from the low of the day. Prices have since backfilled to the 15:30 close; the OPTION CHAIN has not — driver 7 and monitor item 6 rest on a 11:52 IST capture and are stale. Driver 7 links the movers to the fundamentals layer and reports a NULL: valuation state does not explain a one-session cross-section (all |r| < 0.12). It is included as context on what each move could mean, never as an explanation of why it happened. Driver 2 RESOLVES the 'unattributed Reliance' flag carried by the earlier version — the cause was an MSCI index rejig announced after that brief's news cache closed. Setup, not forecast. Point contributions are bottom-up from rounded index weights and carry an ~18% residual. No probabilities, no targets, no positions."
+}

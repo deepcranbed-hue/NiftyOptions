@@ -9,3 +9,4 @@ scipy
 feedparser
 async-lru
 httpx
+python-dotenv

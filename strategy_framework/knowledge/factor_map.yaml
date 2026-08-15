@@ -1,0 +1,66 @@
+# THE FACTOR MAP — declarative knowledge base (latent market properties ← observations).
+#
+# PRIOR + REGENERABLE: seeded from the signal taxonomy and the Part-E factor-discovery
+# audit. When discovery (on more sessions) finds different clusters or better primaries,
+# regenerate THIS FILE — the inference engine (factors.py) is generic and needs no code
+# change. Roles: primary (votes, w=1.0) | supporting (votes, w=0.6) |
+# confidence (shifts certainty, never votes) | diagnostic (explanation only).
+# Rules (enforced by factors.validate): every signal exists in the registry, belongs to
+# exactly ONE factor, and every directional signal has a home.
+
+_meta:
+  version: "1.0"
+  updated: "2026-07-29"
+  changelog: knowledge/CHANGELOG.md   # every change requires an entry (governance rule)
+
+trend_direction:
+  label: Trend direction
+  kind: intraday
+  signals:
+    heavyweight_leadership: primary
+    technical_momentum: supporting
+    vwap: confidence
+    rel_volume: confidence
+    vol_index: confidence
+    futures_flow: confidence
+
+trend_quality:
+  label: Trend quality
+  kind: intraday
+  signals:
+    breadth_quality: primary
+    heavyweight_leadership_persistent: supporting
+    adx: confidence
+
+market_internals:
+  label: Breadth & OI internals
+  kind: intraday
+  signals:
+    breadth_oi: primary
+
+dealer_positioning:
+  label: Dealer positioning
+  kind: intraday
+  signals:
+    oi_migration: primary
+    dealer_center: supporting      # ΔOI flow centroid (new risk) vs migration's standing mass
+    strike_role_change: supporting
+    futures_oi_regime: supporting
+    futures_basis: diagnostic
+    futures_calendar: diagnostic
+
+macro_risk:
+  label: Macro / cross-asset
+  kind: slow
+  signals:
+    global_momentum: primary
+    usdinr: supporting
+    global_gap: supporting
+    crude_energy: supporting
+
+vol_structure:
+  label: Volatility structure
+  kind: slow
+  signals:
+    skew_rnd: primary
+    vrp: supporting

@@ -14,6 +14,10 @@ sys.path.append(os.path.join(REPO_ROOT, "scratch_scripts", "breeze_env", "lib", 
 from breeze_connect import BreezeConnect
 
 from bar_store import save_bars, DB_PATH
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
+from credentials import breeze_creds as _breeze_creds
+
 
 # Auto-resolve and refresh Breeze mappings if missing or older than 7 days
 def ensure_breeze_mappings():
@@ -128,8 +132,7 @@ def sync_all_symbols():
         
     session_token = sys.argv[1]
     
-    api_key = "999407AZb39Vu3D&9X405B977330807K"
-    api_secret = "584F70+Z075364Cz35y6O9931Y16I387"
+    api_key, api_secret = _breeze_creds()
     
     try:
         breeze = BreezeConnect(api_key=api_key)
@@ -245,7 +248,7 @@ def sync_all_symbols():
         # Download 1-day frequency data for Nifty Futures
         try:
             from download_nifty_futures import get_nifty_futures_expiries
-            exp1, exp2 = get_nifty_futures_expiries()
+            exp1, exp2 = get_nifty_futures_expiries(session_token)
             for symbol, expiry in [("NIFTY_FUT_1", exp1), ("NIFTY_FUT_2", exp2)]:
                 c.execute("SELECT MAX(ts) FROM price_bars WHERE symbol=? AND timeframe='1d'", (symbol,))
                 row = c.fetchone()

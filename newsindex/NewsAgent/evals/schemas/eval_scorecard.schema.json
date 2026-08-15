@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "NewsAgent Reasoning-Quality Scorecard",
+  "type": "object",
+  "required": ["schema", "overall_quality", "deterministic", "llm", "feedback"],
+  "properties": {
+    "schema": {"const": "newsagent.eval.scorecard/v1"},
+    "generated_at": {"type": "string"},
+    "as_of": {"type": ["string", "null"]},
+    "mio_id": {"type": ["string", "null"]},
+    "llm_graded": {"type": "boolean"},
+    "overall_quality": {
+      "type": "object",
+      "required": ["score", "grade"],
+      "properties": {
+        "score": {"type": ["number", "null"]},
+        "grade": {"type": "string"},
+        "n_levels_scored": {"type": "integer"}
+      }
+    },
+    "deterministic": {
+      "type": "object",
+      "description": "rule-based evaluators; each value carries a 'level' and a numeric 'score' (0-10) or null",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "level": {"type": "string"},
+          "score": {"type": ["number", "null"]}
+        }
+      }
+    },
+    "llm": {
+      "type": "object",
+      "description": "persona / reasoning evaluators; score null when skipped (no LLM provider)",
+      "additionalProperties": {"type": "object"}
+    },
+    "feedback": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "advisory suggestions (feedback -> prompt/rules); NOT applied automatically"
+    }
+  }
+}

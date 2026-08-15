@@ -22,6 +22,8 @@ from __future__ import annotations
 import math
 from dataclasses import dataclass, field
 
+from exchange_config import NIFTY_LOT_SIZE   # single source of truth for lot size
+
 
 # ── config (ASSUMED — override with your real numbers) ───────────────────────
 @dataclass
@@ -29,10 +31,10 @@ class RiskConfig:
     capital: float = 1_000_000.0        # ₹10 lakh (ASSUMED)
     risk_per_trade_pct: float = 0.015   # 1.5% of capital max loss per trade
     max_portfolio_heat_pct: float = 0.06  # 6% total max-loss across open book
-    max_net_delta_units: float = 150.0  # |net delta| cap (≈2 NIFTY-fut lots @75)
+    max_net_delta_units: float = 150.0  # |net delta| cap (≈2 NIFTY-fut lots)
     max_net_vega_rupees: float = 50_000.0  # |net vega| cap (₹ per 1 vol pt)
     max_drawdown_pct: float = 0.10      # halt new risk if DD ≥ 10%
-    lot_size: int = 65                  # NIFTY lot size — SET to current NSE value (it changes)
+    lot_size: int = NIFTY_LOT_SIZE      # NIFTY lot size — from exchange_config (never hardcode)
     complacency_block: float = 70.0     # premium-sell blocked above this gauge score
     complacency_halve: float = 55.0     # premium-sell size halved above this
 
@@ -82,35 +84,46 @@ def portfolio_state(book: list[Position], cfg: RiskConfig) -> dict:
 # ── the gate ──────────────────────────────────────────────────────────────────
 def size_trade(trade: Trade, book: list[Position], cfg: RiskConfig,
                complacency_score: float | None = None,
-               current_drawdown_pct: float = 0.0) -> dict:
+               current_drawdown_pct: float = 0.0,
+               event_action: str = "normal") -> dict:
     warn: list[str] = []
     sell = trade.is_premium_sell if trade.is_premium_sell is not None \
         else _infer_sell(trade.structure)
     state = portfolio_state(book, cfg)
 
+    max_loss_rs = trade.max_loss_pts * cfg.lot_size
+
     # 1) drawdown breaker — hard stop
     if current_drawdown_pct >= cfg.max_drawdown_pct:
         return _veto(f"drawdown breaker: {current_drawdown_pct:.0%} ≥ "
-                     f"{cfg.max_drawdown_pct:.0%} — new risk halted", state, cfg, structure=trade.structure)
+                     f"{cfg.max_drawdown_pct:.0%} — new risk halted", state, cfg, structure=trade.structure, max_loss_per_lot_rs=max_loss_rs)
 
-    max_loss_rs = trade.max_loss_pts * cfg.lot_size
     if max_loss_rs <= 0:
-        return _veto("trade has no defined max loss (undefined-risk) — blocked", state, cfg, structure=trade.structure)
+        return _veto("trade has no defined max loss (undefined-risk) — blocked", state, cfg, structure=trade.structure, max_loss_per_lot_rs=0)
 
     # 2) base max-loss sizing
     risk_budget_rs = cfg.capital * cfg.risk_per_trade_pct
     lots_risk = math.floor(risk_budget_rs / max_loss_rs)
 
-    # 3) complacency filter (premium-selling only)
+    # 3) complacency filter & event override (premium-selling only)
     comp_cap = math.inf
-    if sell and complacency_score is not None:
-        if complacency_score >= cfg.complacency_block:
-            return _veto(f"premium-sell blocked: complacency {complacency_score:.0f} ≥ "
-                         f"{cfg.complacency_block:.0f} (thin premium, shock-prone)",
-                         state, cfg, structure=trade.structure)
-        if complacency_score >= cfg.complacency_halve:
+    if sell:
+        if event_action == "block_premium_sell":
+            return _veto("premium-sell blocked by event calendar: high-impact event imminent", state, cfg, structure=trade.structure, max_loss_per_lot_rs=max_loss_rs)
+        elif event_action == "caution_downsize":
             comp_cap = max(1, lots_risk // 2)
-            warn.append(f"complacency {complacency_score:.0f} — premium-sell size halved")
+            warn.append("event calendar caution — premium-sell size halved")
+
+        if complacency_score is not None:
+            if complacency_score >= cfg.complacency_block:
+                return _veto(f"premium-sell blocked: complacency {complacency_score:.0f} ≥ "
+                             f"{cfg.complacency_block:.0f} (thin premium, shock-prone)",
+                             state, cfg, structure=trade.structure, max_loss_per_lot_rs=max_loss_rs)
+            if complacency_score >= cfg.complacency_halve:
+                if comp_cap == math.inf:
+                    comp_cap = max(1, lots_risk // 2)
+                if "complacency" not in " ".join(warn):
+                    warn.append(f"complacency {complacency_score:.0f} — premium-sell size halved")
 
     # 4) portfolio heat headroom
     heat_room_rs = cfg.capital * cfg.max_portfolio_heat_pct - state["heat_rupees"]
@@ -144,7 +157,7 @@ def size_trade(trade: Trade, book: list[Position], cfg: RiskConfig,
             msg = f"Trade Rejected: Trade Vega (₹{trade.vega_per_lot}) would breach the Net Vega limit (₹{cfg.max_net_vega_rupees})"
         else:
             msg = f"sized to 0 — binding constraint: {binding}"
-        return _veto(msg, state, cfg, caps=caps, structure=trade.structure)
+        return _veto(msg, state, cfg, caps=caps, structure=trade.structure, max_loss_per_lot_rs=max_loss_rs)
 
     # projected post-trade state
     proj = {
@@ -169,9 +182,11 @@ def size_trade(trade: Trade, book: list[Position], cfg: RiskConfig,
     }
 
 
-def _veto(reason, state, cfg, caps=None, structure=None):
+def _veto(reason, state, cfg, caps=None, structure=None, max_loss_per_lot_rs=0.0):
     return {"approved": False, "lots": 0, "reason": reason,
             "structure": structure,
+            "max_loss_per_lot_rs": max_loss_per_lot_rs,
+            "trade_max_loss_rs": 0,
             "current_heat_pct": round(state["heat_pct"], 4),
             "current_net_delta": round(state["net_delta"], 1),
             "current_net_vega": round(state["net_vega"]),

@@ -48,6 +48,12 @@ REFERENCE_BY_EXCHANGE = {
     "NSE": "RELIANCE",
     "MCX": "GOLD",
     "NYMEX": "CRUDEOIL",
+    # COMEX and NYMEX are both CME Group and keep the same holiday calendar, so WTI
+    # is the right peer for the USD metals. Without this they fell through to the
+    # default reference — RELIANCE, on the NSE calendar — and every US holiday that
+    # is not an Indian one showed up as a finding. A missing reference is not an
+    # exemption: the series still gets checked, just against a calendar it shares.
+    "COMEX": "CRUDEOIL",
     "CDS": "USDINR",
     "NFO": "NIFTY_FUT_1",
 }
@@ -90,13 +96,46 @@ def _reference_calendar(con, ref="RELIANCE"):
         "select ts from price_bars where symbol=? and timeframe='1d'", (ref,))}
 
 
+def _is_contract(symbol):
+    """A per-contract futures series, e.g. GOLD_2026-10-05.
+
+    Two checks must not apply to these. CALENDAR: a contract lives a few months, so
+    it can never match a full-year reference and would report thousands of missing
+    sessions. STALE: a contract stops printing at expiry — that is the contract
+    working, not the feed breaking. Staleness belongs to the CONTINUOUS series,
+    which is derived and must always be current.
+    """
+    try:
+        import sys as _s, os as _o
+        _s.path.insert(0, _o.path.join(_o.path.dirname(_o.path.dirname(
+            _o.path.abspath(__file__))), "fetching"))
+        from continuous import parse_contract
+    except ImportError:
+        return False
+    return parse_contract(symbol) is not None
+
+
 def audit(db, symbols=None, reference="RELIANCE"):
     """Returns (findings, stats). A finding is (symbol, check, detail)."""
+    # FAIL LOUDLY IF THE EXEMPTIONS DO NOT LOAD.
+    #
+    # This used to swallow the error and continue with an empty set. A syntax error
+    # in daily_bars.py therefore produced 9 findings instead of a crash — every
+    # documented exemption vanished at once and the audit reported phantom integrity
+    # failures. Observed, on 2026-08-09, from a broken edit of KNOWN_REAL_GAPS.
+    #
+    # An audit that cannot load its own configuration has no opinion worth having.
+    # Reporting nine problems that do not exist is worse than reporting none, because
+    # someone will go and "fix" them.
     try:
         from daily_bars import VENDOR_ADJUSTMENTS, KNOWN_REAL_GAPS
-        known = {(a["symbol"], a["boundary"]) for a in VENDOR_ADJUSTMENTS} | set(KNOWN_REAL_GAPS)
-    except Exception:
-        known = set()
+    except Exception as e:                                   # noqa: BLE001
+        raise RuntimeError(
+            f"cannot load exemptions from daily_bars ({type(e).__name__}: {e}).\n"
+            "Every documented exemption would be silently ignored and the audit "
+            "would report failures that are not real. Fix daily_bars.py first."
+        ) from e
+    known = {(a["symbol"], a["boundary"]) for a in VENDOR_ADJUSTMENTS} | set(KNOWN_REAL_GAPS)
 
     con = sqlite3.connect(db)
     if symbols is None:
@@ -142,7 +181,9 @@ def audit(db, symbols=None, reference="RELIANCE"):
         #    Tue-Fri land on other trading days and only Mondays fall out. The bar
         #    COUNT stays perfect, so this is the only test that sees it.
         peer = REFERENCE_BY_EXCHANGE.get(exch_of.get(sym, "NSE"), reference)
-        if sym in CALENDAR_EXEMPT or sym == peer:
+        # A contract lives a few months, so it can never overlap a full reference
+        # calendar. Its CONTINUOUS series is the thing that must be complete.
+        if sym in CALENDAR_EXEMPT or sym == peer or _is_contract(sym):
             continue
         peer_cal = cal_for(peer)
         win = {d for d in peer_cal if min(dates) <= d <= max(dates)}
@@ -170,19 +211,37 @@ def audit(db, symbols=None, reference="RELIANCE"):
             "from price_bars where timeframe='1d' group by 1,2 having c>1) group by 1"):
         findings.append((sym, "duplicate_dates", f"{n} sessions stored twice"))
 
+    # A print on near-zero volume is a MARK, not a trade. MCX carries the previous
+    # price forward on untraded days, so an inactive far-month contract can sit still
+    # for a week and then jump when someone finally trades it. That jump is the
+    # exchange catching up, not a scale break, and all 8 gaps this check raised
+    # against the new contract series were of exactly that kind.
+    #
+    # Applied to every symbol rather than only to contracts: the statement "a gap
+    # between two untraded prints is not evidence of a corporate action" is true
+    # everywhere, and NSE equities essentially never print zero volume, so a general
+    # rule costs nothing and avoids a special case that would drift.
+    #
+    # Volume must be KNOWN to suppress. A NULL volume means we cannot tell, and the
+    # check should report rather than assume.
+    MIN_GAP_VOLUME = 100
+
     # 5. PRICE CONTINUITY. An unexplained cliff means the stored history sits on a
     #    different scale from the new bars — a corporate action applied to one end
     #    only. Known breaks are suppressed so this stays signal, not daily noise.
     for sym in symbols:
-        prev = None
-        for ts, o, cl in con.execute(
-                "select ts, open, close from price_bars where symbol=? and "
+        prev = prev_v = None
+        for ts, o, cl, v in con.execute(
+                "select ts, open, close, volume from price_bars where symbol=? and "
                 "timeframe='1d' order by ts", (sym,)):
             if prev and o and prev > 0:
                 r = o / prev
-                if (r < 1 - GAP_FLAG or r > 1 + GAP_FLAG) and (sym, ts[:10]) not in known:
+                untraded = (prev_v is not None and v is not None
+                            and (prev_v < MIN_GAP_VOLUME or v < MIN_GAP_VOLUME))
+                if ((r < 1 - GAP_FLAG or r > 1 + GAP_FLAG)
+                        and (sym, ts[:10]) not in known and not untraded):
                     findings.append((sym, "price_gap", f"{ts[:10]} ratio {r:.4f}"))
-            prev = cl
+            prev, prev_v = cl, v
 
     # 6. STALENESS, measured against the freshest symbol in the table rather than
     #    the wall clock, so holidays and weekends never raise a false alarm.
@@ -191,6 +250,11 @@ def audit(db, symbols=None, reference="RELIANCE"):
     if maxes:
         newest = max(v[:10] for v in maxes.values())
         for sym in symbols:
+            # An expired contract stops printing. That is the contract working,
+            # not the feed breaking — staleness is a property of the derived
+            # continuous series, which IS checked, not of a dead contract.
+            if _is_contract(sym):
+                continue
             if sym in maxes and maxes[sym][:10] < newest:
                 behind = len({d for d in ref_cal if maxes[sym][:10] < d <= newest})
                 if behind >= STALE_SESSIONS:
@@ -200,10 +264,64 @@ def audit(db, symbols=None, reference="RELIANCE"):
     return findings, {"symbols": len(symbols), "reference": reference}
 
 
+def _explain_gaps(db):
+    """Every price_gap, with the volume on both sides.
+
+    A gap on a bar that traded is a scale break and a real finding. A gap between
+    two near-zero-volume prints is an illiquid contract being marked, not a defect —
+    MCX carries the previous price forward on untraded days, so a far-month contract
+    can sit still for a week and then jump when someone finally trades it.
+
+    Which of the two we are looking at decides whether the check needs a volume
+    condition or the data needs fixing. Guessing at that is how exemptions get
+    written for problems that were real.
+    """
+    # KNOWN_REAL_GAPS is imported inside audit(), not at module scope, so this has
+    # to fetch it the same way rather than reach for a global that is not there.
+    try:
+        from daily_bars import VENDOR_ADJUSTMENTS, KNOWN_REAL_GAPS
+        known = {(a["symbol"], a["boundary"]) for a in VENDOR_ADJUSTMENTS} | set(KNOWN_REAL_GAPS)
+    except Exception:
+        known = set()
+
+    con = sqlite3.connect(db)
+    rows_by = {}
+    for sym, in con.execute("select distinct symbol from price_bars where timeframe='1d'"):
+        rows_by[sym] = con.execute(
+            "select ts, open, close, volume from price_bars where symbol=? and "
+            "timeframe='1d' order by ts", (sym,)).fetchall()
+    con.close()
+    total = 0
+    for sym, rows in sorted(rows_by.items()):
+        prevc = prevv = None
+        hits = []
+        for ts, o, cl, v in rows:
+            if prevc and o and prevc > 0:
+                r = o / prevc
+                if (r < 1 - GAP_FLAG or r > 1 + GAP_FLAG) and (sym, ts[:10]) not in known:
+                    hits.append((ts[:10], prevc, o, r, prevv or 0, v or 0))
+            prevc, prevv = cl, v
+        if not hits:
+            continue
+        zero = sum(1 for r in rows if not r[3])
+        print(f"{sym}   {len(rows)} bars, {zero} zero-volume")
+        for d, pc, o, r, pv, v in hits:
+            verdict = "illiquid" if (pv < 100 or v < 100) else "TRADED — look at this"
+            print(f"   {d}  {pc:>11,.1f} -> {o:>11,.1f}  ratio {r:.4f}   "
+                  f"vol {pv:>7,.0f} -> {v:>7,.0f}   [{verdict}]")
+        total += len(hits)
+        print()
+    print(f"{total} gaps shown. 'illiquid' means at least one side barely traded.")
+    return 0
+
+
 def main():
     import argparse
     ap = argparse.ArgumentParser()
     ap.add_argument("--db", default=None)
+    ap.add_argument("--explain-gaps", action="store_true",
+                    help="show each price_gap with the volume either side, to tell "
+                         "an illiquid print from a real scale break")
     ap.add_argument("--constituents-only", action="store_true",
                     help="limit to the Nifty 50 CSV + NIFTY")
     args = ap.parse_args()
@@ -211,6 +329,9 @@ def main():
     if not db:
         from bar_store import DB_PATH
         db = os.environ.get("OPTION_CHAINS_DB", DB_PATH)
+
+    if args.explain_gaps:
+        return _explain_gaps(db)
 
     syms = None
     if args.constituents_only:

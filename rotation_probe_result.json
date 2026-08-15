@@ -1,0 +1,67 @@
+{
+ "lookback_min": 15,
+ "forward_min": 30,
+ "sessions": 31,
+ "observations": 294,
+ "sectors": {
+  "Automobile": {
+   "persistence_r": -0.124,
+   "lead_index_r": 0.044,
+   "n": 294
+  },
+  "Cement": {
+   "persistence_r": -0.174,
+   "lead_index_r": 0.111,
+   "n": 282
+  },
+  "Consumer Durables": {
+   "persistence_r": -0.187,
+   "lead_index_r": -0.018,
+   "n": 294
+  },
+  "FMCG": {
+   "persistence_r": 0.05,
+   "lead_index_r": 0.014,
+   "n": 294
+  },
+  "Financial Services": {
+   "persistence_r": 0.028,
+   "lead_index_r": 0.04,
+   "n": 294
+  },
+  "Healthcare": {
+   "persistence_r": 0.029,
+   "lead_index_r": -0.041,
+   "n": 294
+  },
+  "Information Technology": {
+   "persistence_r": 0.011,
+   "lead_index_r": -0.035,
+   "n": 294
+  },
+  "Metals & Mining": {
+   "persistence_r": -0.067,
+   "lead_index_r": 0.006,
+   "n": 294
+  },
+  "Oil & Gas": {
+   "persistence_r": -0.101,
+   "lead_index_r": -0.028,
+   "n": 282
+  },
+  "Power": {
+   "persistence_r": -0.023,
+   "lead_index_r": -0.018,
+   "n": 294
+  },
+  "Services": {
+   "persistence_r": -0.052,
+   "lead_index_r": 0.128,
+   "n": 294
+  }
+ },
+ "dispersion_vs_abs_move_r": 0.07,
+ "level_dispersion_vs_abs_move_r": -0.026,
+ "mean_persistence_r": -0.055,
+ "verdict": "NEITHER - inside noise"
+}

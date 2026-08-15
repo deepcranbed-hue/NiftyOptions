@@ -1,0 +1,16 @@
+{
+  "_comment": "Example MCP client config. Copy the 'news-intelligence-agent' block into your client's MCP config (Claude Desktop: claude_desktop_config.json). NewsAgent is SELF-CONTAINED (vendored engine in NewsAgent/engine/) — no NEWSINDEX_HOME needed. Just point 'command' at a python with the runtime deps (yfinance, feedparser, pandas, trafilatura, mcp, jsonschema) and 'args' at server.py.",
+
+  "mcpServers": {
+    "news-intelligence-agent": {
+      "command": "/Users/deepak/antigravity/NiftyOptions/newsindex/newsindex_env_3.10/bin/python",
+      "args": [
+        "/Users/deepak/antigravity/NiftyOptions/newsindex/NewsAgent/mcp_server/server.py"
+      ],
+      "_optional_env": {
+        "NEWSAGENT_ENGINE": "override the vendored engine path (defaults to NewsAgent/engine/)",
+        "NEWSINDEX_HOME": "legacy: point at the parent newsindex/ to track the live market_scan.py instead of the vendored copy"
+      }
+    }
+  }
+}

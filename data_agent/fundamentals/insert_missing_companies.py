@@ -1,3 +1,9 @@
+
+# --- single source for DB connections (D-SC-06, CLAUDE.md) ---
+import os as _os, sys as _sys
+_RT = _os.path.abspath(_os.path.join(_os.path.dirname(__file__), "../.."))
+_RT in _sys.path or _sys.path.insert(0, _RT)
+from db_config import resolve_pg_dsn
 import psycopg2
 from datetime import datetime
 
@@ -15,7 +21,7 @@ NIFTY_50 = [
 ]
 
 def main():
-    conn = psycopg2.connect("postgresql://localhost/niftyoptions")
+    conn = psycopg2.connect(resolve_pg_dsn())
     c = conn.cursor()
     
     c.execute("SELECT symbol FROM fundamentals.companies")

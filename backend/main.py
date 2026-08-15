@@ -241,7 +241,7 @@ def api_fetch_breeze(session_token: str, expiry_date: str, symbol: str = "NIFTY"
         # Run isolated breeze script to comply with Strict Environment Isolation Rule
         breeze_symbol = BREEZE_SYMBOL_MAP.get(symbol.upper(), symbol)
         cmd = [
-            "./scratch_scripts/breeze_env/bin/python",
+            "./breeze_env/bin/python",
             "scratch_scripts/fetch_breeze_json.py",
             session_token,
             expiry_date,
@@ -287,7 +287,7 @@ def api_backfill_breeze_historical(session_token: str, expiry_date: str, symbol:
     try:
         breeze_symbol = BREEZE_SYMBOL_MAP.get(symbol.upper(), symbol)
         cmd = [
-            "./scratch_scripts/breeze_env/bin/python",
+            "./breeze_env/bin/python",
             "scratch_scripts/fetch_historical_option_chain.py",
             session_token,
             expiry_date,
@@ -313,7 +313,6 @@ def api_backfill_breeze_historical(session_token: str, expiry_date: str, symbol:
 
 class SyncAllRequest(BaseModel):
     breeze_session_token: str
-    kite_access_token: str
     expiry_date: str
     symbol: str = "NIFTY"
     interval: str = "1minute"
@@ -322,457 +321,79 @@ class SyncAllRequest(BaseModel):
 
 @app.post("/api/sync-all-data")
 def api_sync_all_data(req: SyncAllRequest):
+    """Thin caller over data_agent/sync_all.py — the one sync.
+
+    This endpoint used to inline the whole pipeline: validate two broker tokens,
+    then run seven steps by subprocess, then a hand-rolled audit of six hardcoded
+    symbols against a hardcoded Google Drive path. Every one of those steps also
+    existed somewhere else, and the two entry points each refreshed a different
+    half of the database.
+
+    Three behaviours deliberately changed:
+
+    1. The Breeze token no longer gates the run. It used to be validated first and
+       raise a 400 on expiry, which blocked the Yahoo daily bars — the data most of
+       this repo reads — over a credential they do not use. Steps now declare their
+       own credential and skip individually.
+    2. The Kite/Zerodha validation is gone. It set a `skip_commodities` flag that
+       was never read, so its only effect was the ability to 400 the whole sync.
+    3. `success` now reflects the exit code. A run where steps failed used to
+       return success: true with the failures buried in the log array.
+    """
     import subprocess
-    import json
-    
-    # 1. Validate Breeze session token (via subprocess using custom get_customer_details endpoint)
-    breeze_session_token = req.breeze_session_token
-    breeze_token_sources = [("frontend", breeze_session_token)]
-    
-    try:
-        from datetime import datetime
-        import os
-        today_str = datetime.now().strftime("%Y-%m-%d")
-        breeze_session_file = f"breezesession/session_{today_str}.json"
-        if os.path.exists(breeze_session_file):
-            with open(breeze_session_file, "r") as bsf:
-                bs_data = json.load(bsf)
-                saved_breeze_token = bs_data.get("session_token")
-                if saved_breeze_token and saved_breeze_token != breeze_session_token:
-                    breeze_token_sources.append(("saved_session", saved_breeze_token))
-    except Exception as bse:
-        print(f"Failed to load saved Breeze session: {bse}")
 
-    breeze_validation_success = False
-    breeze_err_msg = ""
-    
-    for src, token in breeze_token_sources:
-        if not token or len(token) < 5 or token == "undefined":
-            continue
-            
-        breeze_check_code = f"""
-from breeze_connect import BreezeConnect
-try:
-    breeze = BreezeConnect(api_key="999407AZb39Vu3D&9X405B977330807K")
-    breeze.generate_session(api_secret="584F70+Z075364Cz35y6O9931Y16I387", session_token="{token}")
-    res = breeze.get_customer_details(api_session="{token}")
-    print("VALID")
-except Exception as e:
-    print(str(e))
-"""
-        cmd_breeze_val = ["./scratch_scripts/breeze_env/bin/python", "-c", breeze_check_code]
-        breeze_val_res = subprocess.run(cmd_breeze_val, capture_output=True, text=True)
-        if "VALID" in breeze_val_res.stdout:
-            breeze_session_token = token
-            breeze_validation_success = True
-            
-            # Save validated token to local cache file
-            try:
-                os.makedirs("breezesession", exist_ok=True)
-                with open(breeze_session_file, "w") as bsf:
-                    json.dump({"session_token": token, "validated_at": datetime.now().isoformat()}, bsf, indent=2)
-            except Exception as bse:
-                print(f"Failed to save validated Breeze session: {bse}")
-            break
-        else:
-            breeze_err_msg = breeze_val_res.stdout.strip() or breeze_val_res.stderr.strip() or "Breeze connection test failed."
-
-    if not breeze_validation_success:
-        raise HTTPException(status_code=400, detail=f"Breeze Session Token is expired or invalid: {breeze_err_msg}")
-
-    # 2. Validate Kite access token (via standard HTTP to bypass broken cryptography env packages)
-    import urllib.request
-    import urllib.error
-    
-    api_key = "x2ob63qqr9dhyj6o"
-    req_url = "https://api.kite.trade/user/profile"
-    
-    kite_access_token = req.kite_access_token
-    token_sources = [("frontend", kite_access_token)]
-    
-    # Add saved session token as fallback source
-    try:
-        from datetime import datetime
-        import os
-        today_str = datetime.now().strftime("%Y-%m-%d")
-        session_file = f"zerodhasession/session_{today_str}.json"
-        if os.path.exists(session_file):
-            with open(session_file, "r") as sf:
-                session_data = json.load(sf)
-                saved_token = session_data.get("access_token")
-                if saved_token and saved_token != kite_access_token:
-                    token_sources.append(("saved_session", saved_token))
-    except Exception as se:
-        print(f"Failed to load saved session: {se}")
-
-    validation_success = False
-    last_err_msg = ""
-    
-    for src, token in token_sources:
-        if not token or len(token) < 10 or token == "undefined":
-            continue
-        headers = {
-            "X-Kite-Version": "3",
-            "Authorization": f"token {api_key}:{token}"
-        }
-        try:
-            http_req = urllib.request.Request(req_url, headers=headers)
-            with urllib.request.urlopen(http_req, timeout=5) as response:
-                kite_access_token = token # Use this validated token for subsequent steps!
-                validation_success = True
-                break
-        except urllib.error.HTTPError as e:
-            err_body = e.read().decode()
-            try:
-                err_json = json.loads(err_body)
-                last_err_msg = err_json.get("message", "Forbidden")
-            except:
-                last_err_msg = err_body
-        except Exception as e:
-            last_err_msg = str(e)
-            
-    # If Kite key is absent or invalid, skip Zerodha/commodity sync.
-    skip_commodities = False
-    if not validation_success:
-        skip_commodities = True
-        logs = ["Breeze session key validated. Kite token is invalid or absent; skipping Zerodha/commodities sync."]
-    else:
-        logs = ["Both Breeze and Kite session keys validated successfully."]
-    
-    # 3. Sync constituent stock levels
-    logs.append("Syncing Nifty 50 constituent stocks price levels...")
-    cmd_stocks = [
-        "./data_agent/breeze_env/bin/python",
-        "data_agent/fetching/sync_nifty50_to_now.py",
-        breeze_session_token,
+    cmd = [
+        sys.executable,
+        os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                     "data_agent", "sync_all.py"),
     ]
-    stocks_res = subprocess.run(cmd_stocks, capture_output=True, text=True)
-    if stocks_res.returncode != 0:
-        logs.append(f"Constituents sync output: {stocks_res.stderr or stocks_res.stdout}")
-    else:
-        logs.append("Constituent stock levels synced successfully.")
-
-    # 3.5 Sync 1m Nifty Futures
-    logs.append("Syncing 1m Nifty Futures (NIFTY_FUT_1, NIFTY_FUT_2)...")
-    import time
-    time.sleep(3)
-    cmd_futures = [
-        "./data_agent/breeze_env/bin/python",
-        "data_agent/fetching/download_nifty_futures.py",
-        breeze_session_token
-    ]
-    fut_res = subprocess.run(cmd_futures, capture_output=True, text=True)
-    if fut_res.returncode != 0:
-        logs.append(f"Futures 1m sync output: {fut_res.stderr or fut_res.stdout}")
-    else:
-        logs.append("Nifty Futures 1m levels synced successfully.")
-
-    # 4. Sync Commodity, Currency, and GIFT Nifty levels via Upstox
-    logs.append("Syncing all commodity, currency, and GIFT Nifty levels (GOLD, SILVER, COPPER, CRUDEOIL, USDINR, GIFTNIFTY) via Upstox...")
-    cmd_commodities = [
-        "./data_agent/breeze_env/bin/python",
-        "data_agent/fetching/sync_commodities.py"
-    ]
-    comm_res = subprocess.run(cmd_commodities, capture_output=True, text=True)
-    if comm_res.returncode != 0:
-        logs.append(f"Commodities sync output: {comm_res.stderr or comm_res.stdout}")
-    else:
-        logs.append("Commodity, currency, and GIFT Nifty price levels synced successfully via Upstox.")
-
-    # 4.2 Sync Indian Index daily levels (NIFTY, BANKNIFTY) via yfinance
-    logs.append("Syncing Indian Index daily levels (NIFTY 1d) via yfinance...")
-    cmd_indices = [
-        "./data_agent/breeze_env/bin/python",
-        "data_agent/macro/download_india_indices.py"
-    ]
-    idx_res = subprocess.run(cmd_indices, capture_output=True, text=True)
-    if idx_res.returncode != 0:
-        logs.append(f"Index 1d sync output: {idx_res.stderr or idx_res.stdout}")
-    else:
-        logs.append("Indian Index 1d daily levels synced successfully.")
-
-    # 4.5 Sync Futures and Option Contract bars via Data Agent
-    logs.append("Syncing Futures and Option Contract bars via Data Agent...")
-    try:
-        from backend.data_agent_routes import _do_run, RunReq
-        agent_req = RunReq(
-            broker="breeze",
-            token=breeze_session_token,
-            api_key="999407AZb39Vu3D&9X405B977330807K",
-            api_secret="584F70+Z075364Cz35y6O9931Y16I387",
-            mode="fo",
-            timeframe="1m"
-        )
-        import time
-        time.sleep(3)
-        agent_res = _do_run(agent_req)
-        logs.append(f"Data Agent F&O Sync complete: {agent_res.get('saved_total', 0)} bars saved across {agent_res.get('targets', 0)} targets.")
-    except Exception as da_err:
-        import traceback
-        traceback.print_exc()
-        logs.append(f"Data Agent F&O Sync failed: {da_err}")
-
-    # 4.8 Sync US Macro factors (US10Y, NASDAQ) from FRED to PostgreSQL
-    logs.append("Syncing US Macro factors (US10Y, NASDAQ) from FRED to PostgreSQL...")
-    try:
-        import os
-        from datetime import datetime, timedelta
-        env_vars = os.environ.copy()
-        if "DATABASE_URL" not in env_vars:
-            env_vars["DATABASE_URL"] = "postgresql://localhost/niftyoptions"
-        
-        since_date = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d")
-        
-        for factor_series in ["US10Y", "NASDAQ", "CRUDE"]:
-            cmd_fred = [
-                "scratch_scripts/breeze_env/bin/python",
-                "data_agent/macro/us10y.py",
-                "--series", factor_series,
-                "--since", since_date
-            ]
-            fred_res = subprocess.run(cmd_fred, env=env_vars, capture_output=True, text=True)
-            if fred_res.returncode != 0:
-                logs.append(f"FRED {factor_series} sync warning: {fred_res.stderr or fred_res.stdout}")
-        logs.append("US Macro factors synced successfully.")
-    except Exception as fred_err:
-        logs.append(f"US Macro factors sync failed: {fred_err}")
-
-    # 4.8.5 Sync India macro factors (IN10Y_INDEX) to PostgreSQL
-    logs.append("Syncing India Macro factors (IN10Y_INDEX) to PostgreSQL...")
-    try:
-        cmd_india = [
-            "scratch_scripts/breeze_env/bin/python",
-            "data_agent/macro/ingest_india_rates.py"
-        ]
-        india_res = subprocess.run(cmd_india, env=env_vars, capture_output=True, text=True)
-        if india_res.returncode != 0:
-            logs.append(f"India Macro factors sync warning: {india_res.stderr or india_res.stdout}")
-        else:
-            logs.append("India Macro factors synced successfully.")
-    except Exception as india_err:
-        logs.append(f"India Macro factors sync failed: {india_err}")
-
-    # 4.9 Sync FII & DII daily flows from Upstox to PostgreSQL
-    logs.append("Syncing FII & DII daily cash flows from Upstox to PostgreSQL...")
-    try:
-        cmd_flows = [
-            "scratch_scripts/breeze_env/bin/python",
-            "data_agent/macro/download_fii_dii.py"
-        ]
-        flows_res = subprocess.run(cmd_flows, env=env_vars, capture_output=True, text=True)
-        if flows_res.returncode != 0:
-            logs.append(f"FII/DII sync warning: {flows_res.stderr or flows_res.stdout}")
-        else:
-            logs.append("FII/DII daily cash flows synced successfully.")
-    except Exception as flows_err:
-        logs.append(f"FII/DII flow sync failed: {flows_err}")
-
-    # 4.95 Sync US Tech Stocks & ADRs (ACN, CTSH, CRM, INFY_ADR) from yfinance to PostgreSQL
-    logs.append("Syncing US Tech Stocks & ADRs from yfinance to PostgreSQL...")
-    try:
-        cmd_stocks_us = [
-            "scratch_scripts/breeze_env/bin/python",
-            "data_agent/macro/download_us_stocks.py",
-            "--since", since_date
-        ]
-        stocks_us_res = subprocess.run(cmd_stocks_us, env=env_vars, capture_output=True, text=True)
-        if stocks_us_res.returncode != 0:
-            logs.append(f"US stocks sync warning: {stocks_us_res.stderr or stocks_us_res.stdout}")
-        else:
-            logs.append("US Tech Stocks & ADRs synced successfully.")
-    except Exception as stocks_us_err:
-        logs.append(f"US stocks sync failed: {stocks_us_err}")
-
-    # 5. Sync Option Chain captures (linked to newly synced index levels)
-    logs.append("Backfilling Option Chain captures (linking to spot index levels)...")
-    
-    expiries_to_sync = [req.expiry_date] if req.expiry_date else []
-    
-    # Auto-Rollover Logic: If the provided expiry is within 2 days from today, we also fetch the *next* expiry date
+    if req.breeze_session_token and req.breeze_session_token != "undefined":
+        cmd += ["--breeze-token", req.breeze_session_token]
     if req.expiry_date:
-        try:
-            from datetime import datetime
-            # req.expiry_date is expected to be "YYYY-MM-DD" or similar
-            expiry_dt_str = req.expiry_date.split("T")[0]
-            expiry_dt = datetime.strptime(expiry_dt_str, "%Y-%m-%d").date()
-            today_dt = datetime.now().date()
-            delta_days = (expiry_dt - today_dt).days
-            
-            if 0 <= delta_days <= 2:
-                try:
-                    expiries_data = api_exchange_expiries(req.symbol)
-                    all_expiries = expiries_data.get("expiries", [])
-                    for exp in all_expiries:
-                        if exp[:10] > expiry_dt_str:
-                            expiries_to_sync.append(exp)
-                            logs.append(f"Expiry {req.expiry_date} is within 2 days. Added next expiry {exp} to auto-rollover sync list.")
-                            break
-                except Exception as ex:
-                    logs.append(f"Failed to fetch next expiry for rollover: {ex}")
-        except Exception as e:
-            logs.append(f"Failed to calculate expiry delta for rollover: {e}")
+        cmd += ["--expiry", req.expiry_date, "--symbol", req.symbol,
+                "--interval", req.interval]
+        if req.start_date:
+            cmd += ["--start-date", req.start_date]
+        if req.end_date:
+            cmd += ["--end-date", req.end_date]
 
-    for exp_to_sync in expiries_to_sync:
-        logs.append(f"Backfilling Option Chain for expiry {exp_to_sync}...")
-        cmd_options = [
-            "./data_agent/breeze_env/bin/python",
-            "scratch_scripts/fetch_historical_option_chain.py",
-            breeze_session_token,
-            exp_to_sync,
-            req.symbol,
-            req.interval,
-            req.start_date,
-            req.end_date
-        ]
-        opt_res = subprocess.run(cmd_options, capture_output=True, text=True)
-        if opt_res.returncode != 0:
-            logs.append(f"Warning: Option Chain sync failed for {exp_to_sync}: {opt_res.stderr or opt_res.stdout}")
-    # 6. Post-Sync Validation Audit
-    logs.append("Running Post-Sync Data Validation Audit...")
-    try:
-        import sqlite3
-        from datetime import datetime
-        today_str = datetime.now().strftime("%Y-%m-%d")
-        
-        # Audit SQLite
-        lite_conn = sqlite3.connect("/Users/deepak/Library/CloudStorage/GoogleDrive-deepcranbed@gmail.com/My Drive/option_chains.db")
-        lite_cur = lite_conn.cursor()
-        
-        symbols_to_check = ["NIFTY", "NIFTYIT", "USDINR", "CRUDEOIL", "CRUDEOIL_MCX", "NIFTY_FUT_1", "NIFTY_FUT_2"]
-        for sym in symbols_to_check:
-            for tf in ["1d", "1m"]:
-                lite_cur.execute("SELECT MAX(ts), COUNT(*) FROM price_bars WHERE symbol = ? AND timeframe = ?", (sym, tf))
-                row = lite_cur.fetchone()
-                max_ts, count = row if row else (None, 0)
-                
-                note = ""
-                if max_ts and today_str not in max_ts:
-                    if tf == "1d":
-                        note = " (Note: Upstox/Breeze usually updates 1d historical data after End of Day)"
-                    elif tf == "1m":
-                        note = " (Note: Check if today is a trading holiday or session is closed)"
-                elif not max_ts:
-                    note = " (Data missing)"
-                
-                logs.append(f"[Audit SQLite] {sym} ({tf}): Count={count}, Latest={max_ts}{note}")
-            
-        lite_conn.close()
-        
-        # Audit Postgres using psql CLI to avoid psycopg2 dependency
-        factors_to_check = ["US10Y", "NASDAQ", "CRUDE", "IN10Y_INDEX"]
-        for factor in factors_to_check:
-            cmd = ["psql", "-d", "niftyoptions", "-t", "-A", "-F", "|", "-c", f"SELECT MAX(obs_date), COUNT(*) FROM macro.factor_series WHERE factor = '{factor}'"]
-            res = subprocess.run(cmd, env=env_vars, capture_output=True, text=True)
-            if res.returncode == 0 and res.stdout.strip():
-                parts = res.stdout.strip().split("|")
-                max_date = parts[0].strip() if len(parts) > 0 else "None"
-                count = parts[1].strip() if len(parts) > 1 else "0"
-                note = ""
-                if max_date and max_date != "None" and today_str not in max_date:
-                    note = " (Note: Macro data like US10Y/FRED can have 1-2 days reporting lag)"
-                logs.append(f"[Audit Postgres] {factor}: Count={count}, Latest={max_date}{note}")
-            else:
-                logs.append(f"[Audit Postgres] {factor}: Query failed or empty")
-            
-        logs.append("Post-Sync Data Validation Audit completed.")
-    except Exception as audit_err:
-        logs.append(f"Post-Sync Data Validation Audit failed: {audit_err}")
-
-    return {"success": True, "logs": logs}
+    res = subprocess.run(cmd, capture_output=True, text=True)
+    logs = (res.stdout or "").splitlines()
+    if res.stderr:
+        logs += ["--- stderr ---"] + res.stderr.splitlines()
+    return {"success": res.returncode == 0, "logs": logs}
 
 @app.get("/api/exchange-expiries")
-def api_exchange_expiries(symbol: str = "NIFTY", segment_filter: str = "OPT"):
-    import urllib.request
-    import csv
-    import io
-    from datetime import datetime
-    
-    url = "https://api.kite.trade/instruments"
-    try:
-        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-        with urllib.request.urlopen(req, timeout=10) as response:
-            csv_content = response.read().decode('utf-8')
-            
-        reader = csv.reader(io.StringIO(csv_content))
-        header = next(reader)
-        
-        name_idx = header.index("name")
-        expiry_idx = header.index("expiry")
-        segment_idx = header.index("segment")
-        
-        from datetime import timezone, timedelta
-        IST = timezone(timedelta(hours=5, minutes=30))
-        today_date = datetime.now(IST).date()
-        
-        expiries = set()
-        for row in reader:
-            if len(row) > max(name_idx, expiry_idx, segment_idx):
-                name = row[name_idx].strip().upper()
-                segment = row[segment_idx].strip().upper()
-                if name == symbol.upper() and segment_filter.upper() in segment:
-                    exp_date = row[expiry_idx].strip()
-                    if exp_date:
-                        try:
-                            parsed_date = datetime.strptime(exp_date, "%Y-%m-%d")
-                            # Only include active contracts (expiring today or in the future)
-                            if parsed_date.date() >= today_date:
-                                exp_iso = parsed_date.strftime("%Y-%m-%dT06:00:00.000Z")
-                                expiries.add(exp_iso)
-                        except:
-                            pass
-                            
-        sorted_expiries = sorted(list(expiries))
-        return {"success": True, "expiries": sorted_expiries}
-    except Exception as e:
-        print(f"Failed to fetch exchange expiries: {e}")
-        # Default fallbacks depending on segment_filter
-        if segment_filter.upper() == "FUT":
-            fallback_expiries = [
-                "2026-07-30T06:00:00.000Z",
-                "2026-08-27T06:00:00.000Z",
-                "2026-09-24T06:00:00.000Z"
-            ]
-        else:
-            fallback_expiries = [
-                "2026-07-07T06:00:00.000Z",
-                "2026-07-14T06:00:00.000Z",
-                "2026-07-21T06:00:00.000Z",
-                "2026-07-28T06:00:00.000Z"
-            ]
-        return {
-            "success": False, 
-            "error": str(e),
-            "expiries": fallback_expiries
-        }
+def api_exchange_expiries(symbol: str = "NIFTY", segment_filter: str = "OPT",
+                          session_token: str = ""):
+    """Listed expiries for `symbol`, from Breeze.
 
+    Was Kite's public instruments dump. Kite is no longer used anywhere in this
+    repo, so this now shares one implementation with the sync CLI —
+    data_agent/expiries.py — rather than keeping a second copy of the idea.
 
-@app.get("/api/sync-kite-historical")
-def api_sync_kite_historical(access_token: str, symbol: str, start_date: str, end_date: str, interval: str = "minute", api_key: str = "x2ob63qqr9dhyj6o"):
-    import subprocess
-    import json
-    
-    if not access_token:
-        raise HTTPException(status_code=400, detail="access_token is required")
-        
-    try:
-        cmd = [
-            "./scratch_scripts/breeze_env/bin/python",
-            "scratch_scripts/test_kite_connect.py",
-            "--access_token", access_token,
-            "--api_key", api_key,
-            "--symbol", symbol.upper(),
-            "--from_date", start_date,
-            "--to_date", end_date,
-            "--interval", interval
-        ]
-        
-        result = subprocess.run(cmd, capture_output=True, text=True)
-        if result.returncode != 0:
-            raise Exception(f"Kite sync failed: {result.stderr or result.stdout}")
-            
-        return {"success": True, "message": result.stdout}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    Two consequences of the switch, both deliberate:
+      * a Breeze session token is required, since unlike the Kite dump this is an
+        authenticated call. It falls back to today's cached session file.
+      * there is no hardcoded fallback list. The old one returned July 2026 dates
+        on failure, which in August is a wrong answer wearing a right answer's
+        clothes. A failure now returns success:false and an empty list.
+    """
+    import sys, os as _os
+    _os.sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.dirname(
+        _os.path.abspath(__file__))), "data_agent"))
+    from expiries import unexpired
+    product = "futures" if segment_filter.upper() == "FUT" else "options"
+    # `unexpired` = everything still tradeable, which is what a dropdown wants.
+    # `active` would return only the one or two the sync should PULL — a different
+    # question, answered by fetching/universe.py, and the wrong one here.
+    expiries, err = unexpired(symbol=symbol, product=product,
+                              session_token=session_token or None)
+    if err:
+        print(f"exchange-expiries: {err}")
+        return {"success": False, "error": err, "expiries": []}
+    return {"success": True, "expiries": expiries}
+
 
 # Breeze stock code translation dictionary for standard symbols
 # Load Breeze mappings from config JSON dynamically
@@ -866,7 +487,7 @@ def api_fetch_historical_bars(session_token: str, interval: str, symbol: str = "
             breeze_end = current_end.astimezone(ist_tz).strftime("%Y-%m-%dT%H:%M:%S.000Z")
             
             cmd = [
-                "./scratch_scripts/breeze_env/bin/python",
+                "./breeze_env/bin/python",
                 "scratch_scripts/fetch_breeze_historical.py",
                 session_token,
                 "1day" if tf == "1d" else "1minute",
@@ -1373,11 +994,18 @@ def api_get_replay_context(date: str):
         ).fetchall()]
         
         # Pull symbol volumes grouped by date
+        from datetime import datetime, timedelta
+        selected_dt = datetime.strptime(date, "%Y-%m-%d")
+        start_date = (selected_dt - timedelta(days=7)).strftime("%Y-%m-%d")
+        end_date = date + "T23:59:59Z"
+
         data = {}
         for s in all_symbols:
             data[s] = {}
         for r in conn.execute(
-            "SELECT symbol, SUBSTR(ts, 1, 10), SUM(volume * close) FROM price_bars WHERE symbol NOT IN ('NIFTY', 'INDIAVIX', 'USDINR', 'GOLD', 'SILVER', 'COPPER', 'CRUDEOIL') GROUP BY symbol, SUBSTR(ts, 1, 10)"
+            "SELECT symbol, SUBSTR(ts, 1, 10), volume * close FROM price_bars "
+            "WHERE timeframe='1d' AND ts >= ? AND ts <= ? AND symbol NOT IN ('NIFTY', 'INDIAVIX', 'USDINR', 'GOLD', 'SILVER', 'COPPER', 'CRUDEOIL')",
+            (start_date, end_date)
         ).fetchall():
             if r[2] is not None:
                 data[r[0]][r[1]] = r[2]
@@ -1499,7 +1127,7 @@ def api_get_replay_context(date: str):
 
 
 @app.get("/api/intraday-dates")
-def api_intraday_dates(limit: int = 25):
+def api_intraday_dates(limit: int = 500):
     """Dates that actually have a full NIFTY 1m intraday session, newest-last — so
     the Intraday date picker auto-tracks the data instead of a hardcoded list."""
     import sqlite3
@@ -1552,13 +1180,18 @@ def api_volume_window_matrix(date: str):
                 f"SELECT DISTINCT symbol FROM price_bars WHERE symbol NOT IN ({','.join('?'*len(EXCLUDE))})",
                 EXCLUDE).fetchall()]
 
+            from datetime import datetime, timedelta
+            selected_dt = datetime.strptime(date, "%Y-%m-%d")
+            start_date = (selected_dt - timedelta(days=7)).strftime("%Y-%m-%d")
+            end_date = date + "T23:59:59Z"
+
             def window_values(lo, hi):
                 out = {}
                 # 1-minute bars only — the table also holds daily bars that would
                 # otherwise pollute the intraday time-of-day windows.
                 q = ("SELECT symbol, SUBSTR(ts,1,10) d, SUM(volume*close) v FROM price_bars "
-                     "WHERE timeframe='1m' AND SUBSTR(ts,12,8) BETWEEN ? AND ? GROUP BY symbol, d")
-                for sym, d, v in conn.execute(q, (lo, hi)):
+                     "WHERE timeframe='1m' AND ts >= ? AND ts <= ? AND SUBSTR(ts,12,8) BETWEEN ? AND ? GROUP BY symbol, d")
+                for sym, d, v in conn.execute(q, (start_date, end_date, lo, hi)):
                     if v is not None:
                         out.setdefault(sym, {})[d] = float(v)
                 return out
@@ -1566,7 +1199,7 @@ def api_volume_window_matrix(date: str):
 
             # Previous session's close per symbol (baseline for the day-over-day
             # "whole day" move, so it reconciles with the Index Move Attribution).
-            _pd = conn.execute("SELECT MAX(SUBSTR(ts,1,10)) FROM price_bars WHERE timeframe='1m' "
+            _pd = conn.execute("SELECT MAX(SUBSTR(ts,1,10)) FROM price_bars WHERE symbol='NIFTY' AND timeframe='1m' "
                                "AND SUBSTR(ts,1,10) < ?", (date,)).fetchone()
             prev_date = _pd[0] if _pd else None
             prev_close = {}
@@ -2069,10 +1702,28 @@ def get_flows_history(limit: int = 60):
         # Return newest first or oldest first? The chart usually wants oldest first.
         # Let's reverse them so it's chronological
         rows.reverse()
-        
+
+        # NIFTY close on the same dates, from the same connection.
+        #
+        # Served here rather than fetched separately so the index and the flows are
+        # aligned by construction. Two fetches would let them drift apart whenever a
+        # flow row exists for a session with no index bar — which is exactly how the
+        # phantom weekend rows went unnoticed: they had no NIFTY bar and nothing was
+        # comparing the two.
+        nifty = {}
+        try:
+            c.execute("""
+                SELECT substr(ts,1,10), close FROM price_bars
+                WHERE symbol='NIFTY' AND timeframe='1d' AND substr(ts,1,10) >= ?
+            """, (rows[0][0][:10] if rows else "1900-01-01",))
+            nifty = {d: v for d, v in c.fetchall()}
+        except Exception:
+            pass
+
         data = []
         for r in rows:
             data.append({
+                "nifty_close": nifty.get(r[0][:10]),
                 "date": r[0][:10],
                 "fii_buy": r[1],
                 "fii_sell": r[2],
@@ -2304,6 +1955,40 @@ async def api_update_news():
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+# ---------------------------------------------------------------------------
+# Global cues: read where the data ACTUALLY is
+# ---------------------------------------------------------------------------
+_GLOBAL_CUES_CACHE = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "global_cues_cache.json")
+
+
+def _read_cues_state() -> dict:
+    """Global cues, preferring .state/cues_state.json and falling back to the repo-root
+    cache that global_cues.py actually writes.
+
+    THE BUG THIS FIXES: state_manager.read_state("cues_state") resolves to
+    .state/cues_state.json, but nothing in this repo has ever written that name —
+    global_cues.py writes its own _CACHE_FILE = "global_cues_cache.json" at the repo
+    root. So every read returned {}, which set bond_fx_stale=True permanently and left
+    BondDay with yield_10y=0.0. The visible symptom was read_bonds() emitting
+    "10Y yield ~flat at 0.00% — no rate impulse for equities today" — a confident
+    sentence built on a missing number — and fii_disambiguation() stuck on "mixed".
+
+    That cross-check is the one that separates "FIIs are leaving India" from
+    "profit-booking that looks scary but isn't", which is exactly the distinction the
+    market handed us on 2026-08-10 (SBI fell on profit-taking after a Q1 beat, not on
+    risk-off). It matters most on expiry day, and Nifty weeklies expire on Tuesday.
+    """
+    st = state_manager.read_state("cues_state") or {}
+    if st:
+        return st
+    try:
+        with open(_GLOBAL_CUES_CACHE, "r") as f:
+            return json.load(f) or {}
+    except Exception:
+        return {}
+
+
 @app.post("/api/update-flows")
 def api_update_flows():
     try:
@@ -2317,7 +2002,7 @@ def api_update_flows():
         # Reuse the REAL USDINR + India 10Y already fetched by /api/update-cues
         # (stored in cues_state) — no separate CCIL/RBI source needed.
         from backend.quant.bond_cues import read_bonds, fii_disambiguation, BondDay
-        cues_state = state_manager.read_state("cues_state") or {}
+        cues_state = _read_cues_state()
         _cl = cues_state.get("close_levels", {})   # levels
         _cp = cues_state.get("cues", {})           # daily change: 10Y in bp, USDINR in %
         bond_fx_stale = not cues_state             # True if update-cues hasn't run yet
@@ -2412,7 +2097,7 @@ async def api_run_pipeline(req: PipelineRequest):
         flows_state = state_manager.read_state("flows_state")
         events_state = state_manager.read_state("events_state")
         macro_state = state_manager.read_state("macro_state")
-        cues_state = state_manager.read_state("cues_state")
+        cues_state = _read_cues_state() or None
         
         # Backward compat if force_news_refresh is true (e.g. from old frontend code)
         if req.force_news_refresh:
@@ -2567,7 +2252,7 @@ async def api_upload_chain(
         flows_state = state_manager.read_state("flows_state")
         events_state = state_manager.read_state("events_state")
         macro_state = state_manager.read_state("macro_state")
-        cues_state = state_manager.read_state("cues_state")
+        cues_state = _read_cues_state() or None
         
         # Parse payload if provided
         data = json.loads(payload) if payload else {}
@@ -2829,7 +2514,7 @@ async def option_chain_sync_loop(session_token: str, expiry_date: str, symbol: s
                 try:
                     breeze_symbol = BREEZE_SYMBOL_MAP.get(symbol.upper(), symbol)
                     cmd = [
-                        "./scratch_scripts/breeze_env/bin/python",
+                        "./breeze_env/bin/python",
                         "scratch_scripts/fetch_breeze_json.py",
                         session_token,
                         expiry_date,
@@ -2944,7 +2629,7 @@ def api_get_nifty_history(session_token: str, from_date: str, to_date: str, inte
         
     try:
         cmd = [
-            "./scratch_scripts/breeze_env/bin/python",
+            "./breeze_env/bin/python",
             "scratch_scripts/fetch_historical.py",
             session_token,
             from_date,
@@ -3289,7 +2974,7 @@ async def auto_expiry_cleanup_loop():
                             
                             if breeze_session:
                                 cmd = [
-                                    "./scratch_scripts/breeze_env/bin/python",
+                                    "./breeze_env/bin/python",
                                     "scratch_scripts/fetch_historical_option_chain.py",
                                     breeze_session,
                                     f"{today_str}T06:00:00.000Z",

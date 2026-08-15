@@ -1,0 +1,350 @@
+{
+  "ASIANPAINT.NS": {
+    "as_of": "2026-08-13",
+    "last": 2755.5,
+    "name": "Asian Paints (oil user)",
+    "previous_close": null
+  },
+  "BAJAJ-AUTO.NS": {
+    "as_of": "2026-08-13",
+    "last": 11661.0,
+    "name": "Bajaj Auto",
+    "previous_close": null
+  },
+  "BEL.NS": {
+    "as_of": "2026-08-13",
+    "last": 410.5,
+    "name": "Bharat Electronics",
+    "previous_close": null
+  },
+  "BHARTIARTL.NS": {
+    "as_of": "2026-08-13",
+    "last": 1939.1,
+    "name": "Bharti Airtel",
+    "previous_close": null
+  },
+  "BPCL.NS": {
+    "as_of": "2026-08-13",
+    "last": 315.0,
+    "name": "BPCL (oil marketer)",
+    "previous_close": null
+  },
+  "BZ=F": {
+    "as_of": "2026-08-13",
+    "last": 87.4,
+    "name": "Brent Crude",
+    "previous_close": null
+  },
+  "CGPOWER.NS": {
+    "as_of": "2026-08-13",
+    "last": 886.55,
+    "name": "CG Power (semi/electr.)",
+    "previous_close": null
+  },
+  "CIPLA.NS": {
+    "as_of": "2026-08-13",
+    "last": 1458.8,
+    "name": "Cipla",
+    "previous_close": null
+  },
+  "CL=F": {
+    "as_of": "2026-08-13",
+    "last": 81.6,
+    "name": "WTI Crude",
+    "previous_close": null
+  },
+  "COFORGE.NS": {
+    "as_of": "2026-08-13",
+    "last": 1829.0,
+    "name": "Coforge",
+    "previous_close": null
+  },
+  "DIXON.NS": {
+    "as_of": "2026-08-13",
+    "last": 14035.0,
+    "name": "Dixon (EMS/China+1)",
+    "previous_close": null
+  },
+  "DLF.NS": {
+    "as_of": "2026-08-13",
+    "last": 664.0,
+    "name": "DLF",
+    "previous_close": null
+  },
+  "DRREDDY.NS": {
+    "as_of": "2026-08-13",
+    "last": 1206.0,
+    "name": "Dr Reddy",
+    "previous_close": null
+  },
+  "DX-Y.NYB": {
+    "as_of": "2026-08-13",
+    "last": 99.89,
+    "name": "Dollar Index",
+    "previous_close": null
+  },
+  "GC=F": {
+    "as_of": "2026-08-13",
+    "last": 4441.0,
+    "name": "Gold",
+    "previous_close": null
+  },
+  "HAL.NS": {
+    "as_of": "2026-08-13",
+    "last": 4945.0,
+    "name": "HAL",
+    "previous_close": null
+  },
+  "HAVELLS.NS": {
+    "as_of": "2026-08-13",
+    "last": 1270.0,
+    "name": "Havells",
+    "previous_close": null
+  },
+  "HCLTECH.NS": {
+    "as_of": "2026-08-13",
+    "last": 1370.0,
+    "name": "HCL Tech",
+    "previous_close": null
+  },
+  "HDFCBANK.NS": {
+    "as_of": "2026-08-13",
+    "last": 725.0,
+    "name": "HDFC Bank",
+    "previous_close": null
+  },
+  "HEROMOTOCO.NS": {
+    "as_of": "2026-08-13",
+    "last": 5850.0,
+    "name": "Hero MotoCorp",
+    "previous_close": null
+  },
+  "HG=F": {
+    "as_of": "2026-08-13",
+    "last": 6.59,
+    "name": "Copper",
+    "previous_close": null
+  },
+  "ICICIBANK.NS": {
+    "as_of": "2026-08-13",
+    "last": 1406.8,
+    "name": "ICICI Bank",
+    "previous_close": null
+  },
+  "INDIGO.NS": {
+    "as_of": "2026-08-13",
+    "last": 5370.0,
+    "name": "IndiGo (aviation/fuel)",
+    "previous_close": null
+  },
+  "INFY.NS": {
+    "as_of": "2026-08-13",
+    "last": 1175.0,
+    "name": "Infosys",
+    "previous_close": null
+  },
+  "INR=X": {
+    "as_of": "2026-08-13",
+    "last": 95.43,
+    "name": "USD/INR",
+    "previous_close": null
+  },
+  "KALYANKJIL.NS": {
+    "as_of": "2026-08-13",
+    "last": 613.4,
+    "name": "Kalyan Jew. (jewellery)",
+    "previous_close": null
+  },
+  "KAYNES.NS": {
+    "as_of": "2026-08-13",
+    "last": 3760.5,
+    "name": "Kaynes (semiconductor)",
+    "previous_close": null
+  },
+  "LT.NS": {
+    "as_of": "2026-08-13",
+    "last": 4070.7,
+    "name": "L&T",
+    "previous_close": null
+  },
+  "LTIM.NS": {
+    "as_of": "2026-07-25",
+    "last": 7411.98,
+    "name": "LTIMindtree",
+    "previous_close": null
+  },
+  "M&M.NS": {
+    "as_of": "2026-08-13",
+    "last": 3428.2,
+    "name": "M&M",
+    "previous_close": null
+  },
+  "MARUTI.NS": {
+    "as_of": "2026-08-13",
+    "last": 13905.0,
+    "name": "Maruti",
+    "previous_close": null
+  },
+  "MUTHOOTFIN.NS": {
+    "as_of": "2026-08-13",
+    "last": 2875.7,
+    "name": "Muthoot (gold loan)",
+    "previous_close": null
+  },
+  "NTPC.NS": {
+    "as_of": "2026-08-13",
+    "last": 344.25,
+    "name": "NTPC",
+    "previous_close": null
+  },
+  "OLAELEC.NS": {
+    "as_of": "2026-08-13",
+    "last": 39.67,
+    "name": "Ola Electric (EV)",
+    "previous_close": null
+  },
+  "ONGC.NS": {
+    "as_of": "2026-08-13",
+    "last": 239.9,
+    "name": "ONGC (upstream/producer)",
+    "previous_close": null
+  },
+  "PERSISTENT.NS": {
+    "as_of": "2026-08-13",
+    "last": 5523.0,
+    "name": "Persistent",
+    "previous_close": null
+  },
+  "POWERGRID.NS": {
+    "as_of": "2026-08-13",
+    "last": 266.6,
+    "name": "Power Grid",
+    "previous_close": null
+  },
+  "RELIANCE.NS": {
+    "as_of": "2026-08-13",
+    "last": 1317.0,
+    "name": "Reliance",
+    "previous_close": null
+  },
+  "SI=F": {
+    "as_of": "2026-08-13",
+    "last": 65.07,
+    "name": "Silver",
+    "previous_close": null
+  },
+  "SRF.NS": {
+    "as_of": "2026-08-13",
+    "last": 2608.7,
+    "name": "SRF",
+    "previous_close": null
+  },
+  "SUNPHARMA.NS": {
+    "as_of": "2026-08-13",
+    "last": 1932.0,
+    "name": "Sun Pharma",
+    "previous_close": null
+  },
+  "TATAMOTORS.NS": {
+    "as_of": "2026-07-25",
+    "last": 7411.98,
+    "name": "Tata Motors",
+    "previous_close": null
+  },
+  "TATASTEEL.NS": {
+    "as_of": "2026-08-13",
+    "last": 184.85,
+    "name": "Tata Steel",
+    "previous_close": null
+  },
+  "TCS.NS": {
+    "as_of": "2026-08-13",
+    "last": 2375.0,
+    "name": "TCS",
+    "previous_close": null
+  },
+  "TECHM.NS": {
+    "as_of": "2026-08-13",
+    "last": 1639.0,
+    "name": "Tech Mahindra",
+    "previous_close": null
+  },
+  "TITAN.NS": {
+    "as_of": "2026-08-13",
+    "last": 5063.7,
+    "name": "Titan (jewellery)",
+    "previous_close": null
+  },
+  "ULTRACEMCO.NS": {
+    "as_of": "2026-08-13",
+    "last": 11706.0,
+    "name": "UltraTech",
+    "previous_close": null
+  },
+  "WIPRO.NS": {
+    "as_of": "2026-08-13",
+    "last": 183.1,
+    "name": "Wipro",
+    "previous_close": null
+  },
+  "^BSESN": {
+    "as_of": "2026-08-13",
+    "last": 78079.96,
+    "name": "Sensex",
+    "previous_close": null
+  },
+  "^CNXIT": {
+    "as_of": "2026-08-13",
+    "last": 31453.9,
+    "name": "Nifty IT",
+    "previous_close": null
+  },
+  "^DJI": {
+    "as_of": "2026-08-13",
+    "last": 53770.27,
+    "name": "Dow Jones",
+    "previous_close": null
+  },
+  "^INDIAVIX": {
+    "as_of": "2026-08-13",
+    "last": 11.42,
+    "name": "India VIX",
+    "previous_close": null
+  },
+  "^IXIC": {
+    "as_of": "2026-08-13",
+    "last": 26588.49,
+    "name": "Nasdaq",
+    "previous_close": null
+  },
+  "^KS11": {
+    "as_of": "2026-08-13",
+    "last": 6813.34,
+    "name": "Kospi",
+    "previous_close": null
+  },
+  "^NSEBANK": {
+    "as_of": "2026-08-13",
+    "last": 57635.25,
+    "name": "Bank Nifty",
+    "previous_close": null
+  },
+  "^NSEI": {
+    "as_of": "2026-08-13",
+    "last": 24395.85,
+    "name": "Nifty 50",
+    "previous_close": null
+  },
+  "^SOX": {
+    "as_of": "2026-08-13",
+    "last": 12399.38,
+    "name": "Phila Semi (SOX)",
+    "previous_close": null
+  },
+  "^TNX": {
+    "as_of": "2026-08-13",
+    "last": 4.68,
+    "name": "US 10Y Yield",
+    "previous_close": null
+  }
+}

@@ -94,8 +94,18 @@ NIFTY_IT = ["TCS", "INFY", "HCLTECH", "WIPRO", "TECHM",
             "LTIM", "PERSISTENT", "COFORGE", "MPHASIS", "LTTS"]
 
 # Symbols missing/stale in older SecurityMaster dumps -> verified ISIN overrides.
+#
+# The second group is NOT a stale-dump problem: build_symbol_isin_map() keys the map on
+# ExchangeCode, which carries the CURRENT NSE ticker, while the constituents registry
+# still carries the pre-rename one. The scrip master holds the row — under a name the
+# lookup never asks for — so re-downloading it changes nothing, because a fresh dump
+# will not contain "ZOMATO" either. Both ISINs below were read straight out of the
+# NSEScripMaster.txt already in this repo.
 SCRIP_ISIN_OVERRIDES = {
     "LTIM": "INE214T01019",   # LTIMindtree (post LTI-Mindtree merger; absent from older scrip masters)
+    # NSE renames / demergers — old symbol on the left, current entity in the comment.
+    "ZOMATO": "INE758T01015",      # ETERNAL LIMITED (Zomato renamed, 2025)
+    "TATAMOTORS": "INE155A01022",  # TATA MOTORS PAX VEHICLES LTD / TMPV (2025 demerger)
 }
 
 

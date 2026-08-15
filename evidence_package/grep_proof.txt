@@ -1,0 +1,11 @@
+$ grep -rn "simulateInconsistency" src/
+(No matches found)
+
+$ grep -rn "checkInvariants" src/
+(No matches found)
+
+$ grep -rn "Simulate Mid Pollution" src/
+(No matches found)
+
+$ grep -rn "Simulate DTE" src/
+(No matches found)

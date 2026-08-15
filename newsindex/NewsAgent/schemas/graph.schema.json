@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://newsindex/NewsAgent/schemas/graph.schema.json",
+  "title": "Knowledge Graph Delta",
+  "description": "A batch of node/edge upserts produced by the Knowledge Graph Agent. Edges are directed, carry a mechanism, and never commit an LLM-invented weight — weights are Core-produced and tagged PRIOR until calibrated.",
+  "type": "object",
+  "required": ["as_of", "added_nodes", "added_edges", "updated_edges"],
+  "properties": {
+    "as_of": { "type": "string", "format": "date-time" },
+    "graph_version": { "type": "string" },
+    "added_nodes": { "type": "array", "items": { "$ref": "#/$defs/node" } },
+    "added_edges": { "type": "array", "items": { "$ref": "#/$defs/edge" } },
+    "updated_edges": { "type": "array", "items": { "$ref": "#/$defs/edge" } }
+  },
+  "$defs": {
+    "node": {
+      "type": "object",
+      "required": ["node_id", "type", "label"],
+      "properties": {
+        "node_id": { "type": "string" },
+        "type": {
+          "type": "string",
+          "enum": ["Event", "Asset", "MacroFactor", "PolicyActor", "Theme", "Regime", "Sector", "Industry", "Company", "Index"]
+        },
+        "label": { "type": "string" },
+        "properties": { "type": "object" }
+      }
+    },
+    "edge": {
+      "type": "object",
+      "required": ["edge_id", "type", "source", "target", "sign", "mechanism"],
+      "properties": {
+        "edge_id": { "type": "string" },
+        "type": {
+          "type": "string",
+          "enum": ["CAUSES", "TRANSMITS_TO", "EXPOSES", "CONDITIONS", "OVERRIDES", "ANALOGOUS_TO", "COMPETES_WITH"]
+        },
+        "source": { "type": "string" },
+        "target": { "type": "string" },
+        "sign": { "type": "integer", "enum": [-1, 0, 1] },
+        "weight": { "type": "number" },
+        "weight_tag": { "type": "string", "enum": ["PRIOR", "CALIBRATED"] },
+        "mechanism": { "type": "string" },
+        "lag_horizon": {
+          "type": "string",
+          "enum": ["immediate", "short", "medium", "structural"]
+        },
+        "shock_type_dependency": {
+          "type": "string",
+          "enum": ["supply", "demand", "inventory", "speculation", "policy", "none"]
+        },
+        "regime_conditions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["regime_id"],
+            "properties": {
+              "regime_id": { "type": "string" },
+              "sign_override": { "type": "integer", "enum": [-1, 0, 1] },
+              "weight_multiplier": { "type": "number", "minimum": 0 }
+            }
+          }
+        },
+        "track_record": {
+          "type": "object",
+          "properties": {
+            "sessions": { "type": "integer", "minimum": 0 },
+            "hits": { "type": "integer", "minimum": 0 },
+            "hit_rate": { "type": "number", "minimum": 0, "maximum": 1 },
+            "last_confirmed": { "type": "string", "format": "date-time" },
+            "last_overridden": { "type": "string", "format": "date-time" }
+          }
+        },
+        "provenance": {
+          "type": "object",
+          "properties": {
+            "created_by_event": { "type": "string" },
+            "calibration_ref": { "type": "string" }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "type": { "const": "OVERRIDES" } } },
+          "then": {
+            "properties": {
+              "properties": {
+                "type": "object",
+                "required": ["reason"],
+                "properties": { "reason": { "type": "string" } }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

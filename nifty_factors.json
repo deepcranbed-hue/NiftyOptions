@@ -1,0 +1,787 @@
+{
+ "as_of": "2026-08-14",
+ "note": "Macro/structural forces on the Nifty, with scenario priors. Scenarios are EPISODE-BASED ANALOGIES — 'when this happened before, Nifty did roughly X' — never regression betas: this repo's own daily macro→index regression was retired at R²=0.036 (see SECTOR_INTELLIGENCE_FRAMEWORK.md §0). Ranges are order-of-magnitude priors with the historical anchor named; they decay fast — refresh after every macro event. Not investment advice.",
+ "expectation": {
+  "as_of": "2026-08-13",
+  "today": "Stock-specific, not macro. Nifty ~24,348 at 11:46 IST (-0.36%), -0.96% from Monday, with the Tata Sons chairmanship vacancy (TCS -4% Wednesday, 8.95% of the index across six Tata names), an unexplained Reliance slide (-30.7 pts over three sessions) and a Rs 1,908 cr UltraTech block pricing today doing most of the damage. India VIX FELL to 11.52 through the decline — repricing, not fear. PSU banks and pharma up, FMCG/metals/IT down: rotation. DII absorbed FII selling better than 5:1 on Wednesday.",
+  "week": "Range roughly 24,200-24,600, with the 18 August weekly expiry and the Tata Sons AGM falling on the SAME day and the 24,400-24,500 call wall (12.9m and 11.3m OI) capping, 24,300 (11.1m put OI) supporting. Two macro items cut opposite ways: soft US CPI for a second month has taken the September Fed hike largely off the table, while Brent near $88 with US-Iran talks deadlocked is unwinding the oil relief the whole tailwind was written around. Q1 FY27 prints are beating and being sold — read them against implied EPS growth, not against zero. Max Healthcare reports 14 August.",
+  "derived_from": "Factor tally + today's brief (nifty_today.json) + option-chain positioning from capture 18899. Curated judgment, dated — stale within days."
+ },
+ "factors": [
+  {
+   "id": "tata_governance",
+   "name": "Tata group leadership transition",
+   "direction": "headwind",
+   "fragile": true,
+   "status": "N Chandrasekaran resigned as Tata Sons chairman on 12 August 2026, staying until 20 February 2027. The cause is an unresolved February 2026 board meeting at which Tata Trusts chairman Noel Tata blocked his renewal as director over losses at certain group companies — 'no resolution has been reached till date.' Six Tata names sit in the Nifty 50 carrying 8.95% weight (TCS 4.0, Tata Motors 1.6, Titan 1.3, Tata Steel 1.0, Tata Consumer 0.6, Trent 0.45). TCS fell ~4% on the announcement, Rs 35,000 cr of market value, and contributes -29.0 index points over three sessions.",
+   "transmission": "A governance discount applied to a fixed 8.95% block of index weight, transmitted through TCS above all (4.0% weight, and the group's largest listed profit pool). Unlike a macro factor this has NO real-economy channel and no second-order path into other sectors — which is why the index fell while India VIX FELL. It is a repricing of specific cash flows' governance risk, not a change in the discount rate. It resolves on named dates, not on data.",
+   "facts": [
+    {
+     "date": "2026-08-12",
+     "note": "Chandrasekaran wrote to the board at 11am; will not seek reappointment. Tata group market cap grew 3.3x to Rs 22.5 lakh cr during his nine-year tenure.",
+     "source": "business-standard.com"
+    },
+    {
+     "date": "2026-08-12",
+     "note": "TCS -4%, Rs 35,000 cr wiped; analysts called the reaction knee-jerk. Tata Steel -2.95%, Tata Consumer -2.69%, Trent -2.03%, Titan -1.27% over three sessions.",
+     "source": "livemint.com; price_bars"
+    },
+    {
+     "date": "2026-02",
+     "note": "Noel Tata blocked the director renewal at a February 2026 board meeting, citing losses at certain group companies — the deadlock has now run six months",
+     "source": "business-standard.com"
+    }
+   ],
+   "watch": [
+    "Tata Trusts board meeting 13 August to constitute a search committee — a named shortlist is the compression signal",
+    "Tata Sons AGM on 18 August, which is ALSO the weekly expiry settlement day",
+    "Whether the discount stays inside the six Tata names or leaks into IT as a sector (TCS is 4.0% of the index but 31% of the IT block)",
+    "The 20 February 2027 handover date — this is a slow factor with a long tail, not a one-week event"
+   ],
+   "scenarios": [
+    {
+     "trigger": "Credible successor named quickly and endorsed by both Tata Trusts and Tata Sons",
+     "nifty_pct": [
+      0.3,
+      0.8
+     ],
+     "horizon": "1-2 weeks",
+     "anchor": "Recovery of roughly half the 8.95% block's ~1.5% average drawdown. NOT measured in this repo — the only comparable episode is the October 2016 Mistry removal, which predates this database's 2018 start."
+    },
+    {
+     "trigger": "Deadlock persists past the 18 August AGM with no search committee output",
+     "nifty_pct": [
+      -1.2,
+      -0.5
+     ],
+     "horizon": "2-6 weeks",
+     "anchor": "A widening governance discount on 8.95% of index weight; TCS is the transmission. Order-of-magnitude prior, not a measurement."
+    }
+   ]
+  },
+  {
+   "id": "oil_ceasefire",
+   "name": "Oil / US-Iran ceasefire",
+   "direction": "headwind",
+   "fragile": true,
+   "status": "REVERSED from tailwind. Brent near $88 (WTI $83.07, daily bar, in this repo's price_bars — the database carries WTI, not Brent) with US-Iran talks DEADLOCKED as of 12 Aug. The relief trade this factor was written around ($83, early Aug) has unwound; WTI is +6.3% since 7 August. Sustained $90+ Brent restores the full macro headwind through CPI, the current account, the rupee, and margins at autos, paints, aviation and OMCs.",
+   "transmission": "Risk-premium compression + real channel: CPI, CAD, rupee, and margins for autos, aviation, paints, OMCs. India imports ~85% of its crude — this is the single fastest macro→Nifty channel.",
+   "facts": [
+    {
+     "date": "2026-08-12",
+     "note": "Oil edged up as investors weighed the US-Iran talks deadlock against softer demand; Brent ~$88, WTI $83.07",
+     "source": "reuters.com via sector_news_cache.json"
+    },
+    {
+     "date": "2026-08",
+     "note": "Brent climbed back above $83 on Hormuz vessel-restriction reports — first crack in the relief trade",
+     "source": "reuters.com"
+    },
+    {
+     "date": "2026-08",
+     "note": "Brent slid ~5% to ~$83.6 as US-Iran diplomacy resumed",
+     "source": "hdfcsky.com"
+    },
+    {
+     "date": "2026-04",
+     "note": "April ceasefire: crude -16% in a day (biggest since 1991), Nifty +3.64% — then the deal stalled and oil went back to $90+",
+     "source": "sahi.com"
+    },
+    {
+     "date": "2026-02",
+     "note": "War outbreak drove crude up ~47% and triggered the FII exodus and rupee record lows",
+     "source": "en.wikipedia.org"
+    }
+   ],
+   "watch": [
+    "Brent sustaining above $90 — that is the level that flips this from a drag to a macro event",
+    "Any resumption of US-Iran diplomacy; the deadlock, not the spot price, is what is being priced",
+    "Reliance and the OMCs as the transmission tell — note Reliance fell on 12 Aug with crude FLAT, so the oil channel does not currently explain it"
+   ],
+   "scenarios": [
+    {
+     "trigger": "Durable deal signed; Brent settles ≤$80",
+     "nifty_pct": [
+      2,
+      4
+     ],
+     "horizon": "2-4 weeks",
+     "anchor": "Apr-8-2026 ceasefire day +3.64%; Aug-1 relief week +2.6%"
+    },
+    {
+     "trigger": "Talks collapse; Brent back above $95",
+     "nifty_pct": [
+      -5,
+      -3
+     ],
+     "horizon": "1-2 weeks",
+     "anchor": "Feb-2026 war outbreak: crude +47%, Nifty multi-week slide, rupee to record ~96-97"
+    }
+   ]
+  },
+  {
+   "id": "fii_flows",
+   "name": "FII flows",
+   "direction": "tailwind",
+   "fragile": true,
+   "status": "August turned positive then gave it back: FII +Rs 1,975 cr (10 Aug), +Rs 259 cr (11 Aug), then -Rs 1,003 cr (12 Aug). What has held the tape together is domestic absorption, not foreign buying — DII +Rs 5,842 cr on 12 August alone, better than 5:1 against the FII sale. 2026 YTD remains ~-$27bn, worse than all of 2025. Treat the early-August positive week as a change of PACE, not of direction; the 20-day net has not turned.",
+   "transmission": "The single biggest re-rating lever for large-caps — H1's de-rating was FII-driven; a sustained turn re-rates the same stocks back.",
+   "facts": [
+    {
+     "date": "2026-08-12",
+     "note": "FII -Rs 1,002.5 cr against DII +Rs 5,841.7 cr — domestic absorption at 5.8x the foreign sale",
+     "source": "fii_dii_flows table, option_chains.db"
+    },
+    {
+     "date": "2026-08-07",
+     "note": "Week to Aug 7: FII +Rs 2,888cr, DII +Rs 7,767cr. In this repo's own data the 20-day FII net is still -Rs 7,464cr. Same-session co-movement over 27 sessions: FII flow correlates 0.51 with Nifty, 0.43 with Bank Nifty and 0.51 with Nifty IT — but the SENSITIVITY is roughly 0.21% per Rs 1,000cr for Nifty and Bank Nifty against 0.58% for Nifty IT. Over this window IT, not banks, is the high-beta expression of foreign flow.",
+     "source": "fii_dii_flows + price_bars, this repo"
+    },
+    {
+     "date": "2026-08",
+     "note": "BoB Research: 'worst of FPI selling may be over'; week to Aug 1 net buy ~₹6,000 cr",
+     "source": "aninews.in"
+    },
+    {
+     "date": "2026-06",
+     "note": "Five-month 2026 outflows already exceeded full-year 2025",
+     "source": "plindia.com"
+    }
+   ],
+   "watch": [
+    "The DII:FII absorption ratio on down days — at 5:1 the drawdown stays orderly; if that ratio compresses while FII selling persists, the path changes even if the level does not.",
+    "The 20-day FII net crossing into positive territory — that, not any single week, is the turn.",
+    "Whether Bank Nifty starts out-running Nifty IT on FII buy days; today it does not.",
+    "US CPI and the September FOMC: a firm dollar caps EM inflows regardless of local news."
+   ],
+   "scenarios": [
+    {
+     "trigger": "Buying sustains (~₹20,000 cr+ over a month)",
+     "nifty_pct": [
+      3,
+      5
+     ],
+     "horizon": "1 month",
+     "anchor": "Historical FII-return months (e.g. mid-2023, early-2024) repeatedly produced 3-6% monthly index gains"
+    },
+    {
+     "trigger": "Selling resumes at H1-2026 pace",
+     "nifty_pct": [
+      -4,
+      -2
+     ],
+     "horizon": "1 month",
+     "anchor": "H1-2026: ~-$27bn drove the drawdown to the 5-session losing streak into end-July"
+    }
+   ]
+  },
+  {
+   "id": "us_fed",
+   "name": "US Fed",
+   "direction": "headwind",
+   "status": "EASED. US inflation has now cooled for a SECOND consecutive month and traders lean towards the Fed holding in September; Treasuries rallied and gold hit a two-month peak on the 12 Aug print. That materially softens the position this factor was written from — the 29 July hold carried THREE dissents FOR a hike, the most hawkish FOMC vote in about a decade. A hike is still on the table and sticky core measures suggest policy may not be tight enough, so this stays a headwind, downgraded rather than removed. Note that Indian equities fell on the day the soft print landed.",
+   "transmission": "Higher-for-longer US rates + firm dollar cap EM inflows — directly threatens the fragile FII turn; also compresses global risk appetite (Nifty's beta channel).",
+   "facts": [
+    {
+     "date": "2026-08-12",
+     "note": "Second straight soft CPI; market pricing shifts to a September hold. Separately, a $42bn 10-year Treasury auction cleared at the highest yield since 2007 — the long end is not confirming the relief.",
+     "source": "reuters.com via sector_news_cache.json"
+    },
+    {
+     "date": "2026-07",
+     "note": "FOMC held; three members favored a hike — hawkish shift",
+     "source": "usnews.com"
+    }
+   ],
+   "watch": [
+    "Sept 16-17 FOMC and whether the three dissenters hold their position",
+    "The long end: a soft CPI with the highest 10-year auction yield since 2007 is not an unambiguous easing signal",
+    "Dollar strength — it caps EM inflows regardless of the policy path"
+   ],
+   "scenarios": [
+    {
+     "trigger": "Fed hikes in September (or signals it hard)",
+     "nifty_pct": [
+      -4,
+      -2
+     ],
+     "horizon": "days-2 weeks",
+     "anchor": "2022 surprise-hawkish FOMCs: EM/Nifty drawdowns of 2-5% within days; hawkish Jul-29 dissent alone capped the rally"
+    },
+    {
+     "trigger": "Fed pivots dovish (cut back on the table)",
+     "nifty_pct": [
+      2,
+      3
+     ],
+     "horizon": "days-2 weeks",
+     "anchor": "Dec-2023 pivot: Nifty +8% in the following month (with local tailwinds); scaled here for the weaker flow backdrop"
+    }
+   ]
+  },
+  {
+   "id": "japan_boj",
+   "name": "Japan rates / yen carry trade",
+   "direction": "headwind",
+   "fragile": false,
+   "status": "BoJ hiked to 0.75% in Dec 2025 — highest in three decades — and signalled a sustained tightening cycle; hike expectations have swung through 2026 (cooled in April, momentum again by June as oil eased). ~$500bn of yen carry positions still outstanding.",
+   "transmission": "Cheap yen funds global risk positions, including EM equities. Rising Japanese rates + a surging yen force carry-trade deleveraging → indiscriminate global risk-off → FII selling in India. Nifty's exposure is via the flow channel, not fundamentals — which is why these shocks are sharp but usually recover in weeks. Japanese repatriation also lifts global bond yields.",
+   "facts": [
+    {
+     "date": "2025-12",
+     "note": "BoJ raised to 0.75%; Ueda signalled sustained tightening with more hikes through mid-2026; USD/JPY swung 250 pips in hours",
+     "source": "investing.com"
+    },
+    {
+     "date": "2026-04",
+     "note": "BoJ cooled rate-hike expectations — episode passed without EM stress",
+     "source": "coindesk.com"
+    },
+    {
+     "date": "2026-06",
+     "note": "Hike momentum returned as easing oil reduced the imported-inflation excuse to wait",
+     "source": "economy.ac"
+    },
+    {
+     "date": "2024-08",
+     "note": "THE anchor episode: surprise BoJ hike + weak US data → carry unwind; Nikkei -12.4% in a day, Nifty -2.7%, recovered within weeks",
+     "source": "hdfcfund.com"
+    }
+   ],
+   "watch": [
+    "BoJ meeting dates and Ueda's guidance",
+    "USD/JPY — a fast move below ~150 is the carry-unwind tell",
+    "10y JGB yield trajectory"
+   ],
+   "scenarios": [
+    {
+     "trigger": "BoJ surprise hike / yen surges → carry unwind (Aug-2024 style)",
+     "nifty_pct": [
+      -4,
+      -2
+     ],
+     "horizon": "days",
+     "anchor": "Aug-5-2024: Nikkei -12.4%, Nifty -2.7% single day on carry unwind; recovered in ~3 weeks as the shock was flows, not fundamentals"
+    },
+    {
+     "trigger": "BoJ stays gradual and well-telegraphed",
+     "nifty_pct": [
+      0,
+      0
+     ],
+     "horizon": "—",
+     "anchor": "Jan-2025 (0.5%) and Dec-2025 (0.75%) hikes were absorbed with only brief wobbles when well-signalled"
+    }
+   ]
+  },
+  {
+   "id": "ai_capex_roi",
+   "name": "AI capex ROI",
+   "direction": "mixed",
+   "fragile": true,
+   "status": "Token prices have fallen ~10x a year (≈$60/M in 2021 to ≈$0.06 by mid-2026) while hyperscaler capex runs $700-900bn for 2026 (+36% YoY, ~75% AI-specific). Sequoia puts the annual revenue gap at ~$600bn; investment is scaling ~50% faster than revenue. The market has already flipped from rewarding capex to punishing it — Meta -9.25% in a session for RAISING guidance. Korea and Taiwan de-rated violently in late July.",
+   "transmission": "Two opposite legs on different clocks. NEAR TERM the Nifty takes this through global beta only — India has almost no AI-capex exposure in the index, and the AI-infra winners sit outside it. MEDIUM TERM the same absence is the rotation case: EM money crowded into Korea/Taiwan (KOSPI was +41.5% YTD in USD even after a ~40% drawdown) has gains to redeploy, and India is the under-owned alternative after ~-$27bn of 2026 outflows. The one genuine fundamental casualty is Nifty IT (13% weight, already ~39% off its 2024 peak): cheaper tokens validate the services-pricing deflation that is compressing its multiple. The whole rotation leg is gated on the US rate path — a hot CPI firms the dollar and caps EM inflows.",
+   "facts": [
+    {
+     "date": "2026-07-28",
+     "note": "TAIEX fell 2,030.83 pts (-4.65%) to 41,603.36, its third steepest session ever; analysts cited fear that cloud providers' AI investments 'will not generate adequate sales'. TSMC -2.98% (~560 index pts); Nanya, Winbond, UMC, MediaTek limit-down at -10%; foreign institutions sold NT$87.56bn in one day. Trigger: Alphabet reporting negative cash flows.",
+     "source": "focustaiwan.tw"
+    },
+    {
+     "date": "2026-07-29",
+     "note": "KOSPI erased ~40% from a peak set barely a month earlier — ~$2.18tn over two sessions (-11%, then -6%) — on 'reduced interest in chipmakers', amplified by single-stock leveraged ETFs. Still +41.5% YTD in USD and 2026's best major market.",
+     "source": "aljazeera.com"
+    },
+    {
+     "date": "2026-06-02",
+     "note": "Capex-to-revenue divergence ~46%, worse than the 32% of the 2001 telecom cycle; capital intensity now 45-57% of revenue. Amazon $200bn, Alphabet $175-185bn, Meta up to $145bn, Microsoft >$120bn for 2026.",
+     "source": "forbes.com"
+    },
+    {
+     "date": "2026-07-28",
+     "note": "Token deflation splits the field: model providers squeezed (OpenAI ~33% gross margin), chipmakers still fat (Nvidia 63% net, TSMC 46.5%, Micron 56%). Chinese open models at ~46% share. Volume is NOT offsetting price — Google went 9.7tn tokens/month (2023) to 3.2 quadrillion (May 2026) and revenue per unit still fell.",
+     "source": "forbes.com"
+    },
+    {
+     "date": "2025-07",
+     "note": "MIT: 95% of enterprise GenAI pilots produced zero measurable P&L impact on ~$30-40bn of spend. Credible estimates put meaningful agentic adoption 12-24 months out — that is the gap that has to close before the capex earns anything.",
+     "source": "MIT, via forbes.com"
+    }
+   ],
+   "watch": [
+    "Hyperscaler capex guidance at the next results round — a CUT is the signal, and it lands on Korea/Taiwan chip names before it reaches anything Indian.",
+    "Whether foreign selling in Taiwan/Korea shows up as Indian buying within weeks, or just goes to cash — the FII 20-day figure is the tell, not the price.",
+    "Nifty IT: token deflation is a structural headwind for services pricing regardless of which way the capex trade breaks.",
+    "US CPI — a hot print firms the dollar and shuts the rotation leg before it starts."
+   ],
+   "scenarios": [
+    {
+     "trigger": "A major hyperscaler cuts capex guidance (AI ROI scare goes global)",
+     "nifty_pct": [
+      -3,
+      -1
+     ],
+     "horizon": "days",
+     "anchor": "Jul 2026: TAIEX -4.65% and KOSPI -11% in single sessions on exactly this fear; Nifty's channel is global beta, not fundamentals"
+    },
+    {
+     "trigger": "AI unwind stays orderly AND US CPI comes in soft — EM rotation begins",
+     "nifty_pct": [
+      2,
+      4
+     ],
+     "horizon": "1-3 months",
+     "anchor": "H1-2026 de-rating was FII-driven; the fii_flows factor puts sustained buying (~Rs 20,000cr+/month) at +3 to +5%"
+    },
+    {
+     "trigger": "AI de-rating plus a hot US CPI (hike back on the table)",
+     "nifty_pct": [
+      -4,
+      -2
+     ],
+     "horizon": "days-2 weeks",
+     "anchor": "Risk-off beta and a firm dollar compound; the Jul 29 FOMC already carried three dissents for a hike"
+    },
+    {
+     "trigger": "AI capex re-accelerates and the ROI question is deferred",
+     "nifty_pct": [
+      0,
+      1
+     ],
+     "horizon": "1 month",
+     "anchor": "Nifty has almost no AI-infra exposure — it barely participates on the way up either"
+    }
+   ]
+  },
+  {
+   "id": "it_ai_deflation",
+   "name": "IT services AI deflation and pricing pressure",
+   "direction": "headwind",
+   "fragile": false,
+   "status": "Clients are shrinking existing contracts to fund AI work rather than adding budget. Google cut ~$50m off a ~$200m annual HCLTech application-development and engineering contract as part of a wider cost programme touching several vendors; Meta trimmed a Wipro deal by $15-20m and partially pulled Accenture, Teleperformance and Concentrix. Hi-tech clients moved first because they can see AI use-cases in their own workflows and several now run in-house models. Non-tech enterprises are following on price: 20-30% discounts are being sought on new contracts, which is producing vendor consolidation and share loss to mid-tier names (Persistent, Mphasis, Coforge, Zensar all growing double digits while tier-1 does not). Three of the top five reported a sequential operating margin decline in Q1 FY27, Infosys the exception. Nifty IT is 13.0% of the index (INFY 5.5, TCS 4.0, HCLTECH 1.6, WIPRO 1.0, TECHM 0.9).",
+   "transmission": "This is a REVENUE-BASE factor, not a demand-cycle one, and that is what makes it different from every other headwind in this library. A demand slowdown postpones spend; AI deflation shrinks the price of the same delivered work — HCLTech's CEO put it as 'a $100m deal is now an $80m deal'. It therefore does not mean-revert when budgets recover, and it compounds: BNP Paribas puts the drag at ~3pp of annual revenue growth for another three to five years, Ambit at 15-20% cumulative over three to four years (3-4%/yr) and says the industry is not yet halfway through the cycle. Margins take a second hit from the cost side, because wage bills are 50-60% of costs and have not shrunk while AI skilling and partnership spend add 1-2%. A third effect is on VISIBILITY rather than level: as pricing moves from headcount-based billing to business-outcome deals, revenue is harder to recognise early, which widens the distribution of quarterly prints and is a reason to expect larger results-day moves in the sector, not smaller. DISTINCT FROM ai_capex_roi: that factor is about the BUYERS of AI compute and reaches India through global beta; this one is about the SELLERS of IT services and reaches the index through 13% of its weight directly. Cheap tokens are the shared cause; the two legs transmit on different clocks.",
+   "facts": [
+    {
+     "date": "2026-08-14",
+     "note": "Google cut ~$50m from a ~$200m annual HCLTech contract covering part of its application development and engineering work — a cost-efficiency programme repurposing budget to AI, applied across several IT partners. Wipro's deal with Meta trimmed by $15-20m; Meta also partially pulled Accenture, Teleperformance and Concentrix.",
+     "source": "Moneycontrol; corroborated by StartupTalky, CIO Tech Outlook, Digital Terminal"
+    },
+    {
+     "date": "2026-08-14",
+     "note": "Clients seeking 20-30% discounts on new contracts across telecom, SaaS, hi-tech and financial services (Gaurav Vasu, UnearthInsight). Intense competition for the same accounts is driving vendor consolidation at lower price points. UnearthInsight expects sector operating margins down 0.5-1pp cumulatively in FY27.",
+     "source": "Moneycontrol / UnearthInsight"
+    },
+    {
+     "date": "2026-08-14",
+     "note": "Ambit (Ashwin Mehta) after Q1 FY27: deflation is running at the LOW end of what companies guided and 'could be higher going forward'; the industry has not passed the midway point of the cycle. BNP Paribas (Kumar Rakesh): at least 3pp of annual revenue growth lost to AI deflation for another 3-5 years.",
+     "source": "Moneycontrol; Ambit note of late June 2026 (15-20% cumulative over 3-4 years)"
+    },
+    {
+     "date": "2026-04",
+     "note": "HCLTech CEO C Vijayakumar quantified it on the Q4 FY26 call: 'Let's say something was a $100 million deal, now could be an $80 million deal' — estimated impact ~2-3% a year.",
+     "source": "HCLTech Q4 FY26 press briefing"
+    },
+    {
+     "date": "2026-08-14",
+     "note": "The repo's own screen agrees on the delivery side and disagrees on the price. Every IT constituent FAILS the delivered-growth leg on 5-year net profit CAGR (INFY 8.8%, TCS 8.7%, HCLTECH 8.3%, WIPRO 4.1%, TECHM 1.7% against a 10% bar) while three of five pass consistency at 88.9% — they grew almost every year, slowly. But implied forward growth is NOT uniformly low: INFY is priced for +3.9% and WIPRO +9.7%, whereas HCLTECH is priced for +24.6% on 3.9% delivered over three years and TECHM for +50.1% on -0.1%. The deflation is priced into the two cheapest names and not into the two carrying the largest expectation gaps — and HCLTech is the name that just lost a quarter of its Google contract.",
+     "source": "quality_growth.json (screen), expectation_snapshots.json 2026-08-08"
+    }
+   ],
+   "watch": [
+    "Deal TCV versus deal REVENUE. Renegotiations show up as flat-to-lower revenue on unchanged or rising TCV — a book-to-bill that looks fine while pricing erodes underneath.",
+    "Sequential operating margin, not YoY. Three of the top five fell QoQ in Q1 FY27; the sector-wide guide is -0.5 to -1pp cumulatively across FY27.",
+    "Mid-tier growth minus tier-1 growth (Persistent, Coforge, Mphasis, Zensar). A widening spread is vendor consolidation moving share DOWN-market, which is the share-loss channel rather than the demand channel.",
+    "Hi-tech client concentration in the disclosures — those accounts renegotiated first and are the leading indicator for the non-tech verticals.",
+    "Whether outcome-based pricing shows up as WIDER results-day moves. If revenue becomes harder to forecast, the sector's earnings-day distribution should fatten; earnings_reactions.json is where that would be visible.",
+    "The expectation gap, not the news. INFY at +3.9% implied has little left to disappoint; HCLTECH at +24.6% and TECHM at +50.1% are the names where a deflation print collides with a multiple."
+   ],
+   "scenarios": [
+    {
+     "trigger": "Another named tier-1 contract is publicly cut or repriced",
+     "nifty_pct": [
+      -0.5,
+      -0.2
+     ],
+     "horizon": "days",
+     "anchor": "Arithmetic, not an episode: IT is 13.0% of the index, so a 2-4% sector day is 0.26-0.52% of the Nifty ≈ 65-125 points at 24,400. Nifty IT is already ~39% off its 2024 peak, which is why single headlines now move it less than the first ones did"
+    },
+    {
+     "trigger": "Sector-wide FY27 margin guidance cut at the Q2 FY27 round",
+     "nifty_pct": [
+      -1.0,
+      -0.4
+     ],
+     "horizon": "1-2 weeks",
+     "anchor": "A guidance cut repriced the sector rather than one name; the -0.5 to -1pp FY27 margin path is the consensus already in the price, so the move comes from exceeding it"
+    },
+    {
+     "trigger": "Deflation proves front-loaded — pricing stabilises and AI work converts to billable revenue",
+     "nifty_pct": [
+      0.5,
+      1.5
+     ],
+     "horizon": "quarters",
+     "anchor": "INFY at +3.9% and WIPRO at +9.7% implied forward growth are priced for very little; the asymmetry in those two is upward. This is the leg the bears under-weight and it has no historical analogue yet"
+    }
+   ]
+  },
+  {
+   "id": "ai_capex",
+   "name": "AI capex & AI-spurred growth",
+   "direction": "mixed",
+   "status": "Hyperscaler 2026 capex ~$700bn+ (+77% YoY) and still being RAISED — but markets now punish raises (Alphabet -5-7% on a beat; Meta sold off). '2026 looks like 1999' debate is live.",
+   "transmission": "Splits the index: Nifty IT (~10-12% weight) de-rated ~39% off peak on AI cannibalization (TCS cut ~12,000 jobs even while winning AI deals); the AI-infra winners (STL, Netweb, DC plays) sit mostly OUTSIDE the Nifty. A US AI-sentiment break hits Nifty through global beta.",
+   "facts": [
+    {
+     "date": "2026-07",
+     "note": "Alphabet raised 2026 capex to ~$205bn — stock fell 5-7% despite a beat",
+     "source": "cnbc.com"
+    },
+    {
+     "date": "2026-07",
+     "note": "TCS Q1 FY27: growth slowed, ~12,000 job cuts announced alongside AI-transformation wins",
+     "source": "tcs.com"
+    },
+    {
+     "date": "2026-05",
+     "note": "Nifty IT ~39% below its Dec-2024 peak",
+     "source": "indiainfoline.com"
+    }
+   ],
+   "watch": [
+    "US hyperscaler Q3 guides — first real capex CUT would be a global risk event",
+    "Indian IT deal-pricing commentary"
+   ],
+   "scenarios": [
+    {
+     "trigger": "US AI-capex scare (major hyperscaler cuts guidance)",
+     "nifty_pct": [
+      -3,
+      -1
+     ],
+     "horizon": "days",
+     "anchor": "Alphabet/Meta July-2026 reactions; Nifty IT typically falls 2-3x the index move in these episodes"
+    },
+    {
+     "trigger": "AI capex stays hot + Indian IT stabilizes (discretionary recovery)",
+     "nifty_pct": [
+      1,
+      3
+     ],
+     "horizon": "1-3 months",
+     "anchor": "Infosys +4.5% single-session on bargain-hunting (late Jul 2026) shows the coiled-spring potential in a 39%-derated sector"
+    }
+   ]
+  },
+  {
+   "id": "chinese_ai",
+   "name": "Chinese open AI models",
+   "direction": "mixed",
+   "status": "DeepSeek V4 (Apr 2026), Kimi, GLM, Qwen: US enterprises report 60-90% AI-bill cuts using Chinese open models; Feb-2026 release scare pressured Nasdaq/chips but no repeat of the Jan-2025 shock.",
+   "transmission": "Cheaper tokens = faster, cheaper AI adoption for Indian banks/enterprises (mild positive) — but validates services-pricing deflation, the exact fear compressing Nifty IT multiples. Episodic Nasdaq shocks import volatility.",
+   "facts": [
+    {
+     "date": "2026-04",
+     "note": "DeepSeek V4 launched at rock-bottom pricing on Huawei silicon",
+     "source": "fortune.com"
+    },
+    {
+     "date": "2026-07",
+     "note": "Chinese models gaining US enterprise share as OpenAI/Anthropic prices rise",
+     "source": "cnbc.com"
+    }
+   ],
+   "watch": [
+    "Next frontier Chinese release (episodic global-shock risk)",
+    "Indian IT pricing/margin commentary on AI delivery"
+   ],
+   "scenarios": [
+    {
+     "trigger": "DeepSeek-class release shock (Jan-2025 style)",
+     "nifty_pct": [
+      -2,
+      -1
+     ],
+     "horizon": "1-3 days",
+     "anchor": "Jan-27-2025: Nasdaq -3.1%, NVDA -17%; Nifty fell ~1% with IT harder hit; Feb-2026 repeat was milder"
+    }
+   ]
+  },
+  {
+   "id": "china_growth",
+   "name": "China growth & export flood",
+   "direction": "headwind",
+   "status": "Q2 2026 GDP +4.3% (first target miss since Covid) but deflation fading (PPI positive first time since 2022); exports surging; property still -18%. 'Buy India, sell China' unwinding — JPMorgan cut India to neutral (Apr).",
+   "transmission": "Two channels: FII rotation out of expensive India into cheap, reflating China; and export dumping pressuring Nifty metals/chemicals/solar margins (India responding with anti-dumping duties).",
+   "facts": [
+    {
+     "date": "2026-07",
+     "note": "China Q2 GDP +4.3% y/y; H1 +4.7%",
+     "source": "cnn.com"
+    },
+    {
+     "date": "2026-04",
+     "note": "JPMorgan downgraded India to neutral on valuations/earnings risk",
+     "source": "business-standard.com"
+    },
+    {
+     "date": "2026",
+     "note": "Lazard, Manulife paring India allocations to fund China",
+     "source": "masterleong.substack.com"
+    }
+   ],
+   "watch": [
+    "China stimulus scale (consumption plan execution)",
+    "EM fund India-vs-China allocation surveys"
+   ],
+   "scenarios": [
+    {
+     "trigger": "Big China stimulus bazooka → rotation accelerates",
+     "nifty_pct": [
+      -3,
+      -1
+     ],
+     "horizon": "1 month",
+     "anchor": "Oct-2024: China stimulus pulled record ~₹94,000 cr FII money from India; Nifty -6.2% that month (worst since Covid)"
+    },
+    {
+     "trigger": "China stumbles again → India regains relative-safety bid",
+     "nifty_pct": [
+      1,
+      2
+     ],
+     "horizon": "1 month",
+     "anchor": "2023 pattern: China disappointment quarters coincided with strong India FII quarters"
+    }
+   ]
+  },
+  {
+   "id": "rupee",
+   "name": "Rupee",
+   "direction": "headwind",
+   "status": "95.37 as of 13 Aug, stable across the week (95.29 on 10 Aug) but historically weak; RBI intervention was reported on 12 August. The record ~96 lows came during the war-crude spike. With Brent back near $88 the oil channel is pushing the wrong way again.",
+   "transmission": "Imported inflation, FII hedging costs (eats their INR returns → discourages inflows), OMC margin pain; mild tailwind for IT/pharma exporters.",
+   "facts": [
+    {
+     "date": "2026-08-12",
+     "note": "Rupee nudged up on RBI intervention ahead of the US inflation print",
+     "source": "reuters.com via sector_news_cache.json; USDINR from price_bars"
+    },
+    {
+     "date": "2026-06",
+     "note": "INR hit record ~96-97/$ on crude >$95",
+     "source": "ptcnews.tv"
+    }
+   ],
+   "watch": [
+    "INR holding below 96 as oil stays soft",
+    "RBI intervention signs"
+   ],
+   "scenarios": [
+    {
+     "trigger": "Rupee breaks decisively past 97",
+     "nifty_pct": [
+      -2,
+      -1
+     ],
+     "horizon": "1-2 weeks",
+     "anchor": "2013/2018/2022 rupee-crisis phases each coincided with 2-6% Nifty drawdowns until the RBI stabilized it"
+    }
+   ]
+  },
+  {
+   "id": "rbi",
+   "name": "RBI policy",
+   "direction": "neutral",
+   "status": "Held repo at 5.25% on Aug 5 (neutral stance) — cuts already delivered earlier in the cycle; the weak rupee limits further easing room.",
+   "transmission": "No fresh fuel, but no tightening threat. Banks' NIM repricing pain from earlier cuts is already in Q1 numbers.",
+   "facts": [
+    {
+     "date": "2026-08",
+     "note": "MPC held at 5.25%, neutral stance",
+     "source": "businesstoday.in"
+    }
+   ],
+   "watch": [
+    "Oct MPC — a cut becomes possible if oil stays down and CPI prints soft"
+   ],
+   "scenarios": [
+    {
+     "trigger": "Surprise cut in Oct on soft CPI",
+     "nifty_pct": [
+      1,
+      2
+     ],
+     "horizon": "days",
+     "anchor": "Standard MPC-surprise reaction: ±1-2% same-week, banks lead"
+    }
+   ]
+  },
+  {
+   "id": "policy_reg",
+   "name": "Domestic policy / regulatory risk",
+   "direction": "headwind",
+   "fragile": false,
+   "status": "RBI draft norms (7 Aug) restricting revolving-credit products at non-bank lenders remain uncleared — Bajaj Finance fell 4-5% (Rs 33k cr) on the day and is still -1.46% over the last three sessions. COUNTER-EVIDENCE arrived on 12 August: Bank of America agreed to acquire up to 49.9% of Jio Financial's Jio Credit for up to Rs 18,268 crore ($1.9bn). A global bank underwriting an Indian NBFC at that size, five days after the draft, argues against the most severe reading of it. The market has not yet made that connection.",
+   "transmission": "The POLICY channel is distinct from the macro channel: it hits specific business models directly (here: NBFC revolving credit), and because financials are ~35-38% of the index, a financials-specific policy shock moves Nifty without any macro deterioration. Keeping this separate from the oil/geopolitics factor makes regime classification cleaner — policy days are rotation days, not risk-off days.",
+   "facts": [
+    {
+     "date": "2026-08-12",
+     "note": "BofA to take up to 49.9% of Jio Credit for Rs 18,268 cr ($1.9bn); 26.5% initial equity stake plus warrants, subject to approvals",
+     "source": "livemint.com / economictimes via sector_news_cache.json"
+    },
+    {
+     "date": "2026-08",
+     "note": "RBI draft norms on revolving credit from non-bank lenders; Bajaj Finance ~-4-5%, biggest drag on the index",
+     "source": "bloomberg.com"
+    },
+    {
+     "date": "2025-11",
+     "note": "Precedent: RBI risk-weight hikes on unsecured credit (Nov 2023) knocked 5-10% off NBFC stocks over weeks before absorption",
+     "source": "historical"
+    }
+   ],
+   "watch": [
+    "Whether the BofA-Jio Credit deal clears regulatory approval unchanged — that is a cleaner read on the RBI's real intent than any clarification statement.",
+    "RBI clarification/dilution of the draft — the single highest-impact catalyst for Bank Nifty right now",
+    "Comment-period timeline and industry pushback",
+    "Whether weakness stays NBFC-specific or spreads to private banks (contagion tell)"
+   ],
+   "scenarios": [
+    {
+     "trigger": "Final norms harsher than draft / extended to more products",
+     "nifty_pct": [
+      -2,
+      -1
+     ],
+     "horizon": "days-weeks",
+     "anchor": "Nov-2023 unsecured-credit risk-weight episode: NBFCs -5-10%, index dragged ~1-2% via financials weight"
+    },
+    {
+     "trigger": "RBI dilutes/clarifies the draft",
+     "nifty_pct": [
+      0.5,
+      1.5
+     ],
+     "horizon": "days",
+     "anchor": "Relief bounces after regulatory softening (e.g. post-clarification NBFC rallies) concentrate in the hit names; index gets the weighted share"
+    }
+   ]
+  },
+  {
+   "id": "trade_deal",
+   "name": "US-India trade deal",
+   "direction": "tailwind",
+   "status": "Feb 2026 interim deal cut US tariffs on Indian exports to ~18% and removed punitive tariffs — 2025's biggest overhang, now largely priced.",
+   "transmission": "Exporters, IT sentiment, and the general 'India risk premium'. Incremental news now matters more than the level.",
+   "facts": [
+    {
+     "date": "2026-02",
+     "note": "Interim deal: tariffs to ~18%, punitive tariffs removed, farm interests protected",
+     "source": "whitehouse.gov"
+    }
+   ],
+   "watch": [
+    "Full-deal negotiation milestones",
+    "Any farm/dairy friction that could reopen tariff risk"
+   ],
+   "scenarios": [
+    {
+     "trigger": "Full deal concluded with further tariff cuts",
+     "nifty_pct": [
+      1,
+      2
+     ],
+     "horizon": "days",
+     "anchor": "Feb-2026 interim-deal week saw a relief pop concentrated in exporters"
+    },
+    {
+     "trigger": "Deal friction / tariff snap-back threat",
+     "nifty_pct": [
+      -3,
+      -1
+     ],
+     "horizon": "days-weeks",
+     "anchor": "2025 punitive-tariff episodes knocked 1-3% off Nifty per escalation"
+    }
+   ]
+  },
+  {
+   "id": "earnings",
+   "name": "Earnings (Q1 FY27 season)",
+   "direction": "mixed",
+   "status": "Q1 FY27 prints are BEATING and being SOLD. Apollo Hospitals PAT +38.4% YoY to Rs 610 cr on revenue +20.6% — stock -3.49%. Grasim consolidated PAT +51% to Rs 2,146 cr on revenue +21% — stock -3.79%. Tata Motors CV PAT +83.3% to Rs 2,560 cr, but flattered by a one-time gain from Tata Capital — the only one of the three that rose. The pattern is the Expectation panel's arithmetic in action: trailing P/E over forward P/E already embeds a growth rate, so a genuine +38% can still miss what the multiple assumed. Underneath, mid-teens revenue growth with high-single-digit PAT persists; Emkay's FY27 Nifty EPS +14% needs margin relief that Brent at $88 does not supply.",
+   "transmission": "The medium-term driver everything else feeds into: sustained cheap oil → margin recovery → the +14% EPS hope becomes upgrades → the only durable path above 25k.",
+   "facts": [
+    {
+     "date": "2026-08-12",
+     "note": "Three Q1 FY27 beats (Apollo +38% PAT, Grasim +51%, Tata Motors +83%) — two of the three stocks fell",
+     "source": "sector_news_cache.json, 12 Aug 2026"
+    },
+    {
+     "date": "2026-07",
+     "note": "Q1 FY27: revenue growth mid-teens, PAT growth high-single-digit; margin compression the key theme",
+     "source": "navia.co.in"
+    },
+    {
+     "date": "2026-07",
+     "note": "Bright spots: Bajaj Finance +28%, M&M, industrials; IT muted",
+     "source": "blog.liquide.life"
+    }
+   ],
+   "watch": [
+    "Max Healthcare Q1 call on 14 August — the stock is -4.61% over three sessions INTO an unreported print, the index's largest decliner.",
+    "Upgrade/downgrade ratio as the season closes",
+    "Margin commentary citing input-cost relief"
+   ],
+   "scenarios": [
+    {
+     "trigger": "Broad EPS upgrades emerge (margin relief lands)",
+     "nifty_pct": [
+      3,
+      6
+     ],
+     "horizon": "1 quarter",
+     "anchor": "FY21 and FY24 upgrade cycles: index re-rated 5-10% over the following quarter"
+    },
+    {
+     "trigger": "Downgrades continue (margins stay squeezed)",
+     "nifty_pct": [
+      -4,
+      -2
+     ],
+     "horizon": "1 quarter",
+     "anchor": "H2-2024/H1-2025 downgrade cycle ground the index sideways-to-down for two quarters"
+    }
+   ]
+  },
+  {
+   "id": "consumption",
+   "name": "GST cuts & consumption",
+   "direction": "tailwind",
+   "status": "Sept-2025 GST cuts still feeding through; one GDP print at 8.2%; autos/durables strongest. The quiet structural positive under the noise.",
+   "transmission": "Domestic demand floor under cyclicals (autos, durables, retail, cement) — supports the DII bid narrative even when FIIs sell.",
+   "facts": [
+    {
+     "date": "2026",
+     "note": "GST reforms boosting consumption; growth outlook revised up; an 8.2% quarterly GDP print",
+     "source": "ddnews.gov.in"
+    }
+   ],
+   "watch": [
+    "Festive-season (Sept-Oct) volume data — autos, durables, jewellery"
+   ],
+   "scenarios": [
+    {
+     "trigger": "Festive season beats (double-digit volume growth)",
+     "nifty_pct": [
+      1,
+      2
+     ],
+     "horizon": "Sept-Nov",
+     "anchor": "Strong festive years (2023) added a steady 1-3% consumption-led drift into Diwali"
+    }
+   ]
+  }
+ ]
+}

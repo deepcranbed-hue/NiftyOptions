@@ -1,0 +1,13 @@
+section,line_item,n,oldest,newest
+full,EPS - Basic,4,2023-03-31,2026-03-31
+full,EPS - Diluted,4,2023-03-31,2026-03-31
+full,Other Income,4,2023-03-31,2026-03-31
+full,Profit After Tax,4,2023-03-31,2026-03-31
+full,Profit Before Tax,4,2023-03-31,2026-03-31
+full,Revenue,4,2023-03-31,2026-03-31
+full,Tax,4,2023-03-31,2026-03-31
+full,Total Expenses,4,2023-03-31,2026-03-31
+full,Total Revenue,4,2023-03-31,2026-03-31
+summary,net_profit,4,2025-09-30,2026-06-30
+summary,operating_profit,4,2025-09-30,2026-06-30
+summary,revenue,4,2025-09-30,2026-06-30

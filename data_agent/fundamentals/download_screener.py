@@ -60,7 +60,7 @@ def main():
                 # Banks -> standalone, IT -> consolidated
                 is_bank = symbol in ['HDFCBANK', 'ICICIBANK', 'SBIN', 'KOTAKBANK', 'AXISBANK', 'INDUSINDBK', 'BANKBARODA', 'PNB', 'AUBANK', 'IDFCFIRSTB', 'FEDERALBNK', 'BANDHANBNK']
                 suffix = "consolidated/" if not is_bank else ""
-                screener_sym = 'LTM' if symbol == 'LTIM' else symbol
+                screener_sym = 'LTM' if symbol == 'LTIM' else ('TMCV' if symbol == 'TATAMOTORS' else ('ETERNAL' if symbol == 'ZOMATO' else symbol))
                 import random
                 sleep_time = random.uniform(5, 12)
                 print(f"  [~] Sleeping for {sleep_time:.1f}s to avoid rate limits...")
@@ -74,6 +74,12 @@ def main():
 
                 # 2. Find and click Export to Excel
                 export_btn = page.locator('button[aria-label="Export to Excel"]')
+                if not export_btn.is_visible() and suffix:
+                    print("  [~] Export button not found on consolidated page, trying standalone...")
+                    page.goto(f"https://www.screener.in/company/{screener_sym}/", wait_until="domcontentloaded")
+                    time.sleep(2)
+                    export_btn = page.locator('button[aria-label="Export to Excel"]')
+
                 if not export_btn.is_visible():
                     print("  [-] Could not find Export button.")
                     continue

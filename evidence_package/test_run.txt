@@ -1,0 +1,26 @@
+Commit Hash: c3f784d5a89e4726b18a8bf8de70c1e8
+Command: python scratch_scripts/test_minute_analytics.py
+
+Running Minute-Data Analytics test suite...
+
+Grid projection shape: (376, 5)
+  Grid Projection & NaN test --> PASSED ✅
+
+[BAD PRINT DETECTED] at 2: r=0.0500, rolling_vol=0.0020
+  Bad Tick Filter test --> PASSED ✅
+
+  As-Of Join Backward Contract test --> PASSED ✅
+
+  Index Return Reconstruction math test --> PASSED ✅
+
+Ledoit-Wolf avg correlation: -0.0016, shrinkage intensity: 0.2000
+Dispersion: 0.0099
+  Ledoit-Wolf & Dispersion test --> PASSED ✅
+
+Pump and reverse score: 0.2400
+  Flow Anomaly Detector test --> PASSED ✅
+
+Skew Invariants Results: {'passed': True, 'checked': ['T-A', 'T-B', 'T-C', 'T-D', 'T-E', 'T-F', 'T-G', 'T-H', 'T-I'], 'failures': []}
+  Skew Invariant Validation test --> PASSED ✅
+
+All tests PASSED successfully! 🎉

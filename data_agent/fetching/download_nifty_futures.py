@@ -14,49 +14,34 @@ sys.path.append(os.path.join(REPO_ROOT, "scratch_scripts", "breeze_env", "lib", 
 from bar_store import save_bars, DB_PATH
 from backend.timeutil import to_db_ts, parse_ist_str
 from breeze_connect import BreezeConnect
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
+from credentials import breeze_creds as _breeze_creds
 
-def get_nifty_futures_expiries():
-    import urllib.request
-    import csv
-    import io
-    from datetime import datetime
 
-    url = "https://api.kite.trade/instruments"
-    try:
-        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-        with urllib.request.urlopen(req, timeout=10) as response:
-            csv_content = response.read().decode("utf-8")
-            
-        reader = csv.reader(io.StringIO(csv_content))
-        header = next(reader)
-        
-        name_idx = header.index("name")
-        expiry_idx = header.index("expiry")
-        segment_idx = header.index("segment")
-        
-        expiries = set()
-        for row in reader:
-            if len(row) > max(name_idx, expiry_idx, segment_idx):
-                if row[name_idx] == "NIFTY" and row[segment_idx] == "NFO-FUT":
-                    expiries.add(row[expiry_idx])
-                    
-        # Sort expiries and format them to Upstox's required format: YYYY-MM-DDT06:00:00.000Z
-        sorted_expiries = sorted(list(expiries))
-        
-        # We need the closest 2 expiries (near, next) that are >= today
-        today_str = datetime.today().strftime("%Y-%m-%d")
-        valid_expiries = [exp for exp in sorted_expiries if exp >= today_str]
-        
-        if len(valid_expiries) < 2:
-            raise ValueError(f"Could not find 2 active NIFTY futures expiries. Found: {valid_expiries}")
-            
-        return (
-            f"{valid_expiries[0]}T06:00:00.000Z",
-            f"{valid_expiries[1]}T06:00:00.000Z"
-        )
-    except Exception as e:
-        sys.stderr.write(f"Error fetching expiries from Kite: {e}\n")
-        raise
+def get_nifty_futures_expiries(session_token=None):
+    """NIFTY_FUT_1 and NIFTY_FUT_2 — near + next, per universe.py's rule.
+
+    Two things this used to own and no longer does:
+
+      * WHERE the expiry list comes from. It read Kite's public instruments dump.
+        Kite is gone; data_agent/expiries.py asks Breeze.
+      * WHICH two to take. It sorted, filtered `>= today`, and sliced [0] and [1].
+        That is universe.active_future_expiries(n=2), which has existed all along
+        and is unit-tested offline. Rolling logic in two places is how FUT_1 and
+        FUT_2 end up meaning different contracts to different scripts.
+
+    So this function is now just the call and the error message.
+    """
+    from expiries import active
+    exps, err = active("NIFTY", "futures", session_token=session_token)
+    if err:
+        raise RuntimeError(f"Breeze futures expiry lookup failed: {err}")
+    if len(exps) < 2:
+        raise ValueError(
+            f"Could not find 2 active NIFTY futures expiries. Found: {exps}")
+    return exps[0], exps[1]
+
 
 def download_futures():
     if len(sys.argv) < 2:
@@ -65,14 +50,13 @@ def download_futures():
         
     session_token = sys.argv[1]
     
-    api_key = "999407AZb39Vu3D&9X405B977330807K"
-    api_secret = "584F70+Z075364Cz35y6O9931Y16I387"
+    api_key, api_secret = _breeze_creds()
     
     try:
         breeze = BreezeConnect(api_key=api_key)
         breeze.generate_session(api_secret=api_secret, session_token=session_token)
         
-        exp1, exp2 = get_nifty_futures_expiries()
+        exp1, exp2 = get_nifty_futures_expiries(session_token)
         sys.stderr.write(f"Expiries found: Near={exp1}, Next={exp2}\n")
         
         now_ist = datetime.now(timezone(timedelta(hours=5, minutes=30)))

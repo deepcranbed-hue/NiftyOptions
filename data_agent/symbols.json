@@ -322,9 +322,9 @@
      "owner": [
       "(intraday path)"
      ],
-     "bars": 10125,
+     "bars": 10994,
      "first": "2026-06-29",
-     "last": "2026-08-04"
+     "last": "2026-08-06"
     }
    }
   },
@@ -461,24 +461,6 @@
       "(intraday path)"
      ],
      "bars": 10894,
-     "first": "2026-06-29",
-     "last": "2026-08-06"
-    }
-   }
-  },
-  "CNXIT": {
-   "exchange": "NSE",
-   "currency": "INR",
-   "unit": null,
-   "instrument": "equity",
-   "timeframes": {
-    "1m": {
-     "source": "breeze",
-     "ticker": null,
-     "owner": [
-      "(intraday path)"
-     ],
-     "bars": 10994,
      "first": "2026-06-29",
      "last": "2026-08-06"
     }
@@ -1705,7 +1687,7 @@
      "owner": [
       "(intraday path)"
      ],
-     "bars": 10875,
+     "bars": 10994,
      "first": "2026-06-29",
      "last": "2026-08-06"
     }
@@ -1902,24 +1884,6 @@
       "(intraday path)"
      ],
      "bars": 10588,
-     "first": "2026-06-29",
-     "last": "2026-08-06"
-    }
-   }
-  },
-  "NSEBANK": {
-   "exchange": "NSE",
-   "currency": "INR",
-   "unit": null,
-   "instrument": "equity",
-   "timeframes": {
-    "1m": {
-     "source": "breeze",
-     "ticker": null,
-     "owner": [
-      "(intraday path)"
-     ],
-     "bars": 10994,
      "first": "2026-06-29",
      "last": "2026-08-06"
     }

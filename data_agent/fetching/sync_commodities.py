@@ -1,18 +1,75 @@
+"""sync_commodities.py — MCX commodities, USDINR and GIFTNIFTY, from Upstox.
+
+Fetches from Upstox. Writes through the store. It was the last script in the repo
+holding raw `INSERT INTO price_bars`, and every convention the store enforces had to
+be re-remembered here by hand.
+
+WHAT CHANGED, AND WHY IT WAS NOT COSMETIC
+-----------------------------------------
+1d now goes through `daily_bars.write_daily()` and 1m through `bar_store.save_bars()`,
+which is the split `DATA_AGENT_ARCHITECTURE.md` specifies. That removed three real
+defects, not just three copies of code:
+
+  * THE DAILY DELETE DESTROYED HISTORY. Each run did
+        DELETE FROM price_bars WHERE symbol=? AND timeframe='1d'
+                               AND ts >= '2025-07-30T00:00:00Z'
+    and then re-inserted only what Upstox returned in that window. When an MCX
+    contract rolls, the new instrument key has only its own short history — so the
+    delete removed a year of bars and the insert put back a few weeks. This is
+    exactly how GOLD went from 249 bars to 12. `write_daily` uses INSERT OR REPLACE
+    and deletes nothing, so a short vendor response now updates the sessions it
+    covers and leaves the rest alone.
+
+  * BOTH DELETES OMITTED `exchange`. The primary key is
+    (exchange, symbol, timeframe, ts). A delete without the exchange predicate
+    reaches across venues — and because the index is keyed leftmost on exchange, it
+    also full-scans a 300MB+ table to do it.
+
+  * THE DAILY DELETE COMPARED AGAINST A 'Z' TIMESTAMP while inserting the canonical
+    unsuffixed form. Those are different strings, so the boundary session
+    2025-07-30 was never actually cleared. A latent duplicate, of precisely the kind
+    that took a day to clean out of the index symbols.
+
+Going through `write_daily` also picks up the things it does for every other daily
+sync: the foreign-ts-format purge, exchange resolution from what is already stored,
+and the known vendor corrections.
+
+TIMESTAMPS
+----------
+This file used to convert Upstox's "2026-07-27T23:29:00+05:30" to UTC itself. The
+store's `to_db_ts` does the same job; the two were verified byte-identical across
+IST midnight, year end and the 05:29 boundary before the local copy was deleted. The
+raw vendor string is now handed to the store, which is the only place that decides
+what a timestamp looks like on disk.
+
+Daily bars keep the canonical '%Y-%m-%dT00:00:00' — the IST trading date, with no
+conversion and no trailing Z. A Z here is a SECOND row for the same session beside
+anything `daily_bars` wrote, which is what duplicated 13 index symbols.
+"""
 import os
 import sys
-import sqlite3
+from datetime import datetime, timedelta
+
 import requests
-import pandas as pd
-from datetime import datetime, timezone
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO_ROOT = os.path.dirname(os.path.dirname(HERE))
 sys.path.append(REPO_ROOT)
+sys.path.append(HERE)
 sys.path.append(os.path.join(REPO_ROOT, "scratch_scripts"))
 
-DB_PATH = "/Users/deepak/Library/CloudStorage/GoogleDrive-deepcranbed@gmail.com/My Drive/option_chains.db"
+from bar_store import DB_PATH as _DEFAULT_DB, save_bars
+from continuous import PER_CONTRACT, contract_symbol
+from continuous import write as write_continuous
+from daily_bars import PLAUSIBLE_1M_FLOOR, write_daily
 from upstox_auth import get_upstox_token
+
+# Honour OPTION_CHAINS_DB like every other script. This was hardcoded to the Google
+# Drive copy, so pointing a run at the local mirror silently wrote to Drive instead.
+DB_PATH = os.environ.get("OPTION_CHAINS_DB", _DEFAULT_DB)
+
 UPSTOX_ACCESS_TOKEN = get_upstox_token()
+
 # Mapping of symbols in DB to Upstox keys and their exchange codes
 SYMBOLS_MAP = {
     # CRUDEOIL_MCX, not CRUDEOIL: this is the INR MCX contract. CRUDEOIL is the
@@ -23,20 +80,42 @@ SYMBOLS_MAP = {
     "GOLD": {"key": "MCX_FO|466583", "exchange": "MCX"},
     "SILVER": {"key": "MCX_FO|471725", "exchange": "MCX"},
     "COPPER": {"key": "MCX_FO|562048", "exchange": "MCX"},
-    "GIFTNIFTY": {"key": "GLOBAL_INDEX|SGX NIFTY", "exchange": "NSEIX"}
+    "GIFTNIFTY": {"key": "GLOBAL_INDEX|SGX NIFTY", "exchange": "NSEIX"},
 }
 
-def resolve_mcx_keys(wanted, log=print):
+# db symbol -> the EXACT MCX product code.
+#
+# Matching on the instrument master's `name` field is not enough. Upstox reports
+# name='GOLD' for GOLD, GOLDM, GOLDTEN, GOLDGUINEA and GOLDPETAL alike, so a
+# nearest-expiry match by name picks whichever VARIANT expires soonest — which is
+# almost always the mini or the micro. A live resolve returned GOLDTEN26AUGFUT for
+# GOLD and SILVERMIC26AUGFUT for SILVER.
+#
+# That failure is worse than the option one, because it is invisible: SILVERMIC
+# quotes in the same INR-per-kg units as SILVER, around 230,000, so the plausibility
+# floor accepts it happily. A wrong contract at a right-looking price passes every
+# check we have. Only the tradingsymbol distinguishes them.
+MCX_PRODUCTS = {"GOLD": "GOLD", "SILVER": "SILVER", "COPPER": "COPPER",
+                "CRUDEOIL_MCX": "CRUDEOIL"}
+
+# GOLD26AUGFUT matches; GOLDTEN26AUGFUT does not, because the product code must be
+# followed immediately by the two-digit year.
+TRADINGSYMBOL_RE = "^{code}[0-9]{{2}}[A-Z]{{3}}FUT$"
+
+# Upstox quotes the USDINR indicator 10x scaled.
+SCALE = {"USDINR": 10.0}
+
+DAILY_FROM = "2025-07-30"
+INTRADAY_FROM = "2026-06-29"
+
+
+def resolve_mcx_keys(wanted, log=print, n=1):
     """Resolve MCX futures to the CURRENT contract from Upstox's instrument master.
 
     The hardcoded keys in SYMBOLS_MAP point at a SPECIFIC contract. When it expires
     the key simply stops returning data, which is why GOLD stalled at 2026-08-04 and
     COPPER at 2026-07-30 while SILVER and CRUDEOIL_MCX — whose contracts were still
     live — stayed current. Nothing errors; the feed just goes quiet.
-
-    Same approach the archived upstox/sync_finnifty_bars.py used for NSE_EQ, and the same
-    nearest-expiry rule as download_nifty_futures.py: take the earliest expiry that
-    has not passed.
 
     Returns {db_symbol: instrument_key} for whatever it could resolve. Anything it
     cannot resolve is left to the hardcoded fallback, so a bad instrument dump
@@ -50,7 +129,7 @@ def resolve_mcx_keys(wanted, log=print):
         # FUTURES ONLY. 'MCX_FO' is Futures AND Options, and options expire sooner —
         # so a nearest-expiry match by name alone picks an OPTION. That is exactly
         # what happened on the first run: GOLD resolved to a call contract and, since
-        # sync_symbol DELETEs before writing, 249 gold bars were replaced by 12 bars
+        # the old code DELETEd before writing, 249 gold bars were replaced by 12 bars
         # of option premium (close 49-600, against gold's ~150,000). Filter on
         # instrument_type before anything else.
         df = df[df["instrument_key"].astype(str).str.startswith("MCX_FO|", na=False)].copy()
@@ -58,231 +137,482 @@ def resolve_mcx_keys(wanted, log=print):
         if itype is None:
             log("   instrument master has no instrument_type column — refusing to roll")
             return {}
-        fut = df[itype.astype(str).str.upper() == "FUT"].copy()
+        itype = itype.astype(str).str.upper().str.strip()
+        log(f"   MCX_FO instrument_type values present: "
+            f"{', '.join(sorted(itype.unique())[:12])}")
+
+        # MATCH ON PREFIX, NOT EQUALITY.
+        #
+        # This tested `== "FUT"` and matched nothing, then correctly refused to roll
+        # — but reported only "no FUT rows", which said nothing about what WAS there
+        # and left the wrong key in place. Commodity futures are typed FUTCOM (as
+        # index and stock futures are FUTIDX and FUTSTK), so the equality test could
+        # never have matched on MCX.
+        #
+        # A prefix match is safe against the failure that matters: MCX options on
+        # futures are typed OPTFUT, which does not start with FUT. That is the
+        # contamination this filter exists to stop — it is how GOLD's key ended up
+        # on a call and wrote five weeks of option premium.
+        fut = df[itype.str.startswith("FUT")].copy()
+
+        # Belt and braces. instrument_type is one vendor field and vendors relabel;
+        # a futures contract has no strike and no CE/PE, whatever it is called. Two
+        # independent reasons to reject an option is the right number here, given
+        # what one missed filter already cost.
+        if "strike_price" in fut.columns:
+            strike = pd.to_numeric(fut["strike_price"], errors="coerce").fillna(0)
+            fut = fut[strike == 0]
+        if "option_type" in fut.columns:
+            ot = fut["option_type"].astype(str).str.upper().str.strip()
+            fut = fut[~ot.isin(("CE", "PE"))]
+
         if fut.empty:
-            log("   no FUT rows in the instrument master — refusing to roll")
+            log("   no futures rows survived the filter — refusing to roll. "
+                "Check the instrument_type values printed above.")
             return {}
+        log(f"   {len(fut):,} MCX futures rows after filtering")
         fut["expiry"] = pd.to_datetime(fut["expiry"], errors="coerce")
         today = pd.Timestamp(datetime.now().date())
         live = fut[fut["expiry"] >= today]
-        for db_sym, name in wanted.items():
-            m = live[live["name"].astype(str).str.upper() == name.upper()]
+        has_ts = "tradingsymbol" in live.columns
+        if not has_ts:
+            log("   instrument master has no tradingsymbol column — refusing to roll, "
+                "because `name` alone cannot tell GOLD from GOLDTEN")
+            return {}
+        tsym = live["tradingsymbol"].astype(str).str.upper().str.strip()
+        for db_sym, code in wanted.items():
+            pattern = TRADINGSYMBOL_RE.format(code=code.upper())
+            m = live[tsym.str.match(pattern, na=False)]
             if m.empty:
-                log(f"   {db_sym}: no live MCX contract for '{name}' — keeping fallback key")
+                # Show the variants that DID match on name, so a rename or a code
+                # change is diagnosable instead of just "no live contract".
+                near = live[live["name"].astype(str).str.upper() == code.upper()]
+                seen = sorted(near["tradingsymbol"].astype(str).unique())[:8]
+                log(f"   {db_sym}: no contract matching {pattern} — keeping fallback key")
+                if seen:
+                    log(f"      variants listed under name='{code}': {', '.join(seen)}")
                 continue
-            row = m.sort_values("expiry").iloc[0]
-            out[db_sym] = row["instrument_key"]
-            log(f"   {db_sym}: {row['instrument_key']} "
-                f"(expiry {str(row['expiry'])[:10]}, {row.get('tradingsymbol', '')})")
+            picked = m.sort_values("expiry").head(n)
+            out[db_sym] = [
+                {"key": r["instrument_key"], "expiry": str(r["expiry"])[:10],
+                 "tradingsymbol": r.get("tradingsymbol", "")}
+                for _, r in picked.iterrows()]
+            for con_ in out[db_sym]:
+                log(f"   {db_sym}: {con_['key']} "
+                    f"(expiry {con_['expiry']}, {con_['tradingsymbol']})")
     except Exception as e:
         log(f"   instrument master unavailable ({str(e)[:60]}) — keeping fallback keys")
     return out
 
 
-# db symbol -> the MCX product name in the instrument master
-MCX_PRODUCTS = {"GOLD": "GOLD", "SILVER": "SILVER", "COPPER": "COPPER",
-                "CRUDEOIL_MCX": "CRUDEOIL"}
-
-
-def to_utc_str(ist_timestamp_str):
-    # Upstox returns: "2026-07-27T23:29:00+05:30"
-    # Convert to UTC ISO format: "2026-07-27T17:59:00Z"
-    dt = datetime.strptime(ist_timestamp_str, "%Y-%m-%dT%H:%M:%S%z")
-    dt_utc = dt.astimezone(timezone.utc)
-    return dt_utc.strftime("%Y-%m-%dT%H:%M:%SZ")
-
-def fetch_upstox_historical(instrument_key, from_date, to_date):
-    url = f"https://api.upstox.com/v2/historical-candle/{instrument_key}/1minute/{to_date}/{from_date}"
-    headers = {
-        'Authorization': f'Bearer {UPSTOX_ACCESS_TOKEN}',
-        'Accept': 'application/json'
-    }
-    response = requests.get(url, headers=headers, timeout=30)
-    if response.status_code != 200:
-        print(f"Failed to fetch historical for key {instrument_key}. Status: {response.status_code}")
+def _get(url):
+    r = requests.get(url, headers={"Authorization": f"Bearer {UPSTOX_ACCESS_TOKEN}",
+                                   "Accept": "application/json"}, timeout=30)
+    if r.status_code != 200:
+        print(f"   Upstox {r.status_code} for {url.split('/historical-candle/')[-1][:60]}")
         return []
-    return response.json().get("data", {}).get("candles", [])
+    return r.json().get("data", {}).get("candles", [])
 
-def fetch_upstox_intraday(instrument_key):
-    url = f"https://api.upstox.com/v2/historical-candle/intraday/{instrument_key}/1minute"
-    headers = {
-        'Authorization': f'Bearer {UPSTOX_ACCESS_TOKEN}',
-        'Accept': 'application/json'
-    }
-    response = requests.get(url, headers=headers, timeout=30)
-    if response.status_code != 200:
-        print(f"Failed to fetch intraday for key {instrument_key}. Status: {response.status_code}")
-        return []
-    return response.json().get("data", {}).get("candles", [])
 
-def fetch_upstox_daily_historical(instrument_key, from_date, to_date):
-    url = f"https://api.upstox.com/v2/historical-candle/{instrument_key}/day/{to_date}/{from_date}"
-    headers = {
-        'Authorization': f'Bearer {UPSTOX_ACCESS_TOKEN}',
-        'Accept': 'application/json'
-    }
-    response = requests.get(url, headers=headers, timeout=30)
-    if response.status_code != 200:
-        print(f"Failed to fetch daily historical for key {instrument_key}. Status: {response.status_code}")
-        return []
-    return response.json().get("data", {}).get("candles", [])
+def fetch_1m(key, frm, to):
+    return _get(f"https://api.upstox.com/v2/historical-candle/{key}/1minute/{to}/{frm}")
 
-def sync_symbol(conn, symbol, config):
-    print(f"\n--- Syncing {symbol} ({config['key']}) ---")
-    
-    # 1. Fetch Historical Batches (1m)
-    from datetime import datetime, timedelta
-    start_dt = datetime.strptime("2026-06-29", "%Y-%m-%d")
-    now_dt = datetime.now()
-    batches = []
-    cur = start_dt
-    while cur < now_dt:
-        next_cur = min(cur + timedelta(days=7), now_dt)
-        batches.append((cur.strftime("%Y-%m-%d"), next_cur.strftime("%Y-%m-%d")))
-        cur = next_cur + timedelta(days=1)
-    
-    all_candles = []
-    
-    for from_date, to_date in batches:
-        print(f"Fetching historical 1m batch from {from_date} to {to_date}...")
-        candles = fetch_upstox_historical(config["key"], from_date, to_date)
-        all_candles.extend(candles)
-        
-    # 2. Fetch Intraday (Today's candles 1m)
-    print("Fetching today's active 1m intraday candles...")
-    intraday_candles = fetch_upstox_intraday(config["key"])
-    all_candles.extend(intraday_candles)
-    
-    # 3. Deduplicate by UTC timestamp (1m)
-    seen_timestamps = set()
-    unique_rows = []
-    
-    for c in all_candles:
+
+def fetch_1m_today(key):
+    return _get(f"https://api.upstox.com/v2/historical-candle/intraday/{key}/1minute")
+
+
+def fetch_1d(key, frm, to):
+    return _get(f"https://api.upstox.com/v2/historical-candle/{key}/day/{to}/{frm}")
+
+
+def _rows(candles, symbol, ts_of):
+    """Upstox candles -> store rows (ts, o, h, l, c, v, oi), deduped by ts.
+
+    `ts_of` decides the timestamp convention: raw vendor string for 1m (the store
+    converts), canonical trading date for 1d.
+    """
+    scale = SCALE.get(symbol, 1.0)
+    seen, out = set(), []
+    for c in candles:
         try:
-            utc_ts = to_utc_str(c[0])
-            if utc_ts in seen_timestamps:
+            ts = ts_of(c[0])
+            if ts in seen:
                 continue
-            seen_timestamps.add(utc_ts)
-            
-            # Scale down USDINR indicator (10x scaled in Upstox)
-            scale = 10.0 if symbol == "USDINR" else 1.0
-            
-            unique_rows.append((
-                config["exchange"],
-                symbol,
-                "1m",
-                utc_ts,
-                float(c[1]) / scale,  # open
-                float(c[2]) / scale,  # high
-                float(c[3]) / scale,  # low
-                float(c[4]) / scale,  # close
-                float(c[5]),  # volume
-                float(c[6]) if len(c) > 6 and c[6] is not None else None # open_interest
-            ))
-        except Exception as e:
-            print(f"Error parsing candle {c}: {e}")
-            
-    cursor = conn.cursor()
-    
-    if unique_rows:
-        min_ts = min(unique_rows, key=lambda x: x[3])[3]
-        max_ts = max(unique_rows, key=lambda x: x[3])[3]
-        print(f"Parsed {len(unique_rows)} unique 1m candles. Deleting existing data between {min_ts} and {max_ts}...")
-        # 4. Delete existing 1m data for the range
-        cursor.execute("""
-            DELETE FROM price_bars 
-            WHERE symbol = ? 
-              AND timeframe = '1m'
-              AND ts >= ? AND ts <= ?
-        """, (symbol, min_ts, max_ts))
-        # 5. Insert the new 1m data
-        cursor.executemany("""
-            INSERT OR REPLACE INTO price_bars (exchange, symbol, timeframe, ts, open, high, low, close, volume, open_interest)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """, unique_rows)
-        print(f"Successfully inserted {cursor.rowcount} new 1m rows for {symbol} into database.")
+            seen.add(ts)
+            out.append((ts, float(c[1]) / scale, float(c[2]) / scale,
+                        float(c[3]) / scale, float(c[4]) / scale, float(c[5]),
+                        float(c[6]) if len(c) > 6 and c[6] is not None else None))
+        except (TypeError, ValueError, IndexError) as e:
+            print(f"   skipped a malformed candle {c}: {e}")
+    return out
 
-    # 6. Fetch and Insert Daily (1d) Candles
-    print("Fetching historical daily (1d) candles...")
-    today_str = datetime.now().strftime("%Y-%m-%d")
-    daily_candles = fetch_upstox_daily_historical(config["key"], "2025-07-30", today_str)
-    
-    unique_daily_rows = []
-    for c in daily_candles:
-        try:
-            dt = datetime.strptime(c[0][:10], "%Y-%m-%d")
-            # Canonical daily format — no trailing Z, no timezone conversion.
-            # ts is part of the primary key, so a Z here is a SECOND row for the
-            # same session beside anything written by daily_bars. That is what
-            # duplicated 13 index symbols. See data_agent/fetching/daily_bars.py.
-            utc_ts = dt.strftime("%Y-%m-%dT00:00:00")
-            
-            # Scale down USDINR indicator (10x scaled in Upstox)
-            scale = 10.0 if symbol == "USDINR" else 1.0
-            
-            unique_daily_rows.append((
-                config["exchange"],
-                symbol,
-                "1d",
-                utc_ts,
-                float(c[1]) / scale,  # open
-                float(c[2]) / scale,  # high
-                float(c[3]) / scale,  # low
-                float(c[4]) / scale,  # close
-                float(c[5]),  # volume
-                float(c[6]) if len(c) > 6 and c[6] is not None else None
-            ))
-        except Exception as e:
-            print(f"Error parsing daily candle {c}: {e}")
-            
-    if unique_daily_rows:
-        cursor.execute("""
-            DELETE FROM price_bars 
-            WHERE symbol = ? 
-              AND timeframe = '1d'
-              AND ts >= '2025-07-30T00:00:00Z'
-        """, (symbol,))
-        cursor.executemany("""
-            INSERT OR REPLACE INTO price_bars (exchange, symbol, timeframe, ts, open, high, low, close, volume, open_interest)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """, unique_daily_rows)
-        print(f"Successfully synced {len(unique_daily_rows)} daily (1d) rows for {symbol} into database.")
-        
-    conn.commit()
+
+
+def implausible(rows, symbol):
+    """Is this vendor response the wrong instrument? -> reason, or None.
+
+    Checks the MEDIAN close, not the minimum: a single bad print is a bad print, but
+    a whole response an order of magnitude below the floor means the instrument key
+    is no longer naming what we think it names.
+
+    This is the fix that matters. Correcting GOLD's key patches today; refusing to
+    write prices that cannot be the instrument stops the next wrong key — expired
+    contract, mistyped edit, a roll that resolves to an option — from filing five
+    weeks of someone else's prices under a metal's name before anyone notices.
+    """
+    floor = PLAUSIBLE_1M_FLOOR.get(symbol)
+    if not floor or not rows:
+        return None
+    closes = sorted(r[4] for r in rows)
+    med = closes[len(closes) // 2]
+    if med < floor:
+        return (f"median close {med:,.1f} is below the {floor:,} floor for {symbol} "
+                f"— this key is not returning {symbol}, it is returning something "
+                f"else (an option contract prints in this range)")
+    return None
+
+
+
+def _resume_from(db, symbol, timeframe, floor, overlap_days):
+    """Where to start fetching: just before what we already hold.
+
+    The floors below were absolute — every run re-pulled a year of daily and six
+    weeks of minutes for every contract, then upserted the lot. Harmless to the data
+    (the writes are upserts, nothing is lost) but it re-downloaded ~20 contracts'
+    full history daily and rewrote rows that had not changed.
+
+    A small overlap is deliberate, not laziness: the last few sessions are the ones
+    a vendor revises, and re-pulling them costs almost nothing. Same rule
+    daily_bars.sync_symbols already follows for Yahoo.
+    """
+    import sqlite3 as _sq
+    try:
+        con = _sq.connect(db)
+        row = con.execute("select max(ts) from price_bars where symbol=? and "
+                          "timeframe=?", (symbol, timeframe)).fetchone()
+        con.close()
+    except Exception:                                        # noqa: BLE001
+        return floor
+    if not row or not row[0]:
+        return floor                    # nothing stored yet — take the whole window
+    last = datetime.strptime(row[0][:10], "%Y-%m-%d")
+    start = last - timedelta(days=overlap_days)
+    return max(start, datetime.strptime(floor, "%Y-%m-%d")).strftime("%Y-%m-%d")
+
+
+def sync_symbol(symbol, config, db, floor_symbol=None,
+                timeframes=("1m", "1d"), full=False):
+    print(f"\n--- {symbol} ({config['key']}) ---")
+    key, exchange = config["key"], config["exchange"]
+
+    rows_1m = []
+    # ---- 1m: weekly batches back to INTRADAY_FROM, plus today ----
+    candles = []
+    if "1m" not in timeframes:
+        print("   1m: skipped (far-dated contract — daily only until it nears the front)")
+        candles = None
+    frm_1m = INTRADAY_FROM if full else _resume_from(db, symbol, "1m",
+                                                     INTRADAY_FROM, 1)
+    cur, now = datetime.strptime(frm_1m, "%Y-%m-%d"), datetime.now()
+    while candles is not None and cur < now:
+        nxt = min(cur + timedelta(days=7), now)
+        candles += fetch_1m(key, cur.strftime("%Y-%m-%d"), nxt.strftime("%Y-%m-%d"))
+        cur = nxt + timedelta(days=1)
+    if candles is not None:
+        candles += fetch_1m_today(key)
+
+    # The vendor's own "+05:30" string goes to the store untouched — see the module
+    # docstring. No DELETE: the primary key makes this an upsert, and deleting a
+    # range the vendor may return less of is how history gets thrown away.
+    rows_1m = _rows(candles, symbol, lambda t: t) if candles is not None else []
+    bad = implausible(rows_1m, floor_symbol or symbol)
+    if bad:
+        raise ValueError(f"refusing to write 1m for {symbol}: {bad}")
+    if rows_1m:
+        save_bars(rows_1m, exchange=exchange, symbol=symbol, timeframe="1m", db=db)
+        print(f"   1m: {len(rows_1m)} bars "
+              f"({rows_1m[0][0][:16]} .. {rows_1m[-1][0][:16]})")
+    else:
+        print("   1m: nothing returned")
+
+    # ---- 1d ----
+    frm_1d = DAILY_FROM if full else _resume_from(db, symbol, "1d", DAILY_FROM, 5)
+    daily = fetch_1d(key, frm_1d, datetime.now().strftime("%Y-%m-%d"))
+    rows_1d = _rows(daily, symbol,
+                    lambda t: datetime.strptime(t[:10], "%Y-%m-%d")
+                                      .strftime("%Y-%m-%dT00:00:00"))
+    bad = implausible(rows_1d, floor_symbol or symbol)
+    if bad:
+        raise ValueError(f"refusing to write 1d for {symbol}: {bad}")
+    if rows_1d:
+        n, _ = write_daily(rows_1d, symbol, db, exchange=exchange)
+        print(f"   1d: {n} bars ({rows_1d[0][0][:10]} .. {rows_1d[-1][0][:10]})")
+    else:
+        print("   1d: nothing returned")
+    return len(rows_1m), len(rows_1d)
+
 
 def main():
     if not os.path.exists(DB_PATH):
         print(f"[ERROR] Database file not found at: {DB_PATH}")
-        return
-        
-    print(f"Connecting to database: {DB_PATH}")
-    conn = sqlite3.connect(DB_PATH)
-    
-    try:
-        # Refresh the MCX contract keys before fetching. Hardcoded keys point at one
-        # contract and go silent when it expires — that is the whole of the GOLD and
-        # COPPER staleness. Anything unresolved keeps its fallback key.
-        # OPT-IN. Rolling to a new contract does not extend the old series — it
-        # replaces it, because sync_symbol DELETEs first and a new contract only has
-        # its own short history. GOLD went 249 bars -> 12 that way. Until per-contract
-        # storage exists (one symbol = one contract, continuous series derived at read
-        # time), the hardcoded keys are the safer default: they go stale, which the
-        # audit reports, rather than silently destroying history.
-        live_keys = {}
-        if "--roll" in sys.argv:
-            print("Resolving current MCX contracts (--roll)...")
-            live_keys = resolve_mcx_keys(MCX_PRODUCTS)
-        for db_sym, key in live_keys.items():
-            if db_sym in SYMBOLS_MAP and SYMBOLS_MAP[db_sym]["key"] != key:
-                print(f"   {db_sym}: contract rolled "
-                      f"{SYMBOLS_MAP[db_sym]['key']} -> {key}")
-                SYMBOLS_MAP[db_sym]["key"] = key
+        return 1
+    print(f"database: {DB_PATH}")
 
-        for symbol, config in SYMBOLS_MAP.items():
-            sync_symbol(conn, symbol, config)
-        print("\n[SUCCESS] All commodities, USDINR, and GIFTNIFTY synced successfully!")
-    finally:
-        conn.close()
+    # OPT-IN roll. Rolling to a new contract does not extend the old series — the new
+    # key only has its own short history. write_daily no longer deletes, so a roll is
+    # far less destructive than it was, but the two contracts are still different
+    # instruments stored under one name. Until per-contract storage exists, the
+    # hardcoded keys stay the default: they go stale, which the audit reports, rather
+    # than quietly splicing two contracts into one series.
+    # --backfill-expired: fetch contracts that have already expired.
+    #
+    # These are the contracts that were FRONT MONTH for the periods our live
+    # contracts were not. Without them, strict front-month selection leaves GOLD
+    # with two days: October only took over on 2026-08-06, and the August contract
+    # that preceded it is not in the live instrument master any more.
+    #
+    # Reachable only because the token was recorded. The Expired Instruments API
+    # cannot list MCX expiries — commodities have no permanent underlying key — so
+    # the registry's expired_instrument_key is the whole mechanism.
+    if "--backfill-expired" in sys.argv:
+        sys.path.insert(0, os.path.dirname(HERE))
+        import contract_registry as _reg
+        from upstox_expired import candles as _expired_candles
+        doc = _reg.load()
+        gone = [c for c in _reg.expired(doc) if c["product"] in PER_CONTRACT]
+        if not gone:
+            print("No expired contracts recorded. Nothing to backfill.")
+            return 0
+        print(f"{len(gone)} expired contracts recorded\n")
+        failed = []
+        for c in sorted(gone, key=lambda x: x["expiry"]):
+            sym = contract_symbol(c["product"], c["expiry"])
+            ek = c["expired_instrument_key"]
+            print(f"--- {sym}   {ek}")
+            for interval, tf, frm in (("day", "1d", DAILY_FROM),
+                                      ("1minute", "1m", INTRADAY_FROM)):
+                rows, err = _expired_candles(ek, interval, frm, c["expiry"])
+                if err:
+                    print(f"    {tf}: {err}")
+                    failed.append(f"{sym}:{tf}")
+                    continue
+                if not rows:
+                    print(f"    {tf}: no candles returned")
+                    continue
+                if tf == "1d":
+                    built = _rows(rows, c["product"],
+                                  lambda t: datetime.strptime(t[:10], "%Y-%m-%d")
+                                                    .strftime("%Y-%m-%dT00:00:00"))
+                    bad = implausible(built, c["product"])
+                    if bad:
+                        print(f"    1d: REFUSED — {bad}")
+                        failed.append(f"{sym}:1d")
+                        continue
+                    n, _ = write_daily(built, sym, DB_PATH,
+                                       exchange=SYMBOLS_MAP[c["product"]]["exchange"])
+                else:
+                    built = _rows(rows, c["product"], lambda t: t)
+                    bad = implausible(built, c["product"])
+                    if bad:
+                        print(f"    1m: REFUSED — {bad}")
+                        failed.append(f"{sym}:1m")
+                        continue
+                    n = save_bars(built, exchange=SYMBOLS_MAP[c["product"]]["exchange"],
+                                  symbol=sym, timeframe=tf, db=DB_PATH)
+                print(f"    {tf}: {n:,} bars "
+                      f"({built[0][0][:10]} .. {built[-1][0][:10]})")
+        print()
+        if failed:
+            print(f"FAILED: {', '.join(failed)}")
+            return 1
+        print("Backfill complete. Now rebuild:")
+        print("   python data_agent/fetching/continuous.py --apply")
+        print("   python data_agent/fetching/continuous.py --timeframe 1m --apply")
+        return 0
+
+    # --list-contracts: every contract Upstox still lists, expired ones included.
+    #
+    # Decides whether a clean wipe-and-rebuild is affordable. Per-contract storage can
+    # only reconstruct history from contracts we can still FETCH. If the master drops
+    # contracts at expiry, a rebuild starts when the current ones went live and the
+    # older history is gone for good; if it keeps them, we can rebuild the lot.
+    if "--list-contracts" in sys.argv:
+        import pandas as pd
+        df = pd.read_csv(
+            "https://assets.upstox.com/market-quote/instruments/exchange/complete.csv.gz",
+            low_memory=False)
+        df = df[df["instrument_key"].astype(str).str.startswith("MCX_FO|", na=False)]
+        it = df["instrument_type"].astype(str).str.upper().str.strip()
+        fut = df[it.str.startswith("FUT")].copy()
+        if "strike_price" in fut.columns:
+            fut = fut[pd.to_numeric(fut["strike_price"], errors="coerce").fillna(0) == 0]
+        fut["expiry"] = pd.to_datetime(fut["expiry"], errors="coerce")
+        today = pd.Timestamp(datetime.now().date())
+        tsym = fut["tradingsymbol"].astype(str).str.upper().str.strip()
+        print(f"today: {today.date()}\n")
+        for db_sym, code in sorted(MCX_PRODUCTS.items()):
+            m = fut[tsym.str.match(TRADINGSYMBOL_RE.format(code=code.upper()), na=False)]
+            m = m.sort_values("expiry")
+            past = m[m["expiry"] < today]
+            live = m[m["expiry"] >= today]
+            print(f"{db_sym}:  {len(past)} EXPIRED still listed, {len(live)} live")
+            for _, r in m.iterrows():
+                tag = "expired" if r["expiry"] < today else "live"
+                print(f"     {str(r['expiry'])[:10]}  {r['tradingsymbol']:<22} "
+                      f"{r['instrument_key']:<16} {tag}")
+            print()
+        print("EXPIRED contracts still listed can be fetched, so history can be")
+        print("rebuilt from them. If that count is 0, a wipe loses the old history.")
+        return 0
+
+    # --resolve-only: print what the instrument master says and stop.
+    #
+    # Worth having separately, because --roll writes. Until the fetch side stores
+    # per contract, rolling to a new key appends the new contract's bars onto the
+    # old series under one name — an unlabelled splice, which is the thing
+    # continuous.py exists to stop. Look before writing.
+    if "--resolve-only" in sys.argv:
+        print("Resolving current MCX contracts (read-only, nothing will be written)\n")
+        found = resolve_mcx_keys(MCX_PRODUCTS)
+        print()
+        for db_sym in sorted(MCX_PRODUCTS):
+            cur = SYMBOLS_MAP[db_sym]["key"]
+            picked = found.get(db_sym) or []
+            new = picked[0]["key"] if picked else None
+            if not new:
+                print(f"   {db_sym:<14} unresolved — keeps {cur}")
+            elif new == cur:
+                print(f"   {db_sym:<14} unchanged  {cur}   ({picked[0]['tradingsymbol']}, "
+                      f"expiry {picked[0]['expiry']})")
+            else:
+                print(f"   {db_sym:<14} STALE      {cur}  ->  {new}   "
+                      f"({picked[0]['tradingsymbol']}, expiry {picked[0]['expiry']})")
+        print("\nNothing written. Re-run with --roll to fetch using these keys.")
+        return 0
+
+    if "--roll" in sys.argv:
+        print("Resolving current MCX contracts (--roll)...")
+        for db_sym, picked in resolve_mcx_keys(MCX_PRODUCTS).items():
+            if not picked:
+                continue
+            k = picked[0]["key"]
+            if db_sym in SYMBOLS_MAP and SYMBOLS_MAP[db_sym]["key"] != k:
+                print(f"   {db_sym}: contract rolled "
+                      f"{SYMBOLS_MAP[db_sym]['key']} -> {k}")
+                SYMBOLS_MAP[db_sym]["key"] = k
+
+    failed = []
+
+    # ---- PER-CONTRACT products: one series per contract, then derive the roll ----
+    #
+    # The instrument key is not a durable identity. MCX_FO|466583 returned gold until
+    # 2026-07-01 13:40 and option premium from 13:41, with nobody touching the config,
+    # and five weeks of it landed under the name GOLD. A contract expiry IS durable —
+    # it is a property of the contract, not of the vendor's database — so that is what
+    # the symbol is keyed on now.
+    #
+    # Near AND next are fetched. The next contract is not needed today; it is needed
+    # so that when the roll happens there is an overlap to measure the ratio on.
+    # Without it continuous.py has to join raw and the step shows up as a real move.
+    if PER_CONTRACT:
+        print("\nResolving contracts for per-contract storage...")
+        # EVERY live contract, not the nearest two.
+        #
+        # Upstox drops a contract from the instrument master the moment it expires —
+        # 0 expired contracts are listed — so any history we do not capture while a
+        # contract is alive is gone permanently. Fetching all of them means that when
+        # October rolls to December we already hold December's liquid history instead
+        # of starting it from that day.
+        #
+        # Daily for all of them; one-minute only for the nearest two. A far-dated
+        # contract's minutes are untraded marks, and 26,000 bars per contract per
+        # sync is real time for data the liquid-window rule would discard anyway.
+        resolved = resolve_mcx_keys({k: v for k, v in MCX_PRODUCTS.items()
+                                     if k in PER_CONTRACT}, n=99)
+
+        # RECORD EVERY TOKEN, EVERY RUN, BEFORE FETCHING ANYTHING.
+        #
+        # The numeric token is the perishable part. Upstox delists a contract at
+        # expiry and the Expired Instruments API cannot list MCX expiries — there is
+        # no permanent underlying key for a commodity — so a token not written down
+        # while the contract lived is unrecoverable at any price. That is precisely
+        # why history before 2026-07-28 is gone: nothing recorded it.
+        #
+        # This ran as a standalone script for exactly one day, which is to say it
+        # would have been forgotten. It belongs in the path that already knows the
+        # answer, on every sync, before the work that might fail.
+        try:
+            sys.path.insert(0, os.path.dirname(HERE))
+            import contract_registry as _reg
+            _doc = _reg.load()
+            _new = 0
+            for _p, _cons in resolved.items():
+                for _c in _cons:
+                    if _reg.record(_doc, _p, _c["expiry"], _c["key"].split("|")[-1],
+                                   extra={"tradingsymbol": _c.get("tradingsymbol"),
+                                          "source": "sync_commodities"}):
+                        _new += 1
+            _reg.save(_doc)
+            print(f"   contract registry: {len(_doc['contracts'])} known"
+                  f"{f', {_new} new this run' if _new else ''}")
+        except Exception as _e:                              # noqa: BLE001
+            # Never fail the sync over bookkeeping — but say so loudly, because a
+            # silent failure here is invisible until the day it costs history.
+            print(f"   !! CONTRACT REGISTRY NOT UPDATED: {type(_e).__name__}: {_e}")
+            print("      tokens seen in this run were not recorded — fix before the "
+                  "next expiry or that contract becomes unrecoverable.")
+        for db_sym, contracts in sorted(resolved.items()):
+            for i, con_ in enumerate(contracts):
+                sym = contract_symbol(db_sym, con_["expiry"])
+                try:
+                    sync_symbol(sym, {"key": con_["key"],
+                                      "exchange": SYMBOLS_MAP[db_sym]["exchange"]},
+                                DB_PATH, floor_symbol=db_sym,
+                                timeframes=("1m", "1d") if i < 2 else ("1d",),
+                                full="--full" in sys.argv)
+                except Exception as e:
+                    failed.append(sym)
+                    print(f"   !! {sym} failed: {type(e).__name__}: {e}")
+        # The rolling name is now GENERATED, never fetched into directly.
+        #
+        # --no-continuous exists for the FIRST run. Rebuilding overwrites legacy bars
+        # under the bare product name with generated, ratio-adjusted ones wherever the
+        # contract series reaches back that far. That is the intended end state, but
+        # it is not something to discover afterwards — fetch the contracts, inspect
+        # `continuous.py --product GOLD`, then let it write.
+        if "--no-continuous" in sys.argv:
+            print("\n--no-continuous: contracts stored; rolling series NOT rebuilt.")
+            print("   inspect with: python data_agent/fetching/continuous.py --product GOLD")
+            return 1 if failed else 0
+        print("\nRebuilding continuous series from contracts...")
+        for db_sym in sorted(resolved):
+            for tf in ("1d", "1m"):
+                try:
+                    write_continuous(DB_PATH, db_sym, tf, dry=False)
+                except Exception as e:
+                    failed.append(f"{db_sym}:continuous:{tf}")
+                    print(f"   !! {db_sym} continuous {tf}: {type(e).__name__}: {e}")
+
+    # ---- everything else keeps its single-series name ----
+    for symbol, config in SYMBOLS_MAP.items():
+        if symbol in PER_CONTRACT:
+            continue
+        try:
+            sync_symbol(symbol, config, DB_PATH, full="--full" in sys.argv)
+        except Exception as e:
+            failed.append(symbol)
+            print(f"   !! {symbol} failed: {type(e).__name__}: {e}")
+
+    print()
+    if failed:
+        # Non-zero exit so sync_all reports this as a failed step. The old version
+        # printed "[SUCCESS] All commodities ... synced successfully!" unconditionally.
+        print(f"FAILED: {', '.join(failed)}")
+        return 1
+    print("All commodities, USDINR and GIFTNIFTY synced.")
+    return 0
+
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

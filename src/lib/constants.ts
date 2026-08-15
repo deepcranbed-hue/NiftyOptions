@@ -4,6 +4,9 @@ export const CONFIG = {
   fresh_oi_min: 5.0,
   pcr_heavy_put: 1.30,
   pcr_heavy_call: 0.75,
+  // BOOTSTRAP ONLY — overwritten at startup by hydrateContractParams() from
+  // /api/strategy/config, whose authority is exchange_config.py (NIFTY_LOT_SIZE).
+  // Do not treat this literal as the lot size; change it in exchange_config.py.
   lot_size: 65,
   wing_width: 200,
   iv_floor: 8.0,
@@ -63,6 +66,13 @@ export const GLOBAL_MAP: Record<string, { sector: string; inverse: boolean; defa
   "Brent": { sector: "Energy / import bill", inverse: true, defaultPct: +1.4 },
   "Dollar (DXY)": { sector: "FII flows / EM", inverse: true, defaultPct: -0.2 },
   "USDINR": { sector: "FII vs IT exporters", inverse: true, defaultPct: +0.1 },
+  "Copper": { sector: "Nifty Metal / Industrials", inverse: false, defaultPct: 0.0 },
+  "Gold": { sector: "Safe Haven / Fear Gauge", inverse: true, defaultPct: 0.0 },
+  "Silver": { sector: "Industrial / Precious Metals", inverse: false, defaultPct: 0.0 },
+  "India 2Y": { sector: "Domestic rate sensitivity", inverse: true, defaultPct: 0.0 },
+  "India 5Y": { sector: "Medium term corporate borrowing", inverse: true, defaultPct: 0.0 },
+  "India 10Y": { sector: "Sovereign yield curve benchmark", inverse: true, defaultPct: 0.0 },
+  "India 2S10S": { sector: "Yield curve slope (10Y-2Y)", inverse: false, defaultPct: 0.0 },
 };
 
 export const NEWS_LEXICON = {

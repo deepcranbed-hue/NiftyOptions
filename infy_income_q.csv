@@ -1,0 +1,13 @@
+line_item,period_label,period_end,value,change_pct
+net_profit,Jun 2026,2026-06-30,7775,-8.63
+net_profit,Mar 2026,2026-03-31,8509,27.65
+net_profit,Dec 2025,2025-12-31,6666,-9.61
+net_profit,Sep 2025,2025-09-30,7375,
+operating_profit,Jun 2026,2026-06-30,11028,2.14
+operating_profit,Mar 2026,2026-03-31,10797,16.99
+operating_profit,Dec 2025,2025-12-31,9229,-9.78
+operating_profit,Sep 2025,2025-09-30,10229,
+revenue,Jun 2026,2026-06-30,49195,3.44
+revenue,Mar 2026,2026-03-31,47561,2.02
+revenue,Dec 2025,2025-12-31,46618,2.52
+revenue,Sep 2025,2025-09-30,45472,

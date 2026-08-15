@@ -1,0 +1,61 @@
+{
+  "generated": "2026-07-19T01:16",
+  "expiry": "2026-07-07T06:00:00.000Z",
+  "summary": {
+    "incumbent": {
+      "folds": 2,
+      "mean_ic": 0.1005,
+      "mean_hit": 0.5,
+      "mean_pnl": null,
+      "beats_incumbent_folds": null
+    },
+    "inverse_redundancy": {
+      "folds": 2,
+      "mean_ic": 0.152,
+      "mean_hit": 0.521,
+      "mean_pnl": null,
+      "beats_incumbent_folds": 2
+    },
+    "mv_ic": {
+      "folds": 2,
+      "mean_ic": 0.1885,
+      "mean_hit": 0.4665,
+      "mean_pnl": null,
+      "beats_incumbent_folds": 2
+    },
+    "family": {
+      "folds": 2,
+      "mean_ic": 0.2415,
+      "mean_hit": 0.624,
+      "mean_pnl": null,
+      "beats_incumbent_folds": 2
+    }
+  },
+  "proposal": {
+    "method": "family",
+    "weights": {
+      "heavyweight_leadership": 0.0417,
+      "technical_momentum": 0.0417,
+      "global_momentum": 0.25,
+      "breadth_oi": 0.0417,
+      "skew_rnd": 0.25,
+      "vrp": 0.25,
+      "vwap": 0.0417,
+      "vol_index": 0.0417,
+      "rel_volume": 0.0417,
+      "crude_energy": 0.0,
+      "usdinr": 0.0,
+      "global_gap": 0.0,
+      "futures_basis": 0.0,
+      "futures_calendar": 0.0,
+      "futures_flow": 0.0
+    },
+    "oos_mean_ic": 0.2415,
+    "incumbent_mean_ic": 0.1005,
+    "beats_incumbent_folds": 2,
+    "of_folds": 2
+  },
+  "sufficient": false,
+  "applied": false,
+  "note": "ADVISORY \u2014 apply by hand via SignalWeights(overrides=\u2026)."
+}

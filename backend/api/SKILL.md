@@ -18,6 +18,13 @@
 ### `/api/harness/eval` (POST)
 - **Role:** (TODO: create) Endpoint to trigger the offline quantitative evaluation harness via the web interface.
 
+### `/api/strategy/*` (strategy_framework subsystem)
+Routes mounted from `backend/main.py` for the separate directional-momentum suggester + walk-forward backtest (Desk view). Two params added this session:
+- **`/api/strategy/suggest`** (GET): accepts `min_edge_cost_mult` (cost-edge "do-nothing" gate; 0 = off).
+- **`/api/strategy/backtest`** (POST): accepts `min_edge_cost_mult` and `mps_benchmark` (`off | gross | net` — MPS0 max-profit benchmark, descriptive/PRIOR only).
+
+Full request/response contracts live in [strategy_framework/REFERENCE.md](../../strategy_framework/REFERENCE.md) — do not duplicate here.
+
 ## Caching Rule
 The RSS fetching and Gemini tagging process (`get_tagged_news`) must be decorated with `@alru_cache(ttl=300)`.
 - **Why:** To prevent rate-limiting the RSS upstream and burning unnecessary Gemini tokens if the user recalculates the pipeline rapidly (e.g., by adjusting the option chain slider). Only the news fetch is cached (~5 minutes); the pipeline math computes instantly on every request.

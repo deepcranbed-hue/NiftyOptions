@@ -1,0 +1,165 @@
+{
+  "sector": "Nifty IT",
+  "n_companies": 10,
+  "valuation": {
+    "median_pe": 24.36,
+    "median_pb": 5.26,
+    "median_ev_ebitda": 14.12,
+    "band": [
+      18,
+      26
+    ],
+    "level": "fair",
+    "cheapest": [
+      [
+        "WIPRO",
+        13.5
+      ],
+      [
+        "INFY",
+        14.8
+      ],
+      [
+        "TCS",
+        17.3
+      ]
+    ],
+    "richest": [
+      [
+        "PERSISTENT",
+        41.2
+      ],
+      [
+        "COFORGE",
+        38.9
+      ],
+      [
+        "TECHM",
+        31.0
+      ]
+    ],
+    "note": "band is a heuristic calibration; swap for price-history percentile"
+  },
+  "quality": {
+    "median_roe": 20.33,
+    "median_roce": 24.89
+  },
+  "earnings_momentum": {
+    "rev_yoy_avg": 11.25,
+    "np_yoy_avg": 8.85,
+    "rev_qoq_avg": 3.39,
+    "np_qoq_avg": 0.19,
+    "label": "growing (revenue + earnings)"
+  },
+  "ownership": {
+    "fii_delta_avg": -0.91,
+    "label": "FIIs distributing",
+    "distributing": [
+      [
+        "COFORGE",
+        -10.22
+      ],
+      [
+        "INFY",
+        -2.99
+      ],
+      [
+        "TECHM",
+        -1.94
+      ]
+    ],
+    "accumulating": [
+      [
+        "MPHASIS",
+        0.98
+      ],
+      [
+        "WIPRO",
+        0.33
+      ]
+    ]
+  },
+  "setup_verdict": "fair (median P/E 24.36); high-quality (ROE 20.33%); growing (revenue + earnings); fiis distributing",
+  "companies": [
+    {
+      "symbol": "WIPRO",
+      "pe": 13.5,
+      "roe": 14.99,
+      "rev_yoy": 3.97,
+      "np_yoy": 0.36,
+      "fii_delta": 0.33
+    },
+    {
+      "symbol": "INFY",
+      "pe": 14.79,
+      "roe": 33.24,
+      "rev_yoy": 9.61,
+      "np_yoy": 10.18,
+      "fii_delta": -2.99
+    },
+    {
+      "symbol": "TCS",
+      "pe": 17.33,
+      "roe": 45.89,
+      "rev_yoy": 4.58,
+      "np_yoy": 1.35,
+      "fii_delta": -1.27
+    },
+    {
+      "symbol": "HCLTECH",
+      "pe": 20.53,
+      "roe": 22.14,
+      "rev_yoy": 11.18,
+      "np_yoy": -4.29,
+      "fii_delta": -1.74
+    },
+    {
+      "symbol": "MPHASIS",
+      "pe": 24.11,
+      "roe": 17.34,
+      "rev_yoy": 11.59,
+      "np_yoy": 9.43,
+      "fii_delta": 0.98
+    },
+    {
+      "symbol": "LTIM",
+      "pe": 24.61,
+      "roe": 20.89,
+      "rev_yoy": 11.31,
+      "np_yoy": 8.27,
+      "fii_delta": -0.09
+    },
+    {
+      "symbol": "LTTS",
+      "pe": 28.88,
+      "roe": 19.76,
+      "rev_yoy": 14.04,
+      "np_yoy": 3.37,
+      "fii_delta": -0.55
+    },
+    {
+      "symbol": "TECHM",
+      "pe": 31.04,
+      "roe": 16.24,
+      "rev_yoy": 7.22,
+      "np_yoy": 12.99,
+      "fii_delta": -1.94
+    },
+    {
+      "symbol": "COFORGE",
+      "pe": 38.86,
+      "roe": 16.31,
+      "rev_yoy": 33.76,
+      "np_yoy": 13.5,
+      "fii_delta": -10.22
+    },
+    {
+      "symbol": "PERSISTENT",
+      "pe": 41.18,
+      "roe": 26.35,
+      "rev_yoy": 23.53,
+      "np_yoy": 33.21,
+      "fii_delta": -0.44
+    }
+  ]
+}

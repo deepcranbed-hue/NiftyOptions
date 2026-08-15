@@ -1,0 +1,351 @@
+{
+  "mio_id": "mio_20260715T192458_geopolitics_hits",
+  "as_of": "2026-07-15T19:24:58.325820+00:00",
+  "graph_version": "engine_market_scan",
+  "regime_version": "Substitution|🟢 Risk-on",
+  "degraded": true,
+  "event": {
+    "event_id": "evt_geopolitics_hits",
+    "canonical_label": "Geopolitical Risk Event",
+    "class": "Geopolitical",
+    "member_items": [],
+    "normalized_from": 1
+  },
+  "theme": "Geopolitics",
+  "regime": {
+    "active": [
+      "Substitution",
+      "🟢 Risk-on"
+    ],
+    "primary": "🟢 Risk-on",
+    "confidence": 0.51,
+    "transition": "possible — persistent overrides"
+  },
+  "shock_type": "supply",
+  "transmission": [
+    {
+      "chain": [
+        "Geopolitics",
+        "Nifty 50"
+      ],
+      "score": 0.257,
+      "sign": -1,
+      "mechanism": "Geopolitics contributes -0.300 to the Nifty expected move (coefficient x driver, capped & regime-aware)."
+    },
+    {
+      "chain": [
+        "India VIX",
+        "Nifty 50"
+      ],
+      "score": 0.164,
+      "sign": 1,
+      "mechanism": "India VIX contributes +0.191 to the Nifty expected move (coefficient x driver, capped & regime-aware)."
+    },
+    {
+      "chain": [
+        "US CPI cooling",
+        "Nifty 50"
+      ],
+      "score": 0.129,
+      "sign": 1,
+      "mechanism": "US CPI cooling contributes +0.150 to the Nifty expected move (coefficient x driver, capped & regime-aware)."
+    },
+    {
+      "chain": [
+        "Kospi",
+        "Nifty 50"
+      ],
+      "score": 0.098,
+      "sign": 1,
+      "mechanism": "Kospi contributes +0.114 to the Nifty expected move (coefficient x driver, capped & regime-aware)."
+    },
+    {
+      "chain": [
+        "SOX (US semis)",
+        "Nifty 50"
+      ],
+      "score": 0.089,
+      "sign": -1,
+      "mechanism": "SOX (US semis) contributes -0.104 to the Nifty expected move (coefficient x driver, capped & regime-aware)."
+    },
+    {
+      "chain": [
+        "India CPI",
+        "Nifty 50"
+      ],
+      "score": 0.086,
+      "sign": -1,
+      "mechanism": "India CPI contributes -0.100 to the Nifty expected move (coefficient x driver, capped & regime-aware)."
+    },
+    {
+      "chain": [
+        "FII flow",
+        "Nifty 50"
+      ],
+      "score": 0.075,
+      "sign": -1,
+      "mechanism": "FII flow contributes -0.088 to the Nifty expected move (coefficient x driver, capped & regime-aware)."
+    },
+    {
+      "chain": [
+        "Dollar Index",
+        "Nifty 50"
+      ],
+      "score": 0.032,
+      "sign": 1,
+      "mechanism": "Dollar Index contributes +0.037 to the Nifty expected move (coefficient x driver, capped & regime-aware)."
+    },
+    {
+      "chain": [
+        "US 10Y Yield",
+        "Nifty 50"
+      ],
+      "score": 0.026,
+      "sign": 1,
+      "mechanism": "US 10Y Yield contributes +0.030 to the Nifty expected move (coefficient x driver, capped & regime-aware)."
+    },
+    {
+      "chain": [
+        "Driver interaction",
+        "Nifty 50"
+      ],
+      "score": 0.026,
+      "sign": 1,
+      "mechanism": "Driver interaction contributes +0.030 to the Nifty expected move (coefficient x driver, capped & regime-aware)."
+    },
+    {
+      "chain": [
+        "Oil",
+        "Nifty 50"
+      ],
+      "score": 0.019,
+      "sign": 1,
+      "mechanism": "Oil contributes +0.022 to the Nifty expected move (coefficient x driver, capped & regime-aware)."
+    }
+  ],
+  "affected_sectors": [
+    {
+      "sector": "Banks/Financials",
+      "direction": "Up",
+      "score": 0.337,
+      "mechanism": "VIX dominant"
+    },
+    {
+      "sector": "Metals",
+      "direction": "Up",
+      "score": 0.296,
+      "mechanism": "Kospi dominant"
+    },
+    {
+      "sector": "Auto",
+      "direction": "Neutral",
+      "score": 0.052,
+      "mechanism": "India CPI (rates) dominant"
+    },
+    {
+      "sector": "Energy (upstream)",
+      "direction": "Neutral",
+      "score": 0.078,
+      "mechanism": "Oil dominant"
+    },
+    {
+      "sector": "Pharma",
+      "direction": "Neutral",
+      "score": 0.098,
+      "mechanism": "VIX dominant"
+    },
+    {
+      "sector": "IT services",
+      "direction": "Down",
+      "score": 0.39,
+      "mechanism": "AI substitution dominant"
+    }
+  ],
+  "affected_companies": [
+    {
+      "company": "Bharti Airtel",
+      "direction": "Neutral",
+      "score": 1.0,
+      "nifty_weight": 0.043,
+      "exposure_vector": {
+        "sector": "Telecom",
+        "catalyst_kind": "News"
+      }
+    },
+    {
+      "company": "TCS",
+      "direction": "Neutral",
+      "score": 1.0,
+      "nifty_weight": 0.04,
+      "exposure_vector": {
+        "sector": "IT",
+        "catalyst_kind": "Catalyst"
+      }
+    },
+    {
+      "company": "Hindustan Unilever",
+      "direction": "Down",
+      "score": 1.0,
+      "nifty_weight": 0.026,
+      "exposure_vector": {
+        "sector": "FMCG",
+        "catalyst_kind": "News"
+      }
+    },
+    {
+      "company": "Sun Pharma",
+      "direction": "Down",
+      "score": 1.0,
+      "nifty_weight": 0.018,
+      "exposure_vector": {
+        "sector": "Pharma",
+        "catalyst_kind": "News"
+      }
+    },
+    {
+      "company": "UltraTech Cement",
+      "direction": "Up",
+      "score": 1.0,
+      "nifty_weight": 0.012,
+      "exposure_vector": {
+        "sector": "Cement",
+        "catalyst_kind": "News"
+      }
+    },
+    {
+      "company": "HDFC Life",
+      "direction": "Up",
+      "score": 0.75,
+      "nifty_weight": 0.45,
+      "exposure_vector": {
+        "sector": "Insurance",
+        "catalyst_kind": "Catalyst"
+      }
+    },
+    {
+      "company": "ICICI Prudential",
+      "direction": "Down",
+      "score": 0.6,
+      "nifty_weight": 0.0,
+      "exposure_vector": {
+        "sector": "Insurance",
+        "catalyst_kind": "News"
+      }
+    },
+    {
+      "company": "LTIMindtree",
+      "direction": "Neutral",
+      "score": 0.6,
+      "nifty_weight": 0.0,
+      "exposure_vector": {
+        "sector": "IT",
+        "catalyst_kind": "Catalyst"
+      }
+    }
+  ],
+  "expected_direction": {
+    "Nifty 50": "Neutral",
+    "Bank Nifty": "Neutral",
+    "Bond Yield": "Down",
+    "USD": "Down"
+  },
+  "impact": {
+    "immediate": {
+      "direction": "Neutral",
+      "magnitude": 0.02,
+      "unit": "pct_nifty",
+      "note": "engine expected move (intraday reaction)"
+    },
+    "short": {
+      "direction": "Neutral",
+      "magnitude": 0.02,
+      "unit": "pct_nifty",
+      "note": "1-5 day directional lean from the causal engine"
+    },
+    "medium": {
+      "direction": "Neutral",
+      "magnitude": 0.0,
+      "unit": "pct_nifty",
+      "note": "not modelled — engine is a session-horizon read"
+    },
+    "structural": {
+      "direction": "Neutral",
+      "magnitude": 0.0,
+      "unit": "pct_nifty",
+      "note": "not modelled — requires fundamental/regime overlay"
+    }
+  },
+  "validation": [
+    {
+      "edge": "Oil → producers vs users (dir. flips with oil)",
+      "expected_sign": 0,
+      "observed_sign": 0,
+      "status": "CONFIRMED"
+    },
+    {
+      "edge": "US semis (SOX) → Indian IT/EMS",
+      "expected_sign": 1,
+      "observed_sign": -1,
+      "status": "OVERRIDDEN",
+      "reason": "observed tape disagreed with the sox -3.0% rule; likely a stronger concurrent driver, positioning, or policy override."
+    },
+    {
+      "edge": "Kospi (AI proxy) → Indian IT",
+      "expected_sign": -1,
+      "observed_sign": -1,
+      "status": "CONFIRMED"
+    },
+    {
+      "edge": "Rising US yields → banks pressured",
+      "expected_sign": 1,
+      "observed_sign": 1,
+      "status": "CONFIRMED"
+    },
+    {
+      "edge": "FII flow → financials (same direction)",
+      "expected_sign": -1,
+      "observed_sign": 1,
+      "status": "OVERRIDDEN",
+      "reason": "observed tape disagreed with the fii -736cr rule; likely a stronger concurrent driver, positioning, or policy override."
+    },
+    {
+      "edge": "Oil ↑ → ICE autos pressured (fuel/demand)",
+      "expected_sign": 1,
+      "observed_sign": 1,
+      "status": "CONFIRMED"
+    },
+    {
+      "edge": "Geopolitics premium → defence up",
+      "expected_sign": 1,
+      "observed_sign": 1,
+      "status": "CONFIRMED"
+    }
+  ],
+  "confidence": {
+    "econ_rationale_stars": 2,
+    "historical_reliability": 0.51,
+    "today_confidence": 0.51,
+    "reliability_tag": "PRIOR"
+  },
+  "driver_dominance": {
+    "vector": {
+      "Geopolitics": 0.257,
+      "India VIX": 0.164,
+      "US CPI cooling": 0.129,
+      "Kospi": 0.098,
+      "SOX (US semis)": 0.089,
+      "India CPI": 0.086,
+      "FII flow": 0.075,
+      "Dollar Index": 0.032,
+      "US 10Y Yield": 0.026,
+      "Driver interaction": 0.026,
+      "Oil": 0.019
+    },
+    "dominant_driver": "Geopolitics",
+    "dominant_driver_score": 0.257
+  },
+  "provenance": {
+    "pipeline_run": "mcp_20260715T192458",
+    "core_version": "market_scan.py (NiftyOptions news engine)"
+  }
+}

@@ -1,0 +1,32 @@
+{
+ "gaps": {
+  "0": {
+   "observed_r": -0.0356,
+   "null_median": 0.001,
+   "null_p5": -0.0047,
+   "p": 0.0
+  },
+  "1": {
+   "observed_r": -0.0332,
+   "null_median": 0.001,
+   "null_p5": -0.0049,
+   "p": 0.0
+  },
+  "2": {
+   "observed_r": -0.0306,
+   "null_median": -0.0001,
+   "null_p5": -0.0052,
+   "p": 0.0
+  },
+  "5": {
+   "observed_r": -0.0276,
+   "null_median": 0.0018,
+   "null_p5": -0.0046,
+   "p": 0.0
+  }
+ },
+ "collapse_gap0_to_gap1": 0.067,
+ "verdict": "SURVIVES the gap -- the reversal is not purely a measurement artifact",
+ "n_permutations": 40,
+ "sessions": 25
+}

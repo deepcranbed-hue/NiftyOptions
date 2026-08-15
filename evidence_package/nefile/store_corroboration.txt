@@ -1,0 +1,14 @@
+1. Put-side OI at strike 24400:
+   - Session Open (capture_id: 1876, timestamp: 2026-07-06T03:45:00Z): 1,725,035.0
+   - Session Close (capture_id: 2250, timestamp: 2026-07-06T09:59:00Z): 15,520,505.0
+   - Change: Massive net increase in Put OI (not -15%).
+
+2. Bid/Ask and spread:
+   - Session Open: Bid 0.0, Ask 0.0 (spread: 0.0%)
+   - Session Close: Bid 0.0, Ask 0.0 (spread: 0.0%)
+   - Calculated d_spread_pct: 0.0% (SPREAD_WIDENED: False).
+
+3. India VIX:
+   - Session Open: 12.0
+   - Session Close: 12.0
+   - Change: 0.0 (stable, no +1.8 vpt spike).

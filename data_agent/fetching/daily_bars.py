@@ -121,14 +121,31 @@ TICKER_ALTS.update(INDEX_TICKERS)
 # the USDINR series already in price_bars — same reason bar_store stores raw bars.
 COMMODITY_TICKERS = {
     "CRUDEOIL": ["CL=F"],       # WTI, USD/bbl — the long macro history
-    "BRENT": ["BZ=F"],          # only if a genuine Brent series is ever wanted
+    # BRENT removed 2026-08-09: declared but never fetched, and not wanted. MCX
+    # crude is WTI-linked (levels reconcile to -0.3% against CL=F x USDINR), so
+    # Brent is not the reference for anything here.
+    # USD continuous metals. Yahoo rolls and back-adjusts these itself, back to
+    # 2018 — the job continuous.py does by hand for MCX. Validated against landed
+    # parity by probe_continuous_commodities.py before being wired here.
+    #
+    # NAMING: bare symbol = the Indian MCX contract, _USD = the international
+    # series. GOLD is INR per 10g on MCX; GOLD_USD is USD per troy ounce on COMEX.
+    #
+    # CRUDEOIL IS THE EXCEPTION AND PREDATES THIS RULE: there, bare = USD (CL=F)
+    # and CRUDEOIL_MCX = the Indian contract, i.e. inverted. Renaming it would
+    # touch impact_monitor.py and the macro pipeline, so it stays and is written
+    # down here instead of being rediscovered.
+    "GOLD_USD": ["GC=F"],       # COMEX gold,   USD/troy oz
+    "SILVER_USD": ["SI=F"],     # COMEX silver, USD/troy oz
+    "COPPER_USD": ["HG=F"],     # COMEX copper, USD/lb
 }
 TICKER_ALTS.update(COMMODITY_TICKERS)
 
 # Native currency per symbol, so a consumer can never silently mix two. Anything
 # absent is INR (the NSE default).
 NATIVE_CCY = {
-    "CRUDEOIL": "USD", "BRENT": "USD",
+    "CRUDEOIL": "USD",
+    "GOLD_USD": "USD", "SILVER_USD": "USD", "COPPER_USD": "USD",
     "CRUDEOIL_MCX": "INR", "GOLD": "INR", "SILVER": "INR", "COPPER": "INR",
     "USDINR": "INR",
 }
@@ -179,6 +196,25 @@ VENDOR_ADJUSTMENTS = [
 # these are actions the vendor correctly does not adjust for. A backstop that warns
 # about the same known gap every single day is a backstop nobody reads.
 KNOWN_REAL_GAPS = {
+    # 2025-07-30: the US 50% copper tariff was announced EXCLUDING refined copper.
+    # COMEX copper fell about 20% — among the largest single-day moves in the
+    # contract's history — and because the announcement landed after the close, the
+    # gap prints at the 31 July open. Verified against contemporaneous reporting
+    # (Bloomberg, Reuters/ING, Mining.com), not inferred from the shape of the data.
+    #
+    # This is also the event behind copper's lower cross-venue correlation floor in
+    # quality/data_profile.py: MCX copper references LME, and the tariff drove a
+    # COMEX-LME divergence that is a real market fact rather than a mapping error.
+    ("COPPER_USD", "2025-07-31"):
+        "US 50% copper tariff announced 2025-07-30 EXCLUDING refined copper. COMEX "
+        "copper fell ~20%, among the largest single-day moves in the contract's "
+        "history; the announcement landed after the close so the gap prints at the "
+        "31 July open. Verified against contemporaneous reporting (Bloomberg, ING, "
+        "Mining.com), not inferred from the shape of the data. This is also the "
+        "event behind copper's lower cross-venue floor in quality/data_profile.py — "
+        "MCX copper references LME, and the tariff drove a real COMEX-LME "
+        "divergence rather than a mapping error.",
+
     # Genuine market history. Each verified before being silenced — an entry here
     # stops the audit ever asking again, so guessing would hide a future defect.
     ("HDFCAMC", "2020-03-23"): "COVID crash — Nifty fell ~13% in one session, its worst ever",
@@ -236,10 +272,29 @@ def apply_vendor_adjustments(rows, symbol, log=print):
 # Resolution order is: explicit argument, then whatever the symbol ALREADY uses in
 # this database, then this map, then NSE. Adopting the stored exchange matters most
 # — it means a symbol can never be forked by a default, whatever the map says.
+# A metal cannot trade at 43.
+#
+# An MCX instrument key names one contract. When that contract stops being the one
+# the key was chosen for, Upstox keeps answering — with whatever the key now names.
+# On 2026-07-01 at 13:41Z GOLD's key began returning OPTION PREMIUM, and 8,402 of
+# its 10,753 1m bars were option prices filed under the metal's name. Nothing
+# errored; the audit only inspects 1d, so it went unseen for five weeks.
+#
+# These floors sit far below any real price and far above any premium, so they
+# separate the two without needing to know which contract is live. A contamination
+# detector, NOT a price validator — do not tighten them into one.
+PLAUSIBLE_1M_FLOOR = {
+    "GOLD": 5_000,          # ~140,000 INR/10g;   the option premium was 43-187
+    "SILVER": 20_000,       # ~230,000 INR/kg
+    "COPPER": 200,          # ~1,300 INR/kg
+    "CRUDEOIL_MCX": 1_000,  # ~7,400 INR/barrel
+}
+
+
 SYMBOL_EXCHANGE = {
     "CRUDEOIL": "NYMEX",
-    "BRENT": "NYMEX",
     "CRUDEOIL_MCX": "MCX", "GOLD": "MCX", "SILVER": "MCX", "COPPER": "MCX",
+    "GOLD_USD": "COMEX", "SILVER_USD": "COMEX", "COPPER_USD": "COMEX",
     "USDINR": "CDS",
     "NIFTY_FUT_1": "NFO", "NIFTY_FUT_2": "NFO",
 }
@@ -360,11 +415,38 @@ def write_daily(rows, symbol, db, exchange=None, replace=False):
         purged = con.execute(
             "delete from price_bars where symbol=? and timeframe='1d'",
             (symbol,)).rowcount
-    con.executemany(
-        "INSERT OR REPLACE INTO price_bars"
-        "(exchange, symbol, timeframe, ts, open, high, low, close, volume) "
-        "VALUES (?, ?, '1d', ?, ?, ?, ?, ?, ?)",
-        [(exchange, symbol, r[0], r[1], r[2], r[3], r[4], r[5]) for r in rows])
+    # OPEN INTEREST is optional, and its absence must not blank it.
+    #
+    # Equity and index rows have no OI, so this wrote 6 columns and left the tenth
+    # NULL. That is correct for them and wrong for MCX futures, where OI is real
+    # data — routing sync_commodities through here with a 6-column write would have
+    # silently nulled the open_interest of every commodity bar it touched.
+    #
+    # INSERT OR REPLACE does NOT solve this: REPLACE is a DELETE followed by an
+    # INSERT, so any column the statement does not name comes back NULL. A test
+    # rewriting a 6-tuple over a row holding open_interest=42 returned NULL, which
+    # is the whole reason this is an UPSERT instead.
+    #
+    # ON CONFLICT DO UPDATE touches only the columns it lists, so a 6-tuple updates
+    # OHLCV and leaves open_interest exactly as it was.
+    cols = "open=excluded.open, high=excluded.high, low=excluded.low, " \
+           "close=excluded.close, volume=excluded.volume"
+    if rows and len(rows[0]) > 6:
+        con.executemany(
+            "INSERT INTO price_bars"
+            "(exchange, symbol, timeframe, ts, open, high, low, close, volume, "
+            "open_interest) VALUES (?, ?, '1d', ?, ?, ?, ?, ?, ?, ?) "
+            "ON CONFLICT(exchange, symbol, timeframe, ts) DO UPDATE SET "
+            + cols + ", open_interest=excluded.open_interest",
+            [(exchange, symbol, r[0], r[1], r[2], r[3], r[4], r[5], r[6])
+             for r in rows])
+    else:
+        con.executemany(
+            "INSERT INTO price_bars"
+            "(exchange, symbol, timeframe, ts, open, high, low, close, volume) "
+            "VALUES (?, ?, '1d', ?, ?, ?, ?, ?, ?) "
+            "ON CONFLICT(exchange, symbol, timeframe, ts) DO UPDATE SET " + cols,
+            [(exchange, symbol, r[0], r[1], r[2], r[3], r[4], r[5]) for r in rows])
     con.commit()
     con.close()
     return len(rows), purged

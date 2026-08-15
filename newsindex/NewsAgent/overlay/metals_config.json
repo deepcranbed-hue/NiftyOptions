@@ -1,0 +1,26 @@
+{
+  "_comment": "Global industrial-metals cycle basket. Live day-% pulled from web_source (static HTML, keyless). 'anchor' is the exact label to find on the page. Steel complex is weighted higher than base metals because Indian steel producers track steel/iron-ore/coking-coal more than copper. Edit freely; set NEWSAGENT_METALS_WEB=0 to disable the web pull (falls back to engine copper + news).",
+  "web_source": {"url": "https://tradingeconomics.com/commodities", "enabled": true},
+  "buckets": {
+    "base_metals": {
+      "weight": 0.4,
+      "components": [
+        {"name": "Copper", "anchor": "Copper USD/Lbs", "from_snapshot": "Copper"},
+        {"name": "Aluminium", "anchor": "Aluminum USD/T"},
+        {"name": "Zinc", "anchor": "Zinc USD/T"},
+        {"name": "Nickel", "anchor": "Nickel USD/T"},
+        {"name": "Lead", "anchor": "Lead USD/T"}
+      ]
+    },
+    "steel_complex": {
+      "weight": 0.6,
+      "components": [
+        {"name": "Steel (China rebar)", "anchor": "Steel CNY/T"},
+        {"name": "HRC Steel", "anchor": "HRC Steel USD/T"},
+        {"name": "Iron Ore (China)", "anchor": "Iron Ore CNY"},
+        {"name": "Coking Coal", "anchor": "Coking Coal USD/T"}
+      ]
+    }
+  },
+  "thresholds": {"bullish": 0.5, "bearish": -0.5}
+}

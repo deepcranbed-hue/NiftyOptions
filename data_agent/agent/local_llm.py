@@ -25,7 +25,7 @@ SYSTEM = (
     "start (begin auto-downloading), stop, sync (fetch specific symbols now), "
     "health (report data completeness / is data up to the mark), backfill (fill "
     "past days), unknown. Return ONLY a JSON object with keys: "
-    '{"action": <one of the above>, "broker": "breeze"|"kite"|null, '
+    '{"action": <one of the above>, "broker": "breeze"|null, '
     '"token": string|null, "symbols": [uppercase tickers], "days": int|null, '
     '"include_options": boolean}. No prose, no markdown, no code fences."'
 )
@@ -54,7 +54,7 @@ def _qwen(text: str) -> dict | None:
 
 
 _TICKER = re.compile(r"\b([A-Z][A-Z&\-]{2,})\b")
-_NOISE = {"TOKEN", "BREEZE", "KITE", "ZERODHA", "OK", "PDF"}
+_NOISE = {"TOKEN", "BREEZE", "OK", "PDF"}
 
 
 def _fallback(text: str) -> dict:
@@ -73,7 +73,7 @@ def _fallback(text: str) -> dict:
     else:
         action = "unknown"
 
-    broker = "breeze" if "breeze" in t else "kite" if ("kite" in t or "zerodha" in t) else None
+    broker = "breeze" if "breeze" in t else None   # Breeze is the only broker
     mtok = re.search(r"token\s+([A-Za-z0-9_\-.]+)", text)
     md = re.search(r"(\d+)\s*day", t)
     syms = [s for s in _TICKER.findall(text) if s not in _NOISE]

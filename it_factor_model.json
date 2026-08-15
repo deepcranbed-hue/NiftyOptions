@@ -1,0 +1,42 @@
+{
+  "target": "NIFTY_IT",
+  "window": 120,
+  "us_lag": 1,
+  "as_of": "2026-07-29",
+  "n_obs": 193,
+  "r2": 0.036,
+  "macro_explained_pct": 3.6,
+  "betas": {
+    "USDINR": -0.2031,
+    "CRUDE": -0.0584,
+    "NASDAQ": 0.1304,
+    "US10Y": 2.0298
+  },
+  "univariate_corr": {
+    "USDINR": -0.045,
+    "CRUDE": -0.143,
+    "NASDAQ": 0.108,
+    "US10Y": -0.057
+  },
+  "latest_factor_change": {
+    "USDINR": -0.2108,
+    "CRUDE": 0.0,
+    "NASDAQ": -0.2213,
+    "US10Y": -0.04
+  },
+  "contribution": {
+    "USDINR": 0.0428,
+    "CRUDE": -0.0,
+    "NASDAQ": -0.0289,
+    "US10Y": -0.0812
+  },
+  "driver_distribution_pct": {
+    "USDINR": 28.0,
+    "CRUDE": 0.0,
+    "NASDAQ": 18.9,
+    "US10Y": 53.1
+  },
+  "net_expected_from_macro": -0.067,
+  "dominant_driver": "US10Y",
+  "missing_factors": []
+}

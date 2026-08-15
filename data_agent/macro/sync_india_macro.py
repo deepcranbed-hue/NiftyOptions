@@ -20,6 +20,11 @@ USAGE
     python sync_india_macro.py
 """
 from __future__ import annotations
+# --- single source for DB connections (D-SC-06, CLAUDE.md) ---
+import os as _os, sys as _sys
+_RT = _os.path.abspath(_os.path.join(_os.path.dirname(__file__), "../.."))
+_RT in _sys.path or _sys.path.insert(0, _RT)
+from db_config import resolve_writable_db_path
 import os, sqlite3, sys, datetime as dt
 try:
     import pandas as pd
@@ -30,8 +35,7 @@ try:
 except Exception:
     pass
 
-SQLITE_DB = os.getenv("OPTION_CHAINS_DB",
-    "/Users/deepak/Library/CloudStorage/GoogleDrive-deepcranbed@gmail.com/My Drive/option_chains.db")
+SQLITE_DB = resolve_writable_db_path()
 CPI = "INDCPIALLMINMEI"        # India CPI All Items (OECD MEI, monthly index)
 RATE = "INDIR3TIB01STM"        # India 3-month interbank rate (OECD MEI, monthly %)
 START = "2010-01-01"

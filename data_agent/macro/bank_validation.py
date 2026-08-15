@@ -22,6 +22,11 @@ USAGE
     python bank_validation.py
 """
 from __future__ import annotations
+# --- single source for DB connections (D-SC-06, CLAUDE.md) ---
+import os as _os, sys as _sys
+_RT = _os.path.abspath(_os.path.join(_os.path.dirname(__file__), "../.."))
+_RT in _sys.path or _sys.path.insert(0, _RT)
+from db_config import resolve_db_path, resolve_pg_dsn
 import os, sqlite3, sys, json
 
 try:
@@ -41,8 +46,7 @@ try:
 except Exception:
     pass
 
-SQLITE_DB = os.getenv("OPTION_CHAINS_DB",
-    "/Users/deepak/Library/CloudStorage/GoogleDrive-deepcranbed@gmail.com/My Drive/option_chains.db")
+SQLITE_DB = resolve_db_path()
 TARGET = "BANKNIFTY"
 # name -> (source, key, transform)
 FACTORS = {

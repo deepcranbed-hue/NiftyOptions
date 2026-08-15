@@ -11,7 +11,7 @@ Lands in a single long factor table the regression panel reads:
     macro.factor_series(factor, obs_date, value, source, updated_at)
 
 USAGE
-    export DATABASE_URL="postgresql://postgres@localhost:5432/niftyoptions"
+    export DATABASE_URL="postgresql://postgres@localhost:5432/niftyoptions"   # admin role: this script runs CREATE SCHEMA
     python us10y.py                       # backfill+update US10Y from yfinance
     python us10y.py --series DXY           # dollar index (DX-Y.NYB)
     python us10y.py --since 2020-01-01     # limit to recent
@@ -19,6 +19,11 @@ USAGE
 Runs on your machine (which has network). No API key required.
 """
 from __future__ import annotations
+# --- single source for DB connections (D-SC-06, CLAUDE.md) ---
+import os as _os, sys as _sys
+_RT = _os.path.abspath(_os.path.join(_os.path.dirname(__file__), "../.."))
+_RT in _sys.path or _sys.path.insert(0, _RT)
+from db_config import resolve_pg_admin_dsn
 
 import argparse
 import csv

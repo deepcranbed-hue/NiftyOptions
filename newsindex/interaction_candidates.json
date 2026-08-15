@@ -1,0 +1,105 @@
+{
+  "Earnings \u00d7 Geopolitics": {
+    "count": 1,
+    "days": [
+      "2026-07-22"
+    ],
+    "first_seen": "2026-07-22",
+    "last_seen": "2026-07-22",
+    "sum_strength": 0.998
+  },
+  "Earnings \u00d7 Oil": {
+    "count": 2,
+    "days": [
+      "2026-07-22",
+      "2026-08-13"
+    ],
+    "first_seen": "2026-07-22",
+    "last_seen": "2026-08-13",
+    "sum_strength": 1.99
+  },
+  "Earnings \u00d7 Semiconductors / AI": {
+    "count": 3,
+    "days": [
+      "2026-07-23",
+      "2026-07-25",
+      "2026-08-13"
+    ],
+    "first_seen": "2026-07-23",
+    "last_seen": "2026-08-13",
+    "sum_strength": 2.94
+  },
+  "Geopolitics \u00d7 Earnings": {
+    "count": 3,
+    "days": [
+      "2026-07-23",
+      "2026-07-25",
+      "2026-08-13"
+    ],
+    "first_seen": "2026-07-23",
+    "last_seen": "2026-08-13",
+    "sum_strength": 2.997
+  },
+  "Geopolitics \u00d7 Semiconductors / AI": {
+    "count": 3,
+    "days": [
+      "2026-07-23",
+      "2026-07-25",
+      "2026-08-13"
+    ],
+    "first_seen": "2026-07-23",
+    "last_seen": "2026-08-13",
+    "sum_strength": 2.942
+  },
+  "Oil \u00d7 Earnings": {
+    "count": 3,
+    "days": [
+      "2026-07-22",
+      "2026-07-23",
+      "2026-07-25"
+    ],
+    "first_seen": "2026-07-22",
+    "last_seen": "2026-07-25",
+    "sum_strength": 2.996
+  },
+  "Oil \u00d7 Semiconductors / AI": {
+    "count": 5,
+    "days": [
+      "2026-07-22",
+      "2026-07-23",
+      "2026-07-24",
+      "2026-07-25",
+      "2026-08-13"
+    ],
+    "first_seen": "2026-07-22",
+    "last_seen": "2026-08-13",
+    "sum_strength": 4.069
+  },
+  "Semiconductors / AI \u00d7 Earnings": {
+    "count": 1,
+    "days": [
+      "2026-07-22"
+    ],
+    "first_seen": "2026-07-22",
+    "last_seen": "2026-07-22",
+    "sum_strength": 0.999
+  },
+  "Semiconductors / AI \u00d7 Geopolitics": {
+    "count": 1,
+    "days": [
+      "2026-07-22"
+    ],
+    "first_seen": "2026-07-22",
+    "last_seen": "2026-07-22",
+    "sum_strength": 0.999
+  },
+  "Semiconductors / AI \u00d7 Oil": {
+    "count": 1,
+    "days": [
+      "2026-07-22"
+    ],
+    "first_seen": "2026-07-22",
+    "last_seen": "2026-07-22",
+    "sum_strength": 0.993
+  }
+}

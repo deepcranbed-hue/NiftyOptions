@@ -1,0 +1,139 @@
+{
+ "written_at": "2026-07-29T08:39:07Z",
+ "date_from": "2026-06-29",
+ "date_to": "2026-07-03",
+ "horizon": 30,
+ "controls": [
+  "heavyweight_leadership",
+  "breadth_oi"
+ ],
+ "n_sessions": 5,
+ "signals": {
+  "skew_rnd": {
+   "ic": 0.584,
+   "incremental_ic": 0.604,
+   "n": 32,
+   "is_control": false
+  },
+  "strike_role_change": {
+   "ic": 0.611,
+   "incremental_ic": 0.57,
+   "n": 32,
+   "is_control": false
+  },
+  "oi_migration": {
+   "ic": 0.449,
+   "incremental_ic": 0.485,
+   "n": 35,
+   "is_control": false
+  },
+  "global_momentum": {
+   "ic": -0.275,
+   "incremental_ic": -0.289,
+   "n": 35,
+   "is_control": false
+  },
+  "vwap": {
+   "ic": -0.195,
+   "incremental_ic": -0.195,
+   "n": 33,
+   "is_control": false
+  },
+  "breadth_quality": {
+   "ic": -0.135,
+   "incremental_ic": -0.194,
+   "n": 35,
+   "is_control": false
+  },
+  "technical_momentum": {
+   "ic": -0.035,
+   "incremental_ic": -0.121,
+   "n": 35,
+   "is_control": false
+  },
+  "heavyweight_leadership_persistent": {
+   "ic": -0.063,
+   "incremental_ic": -0.104,
+   "n": 35,
+   "is_control": false
+  },
+  "adx": {
+   "ic": -0.034,
+   "incremental_ic": -0.103,
+   "n": 35,
+   "is_control": false
+  },
+  "rel_volume": {
+   "ic": -0.024,
+   "incremental_ic": -0.098,
+   "n": 35,
+   "is_control": false
+  },
+  "vrp": {
+   "ic": 0.113,
+   "incremental_ic": 0.085,
+   "n": 35,
+   "is_control": false
+  },
+  "vol_index": {
+   "ic": 0.052,
+   "incremental_ic": 0.036,
+   "n": 35,
+   "is_control": false
+  },
+  "heavyweight_leadership": {
+   "ic": -0.003,
+   "incremental_ic": null,
+   "n": 35,
+   "is_control": true
+  },
+  "breadth_oi": {
+   "ic": 0.105,
+   "incremental_ic": null,
+   "n": 35,
+   "is_control": true
+  },
+  "crude_energy": {
+   "ic": null,
+   "incremental_ic": null,
+   "n": 0,
+   "is_control": false
+  },
+  "usdinr": {
+   "ic": null,
+   "incremental_ic": null,
+   "n": 0,
+   "is_control": false
+  },
+  "global_gap": {
+   "ic": null,
+   "incremental_ic": null,
+   "n": 0,
+   "is_control": false
+  },
+  "futures_basis": {
+   "ic": null,
+   "incremental_ic": null,
+   "n": 0,
+   "is_control": false
+  },
+  "futures_calendar": {
+   "ic": null,
+   "incremental_ic": null,
+   "n": 0,
+   "is_control": false
+  },
+  "futures_oi_regime": {
+   "ic": null,
+   "incremental_ic": null,
+   "n": 0,
+   "is_control": false
+  },
+  "futures_flow": {
+   "ic": null,
+   "incremental_ic": null,
+   "n": 0,
+   "is_control": false
+  }
+ }
+}

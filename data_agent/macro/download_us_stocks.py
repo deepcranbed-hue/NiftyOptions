@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# --- single source for DB connections (D-SC-06, CLAUDE.md) ---
+import os as _os, sys as _sys
+_RT = _os.path.abspath(_os.path.join(_os.path.dirname(__file__), "../.."))
+_RT in _sys.path or _sys.path.insert(0, _RT)
+from db_config import resolve_pg_admin_dsn
 import os
 import sys
 import argparse
@@ -12,7 +17,7 @@ def main():
     parser.add_argument("--since", type=str, default="2025-01-02", help="Start date (YYYY-MM-DD)")
     args = parser.parse_args()
     
-    db_url = os.environ.get("DATABASE_URL", "postgresql://localhost/niftyoptions")
+    db_url = resolve_pg_admin_dsn()
     
     # Symbols to download
     # INFY is the NYSE ticker for Infosys ADR

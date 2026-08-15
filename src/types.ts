@@ -25,6 +25,7 @@ export interface ComplacencyMetrics {
   iv: number;
   comp_iv: number;
   accel: number;
+  has_oi_data?: boolean;
   bursts: number;
   max_burst: number;
   score: number;
@@ -32,6 +33,14 @@ export interface ComplacencyMetrics {
     tone: MarketTone;
     msg: string;
   };
+  max_put_oi_strike?: number;
+  max_call_oi_strike?: number;
+  max_put_oichg_strike?: number;
+  max_call_oichg_strike?: number;
+  oi_flow_summary?: string;
+  put_flow?: 'writing' | 'unwinding' | 'flat';
+  call_flow?: 'writing' | 'unwinding' | 'flat';
+  put_build_strike?: number;
 }
 
 export interface GlobalCueItem {

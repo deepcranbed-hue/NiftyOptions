@@ -166,7 +166,7 @@ def data_agent_status():
 
 
 class RunReq(BaseModel):
-    broker: str                       # "breeze" | "kite"
+    broker: str                       # "breeze" (Kite removed 2026-08-08)
     token: str
     api_key: Optional[str] = None
     api_secret: Optional[str] = None
@@ -295,7 +295,6 @@ def data_agent_run(req: RunReq):
 class CmdReq(BaseModel):
     text: str
     breeze_token: Optional[str] = None
-    kite_token: Optional[str] = None
     api_key: Optional[str] = None
 
 
@@ -310,8 +309,8 @@ def data_agent_command(req: CmdReq):
     if action == "health":
         out["health"] = data_agent_health()
     elif action in ("start", "sync", "backfill"):
-        broker = intent.get("broker") or ("breeze" if req.breeze_token else "kite" if req.kite_token else None)
-        token = intent.get("token") or (req.breeze_token if broker == "breeze" else req.kite_token)
+        broker = intent.get("broker") or ("breeze" if req.breeze_token else None)
+        token = intent.get("token") or req.breeze_token
         if not broker or not token:
             out["message"] = ("Tell me which broker and provide its token — e.g. "
                               "'start downloading with my breeze token <tok>'.")

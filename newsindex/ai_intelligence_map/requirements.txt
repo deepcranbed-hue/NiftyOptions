@@ -1,0 +1,6 @@
+yfinance            # live price / market cap / P/E / margins / revenue growth
+feedparser          # RSS news consolidation + tagging
+trafilatura         # readable text extraction for --fetch-sources
+lxml_html_clean     # trafilatura needs this since lxml split out the cleaner module
+# optional (heavy) — Playwright fallback for bot-blocked / JS source pages:
+# playwright        (then run: playwright install chromium)
