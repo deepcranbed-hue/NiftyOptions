@@ -1,0 +1,62 @@
+{
+ "as_of_period": "2026-03-31",
+ "external": {
+  "source": "Chola Securities, Q4FY26 Earnings Review and Market Outlook",
+  "url": "https://www.cholasecurities.com/research/fundamental/q4fy26-earnings-review-and-market-outlook",
+  "nifty50_fy26_pat_cr": 1008780.0,
+  "nifty50_fy25_pat_cr": 874313.0,
+  "fy26_growth_reported_pct": 15.38,
+  "fy26_growth_ex_exceptional_pct": 3.72,
+  "caveat": "Reported PAT, which the source itself says leans on exceptional gains \u2014 ex-exceptional growth is 3.72%. Treat the LEVEL as a different definition from ours, not as ground truth our number should be forced to match."
+ },
+ "our_panel_fy26_cr": 844074.0,
+ "companies": [
+  {
+   "symbol": "HDFCBANK",
+   "weight_pct": 11.6,
+   "standalone_cr": 74671.0,
+   "consolidated_cr": 79219.0,
+   "gap_cr": 4548.0,
+   "gap_pct": 6.1
+  },
+  {
+   "symbol": "ICICIBANK",
+   "weight_pct": 8.3,
+   "standalone_cr": 50147.0,
+   "consolidated_cr": 57936.0,
+   "gap_cr": 7789.0,
+   "gap_pct": 15.5
+  },
+  {
+   "symbol": "SBIN",
+   "weight_pct": 3.2,
+   "standalone_cr": 80032.0,
+   "consolidated_cr": 86666.0,
+   "gap_cr": 6634.0,
+   "gap_pct": 8.3
+  },
+  {
+   "symbol": "AXISBANK",
+   "weight_pct": 3.1,
+   "standalone_cr": 24457.0,
+   "consolidated_cr": 26548.0,
+   "gap_cr": 2091.0,
+   "gap_pct": 8.5
+  },
+  {
+   "symbol": "KOTAKBANK",
+   "weight_pct": 2.9,
+   "standalone_cr": 14008.0,
+   "consolidated_cr": 19288.0,
+   "gap_cr": 5280.0,
+   "gap_pct": 37.7
+  }
+ ],
+ "total_standalone_cr": 243315.0,
+ "total_consolidated_cr": 269657.0,
+ "total_gap_cr": 26342.0,
+ "c28_gap_cr": 164706.0,
+ "explained_pct": 16.0,
+ "residual_cr": 138364.0,
+ "note": "Consolidated minus standalone FY26 net profit for every company with both bases cached. Measures one named component of correction C28 and leaves the rest as an explicit residual rather than absorbing it."
+}

@@ -11,6 +11,8 @@ from dotenv import load_dotenv
 from playwright.sync_api import sync_playwright
 
 # Standard Nifty IT and Bank universe + Nifty 50 constituents
+FORCE = False
+
 UNIVERSE = list(set([
     'TCS', 'INFY', 'HCLTECH', 'WIPRO', 'TECHM', 'LTIM', 'PERSISTENT', 'COFORGE', 'MPHASIS', 'LTTS',
     'HDFCBANK', 'ICICIBANK', 'SBIN', 'KOTAKBANK', 'AXISBANK', 'INDUSINDBK', 'BANKBARODA', 'PNB', 'AUBANK', 'IDFCFIRSTB', 'FEDERALBNK', 'BANDHANBNK',
@@ -23,6 +25,15 @@ UNIVERSE = list(set([
 ]))
 
 def main():
+    import argparse
+    global FORCE
+    ap = argparse.ArgumentParser(description="Download Screener.in Excel workbooks.")
+    ap.add_argument("--force", action="store_true",
+                    help="re-download even if the workbook is already on disk")
+    ap.add_argument("--only", help="comma-separated symbols")
+    args, _ = ap.parse_known_args()
+    FORCE = args.force
+
     load_dotenv()
     sessionid = os.getenv('SCREENER_SESSION_ID')
     if not sessionid:
@@ -31,6 +42,11 @@ def main():
 
     output_dir = Path(__file__).parent / 'screener_data'
     output_dir.mkdir(exist_ok=True)
+
+    skipped = downloaded = 0
+    if args.only:
+        want = {x.strip().upper() for x in args.only.split(',')}
+        globals()['UNIVERSE'] = [u for u in UNIVERSE if u in want]
 
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
@@ -49,10 +65,18 @@ def main():
         for symbol in UNIVERSE:
             print(f"\n[{symbol}] Processing...")
             
-            # Skip if file already exists
+            # Skip if file already exists — UNLESS --force. Without the flag this
+            # script reported "All downloads complete" after downloading nothing, which
+            # is why a Q1 FY27 refresh silently rebuilt from 15-Aug workbooks and the
+            # exit rate stayed pinned at a 37-name panel. A no-op that prints success is
+            # the same failure shape as an empty page that passes an existence check.
             expected_file = output_dir / f"{symbol}.xlsx"
-            if expected_file.exists():
-                print(f"  -> Skipping, {symbol}.xlsx already exists.")
+            if expected_file.exists() and not FORCE:
+                import datetime as _dt
+                age = (_dt.datetime.now()
+                       - _dt.datetime.fromtimestamp(expected_file.stat().st_mtime)).days
+                print(f"  -> cached ({age}d old); use --force to refresh")
+                skipped += 1
                 continue
 
             try:
@@ -92,12 +116,19 @@ def main():
                 filepath = output_dir / f"{symbol}.xlsx"
                 download.save_as(filepath)
                 print(f"  [+] Saved {filepath.name}")
+                downloaded += 1
 
             except Exception as e:
                 print(f"  [-] Failed: {e}")
 
         browser.close()
-        print("\n✅ All downloads complete.")
+        # Report what actually happened. "All downloads complete" after zero
+        # downloads is a lie the caller acts on.
+        print(f"\ndownload_screener: {downloaded} downloaded, {skipped} cached "
+              f"(not refreshed)")
+        if skipped and not FORCE:
+            print("  NOTE: cached files were NOT re-downloaded. If you are refreshing")
+            print("  for a new quarter, re-run with --force or nothing changes.")
 
 if __name__ == "__main__":
     main()

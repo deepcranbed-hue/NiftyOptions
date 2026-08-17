@@ -45,3 +45,7 @@ Vibe-Trading-main/
 scratch/
 # retired files awaiting deletion
 _to_delete/
+# raw Screener HTML cache — 15 MB, refetchable with
+#   screener_tables.py --mode fetch
+# the parsed output (screener_page_tables.csv) IS versioned; the cache is not
+data_agent/fundamentals/screener_html/

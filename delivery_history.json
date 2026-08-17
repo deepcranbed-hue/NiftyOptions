@@ -1,5 +1,5 @@
 {
- "as_of": "2026-08-14",
+ "as_of": "2026-08-16",
  "source": "screener_data/*.xlsx 'Data Sheet' (raw). EPS DERIVED as net_profit / adjusted_shares \u2014 stored EPS is not used, see module docstring.",
  "note": "Consistency is measured on NET PROFIT year-on-year, which is immune to splits, bonuses and merger dilution. share_move_flags marks any year the share count moved more than 5 percent so a corporate action is visible rather than scored as a collapse.",
  "history": {

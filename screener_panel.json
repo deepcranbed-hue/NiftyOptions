@@ -1,0 +1,563 @@
+{
+ "source": "screener_page_tables.csv (Screener.in company pages)",
+ "basis_by_symbol": {
+  "ADANIENT": "consolidated",
+  "ADANIPORTS": "consolidated",
+  "APOLLOHOSP": "consolidated",
+  "ASIANPAINT": "consolidated",
+  "AXISBANK": "standalone",
+  "BAJAJ-AUTO": "consolidated",
+  "BAJAJFINSV": "consolidated",
+  "BAJFINANCE": "consolidated",
+  "BEL": "consolidated",
+  "BHARTIARTL": "consolidated",
+  "CIPLA": "consolidated",
+  "COALINDIA": "consolidated",
+  "DRREDDY": "consolidated",
+  "EICHERMOT": "consolidated",
+  "GRASIM": "consolidated",
+  "HCLTECH": "consolidated",
+  "HDFCBANK": "standalone",
+  "HDFCLIFE": "consolidated",
+  "HINDALCO": "consolidated",
+  "HINDUNILVR": "consolidated",
+  "ICICIBANK": "standalone",
+  "INDIGO": "consolidated",
+  "INFY": "consolidated",
+  "ITC": "consolidated",
+  "JIOFIN": "consolidated",
+  "JSWSTEEL": "consolidated",
+  "KOTAKBANK": "standalone",
+  "LT": "consolidated",
+  "M&M": "consolidated",
+  "MARUTI": "consolidated",
+  "MAXHEALTH": "consolidated",
+  "NESTLEIND": "consolidated",
+  "NTPC": "consolidated",
+  "ONGC": "consolidated",
+  "POWERGRID": "consolidated",
+  "RELIANCE": "consolidated",
+  "SBILIFE": "standalone",
+  "SBIN": "standalone",
+  "SHRIRAMFIN": "consolidated",
+  "SUNPHARMA": "consolidated",
+  "TATACONSUM": "consolidated",
+  "TATAMOTORS": "consolidated",
+  "TATASTEEL": "consolidated",
+  "TCS": "consolidated",
+  "TECHM": "consolidated",
+  "TITAN": "consolidated",
+  "TRENT": "consolidated",
+  "ULTRACEMCO": "consolidated",
+  "WIPRO": "consolidated",
+  "ZOMATO": "consolidated"
+ },
+ "cohorts": {
+  "lender": {
+   "members": [
+    "AXISBANK",
+    "BAJFINANCE",
+    "HDFCBANK",
+    "ICICIBANK",
+    "KOTAKBANK",
+    "SBIN",
+    "SHRIRAMFIN"
+   ],
+   "weight_pct": 31.95
+  },
+  "generic": {
+   "members": [
+    "ADANIENT",
+    "ADANIPORTS",
+    "APOLLOHOSP",
+    "ASIANPAINT",
+    "BAJAJ-AUTO",
+    "BEL",
+    "BHARTIARTL",
+    "CIPLA",
+    "COALINDIA",
+    "DRREDDY",
+    "EICHERMOT",
+    "GRASIM",
+    "HCLTECH",
+    "HINDALCO",
+    "HINDUNILVR",
+    "INDIGO",
+    "INFY",
+    "ITC",
+    "JSWSTEEL",
+    "LT",
+    "M&M",
+    "MARUTI",
+    "MAXHEALTH",
+    "NESTLEIND",
+    "NTPC",
+    "ONGC",
+    "POWERGRID",
+    "RELIANCE",
+    "SUNPHARMA",
+    "TATACONSUM",
+    "TATAMOTORS",
+    "TATASTEEL",
+    "TCS",
+    "TECHM",
+    "TITAN",
+    "TRENT",
+    "ULTRACEMCO",
+    "WIPRO",
+    "ZOMATO"
+   ],
+   "weight_pct": 65.25
+  }
+ },
+ "coverage": {
+  "basis": "Nifty 50 index weight, from nifty-50-stock-list.csv",
+  "measured_pct": 97.2,
+  "excluded_pct": 2.8,
+  "reason": "metric not applicable, not data unavailable",
+  "not_applicable": {
+   "weight_pct": 2.8,
+   "meaning": "The metric does not exist for these business models. A blank is the correct answer; any number filling it would be wrong. Not closeable by acquiring more data.",
+   "members": [
+    {
+     "symbol": "BAJAJFINSV",
+     "weight_pct": 1.2,
+     "business_model": "financial holding",
+     "why_not_applicable": "one revenue line consolidates a lender's interest spread with two insurers' premium income; neither survives the blend",
+     "applicable_metrics": [
+      "segment-level economics: lending NIM, general-insurance combined ratio, life VNB margin, reported per segment"
+     ],
+     "source": "quarterly investor presentation / segment disclosures",
+     "mapped": true
+    },
+    {
+     "symbol": "HDFCLIFE",
+     "weight_pct": 0.45,
+     "business_model": "life insurer",
+     "why_not_applicable": "revenue line is premium income, which is largely a liability assumed rather than revenue earned",
+     "applicable_metrics": [
+      "VNB margin",
+      "value of new business",
+      "embedded value",
+      "persistency",
+      "solvency ratio"
+     ],
+     "source": "quarterly investor presentation / segment disclosures",
+     "mapped": true
+    },
+    {
+     "symbol": "JIOFIN",
+     "weight_pct": 0.45,
+     "business_model": "financial holding",
+     "why_not_applicable": "income is mostly dividends and interest on an investment book, not revenue from operations",
+     "applicable_metrics": [
+      "look-through economics of the underlying holdings",
+      "NAV / book value",
+      "segment disclosures"
+     ],
+     "source": "quarterly investor presentation / segment disclosures",
+     "mapped": true
+    },
+    {
+     "symbol": "SBILIFE",
+     "weight_pct": 0.7,
+     "business_model": "life insurer",
+     "why_not_applicable": "revenue line is premium income, which is largely a liability assumed rather than revenue earned",
+     "applicable_metrics": [
+      "VNB margin",
+      "value of new business",
+      "embedded value",
+      "persistency",
+      "solvency ratio"
+     ],
+     "source": "quarterly investor presentation / segment disclosures",
+     "mapped": true
+    }
+   ]
+  },
+  "data_unavailable": {
+   "weight_pct": 0,
+   "meaning": "The metric APPLIES to these; we are missing the rows. A blank is a TODO with a known fix, not a property of the business.",
+   "members": []
+  }
+ },
+ "quarterly": {
+  "generic": {
+   "available": true,
+   "measure": "operating margin",
+   "numerator": "Operating Profit",
+   "denominator": "Sales",
+   "panel": 39,
+   "series": [
+    {
+     "period": "2024-09-30",
+     "margin_pct": 19.4,
+     "names": 39
+    },
+    {
+     "period": "2024-12-31",
+     "margin_pct": 20.7,
+     "names": 39
+    },
+    {
+     "period": "2025-03-31",
+     "margin_pct": 20.2,
+     "names": 39
+    },
+    {
+     "period": "2025-06-30",
+     "margin_pct": 20.9,
+     "names": 39
+    },
+    {
+     "period": "2025-09-30",
+     "margin_pct": 20.4,
+     "names": 39
+    },
+    {
+     "period": "2025-12-31",
+     "margin_pct": 20.5,
+     "names": 39
+    },
+    {
+     "period": "2026-03-31",
+     "margin_pct": 18.7,
+     "names": 39
+    },
+    {
+     "period": "2026-06-30",
+     "margin_pct": 19.0,
+     "names": 39
+    }
+   ],
+   "ttm_series": [
+    {
+     "period": "2025-06-30",
+     "margin_pct": 20.3
+    },
+    {
+     "period": "2025-09-30",
+     "margin_pct": 20.6
+    },
+    {
+     "period": "2025-12-31",
+     "margin_pct": 20.5
+    },
+    {
+     "period": "2026-03-31",
+     "margin_pct": 20.1
+    },
+    {
+     "period": "2026-06-30",
+     "margin_pct": 19.6
+    }
+   ],
+   "latest_ttm_pct": 19.6,
+   "latest_ttm_period": "2026-06-30",
+   "yoy_ttm_change_pp": -0.7,
+   "latest_quarter_pct": 19.0,
+   "latest_quarter_period": "2026-06-30",
+   "yoy_quarter_change_pp": -1.9,
+   "qoq_volatility_pp": 0.93,
+   "ttm_volatility_pp": 0.31,
+   "periods_dropped_partial": [
+    "2023-06-30",
+    "2023-09-30",
+    "2023-12-31",
+    "2024-03-31",
+    "2024-06-30"
+   ]
+  },
+  "lender": {
+   "available": true,
+   "measure": "financing margin",
+   "numerator": "Financing Profit",
+   "denominator": "Revenue",
+   "panel": 7,
+   "series": [
+    {
+     "period": "2023-06-30",
+     "margin_pct": 15.6,
+     "names": 7
+    },
+    {
+     "period": "2023-09-30",
+     "margin_pct": 14.2,
+     "names": 7
+    },
+    {
+     "period": "2023-12-31",
+     "margin_pct": 13.0,
+     "names": 7
+    },
+    {
+     "period": "2024-03-31",
+     "margin_pct": 10.1,
+     "names": 7
+    },
+    {
+     "period": "2024-06-30",
+     "margin_pct": 14.5,
+     "names": 7
+    },
+    {
+     "period": "2024-09-30",
+     "margin_pct": 13.5,
+     "names": 7
+    },
+    {
+     "period": "2024-12-31",
+     "margin_pct": 14.2,
+     "names": 7
+    },
+    {
+     "period": "2025-03-31",
+     "margin_pct": 10.9,
+     "names": 7
+    },
+    {
+     "period": "2025-06-30",
+     "margin_pct": 8.8,
+     "names": 7
+    },
+    {
+     "period": "2025-09-30",
+     "margin_pct": 11.9,
+     "names": 7
+    },
+    {
+     "period": "2025-12-31",
+     "margin_pct": 13.1,
+     "names": 7
+    },
+    {
+     "period": "2026-03-31",
+     "margin_pct": 13.8,
+     "names": 7
+    },
+    {
+     "period": "2026-06-30",
+     "margin_pct": 15.8,
+     "names": 7
+    }
+   ],
+   "ttm_series": [
+    {
+     "period": "2024-03-31",
+     "margin_pct": 13.1
+    },
+    {
+     "period": "2024-06-30",
+     "margin_pct": 12.9
+    },
+    {
+     "period": "2024-09-30",
+     "margin_pct": 12.8
+    },
+    {
+     "period": "2024-12-31",
+     "margin_pct": 13.1
+    },
+    {
+     "period": "2025-03-31",
+     "margin_pct": 13.2
+    },
+    {
+     "period": "2025-06-30",
+     "margin_pct": 11.8
+    },
+    {
+     "period": "2025-09-30",
+     "margin_pct": 11.4
+    },
+    {
+     "period": "2025-12-31",
+     "margin_pct": 11.2
+    },
+    {
+     "period": "2026-03-31",
+     "margin_pct": 11.9
+    },
+    {
+     "period": "2026-06-30",
+     "margin_pct": 13.7
+    }
+   ],
+   "latest_ttm_pct": 13.7,
+   "latest_ttm_period": "2026-06-30",
+   "yoy_ttm_change_pp": 1.9,
+   "latest_quarter_pct": 15.8,
+   "latest_quarter_period": "2026-06-30",
+   "yoy_quarter_change_pp": 7.0,
+   "qoq_volatility_pp": 2.3,
+   "ttm_volatility_pp": 0.82,
+   "periods_dropped_partial": []
+  }
+ },
+ "annual": {
+  "generic": {
+   "available": false,
+   "reason": "fewer than 2 balanced periods"
+  },
+  "lender": {
+   "available": true,
+   "measure": "financing margin",
+   "numerator": "Financing Profit",
+   "denominator": "Revenue",
+   "panel": 7,
+   "series": [
+    {
+     "period": "2015-03-31",
+     "margin_pct": 5.3,
+     "names": 7
+    },
+    {
+     "period": "2016-03-31",
+     "margin_pct": 0.5,
+     "names": 7
+    },
+    {
+     "period": "2017-03-31",
+     "margin_pct": -3.7,
+     "names": 7
+    },
+    {
+     "period": "2018-03-31",
+     "margin_pct": -12.1,
+     "names": 7
+    },
+    {
+     "period": "2019-03-31",
+     "margin_pct": -3.6,
+     "names": 7
+    },
+    {
+     "period": "2020-03-31",
+     "margin_pct": 0.1,
+     "names": 7
+    },
+    {
+     "period": "2021-03-31",
+     "margin_pct": 3.2,
+     "names": 7
+    },
+    {
+     "period": "2022-03-31",
+     "margin_pct": 9.9,
+     "names": 7
+    },
+    {
+     "period": "2023-03-31",
+     "margin_pct": 16.8,
+     "names": 7
+    },
+    {
+     "period": "2024-03-31",
+     "margin_pct": 13.3,
+     "names": 7
+    },
+    {
+     "period": "2025-03-31",
+     "margin_pct": 14.3,
+     "names": 7
+    },
+    {
+     "period": "2026-03-31",
+     "margin_pct": 12.9,
+     "names": 7
+    }
+   ],
+   "ttm_series": [
+    {
+     "period": "2018-03-31",
+     "margin_pct": -3.3
+    },
+    {
+     "period": "2019-03-31",
+     "margin_pct": -5.0
+    },
+    {
+     "period": "2020-03-31",
+     "margin_pct": -4.5
+    },
+    {
+     "period": "2021-03-31",
+     "margin_pct": -2.5
+    },
+    {
+     "period": "2022-03-31",
+     "margin_pct": 2.8
+    },
+    {
+     "period": "2023-03-31",
+     "margin_pct": 8.3
+    },
+    {
+     "period": "2024-03-31",
+     "margin_pct": 11.6
+    },
+    {
+     "period": "2025-03-31",
+     "margin_pct": 13.8
+    },
+    {
+     "period": "2026-03-31",
+     "margin_pct": 14.1
+    }
+   ],
+   "latest_ttm_pct": 14.1,
+   "latest_ttm_period": "2026-03-31",
+   "yoy_ttm_change_pp": 11.3,
+   "latest_quarter_pct": 12.9,
+   "latest_quarter_period": "2026-03-31",
+   "yoy_quarter_change_pp": 3.0,
+   "qoq_volatility_pp": 5.3,
+   "ttm_volatility_pp": 2.33,
+   "periods_dropped_partial": []
+  }
+ },
+ "methodology": "Margin coverage: 97.2% of Nifty weight. The remaining 2.8% is excluded from the aggregate operating-margin calculation because Operating Profit / Sales is not economically comparable for life insurers and financial holding companies. Their PROFIT remains included in the earnings analysis. This is metric exclusion, not missing data \u2014 the same company is in for one metric and out for another.",
+ "three_distinct_uses_of_this_data": {
+  "profit": "usable \u2014 enters the earnings panel unchanged",
+  "premium_or_topline": "usable \u2014 measures insurance business growth on its own terms",
+  "profit_over_premium_as_operating_margin": "NOT usable \u2014 not comparable with a conventional operating margin, and excluded from the aggregate signal"
+ },
+ "sensitivity_test": {
+  "available": true,
+  "period": "2026-06-30",
+  "profit_held_constant": true,
+  "excluded_share_of_denominator_pct": 7.2,
+  "excluded_share_of_numerator_pct": 6.2,
+  "grid": [
+   {
+    "excluded_topline_growth_pct": 0.0,
+    "aggregate_with_excluded_pct": 18.76,
+    "aggregate_measured_only_pct": 18.97
+   },
+   {
+    "excluded_topline_growth_pct": 10.0,
+    "aggregate_with_excluded_pct": 18.62,
+    "aggregate_measured_only_pct": 18.97
+   },
+   {
+    "excluded_topline_growth_pct": 20.0,
+    "aggregate_with_excluded_pct": 18.49,
+    "aggregate_measured_only_pct": 18.97
+   },
+   {
+    "excluded_topline_growth_pct": 30.0,
+    "aggregate_with_excluded_pct": 18.36,
+    "aggregate_measured_only_pct": 18.97
+   },
+   {
+    "excluded_topline_growth_pct": 50.0,
+    "aggregate_with_excluded_pct": 18.1,
+    "aggregate_measured_only_pct": 18.97
+   }
+  ],
+  "finding": "Holding all profit constant and growing only the excluded cohort's top line from 0% to +50% moves the reported aggregate from 18.76% to 18.1%, purely through denominator growth. The measured-only series is unchanged at 18.97% across every row. Therefore the conventional ratio is not a valid margin signal for those businesses.",
+  "why_it_matters": "The level error today is small; the SENSITIVITY is the problem. This channel is used to detect whether margins are improving or deteriorating, so a denominator that grows for unrelated reasons contaminates the time series, not just the level.",
+  "denominator_caveat": "Premium income is policies x average premium, so it can rise on price, mix or renewals with policy count falling. A premium increase therefore supports neither 'margins fell' nor 'more people bought insurance' \u2014 it is not interpretable as revenue growth either."
+ },
+ "note": "TWO cohorts, reported SEPARATELY and never summed. Operating margin (operating profit / sales) and financing margin (financing profit / revenue) are ratios over different denominators; blending them would produce a figure with no referent, which is correction C26's error committed in the opposite direction. Each series is balanced \u2014 periods where any cohort member is missing are dropped (C24) \u2014 and every value comes from the page scrape, never spliced with the Excel export, whose Net Profit runs ~0.5% lower."
+}
