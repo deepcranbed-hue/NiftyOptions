@@ -71,7 +71,10 @@ from datetime import date, timedelta
 _ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # NSE lists three serial monthly contracts for single-stock futures.
-_LADDER = 3
+# TWO contracts: the current month and the one after. That is the whole ladder — a
+# third serial month adds calls and carries almost no open interest, and the OI
+# crossover that decides the roll only ever involves the near pair.
+_LADDER = 2
 # Keep pulling a contract briefly after expiry so the last session lands.
 _SETTLE_GRACE_DAYS = 3
 # Below this the OI comparison is two thin numbers; fall back to the calendar roll.
@@ -200,7 +203,7 @@ def front_series(db: str, underlying: str, *, method: str = "oi",
     for r in rows:
         by_day[r["d"]][r["expiry"]] = (r["close"], r["oi"])
 
-    schedule, rolls, cur = [], [], None
+    schedule, rolls, cur, cur_prev = [], [], None, None
     for d in sorted(by_day):
         exps = sorted(by_day[d])
         unexpired = [e for e in exps if e >= d]
@@ -217,11 +220,31 @@ def front_series(db: str, underlying: str, *, method: str = "oi",
             b = by_day[d].get(pick, (None, None))[0]
             rolls.append({"date": d, "from": cur, "to": pick,
                           "roll_gap": round(b - a, 2) if (a and b) else None})
+        was_roll = bool(cur_prev is not None and pick != cur_prev)
+        gap = rolls[-1]["roll_gap"] if (was_roll and rolls) else None
         cur = pick
+        cur_prev = pick
         schedule.append({"d": d, "expiry": pick, "close": by_day[d][pick][0],
-                         "oi": by_day[d][pick][1]})
+                         "oi": by_day[d][pick][1],
+                         # Flagged ON the row, not only in `rolls`. A caller computing
+                         # returns off `series` must drop the roll day, and having to
+                         # join a separate list to find out which day that was is the
+                         # step that gets skipped. One field, no join.
+                         "is_roll": was_roll, "roll_gap": gap})
+    n_roll = sum(1 for r in schedule if r["is_roll"])
     return {"underlying": underlying.upper(), "method": method,
-            "n_days": len(schedule), "rolls": rolls, "series": schedule}
+            "n_days": len(schedule), "rolls": rolls, "series": schedule,
+            "n_roll_days": n_roll,
+            "raw_splice_note": (
+                "This series is RAW — contracts are spliced end to end and nothing is "
+                "back-adjusted, which is deliberate: the level on any given day is the "
+                "real traded price of the contract that was liquid that day. The cost is "
+                f"that the {n_roll} roll day(s) carry a FICTIONAL return — the jump from "
+                "one contract to the next, not a market move. With monthly expiries that "
+                "is ~12 of ~250 sessions a year, about 5% of daily observations, and they "
+                "are large because a month of carry is embedded in each. Levels, open "
+                "interest and notional are unaffected. RETURNS, volatility and anything "
+                "cumulative must drop rows where is_roll is true, or add back roll_gap.")}
 
 
 if __name__ == "__main__":
