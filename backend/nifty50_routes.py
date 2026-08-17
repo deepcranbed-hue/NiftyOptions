@@ -41,7 +41,12 @@ _CACHE = os.path.join(_STATE_DIR, "nifty50_view_cache_v17.json")  # v17: gap sel
 # Heuristic Nifty trailing-P/E band (PRIOR, not a measurement — post-2021 NSE
 # consolidated-earnings methodology; calibrate from history when wired to a P/E series):
 # <18 cheap · 18-21 fair · 21-24 mildly rich · >24 rich
-_PE_BAND = (18.0, 21.0, 24.0)
+try:
+    # Single source of truth, shared with backend/quant/nifty_outlook.py so the index
+    # card and the outlook tab cannot disagree about what "rich" means.
+    from quant.valuation_band import PE_BAND as _PE_BAND
+except ImportError:  # pragma: no cover — keeps the route importable standalone
+    _PE_BAND = (18.0, 21.0, 24.0)
 _TTL_S = 30 * 60
 
 # vs-sector-median thresholds for the categorical verdict (display convention)
@@ -1514,6 +1519,98 @@ def nifty_quality_growth():
                     "(it needs delivery_history.json and expectation_snapshots.json)."))
     with open(_QUALITY_GROWTH_PATH, "r") as f:
         return {"success": True, "quality": json.load(f)}
+
+
+_OUTLOOK_PATH = os.path.join(_REPO_ROOT, "nifty_outlook.json")
+
+
+@router.get("/api/nifty-outlook")
+def nifty_outlook():
+    """6M / 1Y / 2Y scenario arithmetic plus the index's own realised base rates.
+
+    Plain file read of nifty_outlook.json (backend/quant/nifty_outlook.py). NOT a
+    forecast and the payload says so in six places: this repo retired its daily
+    macro→index regression at R-squared 0.036 and has no tested claim to a point
+    estimate for the index at any horizon. What is served is (a) what the Nifty has
+    actually done over rolling windows, with the INDEPENDENT window count beside the
+    overlapping one, and (b) level = EPS x (1+g)^T x exit_PE for a set of scenarios
+    whose two inputs are stated per scenario. Probabilities are not assigned here —
+    the UI makes the weights editable so the expected value belongs to the reader.
+    """
+    if not os.path.exists(_OUTLOOK_PATH):
+        raise HTTPException(
+            status_code=404,
+            detail=("nifty_outlook.json not found — run "
+                    "`python3 backend/quant/nifty_outlook.py`."))
+    with open(_OUTLOOK_PATH, "r") as f:
+        return {"success": True, "outlook": json.load(f)}
+
+
+_EARN_ACCEL_PATH = os.path.join(_REPO_ROOT, "earnings_acceleration.json")
+
+
+@router.get("/api/nifty-earnings-acceleration")
+def nifty_earnings_acceleration():
+    """The one open index-level hypothesis, and the evidence for and against it.
+
+    Plain file read of earnings_acceleration.json (backend/quant/earnings_acceleration.py).
+    Four layers: what earnings HAVE done (measured, annual and quarterly), what is being
+    ASSUMED (sell side and what the multiple pays for), the multiple, and spot. The gap
+    between the first two is the research question — at roughly today's multiple the
+    difference between the measured run-rate and the assumed 12-14% is over a thousand
+    Nifty points a year, which is far larger than anything the valuation debate turns on.
+    """
+    if not os.path.exists(_EARN_ACCEL_PATH):
+        raise HTTPException(
+            status_code=404,
+            detail=("earnings_acceleration.json not found — run "
+                    "`python3 backend/quant/earnings_acceleration.py`."))
+    with open(_EARN_ACCEL_PATH, "r") as f:
+        return {"success": True, "acceleration": json.load(f)}
+
+
+_OUTLOOK_BT_PATH = os.path.join(_REPO_ROOT, "outlook_backtest.json")
+
+
+@router.get("/api/nifty-outlook-backtest")
+def nifty_outlook_backtest():
+    """Has the outlook methodology ever worked? Walk-forward, against a no-change null.
+
+    Plain file read of outlook_backtest.json (backend/quant/outlook_backtest.py). A
+    projection tab that does not display its own track record is the thing this repo
+    keeps catching itself doing, so the answer ships beside the projection: at 6M and 1Y
+    neither fundamental method beats "assume no change", and the multiple did not revert
+    from below-median starts.
+    """
+    if not os.path.exists(_OUTLOOK_BT_PATH):
+        raise HTTPException(
+            status_code=404,
+            detail=("outlook_backtest.json not found — run "
+                    "`python3 backend/quant/outlook_backtest.py`."))
+    with open(_OUTLOOK_BT_PATH, "r") as f:
+        return {"success": True, "backtest": json.load(f)}
+
+
+_HISTORY_PATH = os.path.join(_REPO_ROOT, "nifty_history.json")
+
+
+@router.get("/api/nifty-history")
+def nifty_history():
+    """Historical measurement behind the Earnings History tab — no forecast in it.
+
+    Plain file read of nifty_history.json (backend/quant/nifty_history.py): the sector
+    contribution matrix, the earnings cycle against the index, the 2026 frozen-EPS
+    window, and FII flows reported GROSS beside net. The forecast artifacts are
+    nifty_outlook.json and earnings_acceleration.json and are served separately, so a
+    measurement and a projection can never be mistaken for each other in the UI.
+    """
+    if not os.path.exists(_HISTORY_PATH):
+        raise HTTPException(
+            status_code=404,
+            detail=("nifty_history.json not found — run "
+                    "`python3 backend/quant/nifty_history.py`."))
+    with open(_HISTORY_PATH, "r") as f:
+        return {"success": True, "history": json.load(f)}
 
 
 _COMPUTE_LOCK = threading.Lock()

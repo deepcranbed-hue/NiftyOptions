@@ -21,6 +21,8 @@ import {
 } from './nifty50Shared';
 import { Nifty50StockDetail } from './Nifty50StockPage';
 import { Nifty50QualityGrowth } from './Nifty50QualityGrowth';
+import { Nifty50Outlook } from './Nifty50Outlook';
+import { Nifty50History } from './Nifty50History';
 
 type Scenario = { trigger: string; nifty_pct: number[]; horizon: string; anchor: string };
 type Factor = {
@@ -71,7 +73,8 @@ type SortKey = 'weight' | 'd1_pct' | 'w1_pct' | 'm6_pct' | 'y1_pct' | 'pe' | 'vs
 // Tab ids: the three fixed panels, plus one `stock:<SYMBOL>` per opened constituent.
 const FIXED_TABS = [['today', "Today's Market"], ['factors', 'Macro Factors'],
                     ['stocks', 'Nifty Stocks'], ['gap', 'Expectation Gap'],
-                    ['quality', 'Quality Growth']] as const;
+                    ['quality', 'Quality Growth'], ['history', 'Earnings History'],
+                    ['outlook', 'Outlook']] as const;
 const STOCK_TAB = 'stock:';
 // Past this the strip wraps into a second row and stops reading as a strip, so the
 // oldest tab closes — same instinct as a browser dropping to a scroll, minus the scroll.
@@ -769,6 +772,15 @@ export function Nifty50Panel() {
           the yfinance scan, so it works whether or not Run scan has been pressed. A
           symbol click opens the same in-panel stock tab as the table above. */}
       {tab === 'quality' && <Nifty50QualityGrowth onSymbolClick={openStock} />}
+
+      {/* Outlook reads nifty_outlook.json only — no scan needed, and nothing on it
+          is a forecast: see the component header for why the thin rows are hidden
+          rather than footnoted. */}
+      {/* History is measurement, Outlook is projection. They are deliberately separate
+          surfaces so a measured sector contribution can never be read as a target. */}
+      {tab === 'history' && <Nifty50History />}
+
+      {tab === 'outlook' && <Nifty50Outlook />}
 
       {tab === 'gap' && !view && !loading && !err && (
         <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-4 py-8 text-center">

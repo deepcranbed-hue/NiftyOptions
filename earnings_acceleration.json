@@ -1,0 +1,451 @@
+{
+ "as_of": "2026-08-16",
+ "hypothesis": {
+  "id": "H-EARN-ACCEL",
+  "claim": "Aggregate Nifty-50 earnings growth reaccelerates from its recent quarterly run-rate of 7.1% toward the 12-14% assumed for FY27.",
+  "status": "OPEN",
+  "why_it_matters": "At roughly today's multiple the two assumptions are ~1,150 Nifty points apart over a year. The multiple is not the research question; this is.",
+  "gap_pp": 4.9,
+  "settles_on": "Four consecutive quarters of aggregate PAT growth. It is confirmed if the exit rate reaches the band and holds two quarters; refuted if it stays below ~8% through FY27 H1.",
+  "next_observation": "Q2 FY27 results, from late October 2026"
+ },
+ "profit_definition": {
+  "line_item": "net profit attributable to owners of the parent",
+  "excludes": "minority / non-controlling interests",
+  "verified": "JSW Steel FY26 filed 'attributable to owners' = 22,316 cr = our figure exactly, against 25,508 cr including minority interest (C32)",
+  "why": "Index EPS must be earnings attributable to the constituents' OWN shareholders. Minority interest belongs to other people and cannot be capitalised into a per-share number for an index investor.",
+  "not_comparable_to": "street and newspaper headlines, which quote total consolidated profit INCLUDING minority interest. Reliance reads 80,775 cr on our definition and 95,754 cr on theirs \u2014 both correct, different questions. This is a research-series definition and is NOT necessarily identical to NSE Indices' P/E earnings methodology, which uses free-float-adjusted constituent earnings, consolidated where available and standalone otherwise.",
+  "consistency_check": "our index EPS of 1,195 matches NSE's implied 1,185 within 0.8% WHILE the aggregate sits 16% below street figures. Both hold at once; they are not in tension.",
+  "reported_not_underlying": "every growth rate built on this series is REPORTED, not underlying. FY26 reads +6.92% reported and +6.68% ex-one-off, but ranges +4.63% to +9.01% depending which exceptional is stripped \u2014 JSW Steel's 18,051 cr BPSL gain and ITC's 15,145 cr hotels-demerger gain push opposite ways and happen to cancel (C33, open item O14)."
+ },
+ "L1_evidence": {
+  "annual": {
+   "panel": 47,
+   "growth": [
+    {
+     "fy": 2019,
+     "yoy_pct": 18.0
+    },
+    {
+     "fy": 2020,
+     "yoy_pct": -12.1
+    },
+    {
+     "fy": 2021,
+     "yoy_pct": 24.4
+    },
+    {
+     "fy": 2022,
+     "yoy_pct": 54.3
+    },
+    {
+     "fy": 2023,
+     "yoy_pct": 8.0
+    },
+    {
+     "fy": 2024,
+     "yoy_pct": 19.9
+    },
+    {
+     "fy": 2025,
+     "yoy_pct": 12.7
+    },
+    {
+     "fy": 2026,
+     "yoy_pct": 6.9
+    }
+   ],
+   "latest_fy_pct": 6.9
+  },
+  "quarterly": {
+   "available": true,
+   "balanced_panel_names": 47,
+   "balanced": [
+    {
+     "period": "2024-06-30",
+     "yoy_pct": 5.7,
+     "names": 47,
+     "weight_pct": 96.9,
+     "aggregate_pat_cr": 186874.0
+    },
+    {
+     "period": "2024-09-30",
+     "yoy_pct": 9.1,
+     "names": 47,
+     "weight_pct": 96.9,
+     "aggregate_pat_cr": 178258.0
+    },
+    {
+     "period": "2024-12-31",
+     "yoy_pct": 14.4,
+     "names": 47,
+     "weight_pct": 96.9,
+     "aggregate_pat_cr": 197699.0
+    },
+    {
+     "period": "2025-03-31",
+     "yoy_pct": 18.8,
+     "names": 47,
+     "weight_pct": 96.9,
+     "aggregate_pat_cr": 227509.0
+    },
+    {
+     "period": "2025-06-30",
+     "yoy_pct": 13.1,
+     "names": 47,
+     "weight_pct": 96.9,
+     "aggregate_pat_cr": 211292.0
+    },
+    {
+     "period": "2025-09-30",
+     "yoy_pct": 9.7,
+     "names": 47,
+     "weight_pct": 96.9,
+     "aggregate_pat_cr": 195551.0
+    },
+    {
+     "period": "2025-12-31",
+     "yoy_pct": 4.5,
+     "names": 47,
+     "weight_pct": 96.9,
+     "aggregate_pat_cr": 206628.0
+    },
+    {
+     "period": "2026-03-31",
+     "yoy_pct": 2.5,
+     "names": 47,
+     "weight_pct": 96.9,
+     "aggregate_pat_cr": 233182.0
+    },
+    {
+     "period": "2026-06-30",
+     "yoy_pct": 7.1,
+     "names": 47,
+     "weight_pct": 96.9,
+     "aggregate_pat_cr": 226327.0
+    }
+   ],
+   "partial_latest": null,
+   "exit_rate_pct": 7.1,
+   "decelerating": false,
+   "turned_up": true,
+   "path": [
+    5.7,
+    9.1,
+    14.4,
+    18.8,
+    13.1,
+    9.7,
+    4.5,
+    2.5,
+    7.1
+   ],
+   "note": "YoY is quarter versus the SAME quarter a year earlier, never sequential \u2014 Indian earnings are seasonal enough that Q1-vs-Q4 is mostly the calendar. The partial panel is measured against its own year-ago base so a change in coverage cannot masquerade as growth.",
+   "source": "attributable_panel.json (EPS x shares, all reporters)"
+  },
+  "margin": {
+   "available": true,
+   "blended": false,
+   "operating": {
+    "available": true,
+    "measure": "operating margin",
+    "ratio": "Operating Profit / Sales",
+    "panel": 39,
+    "weight_pct": 65.25,
+    "ttm_pct": 19.6,
+    "ttm_period": "2026-06-30",
+    "ttm_yoy_pp": -0.7,
+    "ttm_series": [
+     {
+      "period": "2025-06-30",
+      "margin_pct": 20.3
+     },
+     {
+      "period": "2025-09-30",
+      "margin_pct": 20.6
+     },
+     {
+      "period": "2025-12-31",
+      "margin_pct": 20.5
+     },
+     {
+      "period": "2026-03-31",
+      "margin_pct": 20.1
+     },
+     {
+      "period": "2026-06-30",
+      "margin_pct": 19.6
+     }
+    ],
+    "quarter_pct": 19.0,
+    "quarter_yoy_pp": -1.9,
+    "qoq_volatility_pp": 0.93,
+    "ttm_volatility_pp": 0.31,
+    "trend_readable_quarterly": true
+   },
+   "financing": {
+    "available": true,
+    "measure": "financing margin",
+    "ratio": "Financing Profit / Revenue",
+    "panel": 7,
+    "weight_pct": 31.95,
+    "ttm_pct": 13.7,
+    "ttm_period": "2026-06-30",
+    "ttm_yoy_pp": 1.9,
+    "ttm_series": [
+     {
+      "period": "2024-09-30",
+      "margin_pct": 12.8
+     },
+     {
+      "period": "2024-12-31",
+      "margin_pct": 13.1
+     },
+     {
+      "period": "2025-03-31",
+      "margin_pct": 13.2
+     },
+     {
+      "period": "2025-06-30",
+      "margin_pct": 11.8
+     },
+     {
+      "period": "2025-09-30",
+      "margin_pct": 11.4
+     },
+     {
+      "period": "2025-12-31",
+      "margin_pct": 11.2
+     },
+     {
+      "period": "2026-03-31",
+      "margin_pct": 11.9
+     },
+     {
+      "period": "2026-06-30",
+      "margin_pct": 13.7
+     }
+    ],
+    "quarter_pct": 15.8,
+    "quarter_yoy_pp": 7.0,
+    "qoq_volatility_pp": 2.3,
+    "ttm_volatility_pp": 0.82,
+    "trend_readable_quarterly": false,
+    "excludes_other_income": true,
+    "measures": "the lending spread net of costs \u2014 interest earned, less interest paid, less operating expenses AND provisions, which Screener buries together in one cost line",
+    "does_not_measure": "fee, treasury and distribution income, which sit outside both the numerator and the denominator",
+    "share_of_pretax_profit_outside_metric": {
+     "HDFCBANK_Q1FY27": 51,
+     "SBIN_Q1FY27": 56
+    },
+    "verified_against": "HDFC Bank and SBI Q1FY27 filed results \u2014 Revenue = interest earned, Interest = interest expended, Net Profit, Other Income and Gross NPA % all match; FinProfit + OtherIncome - Depn reproduces reported PBT to within 1 cr at both",
+    "therefore": "NOT a proxy for bank profitability. Roughly half of what a bank earns is invisible to it, and the two halves can move in opposite directions \u2014 SBI's fee income grew 20.83% in the same quarter treasury fell. Read it as a spread measure and nothing wider."
+   },
+   "coverage": {
+    "basis": "Nifty 50 index weight, from nifty-50-stock-list.csv",
+    "measured_pct": 97.2,
+    "excluded_pct": 2.8,
+    "reason": "metric not applicable, not data unavailable",
+    "not_applicable": {
+     "weight_pct": 2.8,
+     "meaning": "The metric does not exist for these business models. A blank is the correct answer; any number filling it would be wrong. Not closeable by acquiring more data.",
+     "members": [
+      {
+       "symbol": "BAJAJFINSV",
+       "weight_pct": 1.2,
+       "business_model": "financial holding",
+       "why_not_applicable": "one revenue line consolidates a lender's interest spread with two insurers' premium income; neither survives the blend",
+       "applicable_metrics": [
+        "segment-level economics: lending NIM, general-insurance combined ratio, life VNB margin, reported per segment"
+       ],
+       "source": "quarterly investor presentation / segment disclosures",
+       "mapped": true
+      },
+      {
+       "symbol": "HDFCLIFE",
+       "weight_pct": 0.45,
+       "business_model": "life insurer",
+       "why_not_applicable": "revenue line is premium income, which is largely a liability assumed rather than revenue earned",
+       "applicable_metrics": [
+        "VNB margin",
+        "value of new business",
+        "embedded value",
+        "persistency",
+        "solvency ratio"
+       ],
+       "source": "quarterly investor presentation / segment disclosures",
+       "mapped": true
+      },
+      {
+       "symbol": "JIOFIN",
+       "weight_pct": 0.45,
+       "business_model": "financial holding",
+       "why_not_applicable": "income is mostly dividends and interest on an investment book, not revenue from operations",
+       "applicable_metrics": [
+        "look-through economics of the underlying holdings",
+        "NAV / book value",
+        "segment disclosures"
+       ],
+       "source": "quarterly investor presentation / segment disclosures",
+       "mapped": true
+      },
+      {
+       "symbol": "SBILIFE",
+       "weight_pct": 0.7,
+       "business_model": "life insurer",
+       "why_not_applicable": "revenue line is premium income, which is largely a liability assumed rather than revenue earned",
+       "applicable_metrics": [
+        "VNB margin",
+        "value of new business",
+        "embedded value",
+        "persistency",
+        "solvency ratio"
+       ],
+       "source": "quarterly investor presentation / segment disclosures",
+       "mapped": true
+      }
+     ]
+    },
+    "data_unavailable": {
+     "weight_pct": 0,
+     "meaning": "The metric APPLIES to these; we are missing the rows. A blank is a TODO with a known fix, not a property of the business.",
+     "members": []
+    }
+   },
+   "methodology": "Margin coverage: 97.2% of Nifty weight. The remaining 2.8% is excluded from the aggregate operating-margin calculation because Operating Profit / Sales is not economically comparable for life insurers and financial holding companies. Their PROFIT remains included in the earnings analysis. This is metric exclusion, not missing data \u2014 the same company is in for one metric and out for another.",
+   "sensitivity_test": {
+    "available": true,
+    "period": "2026-06-30",
+    "profit_held_constant": true,
+    "excluded_share_of_denominator_pct": 7.2,
+    "excluded_share_of_numerator_pct": 6.2,
+    "grid": [
+     {
+      "excluded_topline_growth_pct": 0.0,
+      "aggregate_with_excluded_pct": 18.76,
+      "aggregate_measured_only_pct": 18.97
+     },
+     {
+      "excluded_topline_growth_pct": 10.0,
+      "aggregate_with_excluded_pct": 18.62,
+      "aggregate_measured_only_pct": 18.97
+     },
+     {
+      "excluded_topline_growth_pct": 20.0,
+      "aggregate_with_excluded_pct": 18.49,
+      "aggregate_measured_only_pct": 18.97
+     },
+     {
+      "excluded_topline_growth_pct": 30.0,
+      "aggregate_with_excluded_pct": 18.36,
+      "aggregate_measured_only_pct": 18.97
+     },
+     {
+      "excluded_topline_growth_pct": 50.0,
+      "aggregate_with_excluded_pct": 18.1,
+      "aggregate_measured_only_pct": 18.97
+     }
+    ],
+    "finding": "Holding all profit constant and growing only the excluded cohort's top line from 0% to +50% moves the reported aggregate from 18.76% to 18.1%, purely through denominator growth. The measured-only series is unchanged at 18.97% across every row. Therefore the conventional ratio is not a valid margin signal for those businesses.",
+    "why_it_matters": "The level error today is small; the SENSITIVITY is the problem. This channel is used to detect whether margins are improving or deteriorating, so a denominator that grows for unrelated reasons contaminates the time series, not just the level.",
+    "denominator_caveat": "Premium income is policies x average premium, so it can rise on price, mix or renewals with policy count falling. A premium increase therefore supports neither 'margins fell' nor 'more people bought insurance' \u2014 it is not interpretable as revenue growth either."
+   },
+   "source": "screener_page_tables.csv (Screener.in company pages)",
+   "note": "TWO cohorts, never summed \u2014 see the docstring. Headline figures are TTM because the lender quarterly series is too noisy to carry a trend. Coverage is 97.2% of index weight; the excluded 2.8% is a metric that does not apply, not data that is missing."
+  },
+  "exit_rate_coverage": null
+ },
+ "L2_expectations": {
+  "sell_side_band_pct": [
+   12.0,
+   14.0
+  ],
+  "sell_side_source": "Axis Securities FY27 earnings growth band, quoted 2026-08",
+  "market_implied_pct": 26.9,
+  "market_implied_note": "Trailing P/E \u00f7 forward P/E \u2212 1 across the index. Yahoo's forward multiple spans one to two years rather than a clean next fiscal year, so this is NOT a FY27 growth estimate and must not be compared to one directly. It is here as an upper bound on what the price is paying for.",
+  "snapshots_held": 2,
+  "revisions_measurable": false,
+  "revisions_needed": 3,
+  "revisions_note": "expectation_snapshots.json holds 2 capture(s); 3 are needed so there are at least two differences to compare (1 more to go). This is the highest-value gap on the list."
+ },
+ "L3_valuation": {
+  "note": "see nifty_outlook.json \u2014 reconstructed P/E and its percentiles"
+ },
+ "L4_price": {
+  "spot": 24366.0
+ },
+ "channels": [
+  {
+   "id": "earnings_revisions",
+   "direction": "both",
+   "watch": "Direction of consensus EPS revisions across the index",
+   "observable": false,
+   "why": "expectation_snapshots.json holds 2 capture(s); 3 are needed so there are at least two differences to compare (1 more to go). This is the highest-value gap on the list.",
+   "source_needed": "expectation_snapshot.py on a weekly cron"
+  },
+  {
+   "id": "operating_margin",
+   "direction": "both",
+   "watch": "Aggregate operating margin, quarter on quarter and year on year",
+   "observable": true,
+   "why": "computed here from the quarterly panel",
+   "source_needed": null
+  },
+  {
+   "id": "quarterly_pat",
+   "direction": "both",
+   "watch": "Aggregate quarterly PAT growth \u2014 the exit rate, not the annual average",
+   "observable": true,
+   "why": "computed here",
+   "source_needed": null
+  },
+  {
+   "id": "it_services",
+   "direction": "against",
+   "watch": "IT pricing resets and deal repricing \u2014 13.0% of index weight with every constituent already failing the delivered-growth screen",
+   "observable": true,
+   "why": "delivery_history covers all five IT names; the it_ai_deflation factor tracks the qualitative side",
+   "source_needed": null
+  },
+  {
+   "id": "commodity_costs",
+   "direction": "both",
+   "watch": "Crude \u2014 input cost for FMCG, paints, autos, and the CAD channel",
+   "observable": true,
+   "why": "price_bars CRUDEOIL (WTI, not Brent \u2014 correction C6), and per-stock oil betas in oil_impact.json",
+   "source_needed": null
+  },
+  {
+   "id": "bank_credit_growth",
+   "direction": "for",
+   "watch": "System credit growth and NIM direction \u2014 financials are ~35% of index weight",
+   "observable": false,
+   "why": "no RBI credit series in this repo; bank_view_data.py covers valuation, not system aggregates",
+   "source_needed": "RBI weekly statistical supplement"
+  },
+  {
+   "id": "capex_cycle",
+   "direction": "for",
+   "watch": "Order books and capex announcements in capital goods and infrastructure",
+   "observable": false,
+   "why": "no order-book series; only the curated drivers file",
+   "source_needed": "company order-inflow disclosures"
+  },
+  {
+   "id": "domestic_demand",
+   "direction": "against",
+   "watch": "Volume growth in consumption names versus price-led growth",
+   "observable": false,
+   "why": "sales are captured but not volume/price split",
+   "source_needed": "management commentary, per-company"
+  }
+ ],
+ "channels_observable": 4,
+ "note": "The gap between L1 and L2 IS the research question. Everything the news agent reads should be sorted by whether it bears on that gap; an article that does not touch a channel is not evidence about the index, however loud it is.",
+ "caveats": [
+  "Constant constituents \u2014 today's Nifty 50 back-cast. Names that entered the index by growing make the historical series look better than the index of the day actually was.",
+  "The quarterly panel starts at the March 2024 quarter, so there are nine complete quarters and five YoY observations. A deceleration visible across five points is suggestive of a trend and is not a tested one.",
+  "The margin series excludes financials in substance \u2014 banks and NBFCs have no meaningful sales line \u2014 while financials are ~35% of index weight.",
+  "The keyword tagger is a filter, never a score. It returns candidates for a human or LLM pass and marks every hit `confidence: keyword`."
+ ]
+}

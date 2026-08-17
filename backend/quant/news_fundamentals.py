@@ -301,6 +301,12 @@ def extract_reported_growth(text: str) -> Optional[float]:
     return None
 
 
+try:
+    from earnings_acceleration import classify as _classify_evidence
+except Exception:      # the bridge must survive the tracker being absent or broken
+    _classify_evidence = None
+
+
 def enrich_articles(articles: list[dict], ctx: Optional[dict] = None) -> list[dict]:
     """Attach fundamental context and the hurdle verdict to tagged articles.
 
@@ -314,6 +320,18 @@ def enrich_articles(articles: list[dict], ctx: Optional[dict] = None) -> list[di
     """
     ctx = ctx if ctx is not None else fundamental_context()
     for a in articles:
+        # Does this article bear on the one open index-level hypothesis (H-EARN-ACCEL:
+        # does aggregate Nifty-50 earnings growth reaccelerate from its ~3.7% quarterly
+        # run-rate toward the 12-14% the sell side assumes)? Tagged BEFORE the
+        # constituent check on purpose: the evidence that moves an index-earnings
+        # hypothesis is often macro — credit growth, crude, estimate revisions — and
+        # names no constituent at all. Returns [] for most articles, which is correct.
+        if _classify_evidence is not None:
+            hits = _classify_evidence(
+                f"{a.get('title','')} {a.get('description','') or a.get('body','')}")
+            if hits:
+                a["index_evidence"] = hits
+
         syms = [c.get("symbol") for c in (a.get("constituents") or []) if c.get("symbol")]
         if not syms:
             continue

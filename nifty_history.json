@@ -1,0 +1,1548 @@
+{
+ "as_of": "2026-08-16",
+ "sector_matrix": {
+  "fy_labels": [
+   "FY19",
+   "FY20",
+   "FY21",
+   "FY22",
+   "FY23",
+   "FY24",
+   "FY25",
+   "FY26"
+  ],
+  "rows": [
+   {
+    "sector": "Financial Services",
+    "n": 10,
+    "contrib_pp": [
+     5.6,
+     7.13,
+     9.0,
+     10.05,
+     7.96,
+     10.46,
+     4.67,
+     2.4
+    ],
+    "share_latest_pct": 33.9
+   },
+   {
+    "sector": "Oil & Gas",
+    "n": 2,
+    "contrib_pp": [
+     4.4,
+     -6.23,
+     5.42,
+     11.63,
+     -0.76,
+     2.85,
+     -1.84,
+     2.07
+    ],
+    "share_latest_pct": 14.5
+   },
+   {
+    "sector": "Information Technology",
+    "n": 5,
+    "contrib_pp": [
+     2.91,
+     1.08,
+     1.56,
+     3.87,
+     1.02,
+     0.68,
+     1.26,
+     0.41
+    ],
+    "share_latest_pct": 13.4
+   },
+   {
+    "sector": "Metals & Mining",
+    "n": 5,
+    "contrib_pp": [
+     2.95,
+     -4.47,
+     1.88,
+     17.16,
+     -6.55,
+     -0.35,
+     1.46,
+     2.73
+    ],
+    "share_latest_pct": 10.3
+   },
+   {
+    "sector": "Automobile",
+    "n": 4,
+    "contrib_pp": [
+     -0.54,
+     -2.26,
+     -0.15,
+     1.68,
+     1.69,
+     1.54,
+     0.43,
+     1.08
+    ],
+    "share_latest_pct": 5.7
+   },
+   {
+    "sector": "Power",
+    "n": 2,
+    "contrib_pp": [
+     1.85,
+     -0.35,
+     1.42,
+     1.95,
+     -0.22,
+     0.69,
+     0.37,
+     0.51
+    ],
+    "share_latest_pct": 5.1
+   },
+   {
+    "sector": "FMCG",
+    "n": 3,
+    "contrib_pp": [
+     0.76,
+     1.08,
+     -0.18,
+     0.87,
+     1.01,
+     0.23,
+     2.11,
+     -1.19
+    ],
+    "share_latest_pct": 4.4
+   },
+   {
+    "sector": "Telecommunication",
+    "n": 1,
+    "contrib_pp": [
+     -0.25,
+     -10.16,
+     6.07,
+     5.52,
+     0.76,
+     -0.15,
+     3.73,
+     -0.87
+    ],
+    "share_latest_pct": 3.2
+   },
+   {
+    "sector": "Healthcare",
+    "n": 5,
+    "contrib_pp": [
+     0.67,
+     0.46,
+     -0.21,
+     0.67,
+     1.49,
+     0.6,
+     0.45,
+     -0.18
+    ],
+    "share_latest_pct": 2.7
+   },
+   {
+    "sector": "Construction",
+    "n": 1,
+    "contrib_pp": [
+     0.56,
+     0.2,
+     0.72,
+     -0.83,
+     0.33,
+     0.44,
+     0.28,
+     0.13
+    ],
+    "share_latest_pct": 1.9
+   },
+   {
+    "sector": "Cement",
+    "n": 2,
+    "contrib_pp": [
+     -0.3,
+     1.89,
+     -0.14,
+     1.46,
+     -0.56,
+     0.13,
+     -0.41,
+     0.43
+    ],
+    "share_latest_pct": 1.6
+   },
+   {
+    "sector": "Consumer Durables",
+    "n": 3,
+    "contrib_pp": [
+     0.15,
+     0.21,
+     -0.13,
+     0.38,
+     0.46,
+     0.45,
+     -0.27,
+     0.33
+    ],
+    "share_latest_pct": 1.3
+   },
+   {
+    "sector": "Services",
+    "n": 2,
+    "contrib_pp": [
+     -0.65,
+     -0.19,
+     -1.54,
+     -0.13,
+     1.16,
+     1.93,
+     0.3,
+     -1.01
+    ],
+    "share_latest_pct": 1.2
+   },
+   {
+    "sector": "Capital Goods",
+    "n": 1,
+    "contrib_pp": [
+     0.17,
+     -0.02,
+     0.1,
+     0.09,
+     0.11,
+     0.17,
+     0.19,
+     0.09
+    ],
+    "share_latest_pct": 0.7
+   },
+   {
+    "sector": "Consumer Services",
+    "n": 1,
+    "contrib_pp": [
+     -0.32,
+     -0.44,
+     0.55,
+     -0.11,
+     0.04,
+     0.23,
+     0.03,
+     -0.02
+    ],
+    "share_latest_pct": 0.0
+   }
+  ],
+  "index_growth_pp": [
+   17.96,
+   -12.07,
+   24.37,
+   54.26,
+   7.94,
+   19.9,
+   12.76,
+   6.91
+  ],
+  "panel": 47,
+  "note": "Contribution, not share. Rows sum exactly to index growth \u2014 that is what makes it a decomposition. Constant constituents: today's Nifty 50 back-cast, so sectors that entered the index by growing are flattered."
+ },
+ "cycle": {
+  "monthly": [
+   {
+    "m": "2018-01",
+    "close": 11028.0
+   },
+   {
+    "m": "2018-02",
+    "close": 10493.0
+   },
+   {
+    "m": "2018-03",
+    "close": 10114.0
+   },
+   {
+    "m": "2018-04",
+    "close": 10739.0
+   },
+   {
+    "m": "2018-05",
+    "close": 10736.0
+   },
+   {
+    "m": "2018-06",
+    "close": 10714.0
+   },
+   {
+    "m": "2018-07",
+    "close": 11356.0
+   },
+   {
+    "m": "2018-08",
+    "close": 11680.0
+   },
+   {
+    "m": "2018-09",
+    "close": 10930.0
+   },
+   {
+    "m": "2018-10",
+    "close": 10387.0
+   },
+   {
+    "m": "2018-11",
+    "close": 10877.0
+   },
+   {
+    "m": "2018-12",
+    "close": 10863.0
+   },
+   {
+    "m": "2019-01",
+    "close": 10831.0
+   },
+   {
+    "m": "2019-02",
+    "close": 10792.0
+   },
+   {
+    "m": "2019-03",
+    "close": 11570.0
+   },
+   {
+    "m": "2019-04",
+    "close": 11748.0
+   },
+   {
+    "m": "2019-05",
+    "close": 11923.0
+   },
+   {
+    "m": "2019-06",
+    "close": 11789.0
+   },
+   {
+    "m": "2019-07",
+    "close": 11118.0
+   },
+   {
+    "m": "2019-08",
+    "close": 11023.0
+   },
+   {
+    "m": "2019-09",
+    "close": 11474.0
+   },
+   {
+    "m": "2019-10",
+    "close": 11877.0
+   },
+   {
+    "m": "2019-11",
+    "close": 12056.0
+   },
+   {
+    "m": "2019-12",
+    "close": 12168.0
+   },
+   {
+    "m": "2020-01",
+    "close": 11962.0
+   },
+   {
+    "m": "2020-02",
+    "close": 11202.0
+   },
+   {
+    "m": "2020-03",
+    "close": 8598.0
+   },
+   {
+    "m": "2020-04",
+    "close": 9860.0
+   },
+   {
+    "m": "2020-05",
+    "close": 9580.0
+   },
+   {
+    "m": "2020-06",
+    "close": 10302.0
+   },
+   {
+    "m": "2020-07",
+    "close": 11073.0
+   },
+   {
+    "m": "2020-08",
+    "close": 11388.0
+   },
+   {
+    "m": "2020-09",
+    "close": 11248.0
+   },
+   {
+    "m": "2020-10",
+    "close": 11642.0
+   },
+   {
+    "m": "2020-11",
+    "close": 12969.0
+   },
+   {
+    "m": "2020-12",
+    "close": 13982.0
+   },
+   {
+    "m": "2021-01",
+    "close": 13635.0
+   },
+   {
+    "m": "2021-02",
+    "close": 14529.0
+   },
+   {
+    "m": "2021-03",
+    "close": 14691.0
+   },
+   {
+    "m": "2021-04",
+    "close": 14631.0
+   },
+   {
+    "m": "2021-05",
+    "close": 15583.0
+   },
+   {
+    "m": "2021-06",
+    "close": 15722.0
+   },
+   {
+    "m": "2021-07",
+    "close": 15763.0
+   },
+   {
+    "m": "2021-08",
+    "close": 17132.0
+   },
+   {
+    "m": "2021-09",
+    "close": 17618.0
+   },
+   {
+    "m": "2021-10",
+    "close": 17672.0
+   },
+   {
+    "m": "2021-11",
+    "close": 16983.0
+   },
+   {
+    "m": "2021-12",
+    "close": 17354.0
+   },
+   {
+    "m": "2022-01",
+    "close": 17340.0
+   },
+   {
+    "m": "2022-02",
+    "close": 16794.0
+   },
+   {
+    "m": "2022-03",
+    "close": 17465.0
+   },
+   {
+    "m": "2022-04",
+    "close": 17103.0
+   },
+   {
+    "m": "2022-05",
+    "close": 16585.0
+   },
+   {
+    "m": "2022-06",
+    "close": 15780.0
+   },
+   {
+    "m": "2022-07",
+    "close": 17158.0
+   },
+   {
+    "m": "2022-08",
+    "close": 17759.0
+   },
+   {
+    "m": "2022-09",
+    "close": 17094.0
+   },
+   {
+    "m": "2022-10",
+    "close": 18012.0
+   },
+   {
+    "m": "2022-11",
+    "close": 18758.0
+   },
+   {
+    "m": "2022-12",
+    "close": 18105.0
+   },
+   {
+    "m": "2023-01",
+    "close": 17662.0
+   },
+   {
+    "m": "2023-02",
+    "close": 17304.0
+   },
+   {
+    "m": "2023-03",
+    "close": 17360.0
+   },
+   {
+    "m": "2023-04",
+    "close": 18065.0
+   },
+   {
+    "m": "2023-05",
+    "close": 18534.0
+   },
+   {
+    "m": "2023-06",
+    "close": 19189.0
+   },
+   {
+    "m": "2023-07",
+    "close": 19754.0
+   },
+   {
+    "m": "2023-08",
+    "close": 19254.0
+   },
+   {
+    "m": "2023-09",
+    "close": 19638.0
+   },
+   {
+    "m": "2023-10",
+    "close": 19080.0
+   },
+   {
+    "m": "2023-11",
+    "close": 20133.0
+   },
+   {
+    "m": "2023-12",
+    "close": 21731.0
+   },
+   {
+    "m": "2024-01",
+    "close": 21726.0
+   },
+   {
+    "m": "2024-02",
+    "close": 21983.0
+   },
+   {
+    "m": "2024-03",
+    "close": 22327.0
+   },
+   {
+    "m": "2024-04",
+    "close": 22605.0
+   },
+   {
+    "m": "2024-05",
+    "close": 22531.0
+   },
+   {
+    "m": "2024-06",
+    "close": 24011.0
+   },
+   {
+    "m": "2024-07",
+    "close": 24951.0
+   },
+   {
+    "m": "2024-08",
+    "close": 25236.0
+   },
+   {
+    "m": "2024-09",
+    "close": 25811.0
+   },
+   {
+    "m": "2024-10",
+    "close": 24205.0
+   },
+   {
+    "m": "2024-11",
+    "close": 24131.0
+   },
+   {
+    "m": "2024-12",
+    "close": 23645.0
+   },
+   {
+    "m": "2025-01",
+    "close": 23508.0
+   },
+   {
+    "m": "2025-02",
+    "close": 22125.0
+   },
+   {
+    "m": "2025-03",
+    "close": 23519.0
+   },
+   {
+    "m": "2025-04",
+    "close": 24334.0
+   },
+   {
+    "m": "2025-05",
+    "close": 24751.0
+   },
+   {
+    "m": "2025-06",
+    "close": 25517.0
+   },
+   {
+    "m": "2025-07",
+    "close": 24768.0
+   },
+   {
+    "m": "2025-08",
+    "close": 24427.0
+   },
+   {
+    "m": "2025-09",
+    "close": 24611.0
+   },
+   {
+    "m": "2025-10",
+    "close": 25722.0
+   },
+   {
+    "m": "2025-11",
+    "close": 26203.0
+   },
+   {
+    "m": "2025-12",
+    "close": 26130.0
+   },
+   {
+    "m": "2026-01",
+    "close": 25321.0
+   },
+   {
+    "m": "2026-02",
+    "close": 25179.0
+   },
+   {
+    "m": "2026-03",
+    "close": 22331.0
+   },
+   {
+    "m": "2026-04",
+    "close": 23998.0
+   },
+   {
+    "m": "2026-05",
+    "close": 23548.0
+   },
+   {
+    "m": "2026-06",
+    "close": 23866.0
+   },
+   {
+    "m": "2026-07",
+    "close": 24384.0
+   },
+   {
+    "m": "2026-08",
+    "close": 24366.0
+   }
+  ],
+  "publications": [
+   {
+    "fy": "FY18",
+    "published": "2018-07-01",
+    "month_index": 6,
+    "index_eps": 385.0,
+    "yoy_pct": null
+   },
+   {
+    "fy": "FY19",
+    "published": "2019-07-01",
+    "month_index": 18,
+    "index_eps": 454.0,
+    "yoy_pct": 18.0
+   },
+   {
+    "fy": "FY20",
+    "published": "2020-07-01",
+    "month_index": 30,
+    "index_eps": 399.0,
+    "yoy_pct": -12.1
+   },
+   {
+    "fy": "FY21",
+    "published": "2021-07-01",
+    "month_index": 42,
+    "index_eps": 496.0,
+    "yoy_pct": 24.4
+   },
+   {
+    "fy": "FY22",
+    "published": "2022-07-01",
+    "month_index": 54,
+    "index_eps": 766.0,
+    "yoy_pct": 54.3
+   },
+   {
+    "fy": "FY23",
+    "published": "2023-07-01",
+    "month_index": 66,
+    "index_eps": 827.0,
+    "yoy_pct": 8.0
+   },
+   {
+    "fy": "FY24",
+    "published": "2024-07-01",
+    "month_index": 78,
+    "index_eps": 991.0,
+    "yoy_pct": 19.9
+   },
+   {
+    "fy": "FY25",
+    "published": "2025-07-01",
+    "month_index": 90,
+    "index_eps": 1118.0,
+    "yoy_pct": 12.7
+   },
+   {
+    "fy": "FY26",
+    "published": "2026-07-01",
+    "month_index": 102,
+    "index_eps": 1195.0,
+    "yoy_pct": 6.9
+   }
+  ],
+  "quarterly": [
+   {
+    "period": "2024-06-30",
+    "yoy_pct": 5.7,
+    "panel": 47,
+    "month_index": 77
+   },
+   {
+    "period": "2024-09-30",
+    "yoy_pct": 9.1,
+    "panel": 47,
+    "month_index": 80
+   },
+   {
+    "period": "2024-12-31",
+    "yoy_pct": 14.4,
+    "panel": 47,
+    "month_index": 83
+   },
+   {
+    "period": "2025-03-31",
+    "yoy_pct": 18.8,
+    "panel": 47,
+    "month_index": 86
+   },
+   {
+    "period": "2025-06-30",
+    "yoy_pct": 13.1,
+    "panel": 47,
+    "month_index": 89
+   },
+   {
+    "period": "2025-09-30",
+    "yoy_pct": 9.7,
+    "panel": 47,
+    "month_index": 92
+   },
+   {
+    "period": "2025-12-31",
+    "yoy_pct": 4.5,
+    "panel": 47,
+    "month_index": 95
+   },
+   {
+    "period": "2026-03-31",
+    "yoy_pct": 2.5,
+    "panel": 47,
+    "month_index": 98
+   },
+   {
+    "period": "2026-06-30",
+    "yoy_pct": 7.1,
+    "panel": 47,
+    "month_index": 101
+   }
+  ],
+  "ttm": [
+   {
+    "period": "2024-03-31",
+    "panel": 47,
+    "ttm_profit_cr": 704396.0
+   },
+   {
+    "period": "2024-06-30",
+    "panel": 47,
+    "ttm_profit_cr": 714554.0,
+    "increment_cr": 10158.0
+   },
+   {
+    "period": "2024-09-30",
+    "panel": 47,
+    "ttm_profit_cr": 729411.0,
+    "increment_cr": 14857.0
+   },
+   {
+    "period": "2024-12-31",
+    "panel": 47,
+    "ttm_profit_cr": 754325.0,
+    "increment_cr": 24914.0
+   },
+   {
+    "period": "2025-03-31",
+    "panel": 47,
+    "ttm_profit_cr": 790340.0,
+    "increment_cr": 36015.0
+   },
+   {
+    "period": "2025-06-30",
+    "panel": 47,
+    "ttm_profit_cr": 814758.0,
+    "increment_cr": 24418.0
+   },
+   {
+    "period": "2025-09-30",
+    "panel": 47,
+    "ttm_profit_cr": 832051.0,
+    "increment_cr": 17293.0
+   },
+   {
+    "period": "2025-12-31",
+    "panel": 47,
+    "ttm_profit_cr": 840980.0,
+    "increment_cr": 8929.0
+   },
+   {
+    "period": "2026-03-31",
+    "panel": 47,
+    "ttm_profit_cr": 846654.0,
+    "increment_cr": 5674.0
+   },
+   {
+    "period": "2026-06-30",
+    "panel": 47,
+    "ttm_profit_cr": 861688.0,
+    "increment_cr": 15034.0
+   }
+  ],
+  "quarterly_source": "attributable_panel.json (EPS x shares, all reporters)",
+  "ttm_note": "Quarters where the reporting panel is smaller than the annual panel are omitted entirely rather than plotted \u2014 a drop in coverage would otherwise read as a collapse in profit."
+ },
+ "window_2026": {
+  "points": [
+   {
+    "d": "2026-01-01",
+    "nifty": 26147.0,
+    "wti": 57.4,
+    "fii_net_short": 143926
+   },
+   {
+    "d": "2026-01-08",
+    "nifty": 25877.0,
+    "wti": 57.8,
+    "fii_net_short": 167347
+   },
+   {
+    "d": "2026-01-16",
+    "nifty": 25694.0,
+    "wti": 59.4,
+    "fii_net_short": 190375
+   },
+   {
+    "d": "2026-01-23",
+    "nifty": 25049.0,
+    "wti": 61.1,
+    "fii_net_short": 227533
+   },
+   {
+    "d": "2026-02-02",
+    "nifty": 25088.0,
+    "wti": 62.1,
+    "fii_net_short": 197139
+   },
+   {
+    "d": "2026-02-09",
+    "nifty": 25867.0,
+    "wti": 64.4,
+    "fii_net_short": 145919
+   },
+   {
+    "d": "2026-02-16",
+    "nifty": 25683.0,
+    "wti": 62.9,
+    "fii_net_short": 145138
+   },
+   {
+    "d": "2026-02-23",
+    "nifty": 25713.0,
+    "wti": 66.3,
+    "fii_net_short": 129085
+   },
+   {
+    "d": "2026-03-02",
+    "nifty": 24866.0,
+    "wti": 71.2,
+    "fii_net_short": 144473
+   },
+   {
+    "d": "2026-03-10",
+    "nifty": 24262.0,
+    "wti": 83.4,
+    "fii_net_short": 187070
+   },
+   {
+    "d": "2026-03-17",
+    "nifty": 23581.0,
+    "wti": 96.2,
+    "fii_net_short": 240775
+   },
+   {
+    "d": "2026-03-24",
+    "nifty": 22912.0,
+    "wti": 92.3,
+    "fii_net_short": 248712
+   },
+   {
+    "d": "2026-04-02",
+    "nifty": 22713.0,
+    "wti": 111.5,
+    "fii_net_short": 268020
+   },
+   {
+    "d": "2026-04-10",
+    "nifty": 24051.0,
+    "wti": 96.6,
+    "fii_net_short": 206227
+   },
+   {
+    "d": "2026-04-20",
+    "nifty": 24365.0,
+    "wti": 89.6,
+    "fii_net_short": 189761
+   },
+   {
+    "d": "2026-04-27",
+    "nifty": 24093.0,
+    "wti": 96.4,
+    "fii_net_short": 205981
+   },
+   {
+    "d": "2026-05-05",
+    "nifty": 24033.0,
+    "wti": 102.3,
+    "fii_net_short": 198133
+   },
+   {
+    "d": "2026-05-12",
+    "nifty": 23380.0,
+    "wti": 102.2,
+    "fii_net_short": 237144
+   },
+   {
+    "d": "2026-05-19",
+    "nifty": 23618.0,
+    "wti": 107.8,
+    "fii_net_short": 216280
+   },
+   {
+    "d": "2026-05-26",
+    "nifty": 23914.0,
+    "wti": 93.9,
+    "fii_net_short": 152865
+   },
+   {
+    "d": "2026-06-03",
+    "nifty": 23406.0,
+    "wti": 96.0,
+    "fii_net_short": 259253
+   },
+   {
+    "d": "2026-06-10",
+    "nifty": 23215.0,
+    "wti": 90.0,
+    "fii_net_short": 271979
+   },
+   {
+    "d": "2026-06-17",
+    "nifty": 24086.0,
+    "wti": 76.8,
+    "fii_net_short": 224688
+   },
+   {
+    "d": "2026-06-24",
+    "nifty": 24022.0,
+    "wti": 70.3,
+    "fii_net_short": 229053
+   },
+   {
+    "d": "2026-07-02",
+    "nifty": 24176.0,
+    "wti": 68.7,
+    "fii_net_short": 256900
+   },
+   {
+    "d": "2026-07-09",
+    "nifty": 23963.0,
+    "wti": 72.1,
+    "fii_net_short": 266251
+   },
+   {
+    "d": "2026-07-16",
+    "nifty": 24073.0,
+    "wti": 78.9,
+    "fii_net_short": 249886
+   },
+   {
+    "d": "2026-07-23",
+    "nifty": 23870.0,
+    "wti": 92.2,
+    "fii_net_short": 263082
+   },
+   {
+    "d": "2026-07-30",
+    "nifty": 24317.0,
+    "wti": 83.6,
+    "fii_net_short": 186612
+   },
+   {
+    "d": "2026-08-06",
+    "nifty": 24636.0,
+    "wti": 77.3,
+    "fii_net_short": 145118
+   },
+   {
+    "d": "2026-08-13",
+    "nifty": 24396.0,
+    "wti": 81.2,
+    "fii_net_short": 165169
+   },
+   {
+    "d": "2026-08-14",
+    "nifty": 24366.0,
+    "wti": 81.6,
+    "fii_net_short": 165169
+   }
+  ],
+  "from": "2026-01-01",
+  "to": "2026-08-14",
+  "nifty_low": {
+   "d": "2026-04-02",
+   "nifty": 22713.0,
+   "wti": 111.5,
+   "fii_net_short": 268020
+  },
+  "fii_short_peak": {
+   "d": "2026-06-10",
+   "nifty": 23215.0,
+   "wti": 90.0,
+   "fii_net_short": 271979
+  },
+  "eps_frozen_at": 1118,
+  "note": "No annual result was published between 2025-07-01 and 2026-07-01, so the earnings denominator in the price was constant across this window. Every point of index movement here is the multiple. That is what makes it a natural experiment for the valuation channel \u2014 it is NOT a claim that crude caused it; geopolitics, FX and global risk appetite all moved together.",
+  "scales_note": "Series are reported as ABSOLUTE levels for stacked panels. They must not be overlaid on one axis: index points, dollars and contract counts share no scale, and giving each its own axis lets the choice of bounds decide where the lines appear to cross."
+ },
+ "flows": {
+  "available": true,
+  "first": "2026-06-18",
+  "last": "2026-08-13",
+  "sessions": 38,
+  "fii": {
+   "gross_buy_cr": 591528.0,
+   "gross_sell_cr": 594189.0,
+   "net_cr": -2661.0,
+   "gross_turnover_cr": 1185717.0,
+   "net_over_gross_pct": 0.22,
+   "daily_ratio_median_pct": 3.79
+  },
+  "dii": {
+   "gross_buy_cr": 720180.0,
+   "gross_sell_cr": 649835.0,
+   "net_cr": 70345.0,
+   "gross_turnover_cr": 1370015.0,
+   "net_over_gross_pct": 5.13
+  },
+  "daily": [
+   {
+    "d": "2026-06-18",
+    "fii_buy": 31442.87,
+    "fii_sell": 26583.8,
+    "fii_net": 4859.0,
+    "dii_net": -1160.0
+   },
+   {
+    "d": "2026-06-22",
+    "fii_buy": 15396.07,
+    "fii_sell": 15378.21,
+    "fii_net": 18.0,
+    "dii_net": 680.0
+   },
+   {
+    "d": "2026-06-23",
+    "fii_buy": 16744.73,
+    "fii_sell": 18588.13,
+    "fii_net": -1843.0,
+    "dii_net": 3637.0
+   },
+   {
+    "d": "2026-06-24",
+    "fii_buy": 18988.03,
+    "fii_sell": 18604.27,
+    "fii_net": 384.0,
+    "dii_net": 5748.0
+   },
+   {
+    "d": "2026-06-29",
+    "fii_buy": 24754.26,
+    "fii_sell": 26104.36,
+    "fii_net": -1350.0,
+    "dii_net": 2801.0
+   },
+   {
+    "d": "2026-06-30",
+    "fii_buy": 23273.71,
+    "fii_sell": 25830.46,
+    "fii_net": -2557.0,
+    "dii_net": 6842.0
+   },
+   {
+    "d": "2026-07-01",
+    "fii_buy": 11623.31,
+    "fii_sell": 12763.81,
+    "fii_net": -1140.0,
+    "dii_net": 3159.0
+   },
+   {
+    "d": "2026-07-02",
+    "fii_buy": 14018.4,
+    "fii_sell": 14330.22,
+    "fii_net": -312.0,
+    "dii_net": 1784.0
+   },
+   {
+    "d": "2026-07-03",
+    "fii_buy": 13337.33,
+    "fii_sell": 11982.0,
+    "fii_net": 1355.0,
+    "dii_net": -1954.0
+   },
+   {
+    "d": "2026-07-06",
+    "fii_buy": 11686.1,
+    "fii_sell": 11443.07,
+    "fii_net": 243.0,
+    "dii_net": 3791.0
+   },
+   {
+    "d": "2026-07-07",
+    "fii_buy": 18414.01,
+    "fii_sell": 18020.82,
+    "fii_net": 393.0,
+    "dii_net": -383.0
+   },
+   {
+    "d": "2026-07-08",
+    "fii_buy": 17463.95,
+    "fii_sell": 15501.15,
+    "fii_net": 1963.0,
+    "dii_net": 790.0
+   },
+   {
+    "d": "2026-07-09",
+    "fii_buy": 14388.41,
+    "fii_sell": 14921.27,
+    "fii_net": -533.0,
+    "dii_net": 2058.0
+   },
+   {
+    "d": "2026-07-10",
+    "fii_buy": 15318.07,
+    "fii_sell": 12714.35,
+    "fii_net": 2604.0,
+    "dii_net": 2020.0
+   },
+   {
+    "d": "2026-07-13",
+    "fii_buy": 10386.48,
+    "fii_sell": 13448.75,
+    "fii_net": -3062.0,
+    "dii_net": 2172.0
+   },
+   {
+    "d": "2026-07-14",
+    "fii_buy": 12763.43,
+    "fii_sell": 13503.12,
+    "fii_net": -740.0,
+    "dii_net": 2928.0
+   },
+   {
+    "d": "2026-07-15",
+    "fii_buy": 13207.46,
+    "fii_sell": 13943.29,
+    "fii_net": -736.0,
+    "dii_net": 705.0
+   },
+   {
+    "d": "2026-07-16",
+    "fii_buy": 13576.08,
+    "fii_sell": 17781.64,
+    "fii_net": -4206.0,
+    "dii_net": 2986.0
+   },
+   {
+    "d": "2026-07-17",
+    "fii_buy": 14393.77,
+    "fii_sell": 14770.18,
+    "fii_net": -376.0,
+    "dii_net": 1018.0
+   },
+   {
+    "d": "2026-07-20",
+    "fii_buy": 13312.67,
+    "fii_sell": 14433.71,
+    "fii_net": -1121.0,
+    "dii_net": 1312.0
+   },
+   {
+    "d": "2026-07-21",
+    "fii_buy": 16327.88,
+    "fii_sell": 14677.72,
+    "fii_net": 1650.0,
+    "dii_net": -657.0
+   },
+   {
+    "d": "2026-07-22",
+    "fii_buy": 12889.82,
+    "fii_sell": 13709.02,
+    "fii_net": -819.0,
+    "dii_net": -418.0
+   },
+   {
+    "d": "2026-07-23",
+    "fii_buy": 11472.08,
+    "fii_sell": 14471.31,
+    "fii_net": -2999.0,
+    "dii_net": 2947.0
+   },
+   {
+    "d": "2026-07-24",
+    "fii_buy": 11123.86,
+    "fii_sell": 15016.63,
+    "fii_net": -3893.0,
+    "dii_net": 5454.0
+   },
+   {
+    "d": "2026-07-27",
+    "fii_buy": 11695.95,
+    "fii_sell": 13384.18,
+    "fii_net": -1688.0,
+    "dii_net": 2329.0
+   },
+   {
+    "d": "2026-07-28",
+    "fii_buy": 17530.97,
+    "fii_sell": 16775.64,
+    "fii_net": 755.0,
+    "dii_net": 1664.0
+   },
+   {
+    "d": "2026-07-29",
+    "fii_buy": 17358.31,
+    "fii_sell": 14376.44,
+    "fii_net": 2982.0,
+    "dii_net": 998.0
+   },
+   {
+    "d": "2026-07-30",
+    "fii_buy": 17431.96,
+    "fii_sell": 13808.45,
+    "fii_net": 3624.0,
+    "dii_net": -1864.0
+   },
+   {
+    "d": "2026-07-31",
+    "fii_buy": 19045.51,
+    "fii_sell": 18768.03,
+    "fii_net": 277.0,
+    "dii_net": 2260.0
+   },
+   {
+    "d": "2026-08-03",
+    "fii_buy": 12621.89,
+    "fii_sell": 11699.63,
+    "fii_net": 922.0,
+    "dii_net": 1571.0
+   },
+   {
+    "d": "2026-08-04",
+    "fii_buy": 15630.45,
+    "fii_sell": 13183.98,
+    "fii_net": 2446.0,
+    "dii_net": -936.0
+   },
+   {
+    "d": "2026-08-05",
+    "fii_buy": 15940.5,
+    "fii_sell": 16883.92,
+    "fii_net": -943.0,
+    "dii_net": 2883.0
+   },
+   {
+    "d": "2026-08-06",
+    "fii_buy": 16161.35,
+    "fii_sell": 16179.21,
+    "fii_net": -18.0,
+    "dii_net": 4014.0
+   },
+   {
+    "d": "2026-08-07",
+    "fii_buy": 12941.31,
+    "fii_sell": 12461.07,
+    "fii_net": 480.0,
+    "dii_net": 236.0
+   },
+   {
+    "d": "2026-08-10",
+    "fii_buy": 13161.56,
+    "fii_sell": 11186.8,
+    "fii_net": 1975.0,
+    "dii_net": -1290.0
+   },
+   {
+    "d": "2026-08-11",
+    "fii_buy": 14628.47,
+    "fii_sell": 14369.92,
+    "fii_net": 259.0,
+    "dii_net": 25.0
+   },
+   {
+    "d": "2026-08-12",
+    "fii_buy": 16584.64,
+    "fii_sell": 17587.14,
+    "fii_net": -1002.0,
+    "dii_net": 5842.0
+   },
+   {
+    "d": "2026-08-13",
+    "fii_buy": 14492.46,
+    "fii_sell": 15003.15,
+    "fii_net": -511.0,
+    "dii_net": 4353.0
+   }
+  ],
+  "index_futures": {
+   "net_min": -279467,
+   "net_max": -87170,
+   "net_over_gross_median_pct": 75.2,
+   "always_same_sign": true
+  },
+  "stock_futures": {
+   "net_min": 496849,
+   "net_max": 1603502,
+   "net_over_gross_median_pct": 20.2,
+   "always_same_sign": true
+  },
+  "positioning_sessions": 245,
+  "note": "Net is a small difference between two very large numbers. Reported beside gross so it cannot be read as a directional signal without seeing what it is a residual OF.",
+  "caveat": "Derivatives figures are CONTRACT COUNTS across different underlyings and are not additive \u2014 the index-short and stock-long legs cannot be netted without lot sizes and prices (open item O12). And the cash table begins 2026-06-18, after the 2026 de-rating ended (O13)."
+ },
+ "panel_integrity": {
+  "count_constant": true,
+  "panel_size": 47,
+  "years": 9,
+  "by_year": {
+   "2018": 47,
+   "2019": 47,
+   "2020": 47,
+   "2021": 47,
+   "2022": 47,
+   "2023": 47,
+   "2024": 47,
+   "2025": 47,
+   "2026": 47
+  },
+  "names_with_corporate_actions": 19,
+  "largest": [
+   {
+    "symbol": "AXISBANK",
+    "years": 3,
+    "detail": [
+     {
+      "fy": "FY18",
+      "share_move_pct": 7.0
+     },
+     {
+      "fy": "FY20",
+      "share_move_pct": 10.0
+     },
+     {
+      "fy": "FY21",
+      "share_move_pct": 9.0
+     }
+    ]
+   },
+   {
+    "symbol": "BHARTIARTL",
+    "years": 3,
+    "detail": [
+     {
+      "fy": "FY20",
+      "share_move_pct": 6.0
+     },
+     {
+      "fy": "FY23",
+      "share_move_pct": 5.0
+     },
+     {
+      "fy": "FY26",
+      "share_move_pct": 7.0
+     }
+    ]
+   },
+   {
+    "symbol": "SHRIRAMFIN",
+    "years": 2,
+    "detail": [
+     {
+      "fy": "FY21",
+      "share_move_pct": 12.0
+     },
+     {
+      "fy": "FY23",
+      "share_move_pct": 38.0
+     }
+    ]
+   },
+   {
+    "symbol": "ZOMATO",
+    "years": 2,
+    "detail": [
+     {
+      "fy": "FY23",
+      "share_move_pct": 9.0
+     },
+     {
+      "fy": "FY25",
+      "share_move_pct": 9.0
+     }
+    ]
+   },
+   {
+    "symbol": "RELIANCE",
+    "years": 2,
+    "detail": [
+     {
+      "fy": "FY21",
+      "share_move_pct": 6.0
+     },
+     {
+      "fy": "FY22",
+      "share_move_pct": 7.0
+     }
+    ]
+   },
+   {
+    "symbol": "WIPRO",
+    "years": 2,
+    "detail": [
+     {
+      "fy": "FY18",
+      "share_move_pct": 7.0
+     },
+     {
+      "fy": "FY20",
+      "share_move_pct": 5.0
+     }
+    ]
+   }
+  ],
+  "verdict": "COUNT is constant \u2014 47 names in all 9 years, nothing enters or leaves mid-series. IDENTITY is not: 19 of 47 names changed share count by more than 5% in at least one year, which means the entity itself changed scope.",
+  "why_it_matters": "The aggregate trajectory reads a merger as growth. HDFC Bank is ~11.6% of the index and absorbed HDFC Ltd in FY24 (+36% shares); Shriram Finance +38% in FY23. Part of the measured profit growth is acquired, not earned. This sits alongside the two biases already disclosed \u2014 constant constituents and restatement \u2014 and all three push the same way, flattering history.",
+  "different_series_different_panels": "Annual 47 names \u00b7 quarterly YoY 47 names (attributable_panel, all reporters) \u00b7 TTM 47 with under-covered quarters excluded. Each is FIXED within itself; the counts differ BETWEEN series because the underlying disclosures differ. Never compare a figure from one panel to a figure from another."
+ },
+ "conclusions": {
+  "survived": [
+   {
+    "id": "H51",
+    "claim": "The annual growth figure describes the trend",
+    "verdict": "MISLEADING",
+    "detail": "FY26 annual growth was 6.9%, but that is the average of a year that decelerated through itself. The quarterly exit rate is 7.1%. TTM increments have decayed 10,158 \u2192 14,857 \u2192 24,914 \u2192 36,015 \u2192 24,418 \u2192 17,293 \u2192 8,929 \u2192 5,674 \u2192 15,034 cr, five steps with no reversal."
+   },
+   {
+    "id": "H59",
+    "claim": "The 2026 drawdown was an earnings event",
+    "verdict": "DEAD \u2014 it was 100% multiple",
+    "detail": "No annual result was published across the window, so the denominator was frozen at 1118. The index fell to 22,713 on 2026-04-02 with earnings unchanged. Year to date: earnings +6.9%, multiple \u221213.4%."
+   },
+   {
+    "id": "H53",
+    "claim": "A below-median multiple reverts upward",
+    "verdict": "DEAD \u2014 it kept falling",
+    "detail": "From a below-median start the multiple ROSE in only 42\u201343% of 6M/1Y windows and 25% of 2Y windows. Cheap-start windows still made money \u2014 through earnings outrunning a still-compressing multiple, not through re-rating."
+   },
+   {
+    "id": "H60",
+    "claim": "Last year's earnings growth predicts next year's",
+    "verdict": "NOT DETECTABLE",
+    "detail": "Annual AR(1) r = \u22120.121 at n = 7 against a minimum detectable |r| of ~0.80. Neither the run-rate nor the historical mean is demonstrably the better estimator, so no lookback window is weighted."
+   },
+   {
+    "id": "H62",
+    "claim": "FII net flow is a directional signal",
+    "verdict": "DEAD \u2014 net is 0.22% of gross",
+    "detail": "Gross buy \u20b9591,528 cr against gross sell \u20b9594,189 cr over 38 sessions. DII run at 5.13% \u2014 an order of magnitude more directional. This is the likeliest reason the FII-predicts-returns battery (H18\u2013H25) found nothing."
+   },
+   {
+    "id": "H63",
+    "claim": "The FII index-futures short is a bearish view",
+    "verdict": "RECONSIDER \u2014 it pairs with a stock-futures LONG",
+    "detail": "Index futures one-sided short on every session observed; stock futures one-sided LONG on every session observed. Long single stocks, short the index \u2014 relative value, not a directional bet. Contract counts are not additive across underlyings, so the combined book is unquantified (O12)."
+   }
+  ],
+  "handoff": [
+   {
+    "input": "Earnings trajectory",
+    "value": "exit rate 7.1%",
+    "carry": "The forecast's growth axis should start from the quarterly exit rate, not the annual average, and should not assume persistence \u2014 H60 says the run-rate has no demonstrated predictive content on its own."
+   },
+   {
+    "input": "Valuation behaviour",
+    "value": "multiple does not mean-revert",
+    "carry": "The exit multiple must be a stated INPUT with its own axis, never a residual and never defaulted to a historical median. H53 and H59 are both against reversion."
+   },
+   {
+    "input": "FII positioning",
+    "value": "net is noise; the book is long-stock / short-index",
+    "carry": "Flows belong in the forecast as a VALUATION input \u2014 they move the multiple, not the earnings \u2014 and headline net flow should not be used at all."
+   }
+  ],
+  "note": "Negative results are load-bearing here. Three of the six findings are things that do NOT work, and they are what keeps the forecast page from quietly assuming mean reversion, extrapolating a run-rate, or treating FII net flow as information."
+ },
+ "note": "Historical measurement only \u2014 no forecast. The forecast artifacts are nifty_outlook.json and earnings_acceleration.json."
+}

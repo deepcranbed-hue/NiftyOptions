@@ -1,0 +1,484 @@
+{
+ "as_of": "2026-08-16",
+ "panel_names": 47,
+ "first_fy": 2018,
+ "last_fy": 2026,
+ "annual": [
+  {
+   "fy": 2019,
+   "avg_wti": 63.0,
+   "crude_change_pct": 0.2,
+   "profit_growth_pct": 18.0
+  },
+  {
+   "fy": 2020,
+   "avg_wti": 54.8,
+   "crude_change_pct": -13.0,
+   "profit_growth_pct": -12.1
+  },
+  {
+   "fy": 2021,
+   "avg_wti": 42.3,
+   "crude_change_pct": -22.8,
+   "profit_growth_pct": 24.4
+  },
+  {
+   "fy": 2022,
+   "avg_wti": 77.1,
+   "crude_change_pct": 82.3,
+   "profit_growth_pct": 54.3
+  },
+  {
+   "fy": 2023,
+   "avg_wti": 89.6,
+   "crude_change_pct": 16.2,
+   "profit_growth_pct": 8.0
+  },
+  {
+   "fy": 2024,
+   "avg_wti": 77.8,
+   "crude_change_pct": -13.2,
+   "profit_growth_pct": 19.9
+  },
+  {
+   "fy": 2025,
+   "avg_wti": 74.4,
+   "crude_change_pct": -4.4,
+   "profit_growth_pct": 12.7
+  },
+  {
+   "fy": 2026,
+   "avg_wti": 65.0,
+   "crude_change_pct": -12.6,
+   "profit_growth_pct": 6.9
+  }
+ ],
+ "correlation": {
+  "r": 0.731,
+  "n": 8,
+  "min_detectable_r": 0.74,
+  "detectable": false,
+  "note": "DIRECT CHANNEL ONLY. Fiscal-year average WTI change against aggregate panel profit growth. The POSITIVE sign is not a mistake: roughly a quarter of index profit comes from crude and commodity producers whose earnings rise with the price. With n=8 the point estimate sits essentially AT the detection threshold, so it establishes nothing in either direction \u2014 it only rules out the assumption that the index-level relationship is obviously negative."
+ },
+ "cohorts": [
+  {
+   "cohort": "other non-financial",
+   "n": 30,
+   "profit_share_first_pct": 54.5,
+   "profit_share_latest_pct": 41.3,
+   "annual_growth_pct": [
+    9.2,
+    -16.9,
+    16.9,
+    34.4,
+    18.7,
+    16.2,
+    20.3,
+    -0.6
+   ],
+   "latest_fy_growth_pct": -0.6,
+   "quarterly_yoy": [
+    {
+     "period": "2025-06-30",
+     "yoy_pct": 6.3,
+     "names": 23
+    },
+    {
+     "period": "2025-09-30",
+     "yoy_pct": 5.7,
+     "names": 23
+    },
+    {
+     "period": "2025-12-31",
+     "yoy_pct": 3.7,
+     "names": 23
+    },
+    {
+     "period": "2026-03-31",
+     "yoy_pct": -11.2,
+     "names": 23
+    },
+    {
+     "period": "2026-06-30",
+     "yoy_pct": 4.5,
+     "names": 23
+    }
+   ],
+   "latest_quarter_yoy_pct": 4.5,
+   "crude_sign": "loses on higher crude",
+   "members": [
+    "ADANIPORTS",
+    "APOLLOHOSP",
+    "ASIANPAINT",
+    "BAJAJ-AUTO",
+    "BEL",
+    "BHARTIARTL",
+    "CIPLA",
+    "DRREDDY",
+    "EICHERMOT",
+    "GRASIM",
+    "HCLTECH",
+    "HINDUNILVR",
+    "INDIGO",
+    "INFY",
+    "ITC",
+    "LT",
+    "M&M",
+    "MARUTI",
+    "MAXHEALTH",
+    "NTPC",
+    "POWERGRID",
+    "SUNPHARMA",
+    "TATACONSUM",
+    "TCS",
+    "TECHM",
+    "TITAN",
+    "TRENT",
+    "ULTRACEMCO",
+    "WIPRO",
+    "ZOMATO"
+   ]
+  },
+  {
+   "cohort": "financials",
+   "n": 10,
+   "profit_share_first_pct": 11.8,
+   "profit_share_latest_pct": 33.9,
+   "annual_growth_pct": [
+    47.5,
+    48.4,
+    36.2,
+    36.9,
+    32.9,
+    35.1,
+    13.9,
+    7.1
+   ],
+   "latest_fy_growth_pct": 7.1,
+   "quarterly_yoy": [
+    {
+     "period": "2025-06-30",
+     "yoy_pct": 4.6,
+     "names": 9
+    },
+    {
+     "period": "2025-09-30",
+     "yoy_pct": 3.5,
+     "names": 9
+    },
+    {
+     "period": "2025-12-31",
+     "yoy_pct": 1.7,
+     "names": 9
+    },
+    {
+     "period": "2026-03-31",
+     "yoy_pct": 10.0,
+     "names": 9
+    },
+    {
+     "period": "2026-06-30",
+     "yoy_pct": 16.2,
+     "names": 9
+    }
+   ],
+   "latest_quarter_yoy_pct": 16.2,
+   "crude_sign": "mixed / second-order",
+   "members": [
+    "AXISBANK",
+    "BAJAJFINSV",
+    "BAJFINANCE",
+    "HDFCBANK",
+    "HDFCLIFE",
+    "ICICIBANK",
+    "KOTAKBANK",
+    "SBILIFE",
+    "SBIN",
+    "SHRIRAMFIN"
+   ]
+  },
+  {
+   "cohort": "energy",
+   "n": 2,
+   "profit_share_first_pct": 21.4,
+   "profit_share_latest_pct": 14.5,
+   "annual_growth_pct": [
+    20.5,
+    -28.5,
+    30.5,
+    62.3,
+    -3.8,
+    16.3,
+    -10.9,
+    15.4
+   ],
+   "latest_fy_growth_pct": 15.4,
+   "quarterly_yoy": [
+    {
+     "period": "2025-06-30",
+     "yoy_pct": 46.5,
+     "names": 2
+    },
+    {
+     "period": "2025-09-30",
+     "yoy_pct": 8.0,
+     "names": 2
+    },
+    {
+     "period": "2025-12-31",
+     "yoy_pct": 5.7,
+     "names": 2
+    },
+    {
+     "period": "2026-03-31",
+     "yoy_pct": 3.5,
+     "names": 2
+    }
+   ],
+   "latest_quarter_yoy_pct": 3.5,
+   "crude_sign": "gains on higher crude",
+   "members": [
+    "ONGC",
+    "RELIANCE"
+   ]
+  },
+  {
+   "cohort": "metals",
+   "n": 5,
+   "profit_share_first_pct": 12.3,
+   "profit_share_latest_pct": 10.3,
+   "annual_growth_pct": [
+    23.9,
+    -34.5,
+    19.5,
+    185.1,
+    -38.3,
+    -3.6,
+    18.5,
+    32.9
+   ],
+   "latest_fy_growth_pct": 32.9,
+   "quarterly_yoy": [
+    {
+     "period": "2025-06-30",
+     "yoy_pct": -1.9,
+     "names": 4
+    },
+    {
+     "period": "2025-09-30",
+     "yoy_pct": 32.0,
+     "names": 4
+    },
+    {
+     "period": "2025-12-31",
+     "yoy_pct": 83.3,
+     "names": 4
+    },
+    {
+     "period": "2026-03-31",
+     "yoy_pct": 84.8,
+     "names": 4
+    },
+    {
+     "period": "2026-06-30",
+     "yoy_pct": 5.1,
+     "names": 4
+    }
+   ],
+   "latest_quarter_yoy_pct": 5.1,
+   "crude_sign": "gains on higher crude",
+   "members": [
+    "ADANIENT",
+    "COALINDIA",
+    "HINDALCO",
+    "JSWSTEEL",
+    "TATASTEEL"
+   ]
+  }
+ ],
+ "annual_contribution_pp": [
+  {
+   "period": "2019-03-31",
+   "total_pp": 17.9,
+   "metals": 2.9,
+   "other non-financial": 5.0,
+   "financials": 5.6,
+   "energy": 4.4
+  },
+  {
+   "period": "2020-03-31",
+   "total_pp": -12.1,
+   "metals": -4.5,
+   "other non-financial": -8.5,
+   "financials": 7.1,
+   "energy": -6.2
+  },
+  {
+   "period": "2021-03-31",
+   "total_pp": 24.4,
+   "metals": 1.9,
+   "other non-financial": 8.1,
+   "financials": 9.0,
+   "energy": 5.4
+  },
+  {
+   "period": "2022-03-31",
+   "total_pp": 54.2,
+   "metals": 17.2,
+   "other non-financial": 15.4,
+   "financials": 10.0,
+   "energy": 11.6
+  },
+  {
+   "period": "2023-03-31",
+   "total_pp": 7.9,
+   "metals": -6.6,
+   "other non-financial": 7.3,
+   "financials": 8.0,
+   "energy": -0.8
+  },
+  {
+   "period": "2024-03-31",
+   "total_pp": 19.9,
+   "metals": -0.4,
+   "other non-financial": 7.0,
+   "financials": 10.5,
+   "energy": 2.8
+  },
+  {
+   "period": "2025-03-31",
+   "total_pp": 12.9,
+   "metals": 1.5,
+   "other non-financial": 8.5,
+   "financials": 4.7,
+   "energy": -1.8
+  },
+  {
+   "period": "2026-03-31",
+   "total_pp": 6.9,
+   "metals": 2.7,
+   "other non-financial": -0.3,
+   "financials": 2.4,
+   "energy": 2.1
+  }
+ ],
+ "quarterly_contribution_pp": [
+  {
+   "period": "2025-06-30",
+   "panel": 37,
+   "total_pp": 12.3,
+   "metals": -0.2,
+   "other non-financial": 2.9,
+   "financials": 1.5,
+   "energy": 8.1
+  },
+  {
+   "period": "2025-09-30",
+   "panel": 37,
+   "total_pp": 7.2,
+   "metals": 2.2,
+   "other non-financial": 2.6,
+   "financials": 1.2,
+   "energy": 1.2
+  },
+  {
+   "period": "2025-12-31",
+   "panel": 37,
+   "total_pp": 7.9,
+   "metals": 5.5,
+   "other non-financial": 1.8,
+   "financials": 0.5,
+   "energy": 0.1
+  },
+  {
+   "period": "2026-03-31",
+   "panel": 37,
+   "total_pp": 3.6,
+   "metals": 7.8,
+   "other non-financial": -5.7,
+   "financials": 2.9,
+   "energy": -1.4
+  },
+  {
+   "period": "2026-06-30",
+   "panel": 37,
+   "total_pp": 3.7,
+   "metals": 0.4,
+   "other non-financial": 2.0,
+   "financials": 5.0,
+   "energy": -3.7
+  }
+ ],
+ "required_to_hit_target": [
+  {
+   "target_index_growth_pct": 10.0,
+   "current_run_rate_pp": 3.7,
+   "shortfall_pp": 6.3,
+   "if_financials_alone_pct": 33.3,
+   "note": "if_financials_alone is the growth rate financials would need if every other cohort simply repeated its latest quarter. It is a bound, not a forecast, and it is deliberately unflattering."
+  },
+  {
+   "target_index_growth_pct": 13.0,
+   "current_run_rate_pp": 3.7,
+   "shortfall_pp": 9.3,
+   "if_financials_alone_pct": 42.1,
+   "note": "if_financials_alone is the growth rate financials would need if every other cohort simply repeated its latest quarter. It is a bound, not a forecast, and it is deliberately unflattering."
+  }
+ ],
+ "contribution_note": "Cohort contributions sum EXACTLY to aggregate growth by construction. Profit share tells you who earns; contribution tells you who moved the number.",
+ "sensitivity_grid": [
+  {
+   "consumer_cohort_hit_pp": 5,
+   "commodity_cohort_gain_pp": 10,
+   "index_earnings_growth_delta_pp": 0.4
+  },
+  {
+   "consumer_cohort_hit_pp": 5,
+   "commodity_cohort_gain_pp": 20,
+   "index_earnings_growth_delta_pp": 2.9
+  },
+  {
+   "consumer_cohort_hit_pp": 5,
+   "commodity_cohort_gain_pp": 30,
+   "index_earnings_growth_delta_pp": 5.4
+  },
+  {
+   "consumer_cohort_hit_pp": 10,
+   "commodity_cohort_gain_pp": 10,
+   "index_earnings_growth_delta_pp": -1.6
+  },
+  {
+   "consumer_cohort_hit_pp": 10,
+   "commodity_cohort_gain_pp": 20,
+   "index_earnings_growth_delta_pp": 0.8
+  },
+  {
+   "consumer_cohort_hit_pp": 10,
+   "commodity_cohort_gain_pp": 30,
+   "index_earnings_growth_delta_pp": 3.3
+  },
+  {
+   "consumer_cohort_hit_pp": 15,
+   "commodity_cohort_gain_pp": 10,
+   "index_earnings_growth_delta_pp": -3.7
+  },
+  {
+   "consumer_cohort_hit_pp": 15,
+   "commodity_cohort_gain_pp": 20,
+   "index_earnings_growth_delta_pp": -1.2
+  },
+  {
+   "consumer_cohort_hit_pp": 15,
+   "commodity_cohort_gain_pp": 30,
+   "index_earnings_growth_delta_pp": 1.2
+  }
+ ],
+ "sensitivity_note": "DIRECT EARNINGS CHANNEL ONLY, AND ARITHMETIC, NOT AN ESTIMATE. This is not the total Nifty impact of crude \u2014 the macro/FX/policy and demand channels are not measured here and either can exceed it. Each row says: if the non-financial non-commodity cohort loses X points of earnings growth and the commodity cohorts gain Y, the profit-share-weighted effect on INDEX earnings growth is Z. X and Y are inputs. This file does not know them and eight annual observations cannot supply them.",
+ "caveats": [
+  "Profit share, not index weight. It is earnings being shocked, so earnings are the right weights \u2014 but they move a lot year to year, and a commodity cohort's share is highest exactly when its earnings peak.",
+  "'Energy' here is ONGC and Reliance. Reliance is a refiner plus retail plus telecom, and a refiner's margin can widen when crude FALLS. Treating it as a simple crude long is wrong, and it is 9.2% of the index.",
+  "Metals track their own cycle, which correlates with crude without being caused by it. The cohort is grouped by sign of commodity exposure, not by a claim that crude drives steel.",
+  "n = 8 annual observations. Every correlation here is under-powered and is printed with its minimum detectable value for that reason.",
+  "Constant constituents and restatement (C22) apply as everywhere else."
+ ]
+}
