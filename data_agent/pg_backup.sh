@@ -75,10 +75,14 @@ fi
 TABLES=$(gzip -dc "$OUT" | grep -cE '^CREATE TABLE ' || true)
 say "OK   ${SIZE} bytes, ${TABLES} tables, ${DATALINES} data statements"
 
-# What was actually captured, so a glance at the log answers "did it get the fundamentals".
+# What was actually captured, so a glance at the log answers "did it get the
+# fundamentals". SCHEMA-QUALIFIED, and that is not cosmetic: `fundamentals` here is a
+# SCHEMA (schema.sql:21), so a bare relname list invites exactly the mistake it caused
+# on 2026-08-17 — reading `financials` and `fundamentals` as sibling tables and
+# "correcting" the register to say O15 had named the wrong one. It had not.
 if command -v psql >/dev/null 2>&1; then
   psql "$DSN" -At -c "
-    SELECT relname || '=' || n_live_tup
+    SELECT schemaname || '.' || relname || '=' || n_live_tup
       FROM pg_stat_user_tables
      WHERE n_live_tup > 0
      ORDER BY n_live_tup DESC LIMIT 12;" 2>/dev/null \
