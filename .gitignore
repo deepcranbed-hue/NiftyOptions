@@ -20,7 +20,13 @@ __pycache__/
 # ...but NOT the exchange contract master. contract_size is stamped from it at capture
 # and freshness.py treats it as blocking, so a 2.9 MB monthly input to STORED data
 # belongs in history. The blanket *.zip rule was hiding it.
-!SecurityMaster.zip
+# ROOT-ANCHORED on purpose. A bare `!SecurityMaster.zip` un-ignores the name at EVERY
+# level, and a second copy exists at data_agent/SecurityMaster.zip (Aug-14, 3.0 MB, newer
+# than the root's Jul-30 but functionally identical: same 622 FUTSTK rows, same lots, same
+# expiries — it differs only in option strikes, which nothing reads from the master).
+# Every consumer reads the ROOT copy: lot_sizes.py, freshness.py, download_fundamentals.py.
+# One canonical location, and the duplicate stays uncommittable.
+!/SecurityMaster.zip
 
 # Environments
 *_env/

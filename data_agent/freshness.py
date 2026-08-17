@@ -349,6 +349,30 @@ def check_scrip_master():
     except Exception:
         pass
 
+    # A DUPLICATE ELSEWHERE IN THE TREE IS WORSE THAN AN OLD FILE, because the age reads
+    # reassuring while a fresher copy sits unused. data_agent/SecurityMaster.zip was exactly
+    # this on 2026-08-17: 15 days newer than the root copy every consumer reads. It happened
+    # to be functionally identical — same 622 FUTSTK rows, same lots, same expiries, differing
+    # only in option strikes that nothing reads from the master — so nothing was wrong. Next
+    # time it need not be, and "18d old" would still have looked fine.
+    dupes = []
+    for base, _dirs, files in os.walk(ROOT):
+        if any(x in base for x in ("_env", "node_modules", ".git", "_trash", "scratch")):
+            continue
+        if "SecurityMaster.zip" in files:
+            q = os.path.join(base, "SecurityMaster.zip")
+            if os.path.abspath(q) != os.path.abspath(p):
+                dupes.append(q)
+    newer = [q for q in dupes if os.path.getmtime(q) > os.path.getmtime(p)]
+    if newer:
+        rel = os.path.relpath(newer[0], ROOT)
+        nd = (dt.date.today()
+              - dt.date.fromtimestamp(os.path.getmtime(newer[0]))).days
+        return DUE, (msg + f" — but {rel} is NEWER ({nd}d). Consumers read the root copy, so "
+                          f"the fresher one is unused. Promote it or delete it; do not keep both")
+    if dupes:
+        msg += f"; {len(dupes)} older duplicate(s) in the tree"
+
     if age is not None and age > 31:
         return DUE, msg
     return OK, msg
