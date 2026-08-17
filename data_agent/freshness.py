@@ -391,6 +391,66 @@ def check_universe():
     return OK, msg
 
 
+def check_futures_bars():
+    """Daily single-stock futures capture. BLOCKING, because a missed day is UNRECOVERABLE.
+
+    Breeze serves no history for settled contracts, so the futures panel can only grow
+    forward, one live contract at a time. A day the job does not run is a hole that cannot
+    be backfilled at any price — the same irreplaceability that makes expectation_snapshots
+    blocking. Nothing published depends on this table today (O12 is closed), but the whole
+    reason for keeping the capture is prospective accumulation, and a silent stop destroys
+    exactly that.
+
+    THE TRADING CALENDAR IS OBSERVED, NOT ASSUMED. universe.py has no holiday table, and
+    inventing one here would be a second calendar to maintain and get wrong — the defect
+    download_stock_futures.py was written to avoid. Instead the reference is price_bars at
+    1d, a different job hitting a different endpoint, whose distinct dates ARE the sessions
+    that happened. That makes the test non-circular and self-adjusting across weekends and
+    holidays with no list to maintain.
+
+    ONE SESSION OF LAG IS CORRECT, NOT LATE. Breeze does not publish the 1d bar for the
+    current session until an overnight batch around 23:30-00:00 IST — verified by querying
+    the endpoint directly on 2026-08-17 and getting bars terminating at 08-14, while 1m bars
+    for 08-17 were already present. So the daily job belongs in the MORNING, collecting the
+    previous session; expecting today's bar during the day would fire a false alarm every
+    afternoon.
+    """
+    import sqlite3
+    db = os.path.join(ROOT, "option_chains.db")
+    if not os.path.exists(db):
+        return WARN, "no database reachable from here"
+    try:
+        con = sqlite3.connect(f"file:{db}?mode=ro", uri=True)
+        fut = con.execute("""select max(date(ts)) from fo_price_bars
+                             where instrument_type='FUT' and timeframe='1d'""").fetchone()[0]
+        ref = [r[0] for r in con.execute(
+            """select distinct date(ts) from price_bars where timeframe='1d'
+               order by 1 desc limit 4""")]
+    except Exception as exc:
+        return WARN, f"cannot read the database ({exc})"
+    if not fut:
+        return DUE, "no 1d futures bars at all"
+    if not ref:
+        return WARN, f"futures reach {fut}; no price_bars reference to compare against"
+
+    # one session of lag is expected; two means a run was missed
+    allowed = ref[1] if len(ref) > 1 else ref[0]
+    n = 0
+    try:
+        con2 = sqlite3.connect(f"file:{db}?mode=ro", uri=True)
+        n = con2.execute("""select count(distinct underlying) from fo_price_bars
+                            where instrument_type='FUT' and timeframe='1d'
+                              and date(ts)=?""", (fut,)).fetchone()[0]
+    except Exception:
+        pass
+    msg = f"latest {fut} on {n} symbols; sessions observed {ref[0]}, {ref[1] if len(ref)>1 else '-'}"
+    if fut < allowed:
+        return DUE, msg + f" — expected {allowed} by now (one session of Breeze batch lag)"
+    if n and n < 45:
+        return DUE, msg + " — partial: fewer than 45 symbols on the latest day"
+    return OK, msg
+
+
 # ---------------------------------------------------------------- registry
 CHECKS = [
     {"name": "attributable_panel.json", "cadence": "quarterly (results season)",
@@ -417,6 +477,12 @@ CHECKS = [
      "fn": check_snapshots, "sev": "blocking",
      "fix": "data_agent/fundamentals/run_expectation_snapshot.sh",
      "why": "the only forward-looking gate, and it gates the revisions channel"},
+    {"name": "fo_price_bars (FUT 1d)", "cadence": "daily, mornings",
+     "fn": check_futures_bars, "sev": "blocking",
+     "fix": ("python3 data_agent/fetching/download_stock_futures.py --live\n"
+             "  # MORNINGS, not after close: Breeze publishes the 1d bar for a session in an\n"
+             "  # overnight batch (~23:30-00:00 IST), so an afternoon run cannot see today"),
+     "why": "settled contracts have no history — a missed day cannot be backfilled, ever"},
     {"name": "SecurityMaster.zip", "cadence": "monthly",
      "fn": check_scrip_master, "sev": "blocking",
      "fix": ("re-download the Breeze security master to the repo root, then\n"
