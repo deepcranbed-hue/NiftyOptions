@@ -49,3 +49,4 @@ _to_delete/
 #   screener_tables.py --mode fetch
 # the parsed output (screener_page_tables.csv) IS versioned; the cache is not
 data_agent/fundamentals/screener_html/
+_trash/

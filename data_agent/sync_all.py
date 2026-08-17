@@ -263,6 +263,13 @@ def build_steps(args):
              phase="verify"),
         Step("coverage", "Symbol ownership and orphan check", f"{qua}/sync_coverage.py",
              phase="verify"),
+        # CLAUDE.md forbids hardcoding a database path, and on 2026-08-17 that rule was
+        # broken by two new WRITERS two days after it was written — one of which put a month
+        # of futures into the read-only mirror and printed success (C37). The rule was
+        # documented and mandatory and still broken, because nothing failed when it was.
+        # Now something does.
+        Step("db-paths", "No writer hardcodes a database path", f"{qua}/db_path_audit.py",
+             phase="verify"),
     ]
     return steps
 
