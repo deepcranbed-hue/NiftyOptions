@@ -16,6 +16,58 @@ re-derive the same number.
 
 ---
 
+## 0. BEFORE YOU REPORT A DATA PROBLEM — READ THIS TABLE
+
+Every row below is a symptom that ALREADY HAS AN ANSWER. Most of them look exactly like a
+fresh defect: a mismatch between two stores, a zero where a number belongs, a count that does
+not tie, a value outside a plausible band.
+
+WHY THIS SECTION EXISTS. On 2026-08-17 an assistant reported four "findings" in one session
+that were all artifacts of how it looked, not defects in the data: a cross-join that omitted
+`basis`/`time_period`/`section` and manufactured conflicts; a Postgres table identified from an
+unqualified `relname`, producing a confident and wrong "correction" to O15; a lot-size checker
+flagging APOLLOHOSP for ordinary price drift; and a two-store comparison that recommended
+harvesting a copy already diagnosed and fixed weeks earlier. Each cost real time to re-litigate.
+The pattern was identical every time — **a set difference or a threshold applied without the
+dimension that explains it** — and in every case the answer was already written down here.
+
+So the rule is not "read the whole register", which is impractical at this length. It is: **scan
+this table for your symptom before saying the word mismatch.** If it is here, it is settled;
+follow the pointer rather than re-deriving it. If it is genuinely not here, say so explicitly —
+"not in the symptom index" — which is also how this table grows.
+
+Facts live in the sections below; this table holds only symptoms and pointers, so it cannot
+drift out of step with them.
+
+| symptom you might observe | already answered | where |
+|---|---|---|
+| Two stores hold `fii_dii_flows` and disagree; Postgres has Sunday rows; ~126 values differ | Pre-fix residue. Sundays are a documented Upstox quirk `_flow_date()` drops; the differences are ONE offset counted many times. SQLite is correct | §3, and `data_agent/quality/fii_store_compare.py` |
+| FII F&O net columns are `0.0` on 2026-06-18 and 2026-06-22 | Zero in BOTH stores — the F&O feed's start boundary, not lost fetches. Settled, do not re-check | §3 |
+| An FII cash flow reads exactly `0.0` on some other date | `flows_cash_cache.json` writes 0.0 on fetch failure and zero is legitimate for a NET flow. 2026-07-17 confirmed wrong (true −216,528) | §3 |
+| ICICIBANK's FII stake jumps ~15pp in one quarter | Vendor CLASSIFICATION dispute, not an arithmetic error. Nothing to repair | §3, and `quality_growth.py` docstring |
+| An FII period label is not a quarter-end (`Jul 2026`, `Apr 2026`) | Vendor label defect. Direction usable, magnitude not. Flag only, never a gate | §3 |
+| Postgres `companies` has 102 rows but the universe is 62 | 62 real + 40 `DUMMY_ISIN_*`. **DO NOT DELETE the dummies** — they are a second convention, not duplicates | O15 |
+| `financials` has conflicting rows for the same company and period | Two conventions split by LINE ITEM (revenue matches one, net_profit the other). Reconcile, never drop a side. The join MUST include `basis`, `time_period` AND `section` | O15 |
+| A table named `fundamentals` has only 5 rows | `fundamentals` is a **SCHEMA** (`schema.sql:21`); the real table is `fundamentals.financials`. The 5-row stray is not what O15 is about. Never identify a PG table from an unqualified name | O15 |
+| `delivery_history.json` covers fewer names than the page scrape | Known: the Excel export lags. The quarterly series comes from `attributable_panel.json`; the screen's gates read the ANNUAL series | C34, `data_agent/freshness.py` |
+| Two tabs quote different aggregate profit growth | Was real, now fixed — both resolve through `_quarters_source()`, which prints which source it used | C34 |
+| Aggregate growth disagrees with a broker's number | Universe differs. ET NOW's Nifty-50 PAT is the like-for-like comparison; MOFSL's wider basket is not | C31 |
+| `expectation_snapshots.json` count exceeds distinct captures | Duplicate write from a concurrent run. Deduped; guard added; count is no longer proof | C36 |
+| A futures `open_interest` looks impossibly large | OI and volume are quoted in **SHARES**, not contracts. Notional is `open_interest × close` with no lot multiplier | O12 |
+| A lot size is not a round number (ADANIENT 309) | Correct. NSE sets lots to a contract-VALUE band, not to round numbers | O12, `lot_sizes.py` |
+| `lot × price` sits outside ₹5–10 lakh | Price drift since the last lot revision. The band applies AT REVISION. Not a wrong lot | `lot_sizes.py` |
+| `contract_size` is NULL on futures bars | Set by the WRITER at capture. The repo-local mirror predates that and will read NULL | C37 |
+| Today's 1d futures bar is missing | Breeze publishes it in an overnight batch (~23:30–00:00 IST). Run the sync in the MORNING for the previous session | `freshness.py`, daily checklist |
+| ~88 modules hardcode `option_chains.db` | READERS, which CLAUDE.md permits. Only a WRITER doing it is a defect | C37, `data_agent/quality/db_path_audit.py` |
+| A number traced to `option_chains.db` looks stale | Two copies exist. Drive is the source of truth; the repo file is a manual mirror, only as fresh as the last `cp` | §3, `db_config.py` |
+| The index P/E percentile looks extreme (3rd vs 10th) | Our reconstruction's EPS steps once a year while NSE's rolls quarterly, so the error FLIPS SIGN with the growth rate. No scalar deflator fixes it | C27 |
+| A 1d close differs from the last 1m close | Market-structure break: NSE's Closing Auction Session launched 2026-08-03. Closes before and after are not comparable | §3 |
+| A quality-screen name has a huge 5y CAGR (ICICI 47%) | CAGR inherits its endpoints; FY2021 is the bottom of the lender NPA cycle. Read the median beside it — the GAP is the base effect | C35 |
+| Reliance clears a growth gate by a small margin | An 8,924 cr Asian Paints gain sits in the base. Reported ≠ underlying, everywhere in this repo | C33, O14 |
+| JIOFIN / NESTLEIND / TATAMOTORS missing from the screen | Absent from the export entirely — an ALIAS problem (TATAMOTORS is TMCV on Screener), not staleness | `freshness.py` |
+
+---
+
 ## 0. Method standard
 
 Every result in this file was produced under these rules. A test that skips them

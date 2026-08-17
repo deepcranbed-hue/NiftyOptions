@@ -1,6 +1,21 @@
 # NiftyOptions — repo conventions
 
-## MANDATORY: check the hypothesis register before any backtest or study
+## MANDATORY: check the hypothesis register before any backtest, study, OR REPORTED DATA PROBLEM
+
+**BEFORE reporting a data defect, mismatch, discrepancy or "problem", scan the symptom
+index at the top of `StrategyBacktesting/Hypotheses.md` (§0).** The old trigger for
+reading that file was "before any backtest", which is why four already-settled quirks
+got re-reported as fresh findings on 2026-08-17 — the file was being consulted before
+MODELLING and not before CLAIMING. Most data surprises in this repo are already
+answered there. If the symptom genuinely is not listed, say "not in the symptom index"
+out loud, and add a row once it is understood.
+
+**A set difference or a threshold applied without the dimension that qualifies it is
+the house failure mode.** It has produced a cross-join that omitted
+`basis`/`time_period`/`section`, a Postgres table identified from an unqualified
+`relname`, a lot-size alarm on ordinary price drift, and a two-store comparison that
+could not tell "richer" from "wrong". Before reporting a mismatch, name the dimensions
+you joined on and ask which one is missing.
 
 **`StrategyBacktesting/Hypotheses.md` is the single source of truth for what has
 already been tested.** Read it before designing a study, running a backtest, or
