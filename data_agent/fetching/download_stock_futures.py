@@ -81,7 +81,18 @@ for _p in (_AGENT, _HERE, _ROOT):
     if _p not in sys.path:
         sys.path.insert(0, _p)
 
-DB = os.path.join(_ROOT, "option_chains.db")
+# NOT os.path.join(_ROOT, "option_chains.db"). That path is the MIRROR — a manual copy
+# kept so tooling without Drive access can READ. db_config.resolve_writable_db_path()
+# exists to stop a writer touching it, and its docstring names this exact case: "If the
+# Drive mount is missing - signed out, not yet synced, RUNNING IN A SANDBOX - a writer must
+# FAIL rather than quietly write into the local read-only copy and manufacture the
+# divergence this module exists to prevent." The first version of this file ignored that
+# and put 1,950 bars in the mirror instead of the source of truth (C37). Resolved lazily so
+# --dry-run still works where Drive is unreachable.
+def writable_db() -> str:
+    from db_config import resolve_writable_db_path
+    return resolve_writable_db_path()
+
 UNIVERSE = os.path.join(_ROOT, "nifty-50-stock-list.csv")
 
 # Breeze throttles. The Nifty 50 x ~3 live contracts is ~150 calls; be unhurried.
@@ -206,6 +217,24 @@ def main() -> None:
 
     from fo_bars import save_fo_bars
 
+    db = None
+    lots: dict = {}
+    if not a.dry_run:
+        db = writable_db()
+        print(f"  writing to {db}")
+        # contract_size at CAPTURE time, from the exchange's own contract list, so the
+        # column is populated by the writer rather than by a later pass that mutates the
+        # database. Breeze reports OI in SHARES, so notional never needs this — contract
+        # counts do, which is what reconciling against participant_oi requires.
+        try:
+            from lot_sizes import master_lots, _iso
+            from fetching.broker import BreezeBroker
+            for (code, exp), lot in master_lots().items():
+                lots[(code, _iso(exp))] = lot
+            print(f"  lot sizes: {len(lots)} contracts from the scrip master")
+        except Exception as exc:
+            print(f"  NOTE: no lot sizes ({exc}) — contract_size will be NULL")
+
     b = None if a.dry_run else _client()
     plan, saved, empty, failed = [], 0, 0, 0
 
@@ -278,8 +307,11 @@ def main() -> None:
             if not rows:
                 empty += 1
             else:
-                n = save_fo_bars(rows, db=DB, underlying=sym, instrument_type="FUT",
-                                 expiry=e, exchange="NFO", timeframe="1d")
+                from fetching.broker import BreezeBroker as _BB
+                lot = lots.get((_BB.code(sym), (_as_date(e) or today).isoformat()))
+                n = save_fo_bars(rows, db=db, underlying=sym, instrument_type="FUT",
+                                 expiry=e, exchange="NFO", timeframe="1d",
+                                 contract_size=lot)
                 saved += n
                 print(f"      {e[:10]}  {len(rows):4d} bars -> {n} saved")
             time.sleep(_SLEEP)

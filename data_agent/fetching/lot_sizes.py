@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """
-lot_sizes.py — populate fo_price_bars.contract_size from the exchange's own contract list,
-and refuse to do it where an independent check disagrees.
+lot_sizes.py — futures lot sizes from the exchange's contract list, checked against the bars.
+
+Provides master_lots() to the downloader, which sets contract_size at capture time. Reads
+the database READ-ONLY and never writes to it.
 
 WHY THIS FILE EXISTS
 --------------------
@@ -30,9 +32,9 @@ tie-break for a contract with no master row at all.
 Both sources are kept because they fail differently. The master goes STALE — it is a
 snapshot, ours is dated 30-Jul-2026, and it carries only the CURRENT lot, so it is simply
 wrong about a historical bar that predates a revision. The GCD is computed from the bars
-themselves and cannot go stale, only imprecise. Where they contradict each other this script
-writes NOTHING for that contract and says so, because a silently-wrong lot is a 13x error in
-notional (see the revision case below) and notional is what open item O12 turns on.
+themselves and cannot go stale, only imprecise. A contradiction is REPORTED and the lot is
+withheld for that contract, because a silently-wrong lot is a 13x error in contract counts
+(see the revision case below).
 
 Current state: all 50 names agree, including ADANIENT's 309. That one is worth recording
 because it is where the two sources genuinely interact: 309 = 3 x 103 and BOTH divide every
@@ -51,11 +53,22 @@ returns the GCD of two different lots: 650 -> 700 yields gcd(650, 700) = 50, a p
 round number that is wrong for both halves of the series and wrong by 13x on notional. So
 the GCD is always computed per (symbol, expiry) and never per symbol, and a per-contract
 GCD that changes mid-series is the revision FINGERPRINT rather than a bug. The current
-one-month window contains no revision; the planned 12-month --expired backfill will.
+window contains no revision. This guard matters less than it did: Breeze does not serve
+history for SETTLED contracts, so a long retrospective series cannot be built at all and the
+window can only grow forward from today, one live contract at a time.
 
-    python3 lot_sizes.py                # report only, writes nothing
-    python3 lot_sizes.py --write         # populate contract_size where both sources agree
-    python3 lot_sizes.py --notional      # what O12 wanted: OI notional per underlying
+NO --write MODE, DELIBERATELY
+---------------------------
+An earlier version populated contract_size by UPDATE. That was wrong twice over. It targeted
+the repo-local mirror, which db_config marks read-only by policy, so the write would have
+landed in a copy rather than the source of truth. And a later pass mutating rows is the wrong
+place for the value anyway: the WRITER knows the contract it is fetching, so
+download_stock_futures.py now imports master_lots() from here and passes contract_size to
+save_fo_bars at capture time. This file verifies and reports; it never opens the database for
+writing.
+
+    python3 lot_sizes.py                # verify master against the bars
+    python3 lot_sizes.py --notional     # OI notional per underlying, point-in-time
 """
 from __future__ import annotations
 
@@ -80,7 +93,16 @@ for _p in (_AGENT, _HERE, _ROOT):
     if _p not in sys.path:
         sys.path.insert(0, _p)
 
-DB = os.path.join(_ROOT, "option_chains.db")
+def _db() -> str:
+    """READ path. The mirror is legitimate here — reading is what it exists for — but say
+    which copy, because every level-dependent number inherits its staleness."""
+    try:
+        from db_config import resolve_db_path
+        return resolve_db_path()
+    except Exception:
+        return os.path.join(_ROOT, "option_chains.db")
+
+
 MASTER_ZIP = os.path.join(_ROOT, "SecurityMaster.zip")
 MASTER_MEMBER = "FONSEScripMaster.txt"
 
@@ -180,14 +202,13 @@ def best_divisor(g: int, price: float | None) -> int:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--write", action="store_true",
-                    help="populate contract_size where master and derivation agree")
     ap.add_argument("--notional", action="store_true",
                     help="print OI notional per underlying on the latest date")
     a = ap.parse_args()
 
     from fetching.broker import BreezeBroker
-    con = sqlite3.connect(DB)
+    path = _db()
+    con = sqlite3.connect(f"file:{path}?mode=ro", uri=True)   # read-only, enforced
     mast = master_lots()
     # index the master by (code, iso expiry) and also by code alone, since a contract we
     # hold bars for may have settled and dropped out of the current master
@@ -226,7 +247,8 @@ def main() -> None:
             agree.append(rec)
 
     print(f"CONTRACT SIZE  —  master: {os.path.basename(MASTER_ZIP)}  "
-          f"contracts with bars: {len(der)}\n")
+          f"contracts with bars: {len(der)}")
+    print(f"  reading (read-only): {path}\n")
     print(f"{'underlying':13}{'expiry':12}{'code':9}{'master':>8}{'gcd(OI)':>9}"
           f"{'gcd(dOI)':>9}{'lot x px':>12}  band")
     for r in agree + disagree + unlisted:
@@ -256,25 +278,14 @@ def main() -> None:
         for r in notes:
             print(f"    {r['underlying']} {r['expiry']}: {r['note']}")
 
-    if a.write:
-        n = 0
-        for r in agree:
-            cur = con.execute("""update fo_price_bars set contract_size=?
-                                 where instrument_type='FUT' and timeframe='1d'
-                                   and underlying=? and substr(expiry,1,10)=?""",
-                              (r["master"], r["underlying"], r["expiry"]))
-            n += cur.rowcount
-        con.commit()
-        left = con.execute("""select count(*) from fo_price_bars
-                              where instrument_type='FUT' and timeframe='1d'
-                                and contract_size is null""").fetchone()[0]
-        print(f"\n  wrote contract_size on {n:,} bars across {len(agree)} contracts; "
-              f"{left:,} still NULL")
-        if left:
-            print("  (the remainder are the disagreements and unlisted contracts above — "
-                  "left NULL on purpose)")
-    else:
-        print("\n  report only. Re-run with --write to populate contract_size.")
+    null = con.execute("""select count(*) from fo_price_bars
+                          where instrument_type='FUT' and timeframe='1d'
+                            and contract_size is null""").fetchone()[0]
+    if null:
+        print(f"\n  contract_size is NULL on {null:,} bars. This file will NOT write them:")
+        print("  the writer sets it at capture time (download_stock_futures.py), and the")
+        print("  database this resolves to may be the read-only mirror. Re-run the download")
+        print("  against the primary to populate it.")
 
     if a.notional:
         d = con.execute("""select max(date(ts)) from fo_price_bars
