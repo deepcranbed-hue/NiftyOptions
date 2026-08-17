@@ -148,9 +148,21 @@ def index_earnings() -> dict:
 #
 # It matters because the bias lands on the DENOMINATOR of the percentile. Today is
 # anchored to a true bottom-up value while the history it is ranked against is
-# inflated, so "cheap" was overstated: the 3rd percentile becomes the 11th on the
-# full sample and the 13th on the trailing five years. Still a low reading. Not the
-# extreme the raw number claimed.
+# inflated, so "cheap" is overstated. The magnitudes are COMPUTED, not written here:
+# read `percentile_raw`, `percentile_adjusted` and `percentile_adjusted_5y` off the
+# payload. An earlier version of this comment hardcoded "the 3rd becomes the 11th and
+# the 13th"; the current run prints 3.0 -> 8.9 -> 10.1, so the prose had already
+# drifted from the code below it — the same defect this file documents elsewhere.
+# The direction is the durable part: still a low reading, not the extreme the raw
+# number claims.
+#
+# AND THE SIGN OF THE BIAS IS NOT FIXED, which is why no single deflator repairs it.
+# Stale-LOW EPS in a growth year prints the P/E too HIGH. In a year when earnings
+# FALL, the stale denominator is too HIGH and the printed P/E is too LOW — FY20 fell
+# 12.1%. So the error is positive in most years and negative in the crisis years, and
+# the crisis years are the ones setting the tails that a PERCENTILE depends on.
+# Dividing the whole series by 1.083 moves every year the same way and therefore
+# cannot be right in both regimes.
 PE_EXTERNAL = {
     "as_of": "2026-08-14",
     "sources": {"nifty-pe-ratio.com": 20.56, "indexpe.in": 20.56, "screener.in": 20.6},

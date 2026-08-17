@@ -67,7 +67,7 @@ drift out of step with them.
 | A 1d close differs from the last 1m close | Market-structure break: NSE's Closing Auction Session launched 2026-08-03. Closes before and after are not comparable | §3 |
 | A quality-screen name has a huge 5y CAGR (ICICI 47%) | CAGR inherits its endpoints; FY2021 is the bottom of the lender NPA cycle. Read the median beside it — the GAP is the base effect | C35 |
 | Reliance clears a growth gate by a small margin | An 8,924 cr Asian Paints gain sits in the base. Reported ≠ underlying, everywhere in this repo | C33, O14 |
-| JIOFIN / NESTLEIND / TATAMOTORS missing from the screen | Absent from the export entirely — an ALIAS problem (TATAMOTORS is TMCV on Screener), not staleness | `freshness.py` |
+| JIOFIN / NESTLEIND / TATAMOTORS missing from the quality screen | **A deliberate gate, not a defect — and NOT an alias problem, which an earlier version of this row claimed.** Their workbooks exist and parse; `delivery_history.build()` returns None because `_MIN_YEARS = 6` and they hold 2, 4 and 4 annual P&L columns. The gate's own comment: *"fewer periods than this and consistency is an anecdote"*. Short history is expected — JIOFIN listed Aug-2023, TATAMOTORS reports post-demerger, NESTLEIND changed its fiscal year end (per-name causes inferred from the column counts, not separately verified). Nothing to fix unless the gate itself should change | `delivery_history.py:224`, `freshness.py` |
 
 ---
 

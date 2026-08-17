@@ -196,8 +196,8 @@ def check_export_annual():
         return DUE, f"newest FY {last} covers {a[last]} of {len(hist)} names in the export"
     note = f"FY {last} complete on all {a[last]} export names"
     if missing:
-        return WARN, note + (f"; absent from the export entirely and so never screened: "
-                             f"{', '.join(missing)}")
+        return WARN, note + (f"; never screened for want of 6+ years of annual history "
+                             f"(_MIN_YEARS): {', '.join(missing)}")
     return OK, note
 
 
@@ -489,8 +489,11 @@ CHECKS = [
      "fn": check_export_annual, "sev": "blocking",
      "fix": ("python3 data_agent/fundamentals/download_screener.py --force && "
              "python3 data_agent/fundamentals/delivery_history.py\n"
-             "  # names absent entirely are an ALIAS/ticker problem, not a staleness one — "
-             "TATAMOTORS is TMCV on Screener; see ALIAS_DEFAULT in screener_tables.py"),
+             "  # NOT AN ALIAS PROBLEM — an earlier version of this note said it was, wrongly.\n"
+             "  # The workbooks exist and parse; delivery_history.build() returns None for them\n"
+             "  # because of _MIN_YEARS = 6 (line ~224): TATAMOTORS has 2 annual P&L columns,\n"
+             "  # NESTLEIND 4, JIOFIN 4. That gate is deliberate — 'fewer periods than this and\n"
+             "  # consistency is an anecdote'. Nothing to fix unless the gate should change."),
      "why": "the quality screen's growth gates read this series, not the quarters"},
     {"name": "delivery_history (quarters)", "cadence": "quarterly (results season)",
      "fn": check_export_quarters, "sev": "advisory",
