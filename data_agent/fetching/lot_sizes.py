@@ -1,74 +1,51 @@
 #!/usr/bin/env python3
 """
-lot_sizes.py — futures lot sizes from the exchange's contract list, checked against the bars.
+lot_sizes.py — provide exchange lot sizes to the writer, and detect when the master goes stale.
 
-Provides master_lots() to the downloader, which sets contract_size at capture time. Reads
-the database READ-ONLY and never writes to it.
+WHAT THIS IS FOR, AFTER A CORRECTION IN FRAMING
+-----------------------------------------------
+`master_lots()` reads SecurityMaster.zip / FONSEScripMaster.txt — the exchange's own contract
+list, via Breeze — and download_stock_futures.py calls it to stamp contract_size at capture
+time. That is this file's primary job and it is not in question.
 
-WHY THIS FILE EXISTS
---------------------
-`contract_size` was NULL on all 1,950 futures bars. Breeze's 1d historical response does
-not carry lot size, so the downloader had nothing to write. The column existed and read as
-if it were populated, which is the failure mode worth naming: a schema column is a promise,
-not a fact.
+The verification half was originally framed as checking the lot size. That framing was wrong,
+and the user said so: the master IS the exchange's list, so computing a GCD of open interest to
+confirm what the master already states adds nothing. If the master says 500, the lot is 500.
 
-TWO SOURCES, AND WHICH ONE IS AUTHORITATIVE
--------------------------------------------
-  SecurityMaster.zip / FONSEScripMaster.txt   the exchange's contract list, via Breeze.
-                                              FUTSTK rows, ShortName + ExpiryDate +
-                                              LotSize. This is TRUTH.
+What the arithmetic actually established was a DIFFERENT fact, and one the master cannot
+express: **Breeze reports open interest and volume in SHARES, not in contracts.** The evidence
+was that gcd(OI levels) equals gcd of the day-to-day OI CHANGES on 100/100 contracts, which a
+coincidental common factor in the levels could not survive. That determination is what makes
 
-  gcd(open_interest) per contract              an independent DERIVATION. Breeze reports OI
-                                              and volume in SHARES, not contracts, so every
-                                              OI observation is a multiple of the lot and
-                                              their GCD is a multiple of it.
+    notional = open_interest x close
 
-The master is authoritative and the derivation is the check — not the other way round. The
-check is DIVISIBILITY, not the contract-value band: the band describes where lots sit AT
-REVISION, and prices drift afterwards, so treating a drifted notional as an error is a false
-alarm (APOLLOHOSP at Rs 11.2 lakh is drift, not a wrong lot). The band survives only as the
-tie-break for a contract with no master row at all.
+correct with no lot multiplier. Had OI been in contracts, Reliance's notional would have been
+wrong by 500x. It was worth establishing once. It is now established, recorded here, and does
+not need re-deriving nightly.
 
-Both sources are kept because they fail differently. The master goes STALE — it is a
-snapshot, ours is dated 30-Jul-2026, and it carries only the CURRENT lot, so it is simply
-wrong about a historical bar that predates a revision. The GCD is computed from the bars
-themselves and cannot go stale, only imprecise. A contradiction is REPORTED and the lot is
-withheld for that contract, because a silently-wrong lot is a 13x error in contract counts
-(see the revision case below).
+SO WHAT THE CHECK IS FOR NOW: A STALE MASTER
+--------------------------------------------
+One recurring failure remains, and nothing else can catch it. SecurityMaster.zip is a FILE ON
+DISK with no freshness signal, carrying only the CURRENT lot. NSE revises lots to keep contract
+value near Rs 5-10 lakh, and INFY (4.69), HDFCBANK (4.74) and ITC (4.80 lakh) currently sit
+BELOW that floor — which is exactly the condition that triggers an increase. If a revision lands
+and the zip is not re-downloaded, the writer stamps the old lot onto every new bar, silently and
+indefinitely.
 
-Current state: all 50 names agree, including ADANIENT's 309. That one is worth recording
-because it is where the two sources genuinely interact: 309 = 3 x 103 and BOTH divide every
-observation, so the GCD alone cannot choose. SEBI's minimum contract value settles it — NSE
-sets lots so lot x price lands near Rs 5-10 lakh at revision, and 309 gives Rs 9.44 lakh
-against 103's Rs 3.15 lakh. On today's prices 46 of 50 sit inside that band, 3 just below
-(INFY 4.69, HDFCBANK 4.74, ITC 4.80 lakh, all of which have FALLEN since their last
-revision) and APOLLOHOSP above at 11.16 lakh, having risen. Nothing sits at 2x or 3x the
-band, which is what rules out the GCD being a multiple of the true lot across the board.
+The bars are the only thing that can contradict the master. So the test is not "is the lot
+right" — the master decides that — but "has the master gone stale", and it is the one question
+the master cannot answer about itself. A contradiction between the two is reported; the lot is
+never overridden.
 
-THE REVISION TRAP THIS GUARDS
------------------------------
-Lot sizes get revised — and the three names now under the Rs 5 lakh floor are exactly the
-candidates for an increase at the next review. A per-SYMBOL GCD computed across a revision
-returns the GCD of two different lots: 650 -> 700 yields gcd(650, 700) = 50, a plausible
-round number that is wrong for both halves of the series and wrong by 13x on notional. So
-the GCD is always computed per (symbol, expiry) and never per symbol, and a per-contract
-GCD that changes mid-series is the revision FINGERPRINT rather than a bug. The current
-window contains no revision. This guard matters less than it did: Breeze does not serve
-history for SETTLED contracts, so a long retrospective series cannot be built at all and the
-window can only grow forward from today, one live contract at a time.
-
-NO --write MODE, DELIBERATELY
----------------------------
-An earlier version populated contract_size by UPDATE. That was wrong twice over. It targeted
-the repo-local mirror, which db_config marks read-only by policy, so the write would have
-landed in a copy rather than the source of truth. And a later pass mutating rows is the wrong
-place for the value anyway: the WRITER knows the contract it is fetching, so
-download_stock_futures.py now imports master_lots() from here and passes contract_size to
-save_fo_bars at capture time. This file verifies and reports; it never opens the database for
-writing.
-
-    python3 lot_sizes.py                # verify master against the bars
+    python3 lot_sizes.py                # is the master still consistent with the bars?
     python3 lot_sizes.py --notional     # OI notional per underlying, point-in-time
+
+NO --write MODE
+---------------
+An earlier version populated contract_size by UPDATE. Wrong twice over: it targeted the
+repo-local mirror, which db_config marks read-only by policy, and a later pass mutating rows is
+the wrong place for the value anyway. The writer knows the contract it is fetching. This file
+opens the database mode=ro and cannot write.
 """
 from __future__ import annotations
 
@@ -246,9 +223,16 @@ def main() -> None:
                 rec["note"] = f"gcd is {g // lot}x the lot; series shares an extra factor"
             agree.append(rec)
 
-    print(f"CONTRACT SIZE  —  master: {os.path.basename(MASTER_ZIP)}  "
-          f"contracts with bars: {len(der)}")
-    print(f"  reading (read-only): {path}\n")
+    import datetime as _dt
+    age = None
+    if os.path.exists(MASTER_ZIP):
+        age = (_dt.date.today()
+               - _dt.date.fromtimestamp(os.path.getmtime(MASTER_ZIP))).days
+    print(f"MASTER STALENESS CHECK  —  {os.path.basename(MASTER_ZIP)}"
+          + (f", {age}d old" if age is not None else "")
+          + f"  ·  {len(der)} contracts with bars")
+    print(f"  reading (read-only): {path}")
+    print(f"  the master decides the lot; this asks whether the master is still current\n")
     print(f"{'underlying':13}{'expiry':12}{'code':9}{'master':>8}{'gcd(OI)':>9}"
           f"{'gcd(dOI)':>9}{'lot x px':>12}  band")
     for r in agree + disagree + unlisted:
@@ -261,15 +245,16 @@ def main() -> None:
               f"{r['gcd']:9d}{gd}{nt:12,.0f}  {inb}")
 
     print(f"\n  agree      {len(agree):4d}   master lot divides the observed OI series")
-    print(f"  DISAGREE   {len(disagree):4d}   nothing written for these")
+    print(f"  DISAGREE   {len(disagree):4d}   master contradicts the bars -> REFRESH THE ZIP")
     print(f"  unlisted   {len(unlisted):4d}   no master row (settled contract?)")
     lvl = sum(1 for r in agree + disagree if r["gcd_diff"] == r["gcd"])
     print(f"\n  gcd(OI levels) == gcd(day-to-day OI changes) on {lvl}/{len(der)} contracts —")
     print(f"  a coincidental common factor in the levels cannot survive differencing, so")
     print(f"  OI is quoted in SHARES and notional is open_interest x close directly.")
     if disagree:
-        print("\n  DISAGREEMENTS — a revision inside the window, or a data defect. Resolve")
-        print("  before writing; do NOT take the master on faith for historical bars.")
+        print("\n  A CONTRADICTION MEANS THE MASTER IS PROBABLY STALE — re-download")
+        print("  SecurityMaster.zip and re-run. If it persists after a refresh, the lot was")
+        print("  revised mid-series and the older bars carry the older lot, correctly.")
         for r in disagree:
             print(f"    {r['underlying']} {r['expiry']}: {r['note']}")
     notes = [r for r in agree if r["note"]]
@@ -286,6 +271,8 @@ def main() -> None:
         print("  the writer sets it at capture time (download_stock_futures.py), and the")
         print("  database this resolves to may be the read-only mirror. Re-run the download")
         print("  against the primary to populate it.")
+
+    rc = 1 if disagree else 0
 
     if a.notional:
         d = con.execute("""select max(date(ts)) from fo_price_bars

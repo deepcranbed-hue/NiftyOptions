@@ -295,6 +295,102 @@ def check_screen():
     return OK, msg
 
 
+def check_scrip_master():
+    """SecurityMaster.zip — the exchange's contract list, refreshed monthly.
+
+    BLOCKING, and the reason is that its staleness is written into stored data rather than
+    just read. download_stock_futures.py stamps contract_size from this file at capture time,
+    so a stale zip does not produce a wrong ANSWER — it produces wrong ROWS, permanently, and
+    silently. Nothing downstream can tell a correctly-recorded old lot from a stale one.
+
+    Two tests. Age, because the file carries no version. And coverage: the master must list
+    an expiry at least as far out as the newest contract we hold bars for, since a master
+    predating a new contract's introduction cannot know its lot at all.
+    """
+    p = os.path.join(ROOT, "SecurityMaster.zip")
+    if not os.path.exists(p):
+        return DUE, "MISSING — the writer has no lot sizes without it"
+    age = _age_days("SecurityMaster.zip")
+    msg = f"{age}d old (refresh monthly)"
+    try:
+        import zipfile, csv as _csv, io as _io
+        with zipfile.ZipFile(p) as z:
+            txt = z.open("FONSEScripMaster.txt").read().decode("utf-8", "ignore")
+        rows = list(_csv.reader(_io.StringIO(txt)))
+        h = {k.strip('"').strip(): n for n, k in enumerate(rows[0])}
+        exps = set()
+        for r in rows[1:]:
+            if len(r) > 3 and r[1].strip('"') == "FUTSTK":
+                exps.add(_master_iso(r[h["ExpiryDate"]]))
+        far = max(exps) if exps else ""
+        msg += f", lists {len(exps)} expiries out to {far}"
+    except Exception as exc:
+        return DUE, msg + f" — unreadable ({exc})"
+
+    # THE DATA TEST, and the reason age alone is not enough. NSE introduces a new far month
+    # as each near month settles. A master that predates a contract's introduction has no row
+    # for it, so the writer stamps NULL or nothing — and no amount of the file being "only
+    # 20 days old" fixes that. Read-only, and failures here are not fatal: an unreadable
+    # database is a different problem from a stale master, and conflating them would report
+    # the wrong fix.
+    try:
+        import sqlite3
+        db = os.path.join(ROOT, "option_chains.db")
+        if os.path.exists(db) and far:
+            con = sqlite3.connect(f"file:{db}?mode=ro", uri=True)
+            row = con.execute("""select max(substr(expiry,1,10)) from fo_price_bars
+                                 where instrument_type='FUT' and timeframe='1d'""").fetchone()
+            held = row[0] if row else None
+            if held and held > far:
+                return DUE, (msg + f" — but we hold bars for {held}, beyond the master's "
+                                   f"furthest listing: that contract has no lot size")
+            if held:
+                msg += f"; covers the furthest contract held ({held})"
+    except Exception:
+        pass
+
+    if age is not None and age > 31:
+        return DUE, msg
+    return OK, msg
+
+
+def _master_iso(x: str) -> str:
+    for fmt in ("%d-%b-%Y", "%Y-%m-%d", "%d-%m-%Y"):
+        try:
+            return dt.datetime.strptime(str(x).strip(), fmt).date().isoformat()
+        except ValueError:
+            continue
+    return str(x)[:10]
+
+
+def check_universe():
+    """nifty-50-stock-list.csv — the index constituents, refreshed monthly.
+
+    CALENDAR ONLY, and deliberately so: there is no honest data test. Every download in this
+    repo takes its symbol list FROM this file, so checking the data against it is circular —
+    a name that left the index still has bars, because we kept downloading it. The same
+    circularity that blocks O10. Catching a real constituent change needs an external source
+    (the NSE index factsheet), which nothing here fetches.
+
+    It matters more than it looks. A stale list means every index aggregate is computed on
+    yesterday's membership: the departed name still carries weight and its replacement is
+    absent, and nothing in the numbers looks wrong.
+    """
+    n = 0
+    p = os.path.join(ROOT, "nifty-50-stock-list.csv")
+    if not os.path.exists(p):
+        return DUE, "MISSING"
+    with open(p, newline="", encoding="utf-8") as fh:
+        n = sum(1 for r in csv.DictReader(fh) if r.get("Symbol"))
+    age = _age_days("nifty-50-stock-list.csv")
+    msg = f"{age}d old (refresh monthly), {n} symbols"
+    if n != 50:
+        return DUE, msg + " — expected 50"
+    if age is not None and age > 31:
+        return DUE, msg
+    return OK, msg
+
+
 # ---------------------------------------------------------------- registry
 CHECKS = [
     {"name": "attributable_panel.json", "cadence": "quarterly (results season)",
@@ -321,6 +417,15 @@ CHECKS = [
      "fn": check_snapshots, "sev": "blocking",
      "fix": "data_agent/fundamentals/run_expectation_snapshot.sh",
      "why": "the only forward-looking gate, and it gates the revisions channel"},
+    {"name": "SecurityMaster.zip", "cadence": "monthly",
+     "fn": check_scrip_master, "sev": "blocking",
+     "fix": ("re-download the Breeze security master to the repo root, then\n"
+             "  python3 data_agent/fetching/lot_sizes.py   # must report 0 DISAGREE"),
+     "why": "contract_size is stamped from this AT CAPTURE — stale means wrong stored rows"},
+    {"name": "nifty-50-stock-list.csv", "cadence": "monthly",
+     "fn": check_universe, "sev": "blocking",
+     "fix": "refresh from the NSE index factsheet (weights change with it)",
+     "why": "defines the universe for every download and every index aggregate"},
     {"name": "fii_holdings.json", "cadence": "quarterly (filings)",
      "fn": check_fii_quarter, "sev": "advisory",
      "fix": "python3 data_agent/fundamentals/fii_holding_backfill.py",
