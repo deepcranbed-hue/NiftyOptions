@@ -82,10 +82,18 @@ try:
 except ImportError:
     sys.exit("requests not installed:  pip install requests")
 
-_DEFAULT_DB = os.environ.get(
-    "SQLITE_DB_PATH",
-    os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(
-        os.path.abspath(__file__)))), "option_chains.db"))
+# The Drive copy is the source of truth; <repo>/option_chains.db is a read-only mirror.
+# This used to default to the MIRROR and rely on the operator exporting $SQLITE_DB_PATH on
+# every invocation — which DATA_AGENT_DAILY_CHECKLIST.md duly did, twice. A manual export
+# standing in for a control is the same defect class as C37: forget it once and the write
+# lands in a copy while the run reports success. Resolved AFTER argument parsing so --help
+# and --probe still work where Drive is unreachable.
+def _resolve_db(explicit: str | None) -> str:
+    if explicit:
+        return explicit
+    from db_config import resolve_writable_db_path
+    return resolve_writable_db_path()
+
 
 _BASE = "https://nsearchives.nseindia.com/content/nsccl"
 _SERIES = {"vol": "participant_flows", "oi": "participant_oi"}
@@ -223,7 +231,8 @@ def _store(conn, table: str, d: str, recs: list[dict]) -> int:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("--db", default=_DEFAULT_DB)
+    ap.add_argument("--db", default=None,
+                    help="override the resolved primary; normally omit")
     ap.add_argument("--from", dest="start", default="2018-01-01")
     ap.add_argument("--to", dest="end", default=date.today().isoformat())
     ap.add_argument("--series", choices=["oi", "vol", "both"], default="both")
@@ -233,6 +242,7 @@ def main() -> int:
     ap.add_argument("--probe", action="store_true",
                     help="fetch one recent file per series and print its raw header")
     args = ap.parse_args()
+    args.db = _resolve_db(args.db)
 
     sess = _session()
 

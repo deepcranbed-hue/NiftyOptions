@@ -65,7 +65,11 @@ _DRIVE_DB = ("/Users/deepak/Library/CloudStorage/"
 _REPO_ROOT = os.path.dirname(os.path.abspath(__file__))
 _LOCAL_DB = os.path.join(_REPO_ROOT, "option_chains.db")
 
-_ENV_VARS = ("NIFTY_DB", "OPTION_CHAINS_DB")
+# SQLITE_DB_PATH is honoured because DATA_AGENT_DAILY_CHECKLIST.md has been exporting it
+# for the macro backfills since before this module existed. Three names for one path was
+# itself the DRY failure: the resolver knew two of them and the scripts a third, so an
+# operator following the checklist was overriding a variable the resolver ignored.
+_ENV_VARS = ("NIFTY_DB", "OPTION_CHAINS_DB", "SQLITE_DB_PATH")
 
 # Google Drive holds locks during sync; 30s matches POSTGRES_MIGRATION_PLAN.md §1.1.
 BUSY_TIMEOUT_MS = 30_000

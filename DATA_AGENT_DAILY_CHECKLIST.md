@@ -220,6 +220,13 @@ Apart from the standard daily market data sync, there are three key fundamental 
 
 If you need to sync, backfill, or refresh these datasets, use the following specific Python scripts:
 
+> **The `SQLITE_DB_PATH=...` prefix below is no longer required** (2026-08-17). Those
+> scripts defaulted to the repo-local MIRROR and depended on this export to reach
+> Drive — forget it once and the write landed in a copy while the run reported
+> success. They now resolve through `db_config.resolve_writable_db_path()`, which
+> RAISES when Drive is unreachable instead of falling back. The variable is still
+> honoured as a deliberate override, so the commands work either way.
+
 #### 1. F&O Participant Volumes & Open Interest (Positions)
 * **Daily Flow Sync (Volume)**: Run `data_agent/macro/download_nse_participants.py` (which populates the `participant_flows` table in SQLite).
 * **Historical EOD Positions Backfill (OI)**: Run `data_agent/macro/backfill_nse_participants.py` (which populates `participant_oi` in SQLite).
