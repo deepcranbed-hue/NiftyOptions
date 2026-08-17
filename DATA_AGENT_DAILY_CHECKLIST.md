@@ -11,7 +11,20 @@ cd /Users/deepak/antigravity/NiftyOptions
 python data_agent/sync_all.py --breeze-token <SESSION_TOKEN>
 ```
 
-That is the whole sync.
+That is the whole sync — and since 2026-08-17 it genuinely is. The two follow-up steps
+that used to be manual are now part of the plan, and they run in OPPOSITE directions
+because the two stores do:
+
+  `[mirror]`     Drive -> local. Refreshes the repo-local SQLite mirror that
+                 `backend/quant/*` and other readers use. Refuses if the mirror is
+                 NEWER than Drive (someone wrote to the read-only copy — C37) or if a
+                 hot journal means the source is mid-transaction.
+  `[pg-backup]`  local -> Drive. Dumps macro + fundamentals, which live on localhost
+                 and which git cannot hold.
+
+Both sit after every write and before the audits. You should no longer need to run
+`cp` or `pg_backup.sh` by hand; `python3 data_agent/quality/backup_audit.py` says so
+independently.
 
 > **Run it in the MORNING.** Breeze publishes the `1day` bar for a session in an
 > overnight batch around 23:30-00:00 IST — verified 2026-08-17 by querying the

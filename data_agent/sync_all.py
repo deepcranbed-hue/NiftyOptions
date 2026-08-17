@@ -116,7 +116,11 @@ class Step:
     """
 
     def __init__(self, sid, title, script, argv=None, needs=None, phase="fetch",
-                 enabled=True, note="", pause_after=0, repeat=None, venv="data"):
+                 enabled=True, note="", pause_after=0, repeat=None, venv="data",
+                 runner=None):
+        # `runner` overrides the interpreter for this step. Default None means "the venv's
+        # python", which is every step but the backup — pg_backup.sh is bash.
+        self.runner = runner
         self.venv = venv
         self.sid = sid
         self.title = title
@@ -281,6 +285,25 @@ def build_steps(args):
         Step("flows", "FII / DII daily cash flows", f"{mac}/download_fii_dii.py",
              phase="macro", venv="macro"),
 
+        # ---- Phase 3.5: make the second copy of each store current.
+        #
+        # THE TWO STORES FLOW IN OPPOSITE DIRECTIONS, so these are not two instances of one
+        # operation — see the direction table in CLAUDE.md:
+        #   SQLite market data   Drive is authoritative   -> refresh the local MIRROR
+        #   PostgreSQL           localhost is authoritative -> dump to DRIVE
+        # Getting either backwards destroys data, and each wrong direction is the correct
+        # operation for the other store.
+        #
+        # Placed AFTER every write and BEFORE verify: the mirror should be current when
+        # anything reading it runs, and a backup should capture what was actually ingested.
+        # Deliberately before verify rather than after — an audit finding is not a reason to
+        # have no backup of the day's data.
+        Step("mirror", "Refresh the repo-local SQLite mirror from Drive",
+             f"{qua}/refresh_mirror.py", phase="macro"),
+        Step("pg-backup", "Dump Postgres (macro + fundamentals) to Drive",
+             os.path.join("data_agent", "pg_backup.sh"),
+             runner=["/bin/bash"], phase="macro"),
+
         # ---- Phase 4: verification. The reason a bad sync now fails loudly.
         Step("audit", "Daily bar integrity audit", f"{qua}/daily_bar_audit.py",
              phase="verify"),
@@ -372,7 +395,8 @@ def run_step(step, creds, pythons, args):
                 if r.returncode != 0:
                     worst = "FAIL"
             return worst, None
-        cmd = [python, os.path.join(REPO_ROOT, step.script)] + argv
+        runner = step.runner or [python]
+        cmd = runner + [os.path.join(REPO_ROOT, step.script)] + argv
 
     if step.phase == "verify":
         # Captured, not streamed, so the finding count can be read back and still
