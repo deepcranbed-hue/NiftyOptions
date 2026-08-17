@@ -168,10 +168,24 @@ def check_drive_vs_mirror():
         return OK, "Drive present; no local mirror"
     dm = dt.datetime.fromtimestamp(os.path.getmtime(drive))
     mm = dt.datetime.fromtimestamp(os.path.getmtime(mirror))
+
+    # DIRECTION MATTERS, AND THE TWO CASES ARE NOT THE SAME SEVERITY.
+    # SQLite flows Drive -> local. So a mirror BEHIND Drive is the normal resting state —
+    # it just needs a cp before anything reads it. A mirror AHEAD of Drive is a RULE
+    # VIOLATION: it means something wrote to the read-only copy, which is exactly C37, and
+    # whatever it wrote is not in the source of truth and will be destroyed by the next
+    # refresh. The first version of this check only tested "behind", so it would have stayed
+    # green through the very defect it was written after.
+    if mm > dm:
+        ahead = (mm - dm).total_seconds() / 3600
+        return DUE, (f"MIRROR IS {ahead:.1f}h NEWER THAN DRIVE — something wrote to the "
+                     f"read-only copy (C37). Whatever it wrote is NOT in the source of "
+                     f"truth and the next cp will destroy it. Find the writer before "
+                     f"refreshing: python3 data_agent/quality/db_path_audit.py")
     lag = (dm - mm).days
     if lag > 0:
-        return WARN, (f"mirror is {lag}d behind Drive — refresh before an agent reads it: "
-                      f"cp '{drive}' '{mirror}'")
+        return WARN, (f"mirror is {lag}d behind Drive — expected direction; refresh before "
+                      f"an agent reads it: cp '{drive}' '{mirror}'")
     return OK, f"mirror level with Drive ({mm:%Y-%m-%d})"
 
 
@@ -185,6 +199,8 @@ CHECKS = [
     {"name": "postgres dump", "fn": check_pg_dump, "sev": "blocking",
      "fix": "data_agent/pg_backup.sh",
      "why": "macro + fundamentals are here and git cannot hold a live database"},
+    # Advisory for the normal "mirror is behind" case; the function returns DUE for the
+    # reverse, which is a rule violation rather than staleness.
     {"name": "sqlite mirror vs Drive", "fn": check_drive_vs_mirror, "sev": "advisory",
      "fix": "cp \"$DRIVE/option_chains.db\" ./option_chains.db",
      "why": "readers may use the mirror; it inherits whatever age it has"},

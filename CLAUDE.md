@@ -122,6 +122,32 @@ Many `data_agent` scripts touch BOTH in one run — read chains from SQLite, wri
 fundamentals to Postgres. Do not consolidate one into the other without a decision;
 `POSTGRES_MIGRATION_PLAN.md` scopes exactly this.
 
+**THE TWO STORES COPY IN OPPOSITE DIRECTIONS. This is the single easiest thing to get
+backwards, and getting it backwards destroys data in both cases.**
+
+| store | authoritative copy | flows | the second copy is |
+|---|---|---|---|
+| SQLite market data | **Google Drive** | Drive → local | a read-only mirror, refreshed by `cp` |
+| PostgreSQL macro + fundamentals | **localhost** | local → Drive | a point-in-time dump, written by `pg_backup.sh` |
+
+Downloads land in Drive for SQLite and in localhost for Postgres, so "which side is fresh"
+is reversed between them:
+
+* SQLite — the download writes DRIVE. The repo file is a copy that goes stale the moment
+  anything writes to Drive. Refresh it with
+  `cp "$DRIVE/option_chains.db" ./option_chains.db`.
+  **Copying the other way overwrites the source of truth with a stale mirror.**
+* Postgres — the ingest writes LOCALHOST. Drive holds only dumps. Refresh Drive with
+  `data_agent/pg_backup.sh`.
+  **Copying the other way — restoring a dump over the live database — discards every ingest
+  since that dump was taken.**
+
+Each of those mistakes is the CORRECT operation for the other store, which is why naming the
+direction beats remembering it. `resolve_writable_db_path()` enforces the SQLite half by
+raising rather than falling back (see C37 for what happened when a writer bypassed it); the
+Postgres half has no equivalent guard, because localhost is where the ingest belongs — the
+exposure there is a careless restore, not a careless write.
+
 **SQLite readers and writers differ, and the difference matters.** A reader may fall
 back to the repo-local copy. A writer may NOT: `resolve_writable_db_path()` raises when
 the Drive mount is absent, because a download that silently lands in the local copy
