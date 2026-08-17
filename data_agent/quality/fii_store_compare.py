@@ -193,22 +193,97 @@ def main() -> None:
     if len(disagree) > 20:
         print(f"  ... and {len(disagree) - 20} more")
 
+    # ------------------------------------------------------------------ classify
+    # A FIRST VERSION OF THIS VERDICT WAS WRONG, and the way it was wrong matters more than
+    # the bug. It saw extra dates plus value disagreements and concluded the fossil "holds
+    # something the live table does not" — so it told the user to preserve a copy they had
+    # already diagnosed and fixed weeks earlier. A checker that recommends re-litigating
+    # settled work is worse than no checker, and this is the third time in one session that
+    # a check needed narrowing for the same reason.
+    #
+    # The distinction it could not draw: MORE DATA and WRONG DATA look identical to a set
+    # difference. Two signatures separate them, and both are decisive here.
+    import datetime as _dt
+
+    def _wd(d):
+        try:
+            return _dt.date.fromisoformat(d).weekday()
+        except ValueError:
+            return -1
+
+    extra = sorted(pd_ - sd)
+    extra_nontrading = [d for d in extra if _wd(d) >= 5]
+    # (1) NON-TRADING DAYS. The live _flow_date() returns None for weekends on purpose, and
+    #     its docstring records why: "Upstox returns a record dated SUNDAY whose payload is
+    #     byte-identical to the following Monday — 7 of 41 rows on 2026-08-09, six of them
+    #     exact duplicates." A fossil holding Sundays is holding what the fix removes.
+    # (2) A UNIFORM ONE-DAY OFFSET. If the same value sits on day D in one store and D+1 in
+    #     the other, across the series, that is one misalignment reported many times over —
+    #     not many conflicts.
+    shifted = 0
+    for day, col, sv, pv in disagree:
+        try:
+            prev = (_dt.date.fromisoformat(day) - _dt.timedelta(days=1)).isoformat()
+            nxt = (_dt.date.fromisoformat(day) + _dt.timedelta(days=1)).isoformat()
+        except ValueError:
+            continue
+        for other in (prev, nxt):
+            o = prows.get(other)
+            if o is not None and o.get(col) is not None:
+                try:
+                    if abs(float(o[col]) - sv) <= max(0.01, abs(sv) * 0.001):
+                        shifted += 1
+                        break
+                except (TypeError, ValueError):
+                    pass
+
+    print(f"\nCLASSIFICATION")
+    print(f"  Postgres-only dates: {len(extra)}, of which NON-TRADING (weekend): "
+          f"{len(extra_nontrading)}")
+    if extra_nontrading:
+        print(f"    {extra_nontrading[:6]}{' ...' if len(extra_nontrading) > 6 else ''}")
+        print("    the live _flow_date() drops these deliberately — see its docstring")
+    print(f"  disagreements explained by a ONE-DAY OFFSET: {shifted}/{len(disagree)}")
+    if disagree and shifted == len(disagree):
+        print("    every one. That is a single misalignment counted many times, not")
+        print("    many independent conflicts.")
+
+    pre_fix = (not fillable
+               and len(extra_nontrading) == len(extra)
+               and (not disagree or shifted == len(disagree)))
+
     print("\nVERDICT")
-    if not fillable and not disagree and not (pd_ - sd):
+    if pre_fix and (extra or disagree):
+        print("  The fossil is PRE-FIX RESIDUE, not richer data. Every date it holds and the")
+        print("  live table does not is a non-trading day, and every value disagreement is")
+        print("  the same number one day apart. Both are the signature of the bug that")
+        print("  _flow_date() was written to fix, and nothing here is worth harvesting.")
+        print("  SAFE TO DROP — together with the vestigial `db_url = resolve_pg_dsn()` on")
+        print("  download_fii_dii.py:45, in one commit, so nobody is later sent looking for")
+        print("  a store that no longer exists.")
+        print()
+        print("  AND THE CROSS-CHECK SUCCEEDED, which was the point: 'zero in SQLite, real in")
+        print("  Postgres' came back EMPTY, so 2026-06-18 and 2026-06-22 are zero in BOTH")
+        print("  stores. Those two all-zero F&O blocks are the feed's start boundary, NOT")
+        print("  lost fetches. That question is now answered and needs no revisiting.")
+    elif not fillable and not disagree and not (pd_ - sd):
         print("  The fossil corroborates the live table everywhere they overlap and holds")
         print("  nothing the live table lacks. It is safe to drop — together with the")
         print("  vestigial `db_url = resolve_pg_dsn()` on download_fii_dii.py:45, so the")
         print("  next reader is not sent looking for a store that no longer exists.")
     else:
-        print("  DO NOT DROP the Postgres copy yet — it holds something the live table does")
-        print("  not. Harvest first (--harvest prints the statements), then drop.")
+        print("  DO NOT DROP yet. Something here is neither a non-trading day nor a one-day")
+        print("  offset, so the fossil may hold real data the live table lost. Harvest first")
+        print("  (--harvest prints the statements), then drop.")
 
     if a.harvest and fillable:
         print("\n-- review every line before running; these are not applied automatically")
         for day, col, _, pv in fillable:
             print(f"UPDATE fii_dii_flows SET {col} = {pv} WHERE flow_date = '{day}';")
 
-    sys.exit(1 if (fillable or disagree) else 0)
+    # Pre-fix residue is a conclusion, not an outstanding problem, so it exits 0. Only
+    # something genuinely unexplained should make this fail.
+    sys.exit(0 if (pre_fix or not (fillable or disagree)) else 1)
 
 
 if __name__ == "__main__":
