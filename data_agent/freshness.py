@@ -1,0 +1,392 @@
+#!/usr/bin/env python3
+"""
+freshness.py — what is stale, why it matters, and the command that fixes it.
+
+WHY THIS EXISTS
+---------------
+Several inputs in this repo refresh manually or on an event rather than on a clock, and
+"remember to run it" is not a control. It has already failed three times:
+
+  * `download_screener.py` skipped every cached workbook and printed "All downloads
+    complete". A deliberate refresh changed nothing and reported success.
+  * `delivery_history.json` therefore sat frozen at 37 of 47 names for Q1 FY27, so the
+    tracker quoted a +3.7% exit rate when the panel figure was +7.1% — and the only reason
+    anyone noticed was a question about why a number looked odd.
+  * `run_expectation_snapshot.sh` logged "OK snapshots 2 -> 4" twice in the same second
+    for one real capture and one byte-identical duplicate (C36). Its proof of success was
+    that the count went up, which is exactly what a duplicate write does.
+
+Every one of those was a job that reported success while doing nothing. So staleness is
+checked here, and — this is the part that matters — checked against the DATA wherever a
+data test exists, not against the calendar. "Older than 90 days" is a guess about when
+results season was. "The page scrape holds a quarter the panel does not" is a fact, and it
+is the actual condition that made the exit rate wrong. Calendar age is the fallback only
+where no data test is possible.
+
+BLOCKING VS ADVISORY
+--------------------
+A checker that cries wolf gets ignored, which leaves you worse off than no checker. So
+each entry declares whether staleness actually changes a number that gets read:
+
+  blocking   a published figure is or will be wrong. Exits non-zero.
+  advisory   a channel is degraded but something downstream routes around it. Reported,
+             never fatal.
+
+The export's 37-name quarterly gap is the worked example. It looks alarming and it is the
+exact defect that caused the +3.7% error — but the quarterly series now comes from
+`attributable_panel.json` (EPS x shares, 47 names) and the screen's gates read the ANNUAL
+series, which is complete at 47. So it is advisory: real, worth fixing, not worth a weekly
+alarm. Verified rather than assumed — that check is `check_export_quarters`.
+
+USAGE
+    python3 freshness.py                # full report; exit 1 if anything blocking is due
+    python3 freshness.py --quiet        # only the lines that need action
+    python3 freshness.py --all          # include advisory items in the exit code
+"""
+from __future__ import annotations
+
+import argparse
+import csv
+import datetime as dt
+import json
+import os
+import sys
+
+_HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(_HERE) if os.path.basename(_HERE) == "data_agent" else _HERE
+TABLES = os.path.join(ROOT, "data_agent", "fundamentals", "screener_page_tables.csv")
+UNIVERSE = os.path.join(ROOT, "nifty-50-stock-list.csv")
+
+OK, WARN, DUE = "OK", "WARN", "DUE"
+
+# Indian filings: quarter ends 31-Mar/30-Jun/30-Sep/31-Dec, results land inside ~45 days
+# (SEBI's limit for quarterly results). A quarter is only "expected" once that has passed.
+_FILING_WINDOW_DAYS = 45
+_MONTHS = {m: i for i, m in enumerate(
+    ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"], 1)}
+
+
+def _age_days(path: str) -> int | None:
+    p = os.path.join(ROOT, path)
+    if not os.path.exists(p):
+        return None
+    return (dt.datetime.now() - dt.datetime.fromtimestamp(os.path.getmtime(p))).days
+
+
+def _load(path: str):
+    p = os.path.join(ROOT, path)
+    if not os.path.exists(p):
+        return None
+    try:
+        with open(p) as fh:
+            return json.load(fh)
+    except Exception:
+        return None
+
+
+def _last_expected_quarter(today: dt.date) -> str:
+    """The newest quarter-end whose filing window has closed. Data-independent, but a
+    RULE rather than a guess: it is derived from the quarter-end calendar and SEBI's
+    45-day limit, not from 'about three months ago'."""
+    ends = [dt.date(y, m, d)
+            for y in (today.year - 1, today.year)
+            for m, d in ((3, 31), (6, 30), (9, 30), (12, 31))]
+    past = [e for e in ends if (today - e).days > _FILING_WINDOW_DAYS]
+    return max(past).isoformat() if past else ""
+
+
+def _scrape_quarters() -> dict[str, int]:
+    """period -> number of symbols with an EPS row. EPS is the metric the panel derives
+    from, so counting it is counting usable coverage rather than mere presence."""
+    if not os.path.exists(TABLES):
+        return {}
+    out: dict[str, set] = {}
+    with open(TABLES, newline="", encoding="utf-8") as fh:
+        for r in csv.DictReader(fh):
+            if r.get("section") == "quarters" and r.get("metric") == "EPS in Rs":
+                out.setdefault(r["period"], set()).add(r["symbol"])
+    return {k: len(v) for k, v in out.items()}
+
+
+# ---------------------------------------------------------------- data-driven checks
+def check_panel_vs_scrape():
+    """THE check. The quarterly series every growth number is now measured on is
+    `attributable_panel.json`; the page scrape is its input. If the scrape holds a quarter
+    the panel does not, the panel was not rebuilt and the exit rate is measured on a stale
+    panel — which is precisely how +7.1% got published as +3.7%."""
+    pn = _load("attributable_panel.json")
+    sc = _scrape_quarters()
+    if not pn or not sc:
+        return WARN, "cannot compare (missing panel or page scrape)"
+    ser = pn.get("series") or []
+    if not ser:
+        return DUE, "panel has no series at all"
+    p_last, p_names = ser[-1]["period"], ser[-1].get("names", 0)
+    s_last = max(sc)
+    if s_last > p_last:
+        return DUE, (f"scrape reaches {s_last}, panel only {p_last} — "
+                     f"the panel was not rebuilt after the last scrape")
+    if p_names < 45:
+        return DUE, (f"both reach {p_last} but the panel covers {p_names} names — "
+                     f"partial coverage reads as low growth")
+    return OK, f"panel {p_last} on {p_names} names, level with the scrape"
+
+
+def check_scrape_quarter():
+    """Is the scrape itself behind the exchange? Independent of the panel: if the scrape
+    never picked up the newest filed quarter, rebuilding the panel changes nothing."""
+    sc = _scrape_quarters()
+    if not sc:
+        return DUE, "screener_page_tables.csv missing"
+    want = _last_expected_quarter(dt.date.today())
+    have = max(sc)
+    if want and have < want:
+        return DUE, (f"newest filed quarter is {want} (window closed) but the scrape "
+                     f"stops at {have}")
+    return OK, f"scrape holds {have}, {sc[have]} symbols (expected through {want})"
+
+
+def check_export_quarters():
+    """The Excel export's quarterly coverage. ADVISORY on purpose — and the reason is
+    measured, not assumed: the quarterly series comes from the panel, and the screen's
+    gates read the export's ANNUAL series, which is checked separately below."""
+    d = _load("delivery_history.json")
+    if not d:
+        return DUE, "missing"
+    hist = d.get("history") or {}
+    q: dict[str, int] = {}
+    for v in hist.values():
+        for x in v.get("quarters", []):
+            if x.get("net_profit") is not None:
+                q[x["period"]] = q.get(x["period"], 0) + 1
+    if not q:
+        return DUE, "no quarterly rows"
+    last = max(q)
+    prev = sorted(q)[-2] if len(q) > 1 else last
+    if q[last] < q[prev]:
+        return WARN, (f"{last} covers {q[last]} names against {q[prev]} at {prev} — "
+                      f"export is a quarter behind; panel covers it, annual gates do not "
+                      f"use it")
+    return OK, f"{last} on {q[last]} names"
+
+
+def check_export_annual():
+    """BLOCKING. This is what the quality screen's gates actually read. A short newest
+    fiscal year silently shrinks the eligible universe instead of failing."""
+    d = _load("delivery_history.json")
+    if not d:
+        return DUE, "missing"
+    hist = d.get("history") or {}
+    a: dict[str, int] = {}
+    for v in hist.values():
+        for s in v.get("series", []):
+            a[s["period"]] = a.get(s["period"], 0) + 1
+    if not a:
+        return DUE, "no annual rows"
+    last = max(a)
+    univ: list[str] = []
+    if os.path.exists(UNIVERSE):
+        with open(UNIVERSE, newline="", encoding="utf-8") as fh:
+            univ = [r["Symbol"].strip().upper() for r in csv.DictReader(fh) if r.get("Symbol")]
+    # Name them. A recurring WARN that says "3 members missing" teaches you to skip the
+    # line; one that says WHICH three stays actionable, and shows when the set changes.
+    missing = sorted(set(univ) - set(hist)) if univ else []
+    if a[last] < len(hist):
+        return DUE, f"newest FY {last} covers {a[last]} of {len(hist)} names in the export"
+    note = f"FY {last} complete on all {a[last]} export names"
+    if missing:
+        return WARN, note + (f"; absent from the export entirely and so never screened: "
+                             f"{', '.join(missing)}")
+    return OK, note
+
+
+def check_snapshots():
+    """Distinct captures, not row count. C36's duplicate grew the count without adding an
+    observation, and the revisions channel gates on that count."""
+    import hashlib
+    d = _load("expectation_snapshots.json")
+    snaps = (d or {}).get("snapshots") or []
+    if not snaps:
+        return DUE, "no snapshots at all"
+
+    def h(rows):
+        return hashlib.md5(json.dumps(rows, sort_keys=True, default=str).encode()).hexdigest()
+
+    keys = [(s.get("captured_at", "")[:10], h(s.get("rows") or [])) for s in snaps]
+    distinct = len(set(keys))
+    dups = len(keys) - distinct
+    last = max(s.get("captured_at", "") for s in snaps)[:10]
+    try:
+        age = (dt.date.today() - dt.date.fromisoformat(last)).days
+    except ValueError:
+        return DUE, f"unparseable last capture {last!r}"
+
+    msg = f"{distinct} distinct captures, last {last} ({age}d ago)"
+    if dups:
+        return DUE, msg + f" — {dups} DUPLICATE write(s) inflating the count (C36)"
+    if distinct < 3:
+        msg += f" — {3 - distinct} more before revisions become measurable"
+    if age > 9:
+        return DUE, msg
+    return (OK if distinct >= 3 else WARN), msg
+
+
+def check_fii_quarter():
+    """FII shareholding is quarterly. Two things can be wrong: the file can be behind a
+    closed filing window, and its period LABELS can be junk — three names carry
+    non-quarter-end months, which is a vendor defect, not a staleness one."""
+    d = _load("fii_holdings.json")
+    if not d:
+        return DUE, "missing"
+    hold = d.get("holdings") or {}
+    labels = [h.get("period") for h in hold.values() if h.get("period")]
+    if not labels:
+        return DUE, "no period labels"
+
+    def parse(lbl):
+        parts = str(lbl).split()
+        if len(parts) == 2 and parts[0][:3] in _MONTHS:
+            try:
+                return dt.date(int(parts[1]), _MONTHS[parts[0][:3]], 1)
+            except ValueError:
+                return None
+        try:
+            return dt.date.fromisoformat(str(lbl)[:10]).replace(day=1)
+        except ValueError:
+            return None
+
+    parsed = [(l, parse(l)) for l in labels]
+    bad_month = sorted({l for l, p in parsed if p and p.month not in (3, 6, 9, 12)})
+    dates = [p for _, p in parsed if p]
+    if not dates:
+        return DUE, f"no parseable labels (sample {labels[:3]})"
+    newest = max(dates)
+    today = dt.date.today()
+    want = dt.date.fromisoformat(_last_expected_quarter(today)).replace(day=1)
+    msg = f"newest label {newest.strftime('%b %Y')}, filed quarter expected {want.strftime('%b %Y')}"
+    if len(bad_month) > 3:
+        bad_month = bad_month[:3] + [f"+{len(bad_month) - 3} more"]
+    if bad_month:
+        msg += f"; NON-QUARTER labels: {', '.join(bad_month)}"
+    if newest < want:
+        return DUE, msg
+    return (WARN if bad_month else OK), msg
+
+
+def check_screen():
+    """The screen itself. Its own `as_of` beats the file mtime — a reformat or a manual
+    edit touches mtime without changing a number."""
+    d = _load("quality_growth.json")
+    if not d:
+        return DUE, "missing"
+    as_of = str(d.get("as_of", ""))[:10]
+    try:
+        age = (dt.date.today() - dt.date.fromisoformat(as_of)).days
+    except ValueError:
+        return DUE, f"unparseable as_of {as_of!r}"
+    n = len(((d.get("screen") or {}).get("selected")) or d.get("screen") or [])
+    msg = f"as_of {as_of} ({age}d), {n} entries in screen"
+    if age > 8:
+        return DUE, msg
+    panel_age, screen_age = _age_days("attributable_panel.json"), _age_days("quality_growth.json")
+    if panel_age is not None and screen_age is not None and panel_age < screen_age:
+        return WARN, msg + " — but the panel is newer than the screen; re-run to pick it up"
+    return OK, msg
+
+
+# ---------------------------------------------------------------- registry
+CHECKS = [
+    {"name": "attributable_panel.json", "cadence": "quarterly (results season)",
+     "fn": check_panel_vs_scrape, "sev": "blocking",
+     "fix": "python3 data_agent/fundamentals/attributable_panel.py",
+     "why": "the quarterly series every growth and exit-rate number is measured on"},
+    {"name": "screener_page_tables.csv", "cadence": "quarterly (results season)",
+     "fn": check_scrape_quarter, "sev": "blocking",
+     "fix": "python3 data_agent/fundamentals/screener_tables.py --basis auto   (~10 min)",
+     "why": "the panel's only input; behind here means behind everywhere"},
+    {"name": "delivery_history (annual)", "cadence": "yearly (May-Jun)",
+     "fn": check_export_annual, "sev": "blocking",
+     "fix": ("python3 data_agent/fundamentals/download_screener.py --force && "
+             "python3 data_agent/fundamentals/delivery_history.py\n"
+             "  # names absent entirely are an ALIAS/ticker problem, not a staleness one — "
+             "TATAMOTORS is TMCV on Screener; see ALIAS_DEFAULT in screener_tables.py"),
+     "why": "the quality screen's growth gates read this series, not the quarters"},
+    {"name": "delivery_history (quarters)", "cadence": "quarterly (results season)",
+     "fn": check_export_quarters, "sev": "advisory",
+     "fix": ("python3 data_agent/fundamentals/download_screener.py --force && "
+             "python3 data_agent/fundamentals/delivery_history.py"),
+     "why": "panel routes around this; still the source of share counts"},
+    {"name": "expectation_snapshots.json", "cadence": "weekly (cron, Mon 09:00)",
+     "fn": check_snapshots, "sev": "blocking",
+     "fix": "data_agent/fundamentals/run_expectation_snapshot.sh",
+     "why": "the only forward-looking gate, and it gates the revisions channel"},
+    {"name": "fii_holdings.json", "cadence": "quarterly (filings)",
+     "fn": check_fii_quarter, "sev": "advisory",
+     "fix": "python3 data_agent/fundamentals/fii_holding_backfill.py",
+     "why": "a flag, never a gate — but bad period labels misdate the change_pp"},
+    {"name": "quality_growth.json", "cadence": "weekly, after the snapshot",
+     "fn": check_screen, "sev": "blocking",
+     "fix": "python3 data_agent/fundamentals/quality_growth.py   (~4 min)",
+     "why": "the screen itself — stale means last week's names on this week's prices"},
+    # calendar-only fallbacks: no data test exists for these
+    {"name": "pe_history.json", "cadence": "at announcements", "max_age": 30,
+     "sev": "advisory",
+     "fix": "python3 data_agent/fundamentals/pe_history_backfill.py",
+     "why": "point-in-time backtest only; keeps the walk-forward honest"},
+    {"name": "nifty50_drivers.json", "cadence": "manual", "max_age": 45,
+     "sev": "advisory",
+     "fix": "edit by hand, or a patcher like add_it_deflation.py",
+     "why": "curated commentary; does NOT gate selection"},
+]
+
+
+def main() -> None:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--quiet", action="store_true", help="only lines needing action")
+    ap.add_argument("--all", action="store_true",
+                    help="let advisory items affect the exit code too")
+    a = ap.parse_args()
+
+    print(f"FRESHNESS  {dt.date.today()}   data-driven where a data test exists, "
+          f"calendar age otherwise\n")
+    todo = []
+    for c in CHECKS:
+        if c.get("fn"):
+            state, detail = c["fn"]()
+            kind = "vs data"
+        else:
+            age = _age_days(c["name"])
+            if age is None:
+                state, detail = DUE, "MISSING"
+            else:
+                state = OK if age <= c["max_age"] else DUE
+                detail = f"{age}d old (limit {c['max_age']}d)"
+            kind = "calendar"
+        if state != OK:
+            todo.append((c, state))
+        if a.quiet and state == OK:
+            continue
+        print(f"  [{state:4s}] {c['name']:28s} {c['cadence']:26s} {detail}")
+        if not a.quiet:
+            print(f"           {kind} · {c['sev']} · {c['why']}")
+
+    blocking = [(c, s) for c, s in todo if c["sev"] == "blocking" and s == DUE]
+    if not todo:
+        print("\nNothing stale.")
+        return
+
+    print(f"\n{len(todo)} item(s) need attention — {len(blocking)} blocking:\n")
+    for c, s in todo:
+        print(f"  # [{s}/{c['sev']}] {c['name']}: {c['why']}")
+        print(f"  {c['fix']}\n")
+    print("Order matters: the scrape feeds the panel, the panel and the snapshot feed the")
+    print("screen. Refresh inputs before re-running quality_growth.py.")
+    if blocking or (a.all and todo):
+        sys.exit(1)
+    print("\nNothing BLOCKING — the advisory items degrade a channel that something")
+    print("downstream routes around. Fix them, but not urgently.")
+
+
+if __name__ == "__main__":
+    main()

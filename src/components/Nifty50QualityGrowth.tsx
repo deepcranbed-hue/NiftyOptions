@@ -32,6 +32,11 @@ export type QGName = {
   consistency_pct: number | null; years_grown: number | null; years_measured: number | null;
   profit_cagr_5y_pct: number | null; profit_cagr_3y_pct: number | null;
   worst_year_pct: number | null; corporate_action_years: number | null;
+  median_annual_growth_pct?: number | null; cagr_over_median_pp?: number | null;
+  eps_always_positive?: boolean | null; eps_negative_years?: number;
+  fii_pct?: number | null; fii_change_pp?: number | null; fii_change_4q_pp?: number | null;
+  fii_direction?: string | null; fii_above_min?: boolean | null; fii_min_pct?: number;
+  fii_suspect?: boolean; fii_suspect_reason?: string | null;
   trailing_pe: number | null; forward_pe: number | null;
   implied_growth_pct: number | null; analysts: number | null;
   failed?: string[];
@@ -69,6 +74,16 @@ export type QGDoc = {
     today_screen: QGBacktest; point_in_time: QGBacktest;
     lookahead_inflation_pp: number | null;
     overlap: string[]; only_in_today_screen: string[]; caveats: string[];
+    cutoff: string; buy_date: string; publication_lag_days: number;
+    start_date_sweep: {
+      runs: { cutoff: string; buy_date: string; end?: string; years?: number;
+              n_picked: number; n_holdings?: number; error?: string;
+              portfolio_cagr_pct?: number; index_cagr_pct?: number;
+              excess_cagr_pp?: number; beat_index?: number }[];
+      n_starts: number; excess_cagr_pp_min: number | null;
+      excess_cagr_pp_median: number | null; excess_cagr_pp_max: number | null;
+      starts_beating_index: number; note: string;
+    };
   };
 };
 
@@ -359,7 +374,9 @@ export function Nifty50QualityGrowth({ onSymbolClick }: { onSymbolClick?: (sym: 
                     <th className="py-1.5 px-2 text-right">Grew</th>
                     <th className="py-1.5 px-2 text-right">5y CAGR</th>
                     <th className="py-1.5 px-2 text-right">3y CAGR</th>
+                    <th className="py-1.5 px-2 text-right" title="Median of the annual growth rates. Endpoint-independent, so a single depressed base cannot move it. The GAP to the CAGR is the base-effect measure.">Median yr</th>
                     <th className="py-1.5 px-2 text-right">Worst yr</th>
+                    <th className="py-1.5 px-2 text-right" title="FII/FPI holding, % of equity. A share of FREE FLOAT, not a quality vote — a high-promoter company cannot score well here however good it is.">FII%</th>
                     <th className="py-1.5 px-2 text-right">P/E t → f</th>
                     <th className="py-1.5 px-2 text-right">Priced for</th>
                     <th className="py-1.5 pl-2 text-left">In sector</th>
@@ -393,8 +410,30 @@ export function Nifty50QualityGrowth({ onSymbolClick }: { onSymbolClick?: (sym: 
                           </td>
                           <td className="py-1.5 px-2 text-right font-mono font-bold text-slate-800">{r.profit_cagr_5y_pct}%</td>
                           <td className="py-1.5 px-2 text-right font-mono text-slate-500">{r.profit_cagr_3y_pct ?? '—'}%</td>
+                          <td className="py-1.5 px-2 text-right font-mono text-slate-600"
+                              title={(r.cagr_over_median_pp ?? 0) >= 5
+                                ? `CAGR runs ${r.cagr_over_median_pp}pp above the median annual rate — the compound figure is carried by its endpoints, not by a repeatable rate.`
+                                : 'CAGR and median agree — this is what compounding looks like.'}>
+                            {r.median_annual_growth_pct == null ? '—' : `${r.median_annual_growth_pct}%`}
+                            {(r.cagr_over_median_pp ?? 0) >= 5 && (
+                              <span className="text-amber-600 font-bold" title="base effect">*</span>
+                            )}
+                          </td>
                           <td className={`py-1.5 px-2 text-right font-mono ${(r.worst_year_pct ?? 0) < 0 ? 'text-rose-600' : 'text-slate-500'}`}>
                             {r.worst_year_pct === null ? '—' : `${r.worst_year_pct > 0 ? '+' : ''}${r.worst_year_pct}%`}
+                          </td>
+                          <td className="py-1.5 px-2 text-right font-mono">
+                            <span className={r.fii_above_min === false ? 'text-amber-600' : 'text-slate-600'}>
+                              {r.fii_pct == null ? '—' : `${r.fii_pct}%`}
+                            </span>
+                            {r.fii_suspect && (
+                              <span className="text-rose-600 font-bold" title={r.fii_suspect_reason || 'FII series looks unreliable'}>!</span>
+                            )}
+                            {!r.fii_suspect && r.fii_change_4q_pp != null && (
+                              <span className={`ml-1 text-[9px] ${r.fii_change_4q_pp < 0 ? 'text-rose-500' : 'text-emerald-600'}`}>
+                                {r.fii_change_4q_pp > 0 ? '+' : ''}{r.fii_change_4q_pp}
+                              </span>
+                            )}
                           </td>
                           <td className="py-1.5 px-2 text-right font-mono text-slate-500">
                             {r.trailing_pe ?? '—'} → {r.forward_pe ?? '—'}
@@ -565,6 +604,79 @@ export function Nifty50QualityGrowth({ onSymbolClick }: { onSymbolClick?: (sym: 
                   {doc.point_in_time.note}
                 </p>
               </div>
+            )}
+
+            {/* One start date is one draw. This screen moved ~10pp on a single quarter's
+                shift of the buy date, so the spread across starts is shown beside the
+                headline rather than the headline standing alone. */}
+            {doc.backtest.start_date_sweep && (
+              <div className="mt-3 rounded-xl border border-slate-200 bg-slate-50/60 px-3 py-2.5">
+                <div className="flex flex-wrap items-baseline gap-2 mb-1.5">
+                  <span className="text-[10px] font-black uppercase tracking-wide text-slate-500">
+                    Start-date sweep — is the edge the screen, or the entry date?
+                  </span>
+                  <span className="text-[9px] text-slate-400">
+                    annualised excess; total excess is not comparable across different holding lengths
+                  </span>
+                </div>
+                <table className="w-full text-[10px]">
+                  <thead>
+                    <tr className="text-[9px] uppercase font-black text-slate-400 border-b border-slate-200">
+                      <th className="py-1 pr-2 text-left">Data cutoff</th>
+                      <th className="py-1 px-2 text-left">Bought</th>
+                      <th className="py-1 px-2 text-right">Years</th>
+                      <th className="py-1 px-2 text-right">Names</th>
+                      <th className="py-1 px-2 text-right">Portfolio CAGR</th>
+                      <th className="py-1 px-2 text-right">Index CAGR</th>
+                      <th className="py-1 pl-2 text-right">Excess p.a.</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {doc.backtest.start_date_sweep.runs.map((r) => (
+                      <tr key={r.cutoff} className="border-b border-slate-100">
+                        <td className="py-1 pr-2 font-mono text-slate-600">{r.cutoff}</td>
+                        <td className="py-1 px-2 font-mono text-slate-400">{r.buy_date}</td>
+                        {r.error ? (
+                          <td colSpan={5} className="py-1 px-2 text-slate-400 italic">{r.error}</td>
+                        ) : (
+                          <>
+                            <td className="py-1 px-2 text-right font-mono text-slate-400">{r.years}</td>
+                            <td className="py-1 px-2 text-right font-mono text-slate-400">{r.n_holdings}</td>
+                            <td className="py-1 px-2 text-right font-mono text-slate-600">{r.portfolio_cagr_pct}%</td>
+                            <td className="py-1 px-2 text-right font-mono text-slate-500">{r.index_cagr_pct}%</td>
+                            <td className={`py-1 pl-2 text-right font-mono font-bold ${(r.excess_cagr_pp ?? 0) >= 0 ? 'text-emerald-700' : 'text-rose-600'}`}>
+                              {(r.excess_cagr_pp ?? 0) >= 0 ? '+' : ''}{r.excess_cagr_pp}pp
+                            </td>
+                          </>
+                        )}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <p className="text-[10px] text-slate-600 mt-1.5 leading-snug">
+                  Across {doc.backtest.start_date_sweep.n_starts} starts the excess runs{' '}
+                  <b className="font-mono">{doc.backtest.start_date_sweep.excess_cagr_pp_min}pp</b> to{' '}
+                  <b className="font-mono">{doc.backtest.start_date_sweep.excess_cagr_pp_max}pp</b> a year
+                  (median {doc.backtest.start_date_sweep.excess_cagr_pp_median}pp),{' '}
+                  {doc.backtest.start_date_sweep.starts_beating_index}/{doc.backtest.start_date_sweep.n_starts}{' '}
+                  positive. The <b>sign is consistent; the magnitude spans a factor of tens</b> — which
+                  is why the register records this as not established rather than as a weak finding.
+                </p>
+                <p className="text-[9px] text-slate-400 mt-1 leading-snug">
+                  {doc.backtest.start_date_sweep.note}
+                </p>
+              </div>
+            )}
+
+            {doc.backtest.buy_date && (
+              <p className="text-[10px] text-slate-500 mt-2 leading-snug">
+                <b className="text-[9px] uppercase text-slate-400 mr-1">Publication lag</b>
+                the screen reads annuals dated on or before <b>{doc.backtest.cutoff}</b> and does not buy
+                until <b>{doc.backtest.buy_date}</b>, {doc.backtest.publication_lag_days} days later,
+                because Indian March-year-end results are published in May–June. An earlier version
+                bought the day after the cutoff and reported +14.2pp — two thirds of which was reading
+                results before they existed.
+              </p>
             )}
 
             <button onClick={() => setShowHoldings((v) => !v)}

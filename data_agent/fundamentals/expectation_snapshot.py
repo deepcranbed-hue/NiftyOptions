@@ -51,6 +51,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
 import os
 import sys
@@ -123,6 +124,11 @@ def _universe():
         return [r["Symbol"].strip() for r in csv.DictReader(f) if r.get("Symbol")]
 
 
+def _rows_hash(rows) -> str:
+    """Content fingerprint of a capture. The only reliable proof a capture is NEW."""
+    return hashlib.md5(json.dumps(rows, sort_keys=True, default=str).encode()).hexdigest()
+
+
 def _load():
     try:
         with open(_OUT) as f:
@@ -143,6 +149,8 @@ def main():
                          "earnings date; names without one are captured anyway rather "
                          "than silently skipped)")
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--force", action="store_true",
+                    help="append even if identical to today's last capture")
     args = ap.parse_args()
 
     symbols = ([s.strip().upper() for s in args.symbols.split(",") if s.strip()]
@@ -183,11 +191,32 @@ def main():
         return 0
 
     doc = _load()
+
+    # A COUNT THAT GROWS IS NOT PROOF A CAPTURE HAPPENED (correction C36).
+    # On 2026-08-17 two wrapper instances started in the same second, each read the file
+    # before the other wrote, and the log went 2 -> 4 with snapshot #4 byte-identical to
+    # #3 — same captured_at, same md5 over rows. The wrapper reported OK twice because
+    # its only test was that the count went up, which is exactly what a duplicate does.
+    # An identical payload on the SAME DAY is a duplicate write, not an observation.
+    # An identical payload on a LATER day is a real observation (a week with no revisions
+    # is a finding), so the guard is deliberately scoped to the day and not to content
+    # alone.
+    prev = doc["snapshots"][-1] if doc.get("snapshots") else None
+    if prev and not args.force:
+        if (prev.get("captured_at", "")[:10] == now.strftime("%Y-%m-%d")
+                and _rows_hash(prev.get("rows") or []) == _rows_hash(rows)):
+            print(f"\nREFUSED — identical to snapshot #{len(doc['snapshots'])} captured "
+                  f"{prev['captured_at']}: same day, same {len(rows)} rows, same hash.")
+            print("  Nothing appended. This is a duplicate write, not a lost capture.")
+            print("  Pass --force to record a deliberate second same-day capture.")
+            return 2
+
     doc["snapshots"].append({
         "captured_at": now.strftime("%Y-%m-%dT%H:%M:%S"),
         "source": "yfinance Ticker.info",
         "n": len(rows),
         "rows": rows,
+        "rows_md5": _rows_hash(rows),
     })
     with open(_OUT, "w") as f:
         json.dump(doc, f, indent=1)
