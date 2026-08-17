@@ -17,6 +17,10 @@ __pycache__/
 *.db
 *.db-journal
 *.zip
+# ...but NOT the exchange contract master. contract_size is stamped from it at capture
+# and freshness.py treats it as blocking, so a 2.9 MB monthly input to STORED data
+# belongs in history. The blanket *.zip rule was hiding it.
+!SecurityMaster.zip
 
 # Environments
 *_env/
