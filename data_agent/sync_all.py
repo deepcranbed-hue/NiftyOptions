@@ -234,6 +234,29 @@ def build_steps(args):
         Step("fo", "Futures and option contract bars (Breeze)",
              None, argv=_fo_snippet, needs="breeze+keys", pause_after=3),
 
+        # Single-stock futures at 1d. Placed HERE, last among the Breeze steps, for two
+        # reasons.
+        #
+        # SEQUENCING: every Breeze call in this plan is now contiguous, so the broker sees
+        # one unbroken run of traffic from one client rather than Breeze and Upstox work
+        # interleaved. The run loop is already strictly sequential — a blocking
+        # subprocess.run per step, no ThreadPoolExecutor anywhere in the fetch path — and
+        # the script itself walks 50 symbols one at a time with a 0.8s pause between calls.
+        # pause_after=3 matches the other Breeze steps.
+        #
+        # TIMING: Breeze publishes the 1d bar for a session in an overnight batch around
+        # 23:30-00:00 IST, verified by querying the endpoint directly on 2026-08-17 and
+        # getting bars terminating at 08-14 while 1m bars for 08-17 were already stored. So
+        # this collects the PREVIOUS session and belongs in a morning run. An afternoon sync
+        # will fetch nothing new and report success, which is why freshness.py allows exactly
+        # one session of lag before calling it overdue.
+        #
+        # A missed day cannot be recovered: Breeze serves no history for settled contracts.
+        Step("stock-futures", "Single-stock futures, 1d (Breeze)",
+             f"{fo}/download_stock_futures.py",
+             argv=lambda c: ["--live", "--session-token", c["breeze"]],
+             needs="breeze+keys", pause_after=3),
+
         # The option-chain capture takes an expiry and a date window, so unlike
         # everything else it is not a plain "refresh to now". It stays opt-in.
         # `repeat` carries the auto-rollover: within 2 days of the given expiry the

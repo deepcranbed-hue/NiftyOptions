@@ -205,6 +205,9 @@ def main() -> None:
     ap.add_argument("--only", help="comma-separated symbols")
     ap.add_argument("--since", help="YYYY-MM-DD lower bound for --expired (default 12 months)")
     ap.add_argument("--dry-run", action="store_true", help="resolve expiries, fetch nothing")
+    ap.add_argument("--session-token", default=None,
+                    help="Breeze session token; sync_all passes this. Falls back to "
+                         "$BREEZE_SESSION_TOKEN or today's cached session.")
     a = ap.parse_args()
 
     today = date.today()
@@ -235,11 +238,17 @@ def main() -> None:
         except Exception as exc:
             print(f"  NOTE: no lot sizes ({exc}) — contract_size will be NULL")
 
-    b = None if a.dry_run else _client()
+    b = None if a.dry_run else _client(a.session_token)
     plan, saved, empty, failed = [], 0, 0, 0
 
     for i, sym in enumerate(syms, 1):
-        exps, err = breeze_expiries(sym)
+        # The expiry lookup is itself a Breeze call and was the only one in this loop with
+        # no pause in front of it: the sleeps below sit after each BAR fetch, so a symbol
+        # whose lookup fails used to issue its next lookup immediately. 50 symbols of that
+        # is a burst against an API that rate-limits. Sequential and paced, everywhere.
+        if i > 1:
+            time.sleep(_SLEEP)
+        exps, err = breeze_expiries(sym, session_token=a.session_token)
         if err or not exps:
             print(f"[{i:2d}/{len(syms)}] {sym:12s} EXPIRY LOOKUP FAILED: {err or 'empty list'}")
             failed += 1

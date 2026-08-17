@@ -11,7 +11,17 @@ cd /Users/deepak/antigravity/NiftyOptions
 python data_agent/sync_all.py --breeze-token <SESSION_TOKEN>
 ```
 
-That is the whole sync. No expiry argument, no second broker token, no endpoint.
+That is the whole sync.
+
+> **Run it in the MORNING.** Breeze publishes the `1day` bar for a session in an
+> overnight batch around 23:30-00:00 IST — verified 2026-08-17 by querying the
+> endpoint directly and getting bars terminating at 08-14 while 1m bars for 08-17
+> were already stored. The `stock-futures` step therefore collects the PREVIOUS
+> session. An afternoon run fetches nothing new and reports success. A missed day is
+> **unrecoverable** — Breeze serves no history for settled contracts — so
+> `data_agent/freshness.py` treats the futures table as blocking and allows exactly
+> one session of lag before calling it overdue.
+ No expiry argument, no second broker token, no endpoint.
 Without a Breeze token it still runs everything that does not need one.
 
 Useful variants:
