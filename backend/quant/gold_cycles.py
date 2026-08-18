@@ -64,7 +64,18 @@ if ROOT not in sys.path:
 OZ_G = 31.1035
 THRESH = 0.10          # a "cycle" is a fall of at least this much from a running high
 MIN_VOL = 10           # below this the MCX print is notional; see the validation note
-MCX_REF = "GOLD_2026-10-05"
+
+# THE CONTINUOUS FRONT CONTRACT, not a named expiry. A specific expiry is only liquid for a
+# few months of its life, so scoring against one measures the contract's age as much as the
+# model: GOLD_2026-10-05 gave a residual of -0.19% with sd 1.88pp over 55 days, while the
+# front symbol gives about -1% over the same window with far more of them. Always compare a
+# spot-equivalent model against whatever is currently the front month.
+MCX_REF = "GOLD"
+
+# Local highs, for the peaks panel. A cycle table finds troughs; nothing in it surfaces the
+# fact that the landed price made effectively the SAME high twice, four months apart.
+PEAK_WINDOW = 25       # a high must dominate this many sessions either side
+PEAK_SEP = 40          # ...and highs closer together than this are one event
 
 GST = 0.03             # 3% on bullion since 2017-07-01, unchanged across this sample
 
@@ -153,6 +164,29 @@ def policy_in(cyc):
             if cyc["peak_date"] <= eff <= cyc["trough_date"]]
 
 
+def major_highs(days, vals, n=6):
+    """Distinct local highs, biggest first.
+
+    WHY THIS EXISTS. The drawdown table marks exactly one peak — the running maximum — and
+    that hides the most interesting thing on this series: the landed price reached
+    2026-01-29 and 2026-05-13 within 0.2% of each other, for completely unrelated reasons.
+    Marking only the all-time high reports a 0.2% accident as though it were the story.
+    """
+    cand = []
+    for i in range(len(days)):
+        lo, hi = max(0, i - PEAK_WINDOW), min(len(days), i + PEAK_WINDOW + 1)
+        if vals[i] == max(vals[lo:hi]):
+            cand.append((vals[i], days[i], i))
+    cand.sort(reverse=True)
+    kept = []
+    for v, d, i in cand:
+        if all(abs(i - j) > PEAK_SEP for _, _, j in kept):
+            kept.append((v, d, i))
+        if len(kept) >= n:
+            break
+    return kept
+
+
 def drawdown(pairs):
     mx, out = pairs[0][1], []
     for _, c in pairs:
@@ -217,6 +251,15 @@ def build(days, usd, fx, mcx, vol, out_path):
     mcx_dots = "".join(
         f'<circle cx="{_x(idx[d], len(days), W):.1f}" cy="{y_of(mcx[d]):.1f}" r="1.6" '
         f'fill="var(--mcx)" opacity=".85"/>' for d in liq)
+
+    highs = major_highs(days, landed)
+    top = highs[0][0] if highs else max(landed)
+    high_marks = "".join(
+        f'<circle cx="{_x(i, len(days), W):.1f}" cy="{y_of(v):.1f}" r="3.4" fill="none" '
+        f'stroke="var(--gold)" stroke-width="1.4"/>'
+        f'<text class=lab x="{_x(i, len(days), W):.0f}" y="{y_of(v) - 8:.0f}" '
+        f'text-anchor="middle" fill="var(--gold)">{d[:7]}</text>'
+        for v, d, i in highs[:3])
 
     duty_marks = ""
     for eff, r, why in DUTY_SCHEDULE[1:]:
@@ -371,6 +414,7 @@ def build(days, usd, fx, mcx, vol, out_path):
     <path d="{p_parity}" fill="none" stroke="var(--par)" stroke-width="1.4"/>
     <path d="{p_landed}" fill="none" stroke="var(--gold)" stroke-width="1.9"/>
     {mcx_dots}
+    {high_marks}
     <line id=cx1 x1=0 y1=0 x2=0 y2={H} stroke="var(--dim)" stroke-width=1 opacity=0/>
   </svg>
 </div>
@@ -388,6 +432,22 @@ def build(days, usd, fx, mcx, vol, out_path):
     <path d="{p_ddl}" fill="none" stroke="var(--gold)" stroke-width="1.8"/>
     <line id=cx2 x1=0 y1=0 x2=0 y2={HD} stroke="var(--dim)" stroke-width=1 opacity=0/>
   </svg>
+</div>
+
+<div class=panel>
+  <h2>Distinct major highs &mdash; the landed price topped twice, four months apart</h2>
+  <table>
+    <tr><th>Date</th><th class=n>Landed</th><th class=n>vs the high</th>
+        <th class=n>Duty</th><th class=n>COMEX $/oz</th><th class=n>USDINR</th>
+        <th>What made it a high</th></tr>
+    {''.join(f"<tr{' class=live' if k < 2 else ''}><td>{d}</td>"
+             f"<td class=n>{v:,.0f}</td>"
+             f"<td class='n {'pos' if v >= top else 'neg'}'>{v / top - 1:+.2%}</td>"
+             f"<td class=n>{duty_on(d) * 100:g}%</td>"
+             f"<td class=n>{usd[d]:,.1f}</td><td class=n>{fx[d]:.2f}</td>"
+             f"<td>{'the metal' if duty_on(d) < 0.10 and usd[d] > 5000 else ('the tax — COMEX was ' + format(1 - usd[d] / usd[highs[0][1]], '.0%') + ' below its January level' if d >= '2026-05-13' else '')}</td></tr>"
+             for k, (v, d, i) in enumerate(highs))}
+  </table>
 </div>
 
 <div class=panel>
@@ -420,6 +480,22 @@ def build(days, usd, fx, mcx, vol, out_path):
 <div class=panel>
   <h2>What this page does and does not say</h2>
   <div class=note-list>
+    <p><b>India's gold made the same high twice, and only one of them was about gold.</b>
+    {highs[0][1]}: COMEX {usd[highs[0][1]]:,.0f}/oz, duty 6%, landed
+    &#8377;{highs[0][0]:,.0f}. {highs[1][1]}: COMEX {usd[highs[1][1]]:,.0f}/oz — <b>
+    {1 - usd[highs[1][1]] / usd[highs[0][1]]:.0%} lower</b> — but duty 15% and a weaker
+    rupee, landed &#8377;{highs[1][0]:,.0f}. The two are
+    {abs(highs[1][0] / highs[0][0] - 1) * 100:.2f}% apart. A view that marks only the
+    all-time high would report that gap as the answer, when the honest reading is that the
+    January and May tops are the same height and were built out of different materials.</p>
+    <p><b>Treat the January top with more suspicion than the May one.</b> It rests on a
+    two-session window in which COMEX fell <b>-11.4%</b> in a day (the largest move in this
+    entire eight-year series) and Indian screens were barely open on it: the most active
+    gold contract on 29-Jan did <b>32 lots</b>, and its print sat 16% above landed — rising
+    to 25% the next day, when India did not follow the New York crash and repriced only on
+    2-Feb. The global spike is real and independently corroborated by both vendors, but the
+    Indian price at that moment is a model estimate against almost no trading. The May high
+    happened on 1,700+ lots.</p>
     <p><b>The 2026 drawdown is 6.5pp shallower once duty is counted.</b> Naked parity fell
     {par_live['depth'] * 100:.1f}% from its {par_live['peak_date']} peak; landed fell
     {live['depth'] * 100:.1f}%. The difference is the {DUTY_SCHEDULE[-1][0]} hike from 6% to
