@@ -475,6 +475,86 @@ def check_futures_bars():
     return OK, msg
 
 
+# Market inputs a daily brief reads. Tolerance is in SESSIONS behind the observed calendar,
+# not days — so weekends and holidays never trip it. `max_lag` of 1 means "yesterday's close is
+# fine, the day before is not".
+#
+# fo_price_bars is deliberately ABSENT: check_futures_bars() already owns it. Two checks on one
+# table is the duplication this repo keeps paying for.
+MARKET_INPUTS = [
+    ("price_bars NIFTY",     "select max(date(ts)) from price_bars where symbol='NIFTY' and timeframe='1d'", 1),
+    ("price_bars INDIAVIX",  "select max(date(ts)) from price_bars where symbol='INDIAVIX' and timeframe='1d'", 1),
+    ("price_bars CRUDEOIL",  "select max(date(ts)) from price_bars where symbol='CRUDEOIL' and timeframe='1d'", 1),
+    ("price_bars USDINR",    "select max(date(ts)) from price_bars where symbol='USDINR' and timeframe='1d'", 1),
+    ("price_bars NASDAQ",    "select max(date(ts)) from price_bars where symbol='NASDAQ' and timeframe='1d'", 2),
+    ("participant_oi",       "select max(flow_date) from participant_oi", 1),
+    ("participant_flows",    "select max(flow_date) from participant_flows", 1),
+    ("fii_dii_flows",        "select max(flow_date) from fii_dii_flows", 1),
+    ("global_cues",          "select max(as_of) from global_cues", 1),
+]
+
+
+def _sessions_behind(con, latest):
+    """Lag measured in OBSERVED sessions. The calendar comes from price_bars at 1d — a
+    different job on a different endpoint — so this needs no holiday table and self-adjusts."""
+    if not latest:
+        return None
+    cal = [r[0] for r in con.execute(
+        "select distinct date(ts) from price_bars where timeframe='1d' order by 1 desc limit 30")]
+    return len([x for x in cal if x > str(latest)[:10]])
+
+
+def market_inputs_state():
+    """(name, latest, sessions_behind, max_lag) for every input a brief reads."""
+    import sqlite3
+    db = os.path.join(ROOT, "option_chains.db")
+    if not os.path.exists(db):
+        return None
+    con = sqlite3.connect(f"file:{db}?mode=ro", uri=True)
+    out = []
+    for name, sql, tol in MARKET_INPUTS:
+        try:
+            latest = con.execute(sql).fetchone()[0]
+        except Exception:
+            latest = None
+        out.append((name, latest, _sessions_behind(con, latest), tol))
+    try:
+        out.append(("cue_betas", None,
+                    None if con.execute("select count(*) from cue_betas").fetchone()[0] else -1, 0))
+    except Exception:
+        out.append(("cue_betas", None, -1, 0))
+    return out
+
+
+def check_market_inputs():
+    """Every table a daily brief reads, with its lag. BLOCKING.
+
+    WHY BLOCKING, when none of these feeds a published research number: on 2026-08-18 a brief
+    quoted FII positioning from participant_oi as current. It was 2026-08-12 — three sessions
+    behind — in the same answer that listed three OTHER staleness caveats. Stating some dates
+    and not others is worse than stating none, because the ones you do state imply the rest
+    were checked.
+
+    The harm is not that data goes stale, which is normal. It is that a stale number gets
+    quoted UNDATED. `--market` prints the as-of table so a brief can carry the dates instead
+    of assuming them.
+    """
+    st = market_inputs_state()
+    if st is None:
+        return WARN, "no database reachable from here"
+    late = [(n, l, b, t) for n, l, b, t in st if b is not None and b >= 0 and b > t]
+    empty = [n for n, l, b, t in st if b == -1]
+    ok_n = len(st) - len(late) - len(empty)
+    msg = f"{ok_n}/{len(st)} current"
+    if empty:
+        msg += f"; EMPTY: {', '.join(empty)}"
+    if late:
+        worst = max(late, key=lambda x: x[2])
+        msg += ("; behind: " + ", ".join(f"{n} {b}s" for n, _, b, _ in sorted(late, key=lambda x: -x[2])[:4]))
+        return DUE, msg
+    return (DUE if empty else OK), msg
+
+
 # ---------------------------------------------------------------- registry
 CHECKS = [
     {"name": "attributable_panel.json", "cadence": "quarterly (results season)",
@@ -504,6 +584,12 @@ CHECKS = [
      "fn": check_snapshots, "sev": "blocking",
      "fix": "data_agent/fundamentals/run_expectation_snapshot.sh",
      "why": "the only forward-looking gate, and it gates the revisions channel"},
+    {"name": "market inputs (brief)", "cadence": "daily",
+     "fn": check_market_inputs, "sev": "blocking",
+     "fix": ("python3 data_agent/sync_all.py --breeze-token <TOKEN>\n"
+             "  # then: python3 data_agent/freshness.py --market   to see every as-of date\n"
+             "  # cue_betas is EMPTY — no fitted US->India beta exists, so no brief may quote one"),
+     "why": "a brief that quotes one stale input undated is worse than one that quotes none"},
     {"name": "fo_price_bars (FUT 1d)", "cadence": "daily, mornings",
      "fn": check_futures_bars, "sev": "blocking",
      "fix": ("python3 data_agent/fetching/download_stock_futures.py --live\n"
@@ -544,7 +630,28 @@ def main() -> None:
     ap.add_argument("--quiet", action="store_true", help="only lines needing action")
     ap.add_argument("--all", action="store_true",
                     help="let advisory items affect the exit code too")
+    ap.add_argument("--market", action="store_true",
+                    help="print the as-of date of every market input, for pasting into a brief")
     a = ap.parse_args()
+
+    if a.market:
+        st = market_inputs_state()
+        if st is None:
+            print("no database reachable")
+            raise SystemExit(2)
+        print(f"MARKET INPUTS — as-of dates, {dt.date.today()}")
+        print("Quote these WITH their dates. A number without one implies a currency it may "
+              "not have.\n")
+        print(f"  {'input':26}{'as of':13}{'sessions behind':>16}")
+        bad = 0
+        for n, l, b, t in st:
+            if b == -1:
+                print(f"  {n:26}{'EMPTY':13}{'--':>16}   nothing fitted"); bad += 1; continue
+            mark = "" if (b is not None and b <= t) else "   <-- STALE, say so or refresh"
+            if mark:
+                bad += 1
+            print(f"  {n:26}{str(l)[:12]:13}{b if b is not None else -1:>16}{mark}")
+        raise SystemExit(1 if bad else 0)
 
     print(f"FRESHNESS  {dt.date.today()}   data-driven where a data test exists, "
           f"calendar age otherwise\n")
