@@ -155,6 +155,10 @@ def resume_from(db, underlying, expiry, floor, *, instrument_type="FUT",
     def _d(x):
         return _dt.strptime(str(x)[:10], "%Y-%m-%d")
 
+    # Returns a DATE for daily timeframes and a DATETIME for sub-daily ones, deliberately:
+    # the caller needs the granularity the data has, and a single return type would force
+    # one of the two cases to be wrong.
+
     try:
         con = _sq.connect(f"file:{db}?mode=ro", uri=True)
         row = con.execute(
@@ -166,6 +170,27 @@ def resume_from(db, underlying, expiry, floor, *, instrument_type="FUT",
         return floor                    # unreadable database -> take the whole window
     if not row or not row[0]:
         return floor                    # nothing stored for this contract yet
+
+    # GRANULARITY MUST MATCH THE TIMEFRAME. A DATE watermark identifies a daily bar
+    # completely — there is only one per day — but it identifies NONE of the ~375 minute
+    # bars in a session. Truncating a 1m watermark to a date either re-pulls the whole day
+    # or, worse, leaves the rest of a partially written day unreachable.
+    #
+    # sync_nifty50_to_now.py:161 gets this right for 1m: it takes the last timestamp,
+    # shifts UTC->IST and adds ONE MINUTE. sync_commodities._resume_from does not — it is
+    # called with "1m" and still returns row[0][:10], so it re-fetches whole days of
+    # minutes. Harmless to the data, since the writes are upserts, but it is the weaker of
+    # the two conventions and this helper copied it before that was noticed.
+    #
+    # So: sub-daily resumes at the NEXT BAR, daily resumes at a date minus the overlap.
+    # The overlap exists for vendor revisions of recent sessions, which is a daily-bar
+    # concern; an intraday series has no equivalent, it just continues.
+    if not timeframe.endswith("d"):
+        unit = {"m": "minutes", "h": "hours"}.get(timeframe[-1], "minutes")
+        n = int("".join(ch for ch in timeframe if ch.isdigit()) or 1)
+        last = _dt.strptime(str(row[0])[:19].replace("T", " "), "%Y-%m-%d %H:%M:%S")
+        return last + _td(**{unit: n})
+
     return max(_d(row[0]) - _td(days=overlap_days), _d(floor)).date()
 
 
