@@ -522,18 +522,51 @@ def _sessions_behind(con, latest):
     return len([x for x in _completed_sessions(con) if x > str(latest)[:10]])
 
 
+def _vendor_of(sym: str) -> str:
+    """Rough owner of a symbol, enough to explain who does and does not publish intraday."""
+    if sym.startswith(("GOLD", "SILVER", "COPPER", "CRUDEOIL_MCX", "NATURALGAS", "ZINC")):
+        return "MCX/Upstox"
+    if sym in ("GIFTNIFTY", "USDINR"):
+        return "Upstox"
+    if sym in ("DJIA", "SP500", "NASDAQ", "NDX100", "SOX", "VIX_US"):
+        return "US indices"
+    return "India/Yahoo"
+
+
 def partial_session_bars(con):
-    """Symbols carrying a 1d bar dated TODAY. Not an error — the sync does this deliberately
-    so an intraday view exists — but a bar dated today is a SNAPSHOT, not a close, and any
-    number taken from it must say so."""
+    """Symbols carrying a 1d bar dated TODAY, split by vendor.
+
+    NOT AN ERROR, BUT NOT UNIFORM EITHER, and the non-uniformity is the point. Measured on
+    2026-08-18 mid-session: 122 of 124 India/Yahoo symbols already had a bar dated today,
+    against 3 of 25 MCX/Upstox and 0 of 6 US indices. Yahoo serves a daily bar that UPDATES
+    through the session; Upstox's daily endpoint is end-of-day; Breeze publishes in an
+    overnight batch.
+
+    So price_bars holds live-partial and not-yet-written bars for the SAME DATE, with nothing
+    in the row to tell them apart. Any cross-sectional calculation on the latest date is
+    comparing a half-finished Yahoo bar against an absent Upstox one.
+
+    Volume detects it for equities — RELIANCE showed 9.95m at midday against 13.38m for the
+    prior full session — but NOT for indices, which report zero volume always.
+    """
     today = dt.date.today().isoformat()
     try:
-        n = con.execute("select count(distinct symbol) from price_bars "
-                        "where timeframe='1d' and date(ts)=?", (today,)).fetchone()[0]
+        syms = [r[0] for r in con.execute(
+            "select distinct symbol from price_bars where timeframe='1d' and date(ts)=?",
+            (today,))]
+        active = [r[0] for r in con.execute(
+            "select symbol from price_bars where timeframe='1d' group by symbol "
+            "having max(date(ts)) >= date(?, '-10 day')", (today,))]
         last1m = con.execute("select max(ts) from price_bars where timeframe='1m'").fetchone()[0]
-        return n, last1m
+        have = set(syms)
+        split = {}
+        for s_ in active:
+            v = _vendor_of(s_)
+            h, t = split.get(v, (0, 0))
+            split[v] = (h + (1 if s_ in have else 0), t + 1)
+        return len(syms), last1m, split
     except Exception:
-        return 0, None
+        return 0, None, {}
 
 
 def market_inputs_state():
@@ -580,7 +613,7 @@ def check_market_inputs():
     _db = os.path.join(ROOT, "option_chains.db")
     _partial = 0
     if os.path.exists(_db):
-        _partial, _ = partial_session_bars(_sq.connect(f"file:{_db}?mode=ro", uri=True))
+        _partial, _, _ = partial_session_bars(_sq.connect(f"file:{_db}?mode=ro", uri=True))
     empty = [n for n, l, b, t in st if b == -1]
     ok_n = len(st) - len(late) - len(empty)
     msg = f"{ok_n}/{len(st)} current"
@@ -686,12 +719,16 @@ def main() -> None:
         _db = os.path.join(ROOT, "option_chains.db")
         if os.path.exists(_db):
             _c = _sq.connect(f"file:{_db}?mode=ro", uri=True)
-            _n, _last = partial_session_bars(_c)
+            _n, _last, _split = partial_session_bars(_c)
             if _n:
                 print(f"\n  *** {_n} symbols carry a 1d bar dated TODAY. Latest 1m bar "
                       f"{str(_last)[:16]}.")
                 print("      That bar is an INTRADAY SNAPSHOT, not a close. Lag below is")
                 print("      measured against completed sessions only, so today is excluded.")
+                if _split:
+                    print("      NOT UNIFORM — who publishes intraday and who does not:")
+                    for _v, (_h, _t) in sorted(_split.items()):
+                        print(f"        {_v:14} {_h:>3}/{_t:<3} have today's bar")
         print()
         print(f"  {'input':26}{'as of':13}{'sessions behind':>16}")
         bad = 0
