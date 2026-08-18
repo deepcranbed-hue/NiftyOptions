@@ -366,6 +366,14 @@ def build_steps(args):
         # Now something does.
         Step("db-paths", "No writer hardcodes a database path", f"{qua}/db_path_audit.py",
              phase="verify"),
+        # pg_backup.sh proves the dump EXISTS, is sized, and contains COPY lines. All
+        # circumstantial, and the same shape as C36 — a wrapper that proved success by
+        # watching a counter go up, which a duplicate write satisfied. This restores the
+        # newest dump into a scratch database and requires every table to come back with the
+        # row count the FILE claims. An untested backup is worse than none: it is trusted.
+        # Runs after pg-backup, so it tests today's dump and not yesterday's.
+        Step("pg-restore", "Restore-test the newest Postgres dump",
+             f"{qua}/pg_restore_test.py", phase="verify", venv="macro"),
     ]
     return steps
 
