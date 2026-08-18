@@ -494,14 +494,46 @@ MARKET_INPUTS = [
 ]
 
 
+def _completed_sessions(con):
+    """Distinct 1d dates STRICTLY BEFORE today.
+
+    TODAY IS EXCLUDED, and that is the whole point. The sync writes a daily bar for the
+    CURRENT session while it is still running: on 2026-08-18 at 12:12 IST price_bars already
+    held a bar dated 2026-08-18 with RELIANCE volume of 4.07m against 13.38m the day before.
+    It is indistinguishable from a completed bar by shape.
+
+    Counting it as a session made every other input read one session staler than it was —
+    USDINR at 08-16 reported "2 behind" when the newest COMPLETED session was 08-17. A
+    reference calendar must contain only finished days, or the yardstick moves at 09:15.
+
+    Excluding today is also the safe direction after the close: the checker becomes one
+    session more lenient for a few hours, rather than raising false alarms every morning."""
+    today = dt.date.today().isoformat()
+    return [r[0] for r in con.execute(
+        "select distinct date(ts) from price_bars where timeframe='1d' and date(ts) < ? "
+        "order by 1 desc limit 30", (today,))]
+
+
 def _sessions_behind(con, latest):
-    """Lag measured in OBSERVED sessions. The calendar comes from price_bars at 1d — a
-    different job on a different endpoint — so this needs no holiday table and self-adjusts."""
+    """Lag in COMPLETED sessions. The calendar comes from price_bars at 1d — a different job
+    on a different endpoint — so this needs no holiday table and self-adjusts."""
     if not latest:
         return None
-    cal = [r[0] for r in con.execute(
-        "select distinct date(ts) from price_bars where timeframe='1d' order by 1 desc limit 30")]
-    return len([x for x in cal if x > str(latest)[:10]])
+    return len([x for x in _completed_sessions(con) if x > str(latest)[:10]])
+
+
+def partial_session_bars(con):
+    """Symbols carrying a 1d bar dated TODAY. Not an error — the sync does this deliberately
+    so an intraday view exists — but a bar dated today is a SNAPSHOT, not a close, and any
+    number taken from it must say so."""
+    today = dt.date.today().isoformat()
+    try:
+        n = con.execute("select count(distinct symbol) from price_bars "
+                        "where timeframe='1d' and date(ts)=?", (today,)).fetchone()[0]
+        last1m = con.execute("select max(ts) from price_bars where timeframe='1m'").fetchone()[0]
+        return n, last1m
+    except Exception:
+        return 0, None
 
 
 def market_inputs_state():
@@ -543,9 +575,17 @@ def check_market_inputs():
     if st is None:
         return WARN, "no database reachable from here"
     late = [(n, l, b, t) for n, l, b, t in st if b is not None and b >= 0 and b > t]
+    # a partial bar is worth saying out loud, not failing on
+    import sqlite3 as _sq
+    _db = os.path.join(ROOT, "option_chains.db")
+    _partial = 0
+    if os.path.exists(_db):
+        _partial, _ = partial_session_bars(_sq.connect(f"file:{_db}?mode=ro", uri=True))
     empty = [n for n, l, b, t in st if b == -1]
     ok_n = len(st) - len(late) - len(empty)
     msg = f"{ok_n}/{len(st)} current"
+    if _partial:
+        msg += f"; {_partial} symbols hold TODAY's partial bar (snapshot, not a close)"
     if empty:
         msg += f"; EMPTY: {', '.join(empty)}"
     if late:
@@ -641,7 +681,18 @@ def main() -> None:
             raise SystemExit(2)
         print(f"MARKET INPUTS — as-of dates, {dt.date.today()}")
         print("Quote these WITH their dates. A number without one implies a currency it may "
-              "not have.\n")
+              "not have.")
+        import sqlite3 as _sq
+        _db = os.path.join(ROOT, "option_chains.db")
+        if os.path.exists(_db):
+            _c = _sq.connect(f"file:{_db}?mode=ro", uri=True)
+            _n, _last = partial_session_bars(_c)
+            if _n:
+                print(f"\n  *** {_n} symbols carry a 1d bar dated TODAY. Latest 1m bar "
+                      f"{str(_last)[:16]}.")
+                print("      That bar is an INTRADAY SNAPSHOT, not a close. Lag below is")
+                print("      measured against completed sessions only, so today is excluded.")
+        print()
         print(f"  {'input':26}{'as of':13}{'sessions behind':>16}")
         bad = 0
         for n, l, b, t in st:

@@ -285,6 +285,27 @@ def build_steps(args):
         Step("flows", "FII / DII daily cash flows", f"{mac}/download_fii_dii.py",
              phase="macro", venv="macro"),
 
+        # ---- Two tables a daily brief reads that had NO OWNER in this plan.
+        #
+        # Found on 2026-08-18: after a clean full sync, participant_oi was still 4 completed
+        # sessions behind and the US indices 6, because nothing here ran their downloaders.
+        # `flows` covers fii_dii_flows (cash) and was mistaken for covering the participant
+        # tables too — different script, different table, adjacent name. A brief quoted FII
+        # index-futures positioning from 12-Aug as if it were current on 18-Aug.
+        #
+        # sync_coverage.py had ALREADY been reporting the US symbols as orphaned on every run.
+        # The finding was in the audit output and nobody read it, which is its own lesson: an
+        # audit that reports into a log nobody opens is not a control either.
+        Step("participants", "NSE F&O participant volumes + open interest",
+             f"{mac}/download_nse_participants.py", phase="macro", venv="macro"),
+
+        # A BACKFILL script run daily, so it MUST be bounded. Its --from defaults to
+        # 2018-01-01, which would re-download eight years every morning. --since keeps it to
+        # the recent window; --replace is deliberately NOT passed, so existing rows stand.
+        Step("us-indices", "US indices (DJIA, SP500, NASDAQ, NDX100, SOX, VIX_US)",
+             f"{mac}/backfill_us_indices.py",
+             argv=lambda c: ["--from", since], phase="macro", venv="macro"),
+
         # ---- Phase 3.5: make the second copy of each store current.
         #
         # THE TWO STORES FLOW IN OPPOSITE DIRECTIONS, so these are not two instances of one
