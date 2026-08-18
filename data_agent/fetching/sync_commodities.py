@@ -102,8 +102,26 @@ MCX_PRODUCTS = {"GOLD": "GOLD", "SILVER": "SILVER", "COPPER": "COPPER",
 # followed immediately by the two-digit year.
 TRADINGSYMBOL_RE = "^{code}[0-9]{{2}}[A-Z]{{3}}FUT$"
 
-# Upstox quotes the USDINR indicator 10x scaled.
-SCALE = {"USDINR": 10.0}
+# WHAT A RUPEE IS WORTH, NOT WHAT UPSTOX HAPPENS TO SEND TODAY.
+#
+# This used to be `SCALE = {"USDINR": 10.0}` with the comment "Upstox quotes the USDINR
+# indicator 10x scaled", and the divisor was applied unconditionally. On 2026-08-16 Upstox
+# STOPPED scaling the GLOBAL_INDICATOR|USDINR feed, our /10 stayed, and six daily bars plus
+# every minute bar after that landed at 9.55 for a 95.5 rupee. The boundary is unambiguous:
+# the last 1m close of 14-Aug was 95.415 and the first of 16-Aug was 9.5415 — the same price,
+# ratio 10.0000 to four places, on a rate that moves 0.05% a day.
+#
+# The lesson is not "the constant was wrong". It is that a CONSTANT was the wrong shape for
+# the problem: a compensation for someone else's convention has to be re-derived every run,
+# because the only party who can change that convention is the one we cannot see. So instead
+# of asserting the divisor, state what the series IS — a rupee is tens of rupees to a dollar,
+# not units and not hundreds — and let each response find the power of ten that satisfies it.
+# Powers of ten only, and only into a band this narrow, so this can correct a decimal point
+# and can NOT quietly rescale a wrong instrument into looking right.
+PLAUSIBLE_BAND = {
+    # symbol: (low, high) for the MEDIAN close of a response, in stored units
+    "USDINR": (50.0, 150.0),        # INR per USD; 63.3 in 2018, 96.6 at the 2026 high
+}
 
 DAILY_FROM = "2025-07-30"
 INTRADAY_FROM = "2026-06-29"
@@ -226,13 +244,47 @@ def fetch_1d(key, frm, to):
     return _get(f"https://api.upstox.com/v2/historical-candle/{key}/day/{to}/{frm}")
 
 
+def _divisor(candles, symbol, log=print):
+    """The power of ten that puts THIS response inside the symbol's plausible band.
+
+    Re-derived per response, on purpose. See PLAUSIBLE_BAND. A symbol with no band gets
+    1.0 and is untouched, so this changes nothing for the MCX contracts.
+
+    Returns 1.0 when no power of ten fits — deliberately NOT an exception. The refusal
+    belongs to implausible(), which is already called at all four write sites and already
+    knows how to say why; handing back the raw values lets it see and report them. Two
+    places that can reject a response is one place too many.
+    """
+    band = PLAUSIBLE_BAND.get(symbol)
+    if not band or not candles:
+        return 1.0
+    low, high = band
+    try:
+        closes = sorted(float(c[4]) for c in candles)
+    except (TypeError, ValueError, IndexError):
+        return 1.0
+    med = closes[len(closes) // 2]
+    if med <= 0:
+        return 1.0
+    for k in range(-3, 4):                       # 0.001x .. 1000x, powers of ten only
+        d = 10.0 ** k
+        if low <= med / d <= high:
+            log(f"   [scale] {symbol}: vendor median {med:,.4f} -> /{d:g} = "
+                f"{med / d:,.4f}, inside the {low:g}-{high:g} band")
+            return d
+    log(f"   [scale] {symbol}: vendor median {med:,.4f} does not reach the "
+        f"{low:g}-{high:g} band at ANY power of ten — passing it through unscaled so "
+        f"implausible() can refuse it")
+    return 1.0
+
+
 def _rows(candles, symbol, ts_of):
     """Upstox candles -> store rows (ts, o, h, l, c, v, oi), deduped by ts.
 
     `ts_of` decides the timestamp convention: raw vendor string for 1m (the store
     converts), canonical trading date for 1d.
     """
-    scale = SCALE.get(symbol, 1.0)
+    scale = _divisor(candles, symbol)
     seen, out = set(), []
     for c in candles:
         try:
@@ -260,12 +312,32 @@ def implausible(rows, symbol):
     write prices that cannot be the instrument stops the next wrong key — expired
     contract, mistyped edit, a roll that resolves to an option — from filing five
     weeks of someone else's prices under a metal's name before anyone notices.
+
+    A FLOOR IS HALF A GUARD. That is not a style point — it is why the USDINR flip was
+    written and not refused. PLAUSIBLE_1M_FLOOR covers GOLD, SILVER, COPPER and
+    CRUDEOIL_MCX and has no USDINR entry, so this function returned None for USDINR and
+    the store wrote 9.55 for six sessions. A one-sided test also cannot catch the OTHER
+    direction of the same failure: if Upstox starts sending USDINR 100x scaled tomorrow,
+    a floor is satisfied by 9,550. So band symbols are checked at both ends.
     """
-    floor = PLAUSIBLE_1M_FLOOR.get(symbol)
-    if not floor or not rows:
+    if not rows:
         return None
     closes = sorted(r[4] for r in rows)
     med = closes[len(closes) // 2]
+
+    band = PLAUSIBLE_BAND.get(symbol)
+    if band:
+        low, high = band
+        if not (low <= med <= high):
+            return (f"median close {med:,.4f} is outside the {low:g}-{high:g} band for "
+                    f"{symbol}, and no power of ten brought it inside — this is either a "
+                    f"vendor scale change this code cannot express or the wrong "
+                    f"instrument. Refusing rather than guessing")
+        return None
+
+    floor = PLAUSIBLE_1M_FLOOR.get(symbol)
+    if not floor:
+        return None
     if med < floor:
         return (f"median close {med:,.1f} is below the {floor:,} floor for {symbol} "
                 f"— this key is not returning {symbol}, it is returning something "
