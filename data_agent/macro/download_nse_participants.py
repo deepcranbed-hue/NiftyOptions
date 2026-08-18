@@ -38,9 +38,13 @@ def main():
         
     time.sleep(2)
     
-    # We will try the last 365 days (1 year)
+    # We will try the last 15 days to backfill any recent missing sessions
     today = datetime.now()
-    dates_to_check = [(today - timedelta(days=i)) for i in range(365)]
+    dates_to_check = []
+    for i in range(15):
+        dt = today - timedelta(days=i)
+        if dt.weekday() < 5:  # 0-4 are Monday-Friday, 5-6 are Saturday-Sunday
+            dates_to_check.append(dt)
     
     conn = sqlite3.connect(db_path)
     cur = conn.cursor()

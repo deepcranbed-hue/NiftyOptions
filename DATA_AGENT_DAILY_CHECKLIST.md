@@ -161,8 +161,10 @@ an incremental run only rewrites the tail and leaves a scale break at the join:
 ./data_agent/breeze_env/bin/python data_agent/fetching/sync_ai_infra_bars_yf.py --full --only E2E
 ```
 
-Two names need this right now: **E2E** (1:10 split, ex-date 2026-06-05) and
-**TDPOWERSYS** (subdivision approved 2026-08-12, not yet effective).
+**TDPOWERSYS now has a dated split: 1:2, record date 24 August 2026** (one Rs2 share
+into two Rs1 shares). Re-run that name with `--full` on or after 25 August, or its series
+carries a scale break at the join. E2E's 1:10 split (ex-date 2026-06-05) is already clean
+in the current history — verified 2026-08-18, no break at the join.
 
 **Calls.** `ai_infra_theme.json` holds only the CURRENT call; revising a stance
 overwrites the previous one. `ai_infra_call_log.py` is the append-only record that makes

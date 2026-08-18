@@ -66,6 +66,10 @@ import sqlite3
 import sys
 from datetime import date, datetime
 
+_RT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
+if _RT not in sys.path:
+    sys.path.insert(0, _RT)
+
 try:
     import pandas as pd
 except ImportError:
