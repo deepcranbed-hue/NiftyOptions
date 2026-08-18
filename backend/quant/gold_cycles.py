@@ -42,8 +42,16 @@ dates, and the only difference is refusing to score against prices nobody made.
 The residual that remains is not model error — it is India's domestic basis, which is a real
 quantity: the market ran ~+1.7% over landed in April and ~-3% under it by August.
 
-    python3 backend/quant/gold_cycles.py                 # writes gold_inr_view.html
-    python3 backend/quant/gold_cycles.py --out other.html
+WHERE IT SITS IN THE PIPELINE
+----------------------------
+`sync_all.py` runs this as the `gold-view` step, in the macro phase and AFTER `mirror`. The
+ordering is load-bearing rather than tidy: this is a READER and takes `resolve_db_path()`,
+which is the repo-local mirror, so running it before the mirror refresh renders yesterday's
+data under today's date — the quietest kind of wrong. Anything that reads the mirror belongs
+after that step.
+
+    python3 backend/quant/gold_cycles.py              # writes reports/gold_inr_view.html
+    python3 backend/quant/gold_cycles.py --out x.html
 """
 from __future__ import annotations
 
@@ -575,9 +583,14 @@ bind('c1', 'cx1'); bind('c2', 'cx2');
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--out", default=os.path.join(ROOT, "gold_inr_view.html"))
+    ap.add_argument("--out", default=os.path.join(ROOT, "reports", "gold_inr_view.html"))
     ap.add_argument("--db", default=None)
     a = ap.parse_args()
+
+    # reports/ is gitignored: this is a DERIVED file, regenerated every sync, and a 230KB
+    # blob that changes on every run carries no history worth keeping. The generator is what
+    # is tracked. Keeping it out of the repo root also keeps it out of Vite's serving root.
+    os.makedirs(os.path.dirname(os.path.abspath(a.out)), exist_ok=True)
 
     db = a.db
     if db is None:

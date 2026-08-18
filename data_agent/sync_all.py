@@ -339,6 +339,21 @@ def build_steps(args):
              os.path.join("data_agent", "pg_backup.sh"),
              runner=["/bin/bash"], phase="macro"),
 
+        # ---- Views. Derived pages built from what the phases above just ingested.
+        #
+        # AFTER `mirror`, and that ordering is load-bearing rather than tidy. gold_cycles is
+        # a READER, so it takes resolve_db_path() — the repo-local mirror — and running it
+        # before the refresh would render YESTERDAY's data under today's date. That is the
+        # quietest kind of wrong: the page looks perfect and is a day stale. Any view added
+        # here inherits the same rule.
+        #
+        # It is also a live C39 tripwire. The page multiplies by USDINR, so a repeat of the
+        # vendor scale flip moves every INR level tenfold and still draws a smooth chart —
+        # so the generator refuses on any USDINR bar outside 20-200 and exits non-zero. A
+        # sync that fails here is telling you the FX series is broken, not the view.
+        Step("gold-view", "Gold view — INR landed-cost cycle page",
+             os.path.join("backend", "quant", "gold_cycles.py"), phase="macro"),
+
         # ---- Phase 4: verification. The reason a bad sync now fails loudly.
         Step("audit", "Daily bar integrity audit", f"{qua}/daily_bar_audit.py",
              phase="verify"),

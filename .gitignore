@@ -63,5 +63,4 @@ _trash/
 
 # Generated views. The GENERATOR is tracked (backend/quant/gold_cycles.py); the render
 # is a 180KB derived file that changes on every run and carries no history worth keeping.
-gold_inr_view.html
-_to_delete/
+reports/

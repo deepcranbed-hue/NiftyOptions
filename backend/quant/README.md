@@ -100,8 +100,38 @@ and emits coarse `sectors_affected`, so degraded mode isn't near-empty.
 - **News / sentiment:** `rss_news.py`, `news_window.py`, `news_provenance.py`,
   `gemini_tag.py` / `llm_tag.py` / `llm_config.py`, `sector_tagging.py`,
   `sector_map.py` / `sector_tree.py`, `flows_fetcher.py`, `fundamentals.py`.
+- **Views (standalone, self-contained HTML):** `gold_cycles.py` — the **Gold view**.
 - **Integrity:** `provenance.py`, `data_quality_agent.py`, `formulas.py`.
 - **Loaders:** `nse_csv_loader.py`, `breeze_loader.py`, `nse_csv_loader.py`.
+
+## Views
+
+A **view** here is a standalone page built from `price_bars`, not a pipeline stage: one
+self-contained HTML file with inline CSS/JS and no CDN, so it opens years from now with no
+network. Views are DERIVED — regenerated on every sync, written to `reports/` (gitignored),
+and it is the generator that is tracked, never the render.
+
+### Gold view — `gold_cycles.py` → `reports/gold_inr_view.html`
+
+Gold in rupees at **landed cost**, 2018 to now:
+
+    parity = GOLD_USD / 31.1035 * 10 * USDINR
+    landed = parity * (1 + import_duty_on_that_date) * (1 + 3% GST)
+
+- **Why reconstructed:** native MCX daily history starts 2025-10-16 — ten months, which
+  cannot show a cycle. `GOLD_USD` (COMEX) and `USDINR` both run to 2018-01-02.
+- **Why landed:** naked parity is not transactable in India, and the duty is not a constant.
+  `DUTY_SCHEDULE` carries five dated changes; the 2026-05-13 hike from 6% to 15% falls INSIDE
+  the current drawdown and accounts for 6.5pp of it.
+- **Validated, not asserted:** scored against the continuous front contract `GOLD` on days
+  with volume above `MIN_VOL` — 78 traded days, residual median -0.60%, sd 1.72pp. The
+  residual that remains is India's domestic basis, not model error; a persistent drift in it
+  is the first sign `DUTY_SCHEDULE` has gone stale, so check policy before the market.
+- **Refuses rather than renders** when USDINR sits outside 20-200 (C39). The page multiplies
+  by FX, so a repeat of that scale flip would move every level tenfold and still draw a
+  perfectly smooth chart.
+- **Runs as** the `gold-view` step in `sync_all.py`, macro phase, **after `mirror`** — it
+  reads the mirror, so running it earlier renders yesterday's data under today's date.
 
 ## Run / validate
 
