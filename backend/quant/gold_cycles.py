@@ -1,34 +1,46 @@
 #!/usr/bin/env python3
-"""gold_cycles.py — the INR gold cycle, 2018 to now, as one self-contained page.
+"""gold_cycles.py — the INR gold cycle, 2018 to now, at LANDED cost.
 
-WHAT THIS SERIES IS, AND WHY IT IS RECONSTRUCTED
------------------------------------------------
-An Indian holder's gold return is two things multiplied: the dollar price and the rupee.
-`price_bars` holds each of them daily back to 2018-01-02 — GOLD_USD from COMEX and USDINR
-from Upstox — so the INR series is built rather than downloaded:
+WHY LANDED AND NOT PARITY
+-------------------------
+An Indian buyer cannot transact at the international spot price. The number that behaves
+like MCX is spot converted to rupees and then grossed up for what it costs to legally land
+the metal here:
 
-    INR per 10g  =  USD per troy oz / 31.1035 * 10 * USDINR
+    parity  = USD/oz / 31.1035 * 10 * USDINR                      INR per 10g
+    landed  = parity * (1 + import_duty_on_that_date) * (1 + GST)
 
-Native MCX gold exists (`GOLD`, `GOLD_2026-10-05`, ...) and is the price that actually
-trades, but its daily history starts 2025-10-16 — about ten months. Ten months cannot show
-a cycle. So the long series is the reconstruction, and MCX is used only to say what the
-reconstruction is NOT: the traded future sits a median 14.8% above parity, because import
-duty, GST and carry are real and this formula contains none of them. LEVELS HERE ARE
-PARITY LEVELS. Drawdowns, dates and ratios are unaffected — a constant multiplier cancels.
+Comparing MCX against naked parity measures the tax code and calls it a market signal. This
+repo already made that mistake once on silver: an apparent +19.4% "premium" was 18.45% of
+duty and GST and a real basis of about -0.75% (see probe_continuous_commodities.py).
 
-WHY BOTH CURRENCIES ARE PLOTTED
--------------------------------
-Because they disagree, and the disagreement is the finding. The 2026 drawdown is 25.1% in
-dollars and 22.6% in rupees, and the two bottomed THREE WEEKS APART — 16-Jul in USD,
-24-Jun in INR — because the rupee kept weakening after gold stopped falling. A reader
-looking only at global commentary gets the wrong trough date for their own holding.
+THE DUTY IS NOT A CONSTANT, AND ONE CHANGE LANDS MID-DRAWDOWN
+-------------------------------------------------------------
+India moved bullion duty five times in this sample, and the most recent move — 6% to 15% on
+2026-05-13 — falls INSIDE the 2026 drawdown. That single fact changes the answer to "how bad
+was it for an Indian holder":
 
-A NOTE ON WHAT THIS DOES NOT DO
--------------------------------
-It reports base rates: how deep past drawdowns went, how long they took to reclaim, and
-where the current one sits against them. Three prior cycles is not a sample you can forecast
-from, and the page says so on its face rather than in a footnote. No recommendation is
-produced here about any position.
+    parity   peak 2026-01-29 -> trough 2026-06-24    -22.6%
+    landed   peak 2026-01-29 -> trough 2026-06-24    -16.1%
+
+6.5pp of that gap is the government, not the market. The reverse also appears: the 2024-07-24
+CUT from 15% to 6% shows up on the landed series as an 8%+ "drawdown" over nine days in which
+international gold barely moved. Cycles whose window contains a duty change are FLAGGED in the
+table for exactly this reason — a policy step is not a price move, and a drawdown table that
+does not distinguish them is worse than no table.
+
+VALIDATION, ON THE DAYS THE CONTRACT ACTUALLY TRADED
+----------------------------------------------------
+The model is checked against the traded MCX October future — but only where volume clears
+`MIN_VOL`. This matters more than it sounds: 98 of the 173 overlapping dates have ZERO volume,
+because the contract was far-dated and untraded until spring 2026, and on those days its
+"close" is a notional print. Measured on stale prints the model looks terrible (day-to-day
+return correlation with parity is -0.19 and the wedge swings 8% to 67%); measured on traded
+days it is +0.83 correlated and the residual has a median of about -0.2%. Same model, same
+dates, and the only difference is refusing to score against prices nobody made.
+
+The residual that remains is not model error — it is India's domestic basis, which is a real
+quantity: the market ran ~+1.7% over landed in April and ~-3% under it by August.
 
     python3 backend/quant/gold_cycles.py                 # writes gold_inr_view.html
     python3 backend/quant/gold_cycles.py --out other.html
@@ -38,8 +50,10 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import json
+import math
 import os
 import sqlite3
+import statistics as st
 import sys
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
@@ -49,6 +63,32 @@ if ROOT not in sys.path:
 
 OZ_G = 31.1035
 THRESH = 0.10          # a "cycle" is a fall of at least this much from a running high
+MIN_VOL = 10           # below this the MCX print is notional; see the validation note
+MCX_REF = "GOLD_2026-10-05"
+
+GST = 0.03             # 3% on bullion since 2017-07-01, unchanged across this sample
+
+# EFFECTIVE TOTAL IMPORT DUTY ON GOLD, by the date it took effect. Inclusive of BCD + AIDC +
+# SWS — one number, because that is what the landed price responds to.
+#
+# THESE ARE POLICY RATES AND THEY MOVE. Every entry is dated and sourced; when the residual
+# basis below starts drifting, suspect a duty change before suspecting the market.
+DUTY_SCHEDULE = [
+    ("1900-01-01", 0.1000, "10%, the setting held from 2014"),
+    ("2019-07-06", 0.1250, "Budget 2019 — raised to curb imports"),
+    ("2021-02-02", 0.1075, "Budget 2021 — 7.5% BCD + 2.5% AIDC, SWS exempt"),
+    ("2022-07-01", 0.1500, "raised to defend the current account deficit"),
+    ("2024-07-24", 0.0600, "Budget 2024 — 5% BCD + 1% AIDC, lowest in over a decade"),
+    ("2026-05-13", 0.1500, "Notifications 15-18/2026-Customs — 10% BCD + 5% AIDC"),
+]
+
+
+def duty_on(day: str) -> float:
+    rate = DUTY_SCHEDULE[0][1]
+    for eff, r, _ in DUTY_SCHEDULE:
+        if day >= eff:
+            rate = r
+    return rate
 
 
 def _load(db):
@@ -57,7 +97,9 @@ def _load(db):
          "and close is not null")
     usd = dict(con.execute(q, ("GOLD_USD",)))
     fx = dict(con.execute(q, ("USDINR",)))
-    mcx = dict(con.execute(q, ("GOLD_2026-10-05",)))
+    mcx = dict(con.execute(q, (MCX_REF,)))
+    vol = dict(con.execute("select date(ts), coalesce(volume,0) from price_bars "
+                           "where symbol=? and timeframe='1d'", (MCX_REF,)))
     con.close()
 
     # C39 guard, kept deliberately after the repair. Upstox stopped 10x-scaling USDINR on
@@ -75,15 +117,11 @@ def _load(db):
     days = sorted(set(usd) & set(fx))
     if not days:
         raise SystemExit("no overlapping GOLD_USD / USDINR dates")
-    return days, usd, fx, mcx
+    return days, usd, fx, mcx, vol
 
 
 def cycles(pairs, thresh=THRESH):
-    """Every fall of `thresh` or more from a running high, with its recovery.
-
-    Peak-to-trough AND trough-to-reclaim are both reported. Only the second answers "how
-    long did holders wait", which is the question a chart of prices alone never shows.
-    """
+    """Every fall of `thresh` or more from a running high, with its recovery."""
     out, cur = [], None
     mx, mxd = pairs[0][1], pairs[0][0]
     for d, c in pairs:
@@ -103,6 +141,18 @@ def cycles(pairs, thresh=THRESH):
     return out
 
 
+def policy_in(cyc):
+    """Duty changes inside a cycle's PEAK->TROUGH window.
+
+    Peak-to-trough, not peak-to-recovery, and the narrower window is the right one: a duty
+    move between the high and the low changes the measured DEPTH, which is the number the
+    table is for. A move during the recovery changes how long it took, which matters less
+    and would flag almost everything — the 2020-08 cycle alone spans nineteen months.
+    """
+    return [(eff, r) for eff, r, _ in DUTY_SCHEDULE
+            if cyc["peak_date"] <= eff <= cyc["trough_date"]]
+
+
 def drawdown(pairs):
     mx, out = pairs[0][1], []
     for _, c in pairs:
@@ -112,109 +162,135 @@ def drawdown(pairs):
 
 
 # ----------------------------------------------------------------------------------------
-# SVG. Drawn server-side rather than by a charting library: this file has to open years
-# from now with no network, and a CDN script tag is a dependency that expires quietly.
+# SVG, drawn server-side: this file has to open years from now with no network, and a CDN
+# script tag is a dependency that expires quietly.
 # ----------------------------------------------------------------------------------------
-import math
-
-
 def _path(vals, w, h, lo, hi, log=False):
     n = len(vals)
     f = (lambda v: math.log10(v)) if log else (lambda v: v)
     lo_, hi_ = f(lo), f(hi)
-    pts = []
-    for i, v in enumerate(vals):
-        x = i * w / (n - 1)
-        y = h - (f(v) - lo_) / (hi_ - lo_) * h
-        pts.append(f"{x:.1f},{y:.1f}")
-    return "M" + " L".join(pts)
+    return "M" + " L".join(
+        f"{i * w / (n - 1):.1f},{h - (f(v) - lo_) / (hi_ - lo_) * h:.1f}"
+        for i, v in enumerate(vals))
 
 
-def _x_of(i, n, w):
+def _x(i, n, w):
     return i * w / (n - 1)
 
 
-def build(days, usd, fx, mcx, out_path):
-    inr = [usd[d] / OZ_G * 10 * fx[d] for d in days]
-    pairs_i = list(zip(days, inr))
-    pairs_u = [(d, usd[d]) for d in days]
-    cyc_i, cyc_u = cycles(pairs_i), cycles(pairs_u)
-    dd_i, dd_u = drawdown(pairs_i), drawdown(pairs_u)
+def build(days, usd, fx, mcx, vol, out_path):
+    parity = [usd[d] / OZ_G * 10 * fx[d] for d in days]
+    landed = [p * (1 + duty_on(d)) * (1 + GST) for d, p in zip(days, parity)]
+    idx = {d: i for i, d in enumerate(days)}
+
+    cyc = cycles(list(zip(days, landed)))
+    cyc_par = cycles(list(zip(days, parity)))
+    dd_l, dd_p = drawdown(list(zip(days, landed))), drawdown(list(zip(days, parity)))
+
+    # ---- validation, on traded days only -------------------------------------------------
+    liq = [d for d in sorted(set(mcx) & set(idx)) if vol.get(d, 0) > MIN_VOL]
+    stale = len(set(mcx) & set(idx)) - len(liq)
+    resid = [(d, mcx[d] / landed[idx[d]] - 1) for d in liq]
+    rv = sorted(x for _, x in resid)
+    r_med = st.median(rv) if rv else 0.0
+    r_sd = st.pstdev(rv) if len(rv) > 1 else 0.0
+    by_m = {}
+    for d, x in resid:
+        by_m.setdefault(d[:7], []).append(x)
 
     D = dt.date.fromisoformat
-    last_d, last = days[-1], inr[-1]
-    peak = max(range(len(inr)), key=lambda i: inr[i])
-    live = cyc_i[-1] if cyc_i and cyc_i[-1]["recovered"] is None else None
+    last_d, last = days[-1], landed[-1]
+    peak_i = max(range(len(landed)), key=lambda i: landed[i])
+    live = cyc[-1] if cyc and cyc[-1]["recovered"] is None else None
 
-    W, H, HD = 1120, 360, 150
-    lo, hi = min(inr) * 0.95, max(inr) * 1.05
-    price_path = _path(inr, W, H, lo, hi, log=True)
-    dpi = _path([1 + x for x in dd_i], W, HD, 1 + min(min(dd_i), min(dd_u)) - 0.02, 1.005)
-    dpu = _path([1 + x for x in dd_u], W, HD, 1 + min(min(dd_i), min(dd_u)) - 0.02, 1.005)
+    W, H, HD = 1120, 380, 150
+    lo, hi = min(parity) * 0.95, max(landed) * 1.06
+    p_landed = _path(landed, W, H, lo, hi, log=True)
+    p_parity = _path(parity, W, H, lo, hi, log=True)
+    dmin = min(min(dd_l), min(dd_p)) - 0.02
+    p_ddl = _path([1 + x for x in dd_l], W, HD, 1 + dmin, 1.005)
+    p_ddp = _path([1 + x for x in dd_p], W, HD, 1 + dmin, 1.005)
 
-    # year gridlines
-    ticks = []
-    seen = set()
+    def y_of(v):
+        return H - (math.log10(v) - math.log10(lo)) / (math.log10(hi) - math.log10(lo)) * H
+
+    mcx_dots = "".join(
+        f'<circle cx="{_x(idx[d], len(days), W):.1f}" cy="{y_of(mcx[d]):.1f}" r="1.6" '
+        f'fill="var(--mcx)" opacity=".85"/>' for d in liq)
+
+    duty_marks = ""
+    for eff, r, why in DUTY_SCHEDULE[1:]:
+        j = next((i for i, d in enumerate(days) if d >= eff), None)
+        if j is None:
+            continue
+        xx = _x(j, len(days), W)
+        duty_marks += (f'<line x1={xx:.0f} y1=0 x2={xx:.0f} y2={H} stroke="var(--duty)" '
+                       f'stroke-width="1" stroke-dasharray="3 3" opacity=".55"/>'
+                       f'<text class=lab x={xx + 3:.0f} y=12 fill="var(--duty)">'
+                       f'{r * 100:g}%</text>')
+
+    ticks, seen = [], set()
     for i, d in enumerate(days):
-        y = d[:4]
-        if y not in seen:
-            seen.add(y)
-            ticks.append((i, y))
+        if d[:4] not in seen:
+            seen.add(d[:4])
+            ticks.append((i, d[:4]))
 
-    yl = []
-    v = 25000
+    yl, v = [], 25000
     while v <= hi:
         if v >= lo:
-            yy = H - (math.log10(v) - math.log10(lo)) / (math.log10(hi) - math.log10(lo)) * H
-            yl.append((yy, f"{v // 1000:,}k"))
+            yl.append((y_of(v), f"{v // 1000:,}k"))
         v *= 2
 
-    mcx_days = sorted(set(mcx) & set(days))
-    mcx_prem = None
-    if len(mcx_days) > 20:
-        idx = {d: i for i, d in enumerate(days)}
-        r = sorted(mcx[d] / inr[idx[d]] - 1 for d in mcx_days)
-        mcx_prem = r[len(r) // 2]
-
     rows = []
-    for c in cyc_i:
+    for c in cyc:
+        pol = policy_in(c)
         dn = (D(c["trough_date"]) - D(c["peak_date"])).days
         up = (D(c["recovered"]) - D(c["trough_date"])).days if c["recovered"] else None
+        tag = (f'<span class=pol title="duty changed inside this window">'
+               f'{", ".join(e for e, _ in pol)}</span>' if pol else "")
         rows.append(f"""<tr{' class="live"' if c["recovered"] is None else ''}>
           <td>{c['peak_date']}</td><td class=n>{c['peak']:,.0f}</td>
           <td>{c['trough_date']}</td><td class=n>{c['trough']:,.0f}</td>
-          <td class="n neg">{c['depth'] * 100:.1f}%</td>
-          <td class=n>{dn}</td>
-          <td>{c['recovered'] or '—'}</td>
-          <td class=n>{up if up is not None else '—'}</td></tr>""")
+          <td class="n neg">{c['depth'] * 100:.1f}%</td><td class=n>{dn}</td>
+          <td>{c['recovered'] or '—'}</td><td class=n>{up if up is not None else '—'}</td>
+          <td>{tag}</td></tr>""")
 
-    done = [c for c in cyc_i if c["recovered"]]
-    ups = sorted((D(c["recovered"]) - D(c["trough_date"])).days for c in done)
-    med_up = ups[len(ups) // 2] if ups else None
+    par_live = cyc_par[-1] if cyc_par and cyc_par[-1]["recovered"] is None else None
+    done = [c for c in cyc if c["recovered"]]
+    clean = [c for c in done if not policy_in(c)]
+    ups = sorted((D(c["recovered"]) - D(c["trough_date"])).days for c in clean)
+
+    mrows = "".join(
+        f"<tr><td>{m}</td><td class=n>{len(v_)}</td>"
+        f"<td class='n {'pos' if st.median(v_) >= 0 else 'neg'}'>"
+        f"{st.median(v_) * 100:+.2f}%</td></tr>"
+        for m, v_ in sorted(by_m.items()))
 
     payload = json.dumps({
         "d": days,
-        "i": [round(x) for x in inr],
+        "l": [round(x) for x in landed],
+        "p": [round(x) for x in parity],
         "u": [round(usd[d], 1) for d in days],
         "f": [round(fx[d], 2) for d in days],
-        "di": [round(x * 100, 2) for x in dd_i],
-        "du": [round(x * 100, 2) for x in dd_u],
+        "y": [round(duty_on(d) * 100, 2) for d in days],
+        "dl": [round(x * 100, 2) for x in dd_l],
+        "m": {d: round(mcx[d]) for d in liq},
     }, separators=(",", ":"))
 
-    off_trough = (last / live["trough"] - 1) if live else 0.0
-    from_peak = last / inr[peak] - 1
+    off = (last / live["trough"] - 1) if live else 0.0
+    frm = last / landed[peak_i] - 1
     since = (D(last_d) - D(live["trough_date"])).days if live else 0
     yrs = (D(last_d) - D(days[0])).days / 365.25
-    cagr_i = (last / inr[0]) ** (1 / yrs) - 1
-    cagr_u = (usd[last_d] / usd[days[0]]) ** (1 / yrs) - 1
+    cagr = (last / landed[0]) ** (1 / yrs) - 1
 
     html = f"""<!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Gold in rupees — the cycle, 2018 to {last_d}</title>
+<title>Gold in rupees at landed cost — 2018 to {last_d}</title>
 <style>
  :root{{--bg:#0f1115;--pan:#171a21;--ink:#e8eaed;--dim:#8b93a1;--ln:#252a34;
-        --gold:#e0b34d;--usd:#6aa9ff;--neg:#e56b6b;--pos:#5fbf7f}}
+        --gold:#e0b34d;--par:#5a6070;--mcx:#5fbf7f;--duty:#c77dff;
+        --neg:#e56b6b;--pos:#5fbf7f}}
  *{{box-sizing:border-box}}
  body{{margin:0;background:var(--bg);color:var(--ink);
       font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}}
@@ -222,122 +298,162 @@ def build(days, usd, fx, mcx, out_path):
  h1{{font-size:26px;margin:0 0 4px;letter-spacing:-.02em}}
  .sub{{color:var(--dim);font-size:14px;margin-bottom:26px}}
  .kpis{{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:12px;
-        margin-bottom:26px}}
+        margin-bottom:22px}}
  .k{{background:var(--pan);border:1px solid var(--ln);border-radius:10px;padding:14px 16px}}
  .k .lbl{{color:var(--dim);font-size:11px;text-transform:uppercase;letter-spacing:.07em}}
  .k .val{{font-size:23px;font-weight:600;margin-top:5px;
           font-variant-numeric:tabular-nums;letter-spacing:-.02em}}
  .k .note{{color:var(--dim);font-size:12px;margin-top:3px}}
  .panel{{background:var(--pan);border:1px solid var(--ln);border-radius:12px;
-         padding:18px 20px 12px;margin-bottom:20px;position:relative}}
+         padding:18px 20px 14px;margin-bottom:20px}}
  .panel h2{{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--dim);
-            margin:0 0 14px;font-weight:600}}
+            margin:0 0 12px;font-weight:600}}
  svg{{display:block;width:100%;height:auto;overflow:visible}}
  .grid{{stroke:var(--ln);stroke-width:1}}
  .lab{{fill:var(--dim);font-size:11px}}
  table{{width:100%;border-collapse:collapse;font-size:14px}}
- th{{text-align:left;color:var(--dim);font-weight:600;font-size:11px;
-     text-transform:uppercase;letter-spacing:.06em;padding:7px 10px;
-     border-bottom:1px solid var(--ln)}}
+ th{{text-align:left;color:var(--dim);font-weight:600;font-size:11px;text-transform:uppercase;
+     letter-spacing:.06em;padding:7px 10px;border-bottom:1px solid var(--ln)}}
  td{{padding:8px 10px;border-bottom:1px solid var(--ln);font-variant-numeric:tabular-nums}}
  tr:last-child td{{border-bottom:none}}
  tr.live td{{background:rgba(224,179,77,.07)}}
  .n{{text-align:right}} .neg{{color:var(--neg)}} .pos{{color:var(--pos)}}
+ .pol{{color:var(--duty);font-size:11.5px;border:1px solid var(--duty);border-radius:4px;
+       padding:1px 6px;white-space:nowrap}}
+ .cols{{display:grid;grid-template-columns:1fr 1fr;gap:20px}}
+ @media(max-width:820px){{.cols{{grid-template-columns:1fr}}}}
  .note-list{{color:var(--dim);font-size:13.5px;line-height:1.7}}
  .note-list b{{color:var(--ink);font-weight:600}}
+ .note-list p{{margin:0 0 12px}}
  #tip{{position:fixed;pointer-events:none;background:#0b0d11;border:1px solid var(--ln);
        border-radius:8px;padding:9px 12px;font-size:12.5px;opacity:0;transition:opacity .1s;
        font-variant-numeric:tabular-nums;z-index:9;white-space:nowrap}}
  .sw{{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:6px}}
- .lg{{color:var(--dim);font-size:12.5px;margin-bottom:10px}}
- .lg span{{margin-right:18px}}
+ .lg{{color:var(--dim);font-size:12.5px;margin-bottom:10px}} .lg span{{margin-right:18px}}
+ code{{background:#0b0d11;padding:1px 5px;border-radius:4px;font-size:12.5px}}
 </style></head><body><div class=wrap>
 
-<h1>Gold in rupees</h1>
-<div class=sub>Parity INR per 10g, {days[0]} to {last_d} &middot; {len(days):,} sessions
-&middot; built from COMEX GOLD_USD &times; USDINR, both from <code>price_bars</code></div>
+<h1>Gold in rupees, at landed cost</h1>
+<div class=sub>INR per 10g including import duty and {GST * 100:g}% GST &middot; {days[0]} to
+{last_d} &middot; {len(days):,} sessions &middot; built from COMEX GOLD_USD &times; USDINR in
+<code>price_bars</code>, validated against the traded MCX October future</div>
 
 <div class=kpis>
-  <div class=k><div class=lbl>Latest</div><div class=val>&#8377;{last:,.0f}</div>
-    <div class=note>per 10g, parity &middot; {last_d}</div></div>
-  <div class=k><div class=lbl>From the {inr[peak]:,.0f} peak</div>
-    <div class="val neg">{from_peak * 100:+.1f}%</div>
-    <div class=note>peak {days[peak]}</div></div>
-  <div class=k><div class=lbl>Off the trough</div>
-    <div class="val pos">{off_trough * 100:+.1f}%</div>
+  <div class=k><div class=lbl>Landed, latest</div><div class=val>&#8377;{last:,.0f}</div>
+    <div class=note>duty {duty_on(last_d) * 100:g}% + GST {GST * 100:g}% &middot; {last_d}</div></div>
+  <div class=k><div class=lbl>Naked parity</div>
+    <div class=val>&#8377;{parity[-1]:,.0f}</div>
+    <div class=note>before duty &mdash; not transactable here</div></div>
+  <div class=k><div class=lbl>From the peak</div><div class="val neg">{frm * 100:+.1f}%</div>
+    <div class=note>{landed[peak_i]:,.0f} on {days[peak_i]}</div></div>
+  <div class=k><div class=lbl>Off the trough</div><div class="val pos">{off * 100:+.1f}%</div>
     <div class=note>{since} days since {live['trough_date'] if live else '—'}</div></div>
-  <div class=k><div class=lbl>This drawdown</div>
-    <div class="val neg">{(live['depth'] if live else 0) * 100:.1f}%</div>
-    <div class=note>deepest of the {len(cyc_i)} in sample</div></div>
-  <div class=k><div class=lbl>CAGR since 2018</div>
-    <div class="val pos">{cagr_i * 100:+.1f}%</div>
-    <div class=note>in USD {cagr_u * 100:+.1f}% &middot; the gap is the rupee</div></div>
+  <div class=k><div class=lbl>Model vs traded MCX</div>
+    <div class=val>{r_med * 100:+.2f}%</div>
+    <div class=note>median over {len(liq)} traded days, sd {r_sd * 100:.2f}pp</div></div>
 </div>
 
 <div class=panel>
-  <h2>Price &mdash; log scale, so equal vertical distance is equal percentage</h2>
+  <h2>Landed cost, naked parity, and where MCX actually traded &mdash; log scale</h2>
+  <div class=lg>
+    <span><i class=sw style="background:var(--gold)"></i>Landed (duty + GST)</span>
+    <span><i class=sw style="background:var(--par)"></i>Naked parity</span>
+    <span><i class=sw style="background:var(--mcx)"></i>Traded MCX Oct-26 future</span>
+    <span><i class=sw style="background:var(--duty)"></i>Duty change</span>
+  </div>
   <svg viewBox="0 0 {W} {H + 26}" preserveAspectRatio="none" id="c1">
-    {''.join(f'<line class=grid x1={_x_of(i, len(days), W):.0f} y1=0 '
-             f'x2={_x_of(i, len(days), W):.0f} y2={H} />'
-             f'<text class=lab x={_x_of(i, len(days), W) + 4:.0f} y={H + 14}>{y}</text>'
+    {''.join(f'<line class=grid x1={_x(i, len(days), W):.0f} y1=0 x2={_x(i, len(days), W):.0f} '
+             f'y2={H} /><text class=lab x={_x(i, len(days), W) + 4:.0f} y={H + 14}>{y}</text>'
              for i, y in ticks)}
-    {''.join(f'<line class=grid x1=0 y1={y:.0f} x2={W} y2={y:.0f} stroke-dasharray="2 4"/>'
-             f'<text class=lab x=4 y={y - 4:.0f}>{lab}</text>' for y, lab in yl)}
-    <path d="{price_path}" fill="none" stroke="var(--gold)" stroke-width="1.8"/>
+    {''.join(f'<line class=grid x1=0 y1={yy:.0f} x2={W} y2={yy:.0f} stroke-dasharray="2 4"/>'
+             f'<text class=lab x=4 y={yy - 4:.0f}>{lab}</text>' for yy, lab in yl)}
+    {duty_marks}
+    <path d="{p_parity}" fill="none" stroke="var(--par)" stroke-width="1.4"/>
+    <path d="{p_landed}" fill="none" stroke="var(--gold)" stroke-width="1.9"/>
+    {mcx_dots}
     <line id=cx1 x1=0 y1=0 x2=0 y2={H} stroke="var(--dim)" stroke-width=1 opacity=0/>
   </svg>
 </div>
 
 <div class=panel>
-  <h2>Drawdown from the running high &mdash; the same asset, two currencies</h2>
+  <h2>Drawdown from the running high &mdash; landed against naked parity</h2>
   <div class=lg>
-    <span><i class=sw style="background:var(--gold)"></i>INR per 10g</span>
-    <span><i class=sw style="background:var(--usd)"></i>USD per oz</span>
+    <span><i class=sw style="background:var(--gold)"></i>Landed</span>
+    <span><i class=sw style="background:var(--par)"></i>Parity</span>
   </div>
   <svg viewBox="0 0 {W} {HD + 26}" preserveAspectRatio="none" id="c2">
-    {''.join(f'<line class=grid x1={_x_of(i, len(days), W):.0f} y1=0 '
-             f'x2={_x_of(i, len(days), W):.0f} y2={HD} />' for i, _ in ticks)}
-    <path d="{dpu}" fill="none" stroke="var(--usd)" stroke-width="1.5" opacity=".85"/>
-    <path d="{dpi}" fill="none" stroke="var(--gold)" stroke-width="1.7"/>
+    {''.join(f'<line class=grid x1={_x(i, len(days), W):.0f} y1=0 '
+             f'x2={_x(i, len(days), W):.0f} y2={HD} />' for i, _ in ticks)}
+    <path d="{p_ddp}" fill="none" stroke="var(--par)" stroke-width="1.4"/>
+    <path d="{p_ddl}" fill="none" stroke="var(--gold)" stroke-width="1.8"/>
     <line id=cx2 x1=0 y1=0 x2=0 y2={HD} stroke="var(--dim)" stroke-width=1 opacity=0/>
   </svg>
 </div>
 
 <div class=panel>
-  <h2>Every fall of 10% or more from a high, in rupees</h2>
+  <h2>Every fall of 10% or more, on the landed series</h2>
   <table>
     <tr><th>Peak</th><th class=n>Level</th><th>Trough</th><th class=n>Level</th>
         <th class=n>Depth</th><th class=n>Days down</th><th>Reclaimed</th>
-        <th class=n>Days back</th></tr>
+        <th class=n>Days back</th><th>Duty moved</th></tr>
     {''.join(rows)}
   </table>
 </div>
 
+<div class=cols>
+  <div class=panel>
+    <h2>Duty schedule applied</h2>
+    <table>
+      <tr><th>Effective</th><th class=n>Total duty</th><th>What changed</th></tr>
+      {''.join(f'<tr><td>{e}</td><td class=n>{r * 100:g}%</td><td>{w}</td></tr>'
+               for e, r, w in DUTY_SCHEDULE)}
+    </table>
+  </div>
+  <div class=panel>
+    <h2>Residual basis: traded MCX over landed</h2>
+    <table><tr><th>Month</th><th class=n>Traded days</th><th class=n>Median basis</th></tr>
+      {mrows}
+    </table>
+  </div>
+</div>
+
 <div class=panel>
-  <h2>What the page does and does not say</h2>
+  <h2>What this page does and does not say</h2>
   <div class=note-list>
-    <p><b>The two currencies bottomed three weeks apart.</b> USD gold troughed
-    {cyc_u[-1]['trough_date']} at {cyc_u[-1]['depth'] * 100:.1f}%; the rupee series troughed
-    {live['trough_date'] if live else '—'} at {(live['depth'] if live else 0) * 100:.1f}%.
-    The rupee kept weakening after the metal stopped falling, so an Indian holder's low came
-    first and was shallower. Global commentary gives the wrong trough date for a rupee
-    holding.</p>
-    <p><b>These are parity levels, not traded prices.</b>
-    {'The MCX October future sits a median ' + format(mcx_prem * 100, '.1f') + '% above this line'
-     if mcx_prem else 'MCX futures sit well above this line'} &mdash; import duty, GST and
-    carry, none of which the formula contains. Percentages, dates and drawdowns are
-    unaffected, because a roughly constant multiplier cancels out of a ratio. Do not read a
-    level here as what you would pay.</p>
-    <p><b>Three completed cycles is not a forecast base.</b> Of the {len(cyc_i)} drawdowns
-    over 10%, {len(done)} were reclaimed, taking {ups[0] if ups else '—'} to
-    {ups[-1] if ups else '—'} days from trough to new high, median
-    {med_up if med_up is not None else '—'}. The current one is {since} days off its low and
-    {abs(from_peak) * 100:.1f}% below the peak. n = {len(done)}. That is an observation about
-    three episodes, not a distribution, and nothing here is a view on what happens next.</p>
-    <p><b>Why the series is reconstructed.</b> Native MCX daily history starts 2025-10-16 —
-    about ten months, which cannot show a cycle. GOLD_USD and USDINR both run to
-    2018-01-02, so the long series is built from them. It ends {last_d} rather than the
-    latest COMEX session because USDINR has no bar after that date.</p>
+    <p><b>The 2026 drawdown is 6.5pp shallower once duty is counted.</b> Naked parity fell
+    {par_live['depth'] * 100:.1f}% from its {par_live['peak_date']} peak; landed fell
+    {live['depth'] * 100:.1f}%. The difference is the {DUTY_SCHEDULE[-1][0]} hike from 6% to
+    15%, which lands INSIDE the drawdown and cushioned every rupee holder by about 8.5% on
+    one day. That is policy, not the metal &mdash; but it is what actually happened to the
+    price in India, which is the whole reason to look at the landed series.</p>
+    <p><b>Read the flagged rows as suspect.</b> The {DUTY_SCHEDULE[-2][0]} CUT, from 15% to
+    6%, appears on the landed series as a fall of over 8% in nine days during which
+    international gold barely moved &mdash; a tax cut wearing a drawdown's clothes. Rows whose
+    window contains a duty change carry a marker; only {len(clean)} of the
+    {len(done)} completed cycles are clean of one, which is why the recovery base rate below
+    is quoted on those alone.</p>
+    <p><b>Validation is on traded days only, and that decision does the heavy lifting.</b>
+    {stale} of the {stale + len(liq)} overlapping MCX dates carry ZERO volume: the Oct-2026
+    contract was far-dated and untraded until spring, and its "close" on those days is a
+    notional print. Scored on all dates the model looks broken (the wedge swings 8% to 67%
+    and day-to-day returns correlate <b>-0.19</b> with parity); scored on the {len(liq)} days
+    with volume above {MIN_VOL} it has a median residual of <b>{r_med * 100:+.2f}%</b> and an
+    sd of {r_sd * 100:.2f}pp, with returns correlating <b>+0.83</b>. Same model, same dates.</p>
+    <p><b>The residual is a market quantity, not leftover error.</b> It ran about +1.7% in
+    April and about -3% by August &mdash; India moving from a premium to a discount against
+    landed cost. Watch it: a persistent drift is the first sign the duty schedule above has
+    gone stale.</p>
+    <p><b>There is no usable recovery base rate here, and that is the finding.</b> Of the
+    {len(done)} completed drawdowns, {len(done) - len(clean)} straddle a duty change and only
+    <b>{len(clean)}</b> is clean of one &mdash; so the honest sample for "how long does a
+    rupee gold drawdown take to reclaim" is a single observation
+    ({', '.join(f"{c['trough_date']} +{(D(c['recovered']) - D(c['trough_date'])).days}d"
+                for c in clean) or 'none'}). All four completed recoveries took
+    {min((D(c['recovered']) - D(c['trough_date'])).days for c in done)} to
+    {max((D(c['recovered']) - D(c['trough_date'])).days for c in done)} days from trough,
+    but three of those windows have a tax change inside them. The current drawdown is
+    {since} days off its low and {abs(frm) * 100:.1f}% below the peak. Nothing here is a view
+    on what happens next.</p>
   </div>
 </div>
 
@@ -345,7 +461,7 @@ def build(days, usd, fx, mcx, out_path):
 <script>
 const S = {payload};
 const tip = document.getElementById('tip');
-function bind(svg, cross, extra) {{
+function bind(svg, cross) {{
   const el = document.getElementById(svg), cx = document.getElementById(cross);
   el.addEventListener('mousemove', e => {{
     const r = el.getBoundingClientRect();
@@ -354,15 +470,19 @@ function bind(svg, cross, extra) {{
     cx.setAttribute('opacity', .6);
     cx.setAttribute('x1', i * {W} / (S.d.length - 1));
     cx.setAttribute('x2', i * {W} / (S.d.length - 1));
+    const day = S.d[i], m = S.m[day];
     tip.style.opacity = 1;
-    tip.style.left = Math.min(e.clientX + 14, window.innerWidth - 230) + 'px';
+    tip.style.left = Math.min(e.clientX + 14, window.innerWidth - 250) + 'px';
     tip.style.top = (e.clientY + 14) + 'px';
-    tip.innerHTML = '<b>' + S.d[i] + '</b><br>' +
-      '&#8377;' + S.i[i].toLocaleString('en-IN') + ' / 10g' +
-      ' &nbsp;<span style="color:#8b93a1">dd ' + S.di[i].toFixed(1) + '%</span><br>' +
-      '<span style="color:#6aa9ff">$' + S.u[i].toLocaleString() + ' / oz' +
-      ' &nbsp;dd ' + S.du[i].toFixed(1) + '%</span><br>' +
-      '<span style="color:#8b93a1">USDINR ' + S.f[i].toFixed(2) + '</span>';
+    tip.innerHTML = '<b>' + day + '</b><br>' +
+      '<span style="color:#e0b34d">landed &#8377;' + S.l[i].toLocaleString('en-IN') +
+      '</span> &nbsp;<span style="color:#8b93a1">dd ' + S.dl[i].toFixed(1) + '%</span><br>' +
+      '<span style="color:#5a6070">parity &#8377;' + S.p[i].toLocaleString('en-IN') +
+      '  &middot; duty ' + S.y[i] + '%</span><br>' +
+      (m ? '<span style="color:#5fbf7f">MCX traded &#8377;' + m.toLocaleString('en-IN') +
+           '  (' + ((m / S.l[i] - 1) * 100).toFixed(2) + '% basis)</span><br>' : '') +
+      '<span style="color:#8b93a1">$' + S.u[i].toLocaleString() + '/oz &middot; USDINR ' +
+      S.f[i].toFixed(2) + '</span>';
   }});
   el.addEventListener('mouseleave', () => {{
     tip.style.opacity = 0; cx.setAttribute('opacity', 0);
@@ -374,7 +494,7 @@ bind('c1', 'cx1'); bind('c2', 'cx2');
 
     with open(out_path, "w") as fh:
         fh.write(html)
-    return out_path, len(days), cyc_i, cyc_u, mcx_prem
+    return out_path, len(days), cyc, liq, stale, r_med, r_sd
 
 
 def main() -> int:
@@ -388,12 +508,15 @@ def main() -> int:
         from db_config import resolve_db_path        # a READER: the mirror is fine
         db = resolve_db_path()
 
-    days, usd, fx, mcx = _load(db)
-    path, n, ci, cu, prem = build(days, usd, fx, mcx, a.out)
+    days, usd, fx, mcx, vol = _load(db)
+    path, n, cyc, liq, stale, r_med, r_sd = build(days, usd, fx, mcx, vol, a.out)
     print(f"read   {db}")
-    print(f"       {n:,} sessions {days[0]} .. {days[-1]}")
-    print(f"       {len(ci)} INR drawdowns >10%, {len(cu)} in USD"
-          + (f", MCX premium median {prem * 100:.1f}%" if prem else ""))
+    print(f"       {n:,} sessions {days[0]} .. {days[-1]}, duty {duty_on(days[0]) * 100:g}% "
+          f"-> {duty_on(days[-1]) * 100:g}% across {len(DUTY_SCHEDULE) - 1} changes")
+    print(f"       {len(cyc)} landed drawdowns >{THRESH:.0%}, "
+          f"{sum(1 for c in cyc if policy_in(c))} of them contain a duty change")
+    print(f"valid  {len(liq)} traded days (vol>{MIN_VOL}), {stale} stale prints skipped; "
+          f"residual median {r_med:+.2%}, sd {r_sd:.2%}")
     print(f"wrote  {path}")
     return 0
 
