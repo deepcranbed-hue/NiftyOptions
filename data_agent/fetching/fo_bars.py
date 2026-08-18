@@ -123,6 +123,52 @@ def _int_or_none(v):
     return int(round(v)) if v is not None else None
 
 
+def resume_from(db, underlying, expiry, floor, *, instrument_type="FUT",
+                timeframe="1d", overlap_days=5):
+    """Where to start fetching a contract: just before what we already hold.
+
+    THE SAME RULE THE REST OF THIS REPO ALREADY FOLLOWS, applied to fo_price_bars.
+    `daily_bars.sync_symbols`, `sync_commodities._resume_from`, `sync_nifty50_bars_yf._watermark`
+    and `backfill_daily_bars` each implement watermark + floor + overlap against
+    price_bars.symbol. Futures could not reuse any of them because this table is keyed on
+    (underlying, expiry, instrument_type, timeframe), not on a single symbol — so the CODE
+    differs and the RULE does not.
+
+    WHY THE OVERLAP IS NOT LAZINESS. Settled bars are immutable, so re-pulling them buys
+    nothing on the face of it. What it buys is the boundary: the last few sessions are the ones
+    a vendor revises or delivers late, and a watermark computed from a partially-written day
+    would otherwise skip the remainder of it forever. Five days costs almost nothing and
+    removes the whole class of off-by-one-session bugs. Same reasoning, same number, as
+    daily_bars.
+
+    WHY NOT A FIXED WINDOW. download_stock_futures.py originally re-fetched a flat 120-day
+    window per contract every run, justified as "stateless self-healing" and "avoids timezone
+    edge cases". Both are already what watermark-plus-overlap delivers — resuming from what is
+    stored IS self-healing, and the overlap IS the boundary guard — so the fixed window bought
+    nothing and cost a fifth convention. sync_commodities carried exactly this design once and
+    its own docstring records the fix: "every run re-pulled a year of daily ... and rewrote rows
+    that had not changed."
+    """
+    import sqlite3 as _sq
+    from datetime import datetime as _dt, timedelta as _td
+
+    def _d(x):
+        return _dt.strptime(str(x)[:10], "%Y-%m-%d")
+
+    try:
+        con = _sq.connect(f"file:{db}?mode=ro", uri=True)
+        row = con.execute(
+            "select max(ts) from fo_price_bars where underlying=? and expiry=? "
+            "and instrument_type=? and timeframe=?",
+            (underlying, expiry, instrument_type, timeframe)).fetchone()
+        con.close()
+    except Exception:                                        # noqa: BLE001
+        return floor                    # unreadable database -> take the whole window
+    if not row or not row[0]:
+        return floor                    # nothing stored for this contract yet
+    return max(_d(row[0]) - _td(days=overlap_days), _d(floor)).date()
+
+
 def save_fo_bars(rows, *, db: str, underlying: str, instrument_type: str,
                  expiry: str, exchange: str = "NFO", timeframe: str = "1m",
                  strike=None, right=None, contract_size: int | None = None) -> int:

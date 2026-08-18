@@ -301,6 +301,26 @@ def main() -> None:
                     print(f"      {e[:10]}  skipped — no valid window "
                           f"(listed but no sessions yet)")
                     continue
+            # ---- RESUME instead of re-fetching the window --------------------------
+            # Everything above computes the FLOOR: the earliest date this contract's liquid
+            # window could begin. It does not say where to START, and re-pulling the whole
+            # liquid window daily rewrites settled bars that cannot have changed.
+            #
+            # Every other downloader in this repo already resumes from a watermark with a
+            # small overlap — daily_bars, sync_commodities, sync_nifty50_bars_yf,
+            # backfill_daily_bars. This one did not, and the justifications given for that
+            # ("stateless self-healing", "avoids timezone edge cases") are precisely what
+            # watermark-plus-overlap provides: resuming from what is stored IS self-healing,
+            # and the overlap IS the boundary guard.
+            #
+            # The watermark is a READ, so it resolves through resolve_db_path() and works in
+            # --dry-run too, where the writable path is deliberately absent.
+            from fo_bars import resume_from
+            from db_config import resolve_db_path
+            _r = resume_from(resolve_db_path(), sym, e, start)
+            if _r and _r < end:
+                start = _r
+
             plan.append((sym, e, start.isoformat(), end.isoformat()))
             if a.dry_run:
                 print(f"      {e[:10]}  window {start} .. {end}  "
