@@ -296,8 +296,22 @@ def build_steps(args):
         # sync_coverage.py had ALREADY been reporting the US symbols as orphaned on every run.
         # The finding was in the audit output and nobody read it, which is its own lesson: an
         # audit that reports into a log nobody opens is not a control either.
-        Step("participants", "NSE F&O participant volumes + open interest",
+        # TWO SERIES, TWO SCRIPTS, and the first version of this step covered only one.
+        # download_nse_participants.py writes participant_flows (traded VOLUME) and nothing
+        # else; participant_oi (POSITIONS) comes from backfill_nse_participants --series oi.
+        # The register already distinguishes them — "participant_flows is traded VOLUME,
+        # participant_oi is POSITION" — and the step title claiming both was wrong. OI is the
+        # FII positioning series every hedge-ratio question rests on, so a step that quietly
+        # refreshed only volume left the more important half four sessions stale.
+        Step("participants", "NSE F&O participant traded volumes",
              f"{mac}/download_nse_participants.py", phase="macro", venv="macro"),
+        # A backfill run daily, so bounded like us-indices. Its --from defaults to 2018-01-01
+        # and it sleeps 2.5s between requests by design ("do not lower this to be rude"), so
+        # an unbounded window would be both slow and impolite.
+        Step("participants-oi", "NSE F&O participant OPEN INTEREST (positions)",
+             f"{mac}/backfill_nse_participants.py",
+             argv=lambda c: ["--series", "oi", "--from", since],
+             phase="macro", venv="macro"),
 
         # A BACKFILL script run daily, so it MUST be bounded. Its --from defaults to
         # 2018-01-01, which would re-download eight years every morning. --since keeps it to
