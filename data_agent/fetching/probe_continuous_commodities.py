@@ -51,18 +51,13 @@ GRAMS_PER_TROY_OZ = 31.1035
 # against a market snapshot: $63.55/oz at 95.21 gives 194,533 naked, 230,426 landed,
 # against an MCX close of 228,700 — a -0.75% paper basis, which is the sane number.
 #
-# THESE ARE POLICY RATES AND THEY CHANGE. India cut bullion duty sharply in the 2024
-# budget and has moved it several times since. Each entry is dated; re-check before
-# relying on the output, and treat an unexplained drift in the basis as a possible
-# duty change rather than a market signal.
-DUTY_GST = {
-    # symbol: (duty, gst, as_of, confidence)
-    "SILVER": (0.15, 0.03, "2026-08", "verified against a market snapshot"),
-    "GOLD":   (0.06, 0.03, "2026-08", "UNVERIFIED — bullion duty was cut in 2024 and "
-                                      "gold may differ from silver; confirm before use"),
-    "COPPER": (0.05, 0.18, "2026-08", "UNVERIFIED — industrial metal, GST is 18% not 3%; "
-                                      "confirm both rates"),
-}
+# THESE ARE POLICY RATES AND THEY CHANGE, WHICH IS WHY THEY ARE NOT WRITTEN HERE.
+# This file used to carry its own DUTY_GST table with GOLD at 6% "UNVERIFIED". That was
+# correct when written and wrong from 2026-05-13, when the duty went to 15% — and the copy
+# in backend/quant/gold_cycles.py moved while this one did not. Two modules, one policy
+# number, three months of disagreement. bullion_duty.py now owns it for the whole repo;
+# do not reintroduce a local copy.
+from bullion_duty import duty_on, gst_on, is_verified, UNVERIFIED  # noqa: E402
 
 # db symbol -> (candidate Yahoo tickers, how to convert USD quote -> the MCX unit)
 #   gold   : USD/troy oz  -> INR per 10 g
@@ -138,7 +133,17 @@ def main():
                         "timeframe='1d' order by ts desc limit 1", (sym,)).fetchone()
                 if stored:
                     naked = to_mcx(last, fx)
-                    duty, gst, as_of, note = DUTY_GST.get(sym, (0.0, 0.0, "-", "no rates"))
+                    # today's rate: this probe compares a CURRENT snapshot, so it asks
+                    # for the rate in force now rather than carrying a history it
+                    # would not use.
+                    _today = datetime.now().strftime("%Y-%m-%d")
+                    try:
+                        duty, gst = duty_on(sym, _today), gst_on(sym)
+                        note = ("dated schedule in bullion_duty.py" if is_verified(sym)
+                                else UNVERIFIED[sym][2])
+                    except (KeyError, ValueError) as _exc:
+                        duty, gst, note = 0.0, 0.0, f"no rates: {_exc}"
+                    as_of = _today
                     landed = naked * (1 + duty) * (1 + gst)
                     raw_diff = (stored[1] / naked - 1.0) * 100.0
                     diff = (stored[1] / landed - 1.0) * 100.0
@@ -165,7 +170,9 @@ def main():
                     print(f"            vs naked  {raw_diff:+.1f}%   <- mostly the tax wedge")
                     print(f"            vs landed {diff:+.1f}%   <- the REAL paper basis  "
                           f"[{verdict}]")
-                    if "UNVERIFIED" in note:
+                    # not a substring match on the note text — that broke silently once
+                    # the note stopped containing the word "UNVERIFIED".
+                    if not is_verified(sym):
                         print(f"            duty/GST for {sym}: {note}")
         print()
 

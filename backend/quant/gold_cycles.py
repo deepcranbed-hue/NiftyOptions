@@ -85,29 +85,20 @@ MCX_REF = "GOLD"
 PEAK_WINDOW = 25       # a high must dominate this many sessions either side
 PEAK_SEP = 40          # ...and highs closer together than this are one event
 
-GST = 0.03             # 3% on bullion since 2017-07-01, unchanged across this sample
+# Duty and GST come from bullion_duty.py, which owns them for the whole repo. They are NOT
+# redefined here: on 2026-08-18 this file and probe_continuous_commodities.py each held a
+# copy and one was already stale by three months. A policy rate read by two modules cannot
+# live in either of them.
+from bullion_duty import GST as _GST, landed_multiplier, schedule  # noqa: E402
+from bullion_duty import changes_between, duty_on as _duty_on      # noqa: E402
 
-# EFFECTIVE TOTAL IMPORT DUTY ON GOLD, by the date it took effect. Inclusive of BCD + AIDC +
-# SWS — one number, because that is what the landed price responds to.
-#
-# THESE ARE POLICY RATES AND THEY MOVE. Every entry is dated and sourced; when the residual
-# basis below starts drifting, suspect a duty change before suspecting the market.
-DUTY_SCHEDULE = [
-    ("1900-01-01", 0.1000, "10%, the setting held from 2014"),
-    ("2019-07-06", 0.1250, "Budget 2019 — raised to curb imports"),
-    ("2021-02-02", 0.1075, "Budget 2021 — 7.5% BCD + 2.5% AIDC, SWS exempt"),
-    ("2022-07-01", 0.1500, "raised to defend the current account deficit"),
-    ("2024-07-24", 0.0600, "Budget 2024 — 5% BCD + 1% AIDC, lowest in over a decade"),
-    ("2026-05-13", 0.1500, "Notifications 15-18/2026-Customs — 10% BCD + 5% AIDC"),
-]
+METAL = "GOLD"
+GST = _GST[METAL]
+DUTY_SCHEDULE = [(eff, r, why) for eff, r, why, _src in schedule(METAL)]
 
 
 def duty_on(day: str) -> float:
-    rate = DUTY_SCHEDULE[0][1]
-    for eff, r, _ in DUTY_SCHEDULE:
-        if day >= eff:
-            rate = r
-    return rate
+    return _duty_on(METAL, day)
 
 
 def _load(db):
@@ -168,8 +159,8 @@ def policy_in(cyc):
     table is for. A move during the recovery changes how long it took, which matters less
     and would flag almost everything — the 2020-08 cycle alone spans nineteen months.
     """
-    return [(eff, r) for eff, r, _ in DUTY_SCHEDULE
-            if cyc["peak_date"] <= eff <= cyc["trough_date"]]
+    return [(eff, r) for eff, r, _why
+            in changes_between(METAL, cyc["peak_date"], cyc["trough_date"])]
 
 
 def major_highs(days, vals, n=6):
@@ -222,7 +213,7 @@ def _x(i, n, w):
 
 def build(days, usd, fx, mcx, vol, out_path):
     parity = [usd[d] / OZ_G * 10 * fx[d] for d in days]
-    landed = [p * (1 + duty_on(d)) * (1 + GST) for d, p in zip(days, parity)]
+    landed = [p * landed_multiplier(METAL, d) for d, p in zip(days, parity)]
     idx = {d: i for i, d in enumerate(days)}
 
     cyc = cycles(list(zip(days, landed)))
