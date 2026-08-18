@@ -60,3 +60,8 @@ _to_delete/
 # the parsed output (screener_page_tables.csv) IS versioned; the cache is not
 data_agent/fundamentals/screener_html/
 _trash/
+
+# Generated views. The GENERATOR is tracked (backend/quant/gold_cycles.py); the render
+# is a 180KB derived file that changes on every run and carries no history worth keeping.
+gold_inr_view.html
+_to_delete/
