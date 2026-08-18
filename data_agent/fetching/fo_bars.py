@@ -176,11 +176,22 @@ def resume_from(db, underlying, expiry, floor, *, instrument_type="FUT",
     # bars in a session. Truncating a 1m watermark to a date either re-pulls the whole day
     # or, worse, leaves the rest of a partially written day unreachable.
     #
-    # sync_nifty50_to_now.py:161 gets this right for 1m: it takes the last timestamp,
-    # shifts UTC->IST and adds ONE MINUTE. sync_commodities._resume_from does not — it is
-    # called with "1m" and still returns row[0][:10], so it re-fetches whole days of
-    # minutes. Harmless to the data, since the writes are upserts, but it is the weaker of
-    # the two conventions and this helper copied it before that was noticed.
+    # THE GRANULARITY IS SET BY THE VENDOR, NOT BY CARE. An earlier version of this comment
+    # called sync_commodities._resume_from "the weaker convention" for truncating a 1m
+    # watermark to a date. That was wrong, and checking the two endpoints shows why:
+    #
+    #   Breeze   from_date="2026-08-18T10:01:00.000Z"                 accepts a DATETIME
+    #   Upstox   /historical-candle/{key}/1minute/{to}/{frm}          DATES in the URL path
+    #
+    # sync_nifty50_to_now.py:161 resumes at the next MINUTE because Breeze lets it.
+    # sync_commodities truncates to a date because Upstox offers nothing finer — its very
+    # next line re-formats to "%Y-%m-%d" regardless, so a precise watermark would be
+    # discarded on arrival. It pairs that date-ranged history call with a separate
+    # fetch_1m_today() intraday endpoint, which is the correct way to handle a date-granular
+    # API rather than a shortcut around one.
+    #
+    # So the rule here is: resume at the finest granularity THE SOURCE ACCEPTS. For Breeze
+    # futures that is a timestamp, which is what the branch below returns.
     #
     # So: sub-daily resumes at the NEXT BAR, daily resumes at a date minus the overlap.
     # The overlap exists for vendor revisions of recent sessions, which is a daily-bar
