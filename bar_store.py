@@ -53,11 +53,51 @@ def init_bars(db=DB_PATH):
             c.execute("ALTER TABLE price_bars ADD COLUMN open_interest REAL")
 
 
-def save_bars(rows, *, exchange="NSE", symbol="NIFTY", timeframe="1m", db=DB_PATH) -> int:
-    """rows: iterable of (ts_iso, o, h, l, c, v, [oi]). Idempotent."""
+def save_bars(rows, *, exchange="NSE", symbol="NIFTY", timeframe="1m", db=DB_PATH,
+              allow_today_1d=False) -> int:
+    """rows: iterable of (ts_iso, o, h, l, c, v, [oi]). Idempotent.
+
+    RULE: A 1d BAR IS NEVER DATED TODAY. Enforced here, at the single write boundary, rather
+    than in each downloader — the same reasoning as db_config owning the DB path.
+
+    WHY THE RULE. Vendors disagree about what a daily bar dated today means, and the
+    disagreement is invisible in the stored row. Measured mid-session on 2026-08-18: 123 of
+    125 India/Yahoo symbols already carried a bar dated today, against 3 of 25 MCX/Upstox and
+    0 of 6 US indices. Yahoo's daily bar UPDATES through the session, Upstox's daily endpoint
+    is end-of-day, and Breeze publishes in an overnight batch. So price_bars was holding
+    half-finished bars beside absent ones for the same date, and any cross-sectional
+    calculation on the latest date silently compared the two.
+
+    One rule removes the whole class: a daily bar is written only once the session it
+    describes has ended. Today's view comes from 1m bars, which is what they are for.
+
+    `allow_today_1d=True` exists for a deliberate intraday snapshot and must be passed
+    explicitly, so it appears at the call site rather than being the default anyone inherits.
+    """
     assert timeframe in ("1m", "1d"), "store only ground-truth timeframes"
     from backend.timeutil import to_db_ts
     init_bars(db)
+
+    if timeframe == "1d" and not allow_today_1d:
+        # COMPARE SESSION DATES, NOT STORED TIMESTAMPS. `to_db_ts` normalises to UTC, so a
+        # midnight-IST bar for today becomes 18:30 on the PREVIOUS UTC day and slips past a
+        # naive comparison — the first version of this guard did exactly that and let both
+        # test rows through. Same UTC-shift class as the TATAMOTORS weekend bars in
+        # daily_bar_audit's docstring: "a UTC conversion moved every session back one day".
+        #
+        # The vendor's own date IS the session date, so compare that, against today in IST
+        # rather than in whatever zone the host happens to run in (this machine reports UTC).
+        import datetime as _dt
+        _IST = _dt.timezone(_dt.timedelta(hours=5, minutes=30))
+        _today = _dt.datetime.now(_IST).date().isoformat()
+        rows = list(rows)
+        _kept = [r for r in rows if str(r[0])[:10] < _today]
+        if len(_kept) != len(rows):
+            print(f"   [1d rule] {symbol}: dropped {len(rows) - len(_kept)} bar(s) dated "
+                  f"{_today} — a daily bar is written after its session closes, not during it")
+        rows = _kept
+        if not rows:
+            return 0
     with _conn(db) as c:
         c.executemany(
             "INSERT OR REPLACE INTO price_bars(exchange, symbol, timeframe, ts, open, high, low, close, volume, open_interest) VALUES (?,?,?,?,?,?,?,?,?,?)",

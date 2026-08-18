@@ -207,11 +207,29 @@ def resume_from(db, underlying, expiry, floor, *, instrument_type="FUT",
 
 def save_fo_bars(rows, *, db: str, underlying: str, instrument_type: str,
                  expiry: str, exchange: str = "NFO", timeframe: str = "1m",
-                 strike=None, right=None, contract_size: int | None = None) -> int:
+                 strike=None, right=None, contract_size: int | None = None,
+                 allow_today_1d: bool = False) -> int:
     """rows: iterable of (ts_iso, o, h, l, c, v, [open_interest]). Idempotent.
     OPT needs strike + right; FUT ignores them (sentinels applied)."""
     assert timeframe in ("1m", "1d"), "store only ground-truth timeframes"
     assert instrument_type in (FUT, OPT)
+
+    # SAME RULE AS bar_store.save_bars: a 1d bar is never dated today. Applied at BOTH write
+    # boundaries deliberately — one table guarded and the other not is how this repo ends up
+    # with two conventions, which is the defect it keeps paying for. Breeze happens not to
+    # publish an intraday daily bar today (fo_price_bars held 0 such rows when this was
+    # added), so the guard is currently inert here; it exists so the rule does not depend on
+    # a vendor continuing to behave.
+    if timeframe == "1d" and not allow_today_1d:
+        # IST, not host-local: this machine reports UTC, and "today" must mean the
+        # trading day. The row's own date is already the session date, so it is compared
+        # directly rather than after a UTC normalisation that would shift it back a day.
+        import datetime as _dt
+        _IST = _dt.timezone(_dt.timedelta(hours=5, minutes=30))
+        _today = _dt.datetime.now(_IST).date().isoformat()
+        rows = [r for r in rows if str(r[0])[:10] < _today]
+        if not rows:
+            return 0
     init_fo(db)
     k_strike, k_right = _norm(instrument_type, strike, right)
     sym = contract_symbol(underlying, instrument_type, expiry, k_strike, k_right)
