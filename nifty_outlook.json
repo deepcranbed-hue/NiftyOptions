@@ -1,38 +1,38 @@
 {
- "as_of": "2026-08-16",
+ "as_of": "2026-08-19",
  "anchor": {
-  "spot": 24366.0,
-  "spot_date": "2026-08-14",
+  "spot": 24078.3,
+  "spot_date": "2026-08-19",
   "trailing_pe": 20.14,
   "forward_pe": 15.87,
   "pe_coverage_pct": 98.0,
-  "index_eps": 1210.0,
+  "index_eps": 1195.0,
   "implied_growth_pct": 26.9,
   "pe_label": "fair",
-  "expectation_captured_at": "2026-08-16T16:22:01",
+  "expectation_captured_at": "2026-08-17T09:00:14",
   "note": "index_eps is IMPLIED (spot \u00f7 weighted trailing P/E), not a published figure. implied_growth_pct is what the trailing\u2192forward multiple already pays for, and Yahoo's forward P/E spans one to two years rather than a clean next fiscal year \u2014 so it is not directly comparable to any single-year growth estimate."
  },
  "history": {
   "source": "price_bars NIFTY 1d",
   "extended": false,
   "first": "2018-01-02",
-  "last": "2026-08-14",
-  "sessions": 2124,
+  "last": "2026-08-19",
+  "sessions": 2127,
   "years": 8.6,
   "horizons": [
    {
     "label": "6M",
     "sessions": 126,
-    "n_windows": 1998,
+    "n_windows": 2001,
     "n_independent": 15,
-    "median_pct": 5.8,
+    "median_pct": 5.7,
     "p10_pct": -8.0,
     "p25_pct": -1.2,
     "p75_pct": 12.3,
     "p90_pct": 20.2,
     "min_pct": -29.8,
     "max_pct": 46.3,
-    "pct_positive": 71.4,
+    "pct_positive": 71.3,
     "all_returns": [
      -29.78,
      -29.65,
@@ -277,6 +277,7 @@
      -7.09,
      -7.04,
      -7.0,
+     -6.93,
      -6.91,
      -6.84,
      -6.83,
@@ -289,6 +290,7 @@
      -6.78,
      -6.77,
      -6.75,
+     -6.7,
      -6.69,
      -6.69,
      -6.68,
@@ -308,6 +310,7 @@
      -6.43,
      -6.38,
      -6.37,
+     -6.35,
      -6.34,
      -6.34,
      -6.34,
@@ -2046,16 +2049,16 @@
    {
     "label": "1Y",
     "sessions": 252,
-    "n_windows": 1872,
+    "n_windows": 1875,
     "n_independent": 7,
     "median_pct": 9.5,
     "p10_pct": -3.2,
     "p25_pct": 2.2,
     "p75_pct": 21.6,
-    "p90_pct": 32.9,
+    "p90_pct": 32.8,
     "min_pct": -31.0,
     "max_pct": 90.6,
-    "pct_positive": 82.3,
+    "pct_positive": 82.1,
     "all_returns": [
      -31.04,
      -30.15,
@@ -2287,6 +2290,7 @@
      -1.89,
      -1.83,
      -1.81,
+     -1.79,
      -1.78,
      -1.77,
      -1.77,
@@ -2320,6 +2324,8 @@
      -1.22,
      -1.2,
      -1.18,
+     -1.17,
+     -1.17,
      -1.17,
      -1.16,
      -1.15,
@@ -3933,21 +3939,21 @@
     "sufficient": true,
     "conditioned": {
      "label": "starting >5% below the prior 52-week high (today's state)",
-     "n_windows": 804,
+     "n_windows": 807,
      "n_independent": 3,
      "sufficient": false,
-     "median_pct": 12.0,
-     "pct_positive": 91.0
+     "median_pct": 11.9,
+     "pct_positive": 90.7
     }
    },
    {
     "label": "2Y",
     "sessions": 504,
-    "n_windows": 1620,
+    "n_windows": 1623,
     "n_independent": 3,
     "median_pct": 29.3,
-    "p10_pct": 2.2,
-    "p25_pct": 17.5,
+    "p10_pct": 2.0,
+    "p25_pct": 17.3,
     "p75_pct": 41.9,
     "p90_pct": 54.7,
     "min_pct": -27.9,
@@ -4041,6 +4047,7 @@
      -2.11,
      -2.04,
      -1.78,
+     -1.74,
      -1.7,
      -1.68,
      -1.6,
@@ -4081,6 +4088,8 @@
      0.19,
      0.2,
      0.24,
+     0.36,
+     0.41,
      0.43,
      0.56,
      0.57,
@@ -5595,39 +5604,39 @@
    "kind": "conditional",
    "source": "delivery_history + reconstructed P/E",
    "eps_growth_pct": 6.9,
-   "exit_pe": 20.14,
+   "exit_pe": 20.15,
    "measured": {
     "g_source": "last observed fiscal year (FY2026)",
     "exit_pe_source": "today's multiple, held",
-    "exit_pe_percentile": 3.0
+    "exit_pe_percentile": 2.0
    },
    "narrative": "The most conservative thing the data supports: earnings grow at the rate they actually grew last year (6.9%) and nobody pays a different multiple. Aggregate profit growth has decelerated 19.9% \u2192 12.7% \u2192 6.9%, so this is the trend continuing rather than a shock.",
    "invalidated_by": "Aggregate profit growth re-accelerating above ~10% for two consecutive years.",
    "quoted": [],
    "assumed": [],
-   "exit_pe_used": 20.14,
+   "exit_pe_used": 20.15,
    "exit_pe_label": "fair",
    "levels": {
     "6M": {
-     "level": 25196.0,
+     "level": 24896.0,
      "ret_pct": 3.4,
-     "eps": 1251.0,
+     "eps": 1236.0,
      "annualised_pct": 6.9,
-     "history_percentile": 43.0
+     "history_percentile": 44.0
     },
     "1Y": {
-     "level": 26051.0,
+     "level": 25741.0,
      "ret_pct": 6.9,
-     "eps": 1293.0,
+     "eps": 1277.0,
      "annualised_pct": 6.9,
      "history_percentile": 39.0
     },
     "2Y": {
-     "level": 27848.0,
+     "level": 27517.0,
      "ret_pct": 14.3,
-     "eps": 1383.0,
+     "eps": 1366.0,
      "annualised_pct": 6.9,
-     "history_percentile": 22.0
+     "history_percentile": 23.0
     }
    }
   },
@@ -5637,7 +5646,7 @@
    "kind": "reference",
    "source": "delivery_history + reconstructed P/E",
    "eps_growth_pct": 7.7,
-   "exit_pe": 23.0,
+   "exit_pe": 23.29,
    "measured": {
     "g_source": "25th percentile of 8 observed fiscal years",
     "exit_pe_source": "25th percentile of ~2,000 observed days",
@@ -5647,29 +5656,29 @@
    "invalidated_by": "The multiple staying below ~22x through the horizon \u2014 then the sample, not the market, was wrong.",
    "quoted": [],
    "assumed": [],
-   "exit_pe_used": 23.0,
+   "exit_pe_used": 23.29,
    "exit_pe_label": "mildly rich",
    "levels": {
     "6M": {
-     "level": 28882.0,
-     "ret_pct": 18.5,
-     "eps": 1256.0,
-     "annualised_pct": 40.5,
-     "history_percentile": 89.0
+     "level": 28883.0,
+     "ret_pct": 20.0,
+     "eps": 1240.0,
+     "annualised_pct": 43.9,
+     "history_percentile": 90.0
     },
     "1Y": {
-     "level": 29973.0,
-     "ret_pct": 23.0,
-     "eps": 1303.0,
-     "annualised_pct": 23.0,
-     "history_percentile": 77.0
+     "level": 29975.0,
+     "ret_pct": 24.5,
+     "eps": 1287.0,
+     "annualised_pct": 24.5,
+     "history_percentile": 80.0
     },
     "2Y": {
-     "level": 32281.0,
-     "ret_pct": 32.5,
-     "eps": 1404.0,
-     "annualised_pct": 15.1,
-     "history_percentile": 58.0
+     "level": 32283.0,
+     "ret_pct": 34.1,
+     "eps": 1386.0,
+     "annualised_pct": 15.8,
+     "history_percentile": 62.0
     }
    }
   },
@@ -5679,7 +5688,7 @@
    "kind": "reference",
    "source": "delivery_history + reconstructed P/E",
    "eps_growth_pct": 15.3,
-   "exit_pe": 25.1,
+   "exit_pe": 25.38,
    "measured": {
     "g_source": "median of 8 observed fiscal years",
     "exit_pe_source": "median of ~2,000 observed days",
@@ -5689,28 +5698,28 @@
    "invalidated_by": "Either input leaving its measured interquartile range for two quarters.",
    "quoted": [],
    "assumed": [],
-   "exit_pe_used": 25.1,
+   "exit_pe_used": 25.38,
    "exit_pe_label": "rich",
    "levels": {
     "6M": {
-     "level": 32612.0,
-     "ret_pct": 33.8,
-     "eps": 1299.0,
-     "annualised_pct": 79.1,
-     "history_percentile": 98.0
+     "level": 32567.0,
+     "ret_pct": 35.3,
+     "eps": 1283.0,
+     "annualised_pct": 82.9,
+     "history_percentile": 99.0
     },
     "1Y": {
-     "level": 35018.0,
-     "ret_pct": 43.7,
-     "eps": 1395.0,
-     "annualised_pct": 43.7,
+     "level": 34969.0,
+     "ret_pct": 45.2,
+     "eps": 1378.0,
+     "annualised_pct": 45.2,
      "history_percentile": 92.0
     },
     "2Y": {
-     "level": 40375.0,
-     "ret_pct": 65.7,
-     "eps": 1609.0,
-     "annualised_pct": 28.7,
+     "level": 40320.0,
+     "ret_pct": 67.5,
+     "eps": 1589.0,
+     "annualised_pct": 29.4,
      "history_percentile": 97.0
     }
    }
@@ -5721,7 +5730,7 @@
    "kind": "reference",
    "source": "delivery_history + reconstructed P/E, ex-COVID",
    "eps_growth_pct": 10.3,
-   "exit_pe": 23.82,
+   "exit_pe": 24.09,
    "measured": {
     "g_source": "median growth excluding FY21-FY22 base effects",
     "exit_pe_source": "median multiple excluding Jul-2020 \u2192 Jun-2021",
@@ -5731,29 +5740,29 @@
    "invalidated_by": "Nothing \u2014 this is a robustness variant, not a view.",
    "quoted": [],
    "assumed": [],
-   "exit_pe_used": 23.82,
-   "exit_pe_label": "mildly rich",
+   "exit_pe_used": 24.09,
+   "exit_pe_label": "rich",
    "levels": {
     "6M": {
-     "level": 30270.0,
-     "ret_pct": 24.2,
-     "eps": 1271.0,
-     "annualised_pct": 54.3,
-     "history_percentile": 92.0
+     "level": 30234.0,
+     "ret_pct": 25.6,
+     "eps": 1255.0,
+     "annualised_pct": 57.7,
+     "history_percentile": 93.0
     },
     "1Y": {
-     "level": 31791.0,
-     "ret_pct": 30.5,
-     "eps": 1335.0,
-     "annualised_pct": 30.5,
-     "history_percentile": 89.0
+     "level": 31753.0,
+     "ret_pct": 31.9,
+     "eps": 1318.0,
+     "annualised_pct": 31.9,
+     "history_percentile": 90.0
     },
     "2Y": {
-     "level": 35065.0,
-     "ret_pct": 43.9,
-     "eps": 1472.0,
-     "annualised_pct": 20.0,
-     "history_percentile": 79.0
+     "level": 35023.0,
+     "ret_pct": 45.5,
+     "eps": 1454.0,
+     "annualised_pct": 20.6,
+     "history_percentile": 81.0
     }
    }
   },
@@ -5763,38 +5772,38 @@
    "kind": "reference",
    "source": "delivery_history + reconstructed P/E",
    "eps_growth_pct": 21.0,
-   "exit_pe": 29.32,
+   "exit_pe": 29.66,
    "measured": {
     "g_source": "75th percentile of 8 observed fiscal years",
     "exit_pe_source": "75th percentile of ~2,000 observed days",
     "exit_pe_percentile": 75.0
    },
-   "narrative": "Upper quartile on both. Worth naming what this requires: a multiple of 29.32x, which the index last sustained when its earnings base was materially smaller.",
+   "narrative": "Upper quartile on both. Worth naming what this requires: a multiple of 29.66x, which the index last sustained when its earnings base was materially smaller.",
    "invalidated_by": "Aggregate profit growth below the median for two years running.",
    "quoted": [],
    "assumed": [],
-   "exit_pe_used": 29.32,
+   "exit_pe_used": 29.66,
    "exit_pe_label": "rich",
    "levels": {
     "6M": {
-     "level": 39025.0,
-     "ret_pct": 60.2,
-     "eps": 1331.0,
-     "annualised_pct": 156.5,
+     "level": 38988.0,
+     "ret_pct": 61.9,
+     "eps": 1314.0,
+     "annualised_pct": 162.2,
      "history_percentile": 100.0
     },
     "1Y": {
-     "level": 42927.0,
-     "ret_pct": 76.2,
-     "eps": 1464.0,
-     "annualised_pct": 76.2,
+     "level": 42887.0,
+     "ret_pct": 78.1,
+     "eps": 1446.0,
+     "annualised_pct": 78.1,
      "history_percentile": 100.0
     },
     "2Y": {
-     "level": 51942.0,
-     "ret_pct": 113.2,
-     "eps": 1772.0,
-     "annualised_pct": 46.0,
+     "level": 51893.0,
+     "ret_pct": 115.5,
+     "eps": 1750.0,
+     "annualised_pct": 46.8,
      "history_percentile": 100.0
     }
    }
@@ -5822,30 +5831,30 @@
    "measured": {
     "g_source": "external",
     "exit_pe_source": "external",
-    "exit_pe_percentile": 5.0,
+    "exit_pe_percentile": 4.0,
     "g_percentile": 50.0
    },
    "exit_pe_used": 20.5,
    "exit_pe_label": "fair",
    "levels": {
     "6M": {
-     "level": 26484.0,
-     "ret_pct": 8.7,
-     "eps": 1292.0,
-     "annualised_pct": 18.1,
-     "history_percentile": 61.0
+     "level": 26156.0,
+     "ret_pct": 8.6,
+     "eps": 1276.0,
+     "annualised_pct": 18.0,
+     "history_percentile": 60.0
     },
     "1Y": {
-     "level": 28278.0,
-     "ret_pct": 16.1,
-     "eps": 1379.0,
-     "annualised_pct": 16.1,
+     "level": 27927.0,
+     "ret_pct": 16.0,
+     "eps": 1362.0,
+     "annualised_pct": 16.0,
      "history_percentile": 69.0
     },
     "2Y": {
-     "level": 32237.0,
-     "ret_pct": 32.3,
-     "eps": 1573.0,
+     "level": 31837.0,
+     "ret_pct": 32.2,
+     "eps": 1553.0,
      "annualised_pct": 15.0,
      "history_percentile": 58.0
     }
@@ -5853,11 +5862,11 @@
    "published_vs_model": {
     "published_level": 28615,
     "published_for": "2026-12-31",
-    "ret_from_spot_pct": 17.4,
+    "ret_from_spot_pct": 18.8,
     "implied_exit_pe": {
-     "6M": 22.15,
-     "1Y": 20.74,
-     "2Y": 18.2
+     "6M": 22.43,
+     "1Y": 21.0,
+     "2Y": 18.43
     },
     "note": "Sell-side targets are quoted as forward-year EPS x target multiple irrespective of the date; this model compounds trailing EPS to the horizon. implied_exit_pe is the multiple their level requires under THIS convention at each horizon \u2014 where it differs from their stated multiple, the convention is the reason, not an error in either."
    }
@@ -5884,30 +5893,30 @@
    "measured": {
     "g_source": "external",
     "exit_pe_source": "external",
-    "exit_pe_percentile": 5.0,
+    "exit_pe_percentile": 4.0,
     "g_percentile": 50.0
    },
    "exit_pe_used": 20.5,
    "exit_pe_label": "fair",
    "levels": {
     "6M": {
-     "level": 26368.0,
+     "level": 26041.0,
      "ret_pct": 8.2,
-     "eps": 1286.0,
-     "annualised_pct": 17.1,
-     "history_percentile": 59.0
+     "eps": 1270.0,
+     "annualised_pct": 17.0,
+     "history_percentile": 58.0
     },
     "1Y": {
-     "level": 28030.0,
+     "level": 27682.0,
      "ret_pct": 15.0,
-     "eps": 1367.0,
+     "eps": 1350.0,
      "annualised_pct": 15.0,
      "history_percentile": 67.0
     },
     "2Y": {
-     "level": 31674.0,
-     "ret_pct": 30.0,
-     "eps": 1545.0,
+     "level": 31281.0,
+     "ret_pct": 29.9,
+     "eps": 1526.0,
      "annualised_pct": 14.0,
      "history_percentile": 52.0
     }
@@ -5915,11 +5924,11 @@
    "published_vs_model": {
     "published_level": 27200,
     "published_for": "2026-12-31",
-    "ret_from_spot_pct": 11.6,
+    "ret_from_spot_pct": 13.0,
     "implied_exit_pe": {
-     "6M": 21.15,
-     "1Y": 19.89,
-     "2Y": 17.6
+     "6M": 21.41,
+     "1Y": 20.14,
+     "2Y": 17.83
     },
     "note": "Sell-side targets are quoted as forward-year EPS x target multiple irrespective of the date; this model compounds trailing EPS to the horizon. implied_exit_pe is the multiple their level requires under THIS convention at each horizon \u2014 where it differs from their stated multiple, the convention is the reason, not an error in either."
    }
@@ -5954,23 +5963,23 @@
    "exit_pe_label": "cheap",
    "levels": {
     "6M": {
-     "level": 21178.0,
+     "level": 20916.0,
      "ret_pct": -13.1,
-     "eps": 1246.0,
+     "eps": 1230.0,
      "annualised_pct": -24.5,
      "history_percentile": 4.0
     },
     "1Y": {
-     "level": 21804.0,
-     "ret_pct": -10.5,
-     "eps": 1283.0,
-     "annualised_pct": -10.5,
+     "level": 21534.0,
+     "ret_pct": -10.6,
+     "eps": 1267.0,
+     "annualised_pct": -10.6,
      "history_percentile": 4.0
     },
     "2Y": {
-     "level": 23112.0,
-     "ret_pct": -5.1,
-     "eps": 1360.0,
+     "level": 22826.0,
+     "ret_pct": -5.2,
+     "eps": 1343.0,
      "annualised_pct": -2.6,
      "history_percentile": 4.0
     }
@@ -5978,11 +5987,137 @@
    "published_vs_model": {
     "published_level": 23030,
     "published_for": "2026-12-31",
-    "ret_from_spot_pct": -5.5,
+    "ret_from_spot_pct": -4.4,
     "implied_exit_pe": {
-     "6M": 18.49,
-     "1Y": 17.96,
-     "2Y": 16.94
+     "6M": 18.72,
+     "1Y": 18.18,
+     "2Y": 17.15
+    },
+    "note": "Sell-side targets are quoted as forward-year EPS x target multiple irrespective of the date; this model compounds trailing EPS to the horizon. implied_exit_pe is the multiple their level requires under THIS convention at each horizon \u2014 where it differs from their stated multiple, the convention is the reason, not an error in either."
+   }
+  },
+  {
+   "id": "bofa_base",
+   "name": "BofA Global Research \u2014 base",
+   "published_level": 26200,
+   "eps_growth_pct": 10.0,
+   "exit_pe": 19.7,
+   "quoted": [
+    "published_level",
+    "published_for",
+    "eps_growth_pct",
+    "narrative"
+   ],
+   "assumed": [
+    "exit_pe \u2014 NOT published. BofA state 'no further expansion in valuations'; 19.7 is what their level implies on this file's index EPS after 10% growth, and it is BELOW today's 20.14x"
+   ],
+   "narrative": "FY27 estimates raised across sectors covering ~71% of Nifty market cap on a resilient June quarter. GST collections, direct tax receipts, credit growth and power demand firm through the West Asia conflict. 10% FY27 growth, 15% FY28.",
+   "invalidated_by": "FY27 growth tracking below 8% at the H1 mark, or the multiple re-rating above 21x on unchanged earnings.",
+   "kind": "published",
+   "source": "Axis Securities, quoted 2026-08",
+   "published_for": "2026-12-31",
+   "measured": {
+    "g_source": "external",
+    "exit_pe_source": "external",
+    "exit_pe_percentile": 1.0,
+    "g_percentile": 38.0
+   },
+   "exit_pe_used": 19.7,
+   "exit_pe_label": "fair",
+   "levels": {
+    "6M": {
+     "level": 24691.0,
+     "ret_pct": 2.5,
+     "eps": 1253.0,
+     "annualised_pct": 5.2,
+     "history_percentile": 40.0
+    },
+    "1Y": {
+     "level": 25896.0,
+     "ret_pct": 7.5,
+     "eps": 1314.0,
+     "annualised_pct": 7.5,
+     "history_percentile": 43.0
+    },
+    "2Y": {
+     "level": 28485.0,
+     "ret_pct": 18.3,
+     "eps": 1446.0,
+     "annualised_pct": 8.8,
+     "history_percentile": 26.0
+    }
+   },
+   "published_vs_model": {
+    "published_level": 26200,
+    "published_for": "2026-12-31",
+    "ret_from_spot_pct": 8.8,
+    "implied_exit_pe": {
+     "6M": 20.9,
+     "1Y": 19.93,
+     "2Y": 18.12
+    },
+    "note": "Sell-side targets are quoted as forward-year EPS x target multiple irrespective of the date; this model compounds trailing EPS to the horizon. implied_exit_pe is the multiple their level requires under THIS convention at each horizon \u2014 where it differs from their stated multiple, the convention is the reason, not an error in either."
+   }
+  },
+  {
+   "id": "bofa_bear",
+   "name": "BofA Global Research \u2014 bear",
+   "published_level": 22000,
+   "eps_growth_pct": 0.0,
+   "exit_pe": 18.2,
+   "quoted": [
+    "published_level",
+    "published_for",
+    "narrative"
+   ],
+   "assumed": [
+    "eps_growth_pct \u2014 BofA list macro shocks without an earnings number; 0% is this file's reading, which makes their level a pure multiple story",
+    "exit_pe \u2014 implied by their level on flat EPS under this file's convention. Note 18.2x is still ABOVE the 16.56x minimum in the P/E sample, so even their bear case does not set a new low"
+   ],
+   "narrative": "Simultaneous higher crude, weaker monsoon, rate hikes, rupee depreciation and AI disruption.",
+   "invalidated_by": "Any two of those five resolving without the index breaking 23,000.",
+   "kind": "published",
+   "source": "Axis Securities, quoted 2026-08",
+   "published_for": "2026-12-31",
+   "measured": {
+    "g_source": "external",
+    "exit_pe_source": "external",
+    "exit_pe_percentile": 0.0,
+    "g_percentile": 12.0
+   },
+   "exit_pe_used": 18.2,
+   "exit_pe_label": "fair",
+   "levels": {
+    "6M": {
+     "level": 21749.0,
+     "ret_pct": -9.7,
+     "eps": 1195.0,
+     "annualised_pct": -18.4,
+     "history_percentile": 7.0
+    },
+    "1Y": {
+     "level": 21749.0,
+     "ret_pct": -9.7,
+     "eps": 1195.0,
+     "annualised_pct": -9.7,
+     "history_percentile": 4.0
+    },
+    "2Y": {
+     "level": 21749.0,
+     "ret_pct": -9.7,
+     "eps": 1195.0,
+     "annualised_pct": -5.0,
+     "history_percentile": 2.0
+    }
+   },
+   "published_vs_model": {
+    "published_level": 22000,
+    "published_for": "2026-12-31",
+    "ret_from_spot_pct": -8.6,
+    "implied_exit_pe": {
+     "6M": 18.41,
+     "1Y": 18.41,
+     "2Y": 18.41
     },
     "note": "Sell-side targets are quoted as forward-year EPS x target multiple irrespective of the date; this model compounds trailing EPS to the horizon. implied_exit_pe is the multiple their level requires under THIS convention at each horizon \u2014 where it differs from their stated multiple, the convention is the reason, not an error in either."
    }
@@ -6079,1637 +6214,1637 @@
  "pe": {
   "available": true,
   "first": "2018-07-02",
-  "last": "2026-08-14",
-  "n": 2001,
-  "today": 20.14,
+  "last": "2026-08-19",
+  "n": 2004,
+  "today": 20.15,
   "dist": {
-   "n": 2001,
-   "min": 16.56,
-   "p10": 21.76,
-   "p25": 23.0,
-   "median": 25.1,
-   "p75": 29.32,
-   "p90": 34.65,
-   "max": 39.26,
-   "mean": 26.59
+   "n": 2004,
+   "min": 16.76,
+   "p10": 22.02,
+   "p25": 23.29,
+   "median": 25.38,
+   "p75": 29.66,
+   "p90": 35.08,
+   "max": 39.76,
+   "mean": 26.92
   },
   "dist_ex_covid": {
-   "n": 1502,
-   "min": 16.56,
-   "p10": 21.24,
-   "p25": 22.65,
-   "median": 23.82,
-   "p75": 26.18,
-   "p90": 28.03,
-   "max": 31.02,
-   "mean": 24.32
+   "n": 1505,
+   "min": 16.76,
+   "p10": 21.49,
+   "p25": 22.93,
+   "median": 24.09,
+   "p75": 26.5,
+   "p90": 28.37,
+   "max": 31.41,
+   "mean": 24.61
   },
-  "today_percentile": 3.0,
-  "today_percentile_ex_covid": 4.0,
+  "today_percentile": 2.0,
+  "today_percentile_ex_covid": 3.0,
   "series": [
    {
     "d": "2018-07-02",
-    "pe": 27.35
-   },
-   {
-    "d": "2018-07-09",
-    "pe": 27.85
-   },
-   {
-    "d": "2018-07-16",
-    "pe": 28.07
-   },
-   {
-    "d": "2018-07-23",
-    "pe": 28.45
-   },
-   {
-    "d": "2018-07-30",
-    "pe": 29.05
-   },
-   {
-    "d": "2018-08-06",
-    "pe": 29.22
-   },
-   {
-    "d": "2018-08-13",
-    "pe": 29.14
-   },
-   {
-    "d": "2018-08-21",
-    "pe": 29.69
-   },
-   {
-    "d": "2018-08-29",
-    "pe": 30.0
-   },
-   {
-    "d": "2018-09-05",
-    "pe": 29.45
-   },
-   {
-    "d": "2018-09-12",
-    "pe": 29.18
-   },
-   {
-    "d": "2018-09-21",
-    "pe": 28.6
-   },
-   {
-    "d": "2018-09-28",
-    "pe": 28.05
-   },
-   {
-    "d": "2018-10-08",
-    "pe": 26.56
-   },
-   {
-    "d": "2018-10-15",
-    "pe": 26.98
-   },
-   {
-    "d": "2018-10-23",
-    "pe": 26.04
-   },
-   {
-    "d": "2018-10-30",
-    "pe": 26.17
-   },
-   {
-    "d": "2018-11-06",
-    "pe": 27.02
-   },
-   {
-    "d": "2018-11-14",
-    "pe": 27.14
-   },
-   {
-    "d": "2018-11-21",
-    "pe": 27.2
-   },
-   {
-    "d": "2018-11-29",
-    "pe": 27.87
-   },
-   {
-    "d": "2018-12-06",
-    "pe": 27.21
-   },
-   {
-    "d": "2018-12-13",
     "pe": 27.69
    },
    {
-    "d": "2018-12-20",
-    "pe": 28.1
+    "d": "2018-07-09",
+    "pe": 28.2
    },
    {
-    "d": "2018-12-28",
-    "pe": 27.87
+    "d": "2018-07-16",
+    "pe": 28.42
    },
    {
-    "d": "2019-01-07",
-    "pe": 27.64
+    "d": "2018-07-23",
+    "pe": 28.8
    },
    {
-    "d": "2019-01-14",
-    "pe": 27.56
+    "d": "2018-07-30",
+    "pe": 29.41
    },
    {
-    "d": "2019-01-21",
-    "pe": 28.13
+    "d": "2018-08-06",
+    "pe": 29.59
    },
    {
-    "d": "2019-01-28",
+    "d": "2018-08-13",
+    "pe": 29.51
+   },
+   {
+    "d": "2018-08-21",
+    "pe": 30.07
+   },
+   {
+    "d": "2018-08-29",
+    "pe": 30.38
+   },
+   {
+    "d": "2018-09-05",
+    "pe": 29.82
+   },
+   {
+    "d": "2018-09-12",
+    "pe": 29.54
+   },
+   {
+    "d": "2018-09-21",
+    "pe": 28.95
+   },
+   {
+    "d": "2018-09-28",
+    "pe": 28.4
+   },
+   {
+    "d": "2018-10-08",
+    "pe": 26.89
+   },
+   {
+    "d": "2018-10-15",
+    "pe": 27.32
+   },
+   {
+    "d": "2018-10-23",
+    "pe": 26.37
+   },
+   {
+    "d": "2018-10-30",
+    "pe": 26.5
+   },
+   {
+    "d": "2018-11-06",
     "pe": 27.36
    },
    {
-    "d": "2019-02-04",
-    "pe": 28.0
+    "d": "2018-11-14",
+    "pe": 27.48
    },
    {
-    "d": "2019-02-11",
-    "pe": 27.94
-   },
-   {
-    "d": "2019-02-19",
-    "pe": 27.21
-   },
-   {
-    "d": "2019-02-26",
-    "pe": 27.81
-   },
-   {
-    "d": "2019-03-06",
-    "pe": 28.36
-   },
-   {
-    "d": "2019-03-13",
-    "pe": 29.11
-   },
-   {
-    "d": "2019-03-20",
-    "pe": 29.57
-   },
-   {
-    "d": "2019-03-28",
-    "pe": 29.69
-   },
-   {
-    "d": "2019-04-05",
-    "pe": 29.94
-   },
-   {
-    "d": "2019-04-12",
-    "pe": 29.88
-   },
-   {
-    "d": "2019-04-23",
-    "pe": 29.71
-   },
-   {
-    "d": "2019-05-02",
-    "pe": 30.09
-   },
-   {
-    "d": "2019-05-09",
-    "pe": 29.0
-   },
-   {
-    "d": "2019-05-16",
-    "pe": 28.89
-   },
-   {
-    "d": "2019-05-23",
-    "pe": 29.91
-   },
-   {
-    "d": "2019-05-30",
-    "pe": 30.66
-   },
-   {
-    "d": "2019-06-07",
-    "pe": 30.46
-   },
-   {
-    "d": "2019-06-14",
-    "pe": 30.34
-   },
-   {
-    "d": "2019-06-21",
-    "pe": 30.09
-   },
-   {
-    "d": "2019-06-28",
-    "pe": 30.25
-   },
-   {
-    "d": "2019-07-05",
-    "pe": 25.7
-   },
-   {
-    "d": "2019-07-12",
-    "pe": 25.13
-   },
-   {
-    "d": "2019-07-19",
-    "pe": 24.84
-   },
-   {
-    "d": "2019-07-26",
-    "pe": 24.55
-   },
-   {
-    "d": "2019-08-02",
-    "pe": 23.93
-   },
-   {
-    "d": "2019-08-09",
-    "pe": 24.17
-   },
-   {
-    "d": "2019-08-20",
-    "pe": 23.97
-   },
-   {
-    "d": "2019-08-27",
-    "pe": 24.16
-   },
-   {
-    "d": "2019-09-04",
-    "pe": 23.59
-   },
-   {
-    "d": "2019-09-12",
-    "pe": 23.89
-   },
-   {
-    "d": "2019-09-19",
-    "pe": 23.29
-   },
-   {
-    "d": "2019-09-26",
-    "pe": 25.17
-   },
-   {
-    "d": "2019-10-04",
-    "pe": 24.31
-   },
-   {
-    "d": "2019-10-14",
-    "pe": 24.67
-   },
-   {
-    "d": "2019-10-22",
-    "pe": 25.21
-   },
-   {
-    "d": "2019-10-30",
-    "pe": 25.77
-   },
-   {
-    "d": "2019-11-06",
-    "pe": 26.03
-   },
-   {
-    "d": "2019-11-14",
-    "pe": 25.83
-   },
-   {
-    "d": "2019-11-21",
-    "pe": 26.04
-   },
-   {
-    "d": "2019-11-28",
-    "pe": 26.44
-   },
-   {
-    "d": "2019-12-05",
-    "pe": 26.15
-   },
-   {
-    "d": "2019-12-12",
-    "pe": 26.05
-   },
-   {
-    "d": "2019-12-19",
-    "pe": 26.67
-   },
-   {
-    "d": "2019-12-27",
-    "pe": 26.64
-   },
-   {
-    "d": "2020-01-03",
-    "pe": 26.6
-   },
-   {
-    "d": "2020-01-10",
-    "pe": 26.67
-   },
-   {
-    "d": "2020-01-17",
-    "pe": 26.87
-   },
-   {
-    "d": "2020-01-24",
-    "pe": 26.65
-   },
-   {
-    "d": "2020-01-31",
-    "pe": 26.02
-   },
-   {
-    "d": "2020-02-07",
-    "pe": 26.32
-   },
-   {
-    "d": "2020-02-14",
-    "pe": 26.35
-   },
-   {
-    "d": "2020-02-24",
-    "pe": 25.74
-   },
-   {
-    "d": "2020-03-02",
-    "pe": 24.22
-   },
-   {
-    "d": "2020-03-09",
-    "pe": 22.74
-   },
-   {
-    "d": "2020-03-17",
-    "pe": 19.51
-   },
-   {
-    "d": "2020-03-24",
-    "pe": 16.97
-   },
-   {
-    "d": "2020-03-31",
-    "pe": 18.71
-   },
-   {
-    "d": "2020-04-09",
-    "pe": 19.82
-   },
-   {
-    "d": "2020-04-20",
-    "pe": 20.15
-   },
-   {
-    "d": "2020-04-27",
-    "pe": 20.19
-   },
-   {
-    "d": "2020-05-05",
-    "pe": 20.03
-   },
-   {
-    "d": "2020-05-12",
-    "pe": 20.01
-   },
-   {
-    "d": "2020-05-19",
-    "pe": 19.32
-   },
-   {
-    "d": "2020-05-27",
-    "pe": 20.27
-   },
-   {
-    "d": "2020-06-03",
-    "pe": 21.89
-   },
-   {
-    "d": "2020-06-10",
-    "pe": 22.01
-   },
-   {
-    "d": "2020-06-17",
-    "pe": 21.5
-   },
-   {
-    "d": "2020-06-24",
-    "pe": 22.42
-   },
-   {
-    "d": "2020-07-01",
-    "pe": 25.81
-   },
-   {
-    "d": "2020-07-08",
-    "pe": 26.49
-   },
-   {
-    "d": "2020-07-15",
-    "pe": 26.27
-   },
-   {
-    "d": "2020-07-22",
+    "d": "2018-11-21",
     "pe": 27.54
    },
    {
-    "d": "2020-07-29",
-    "pe": 27.72
+    "d": "2018-11-29",
+    "pe": 28.22
    },
    {
-    "d": "2020-08-05",
-    "pe": 27.47
+    "d": "2018-12-06",
+    "pe": 27.55
    },
    {
-    "d": "2020-08-12",
-    "pe": 27.98
+    "d": "2018-12-13",
+    "pe": 28.04
    },
    {
-    "d": "2020-08-19",
-    "pe": 28.23
+    "d": "2018-12-20",
+    "pe": 28.46
    },
    {
-    "d": "2020-08-26",
-    "pe": 28.58
+    "d": "2018-12-28",
+    "pe": 28.22
    },
    {
-    "d": "2020-09-02",
-    "pe": 28.54
+    "d": "2019-01-07",
+    "pe": 27.99
    },
    {
-    "d": "2020-09-09",
+    "d": "2019-01-14",
     "pe": 27.9
    },
    {
-    "d": "2020-09-16",
-    "pe": 28.71
+    "d": "2019-01-21",
+    "pe": 28.48
    },
    {
-    "d": "2020-09-23",
-    "pe": 27.54
+    "d": "2019-01-28",
+    "pe": 27.7
    },
    {
-    "d": "2020-09-30",
-    "pe": 27.83
+    "d": "2019-02-04",
+    "pe": 28.36
    },
    {
-    "d": "2020-10-08",
-    "pe": 29.28
+    "d": "2019-02-11",
+    "pe": 28.29
    },
    {
-    "d": "2020-10-15",
-    "pe": 28.9
+    "d": "2019-02-19",
+    "pe": 27.56
    },
    {
-    "d": "2020-10-22",
-    "pe": 29.43
+    "d": "2019-02-26",
+    "pe": 28.16
    },
    {
-    "d": "2020-10-29",
-    "pe": 28.88
+    "d": "2019-03-06",
+    "pe": 28.72
    },
    {
-    "d": "2020-11-05",
-    "pe": 29.99
+    "d": "2019-03-13",
+    "pe": 29.47
    },
    {
-    "d": "2020-11-12",
-    "pe": 31.4
+    "d": "2019-03-20",
+    "pe": 29.94
    },
    {
-    "d": "2020-11-20",
-    "pe": 31.82
+    "d": "2019-03-28",
+    "pe": 30.06
    },
    {
-    "d": "2020-11-27",
-    "pe": 32.09
+    "d": "2019-04-05",
+    "pe": 30.31
    },
    {
-    "d": "2020-12-07",
-    "pe": 33.05
+    "d": "2019-04-12",
+    "pe": 30.26
    },
    {
-    "d": "2020-12-14",
-    "pe": 33.55
+    "d": "2019-04-23",
+    "pe": 30.08
    },
    {
-    "d": "2020-12-21",
-    "pe": 32.98
+    "d": "2019-05-02",
+    "pe": 30.47
    },
    {
-    "d": "2020-12-29",
-    "pe": 34.47
+    "d": "2019-05-09",
+    "pe": 29.37
    },
    {
-    "d": "2021-01-05",
-    "pe": 35.13
+    "d": "2019-05-16",
+    "pe": 29.25
    },
    {
-    "d": "2021-01-12",
-    "pe": 36.03
+    "d": "2019-05-23",
+    "pe": 30.29
    },
    {
-    "d": "2021-01-19",
-    "pe": 35.93
+    "d": "2019-05-30",
+    "pe": 31.04
    },
    {
-    "d": "2021-01-27",
-    "pe": 34.56
+    "d": "2019-06-07",
+    "pe": 30.85
    },
    {
-    "d": "2021-02-03",
-    "pe": 36.59
+    "d": "2019-06-14",
+    "pe": 30.72
    },
    {
-    "d": "2021-02-10",
-    "pe": 37.38
+    "d": "2019-06-21",
+    "pe": 30.46
    },
    {
-    "d": "2021-02-17",
-    "pe": 37.63
+    "d": "2019-06-28",
+    "pe": 30.63
    },
    {
-    "d": "2021-02-24",
-    "pe": 37.07
+    "d": "2019-07-05",
+    "pe": 26.02
    },
    {
-    "d": "2021-03-03",
-    "pe": 37.72
-   },
-   {
-    "d": "2021-03-10",
-    "pe": 37.55
-   },
-   {
-    "d": "2021-03-18",
-    "pe": 36.02
-   },
-   {
-    "d": "2021-03-25",
-    "pe": 35.44
-   },
-   {
-    "d": "2021-04-05",
-    "pe": 36.22
-   },
-   {
-    "d": "2021-04-12",
-    "pe": 35.41
-   },
-   {
-    "d": "2021-04-20",
-    "pe": 35.37
-   },
-   {
-    "d": "2021-04-28",
-    "pe": 36.78
-   },
-   {
-    "d": "2021-05-05",
-    "pe": 36.17
-   },
-   {
-    "d": "2021-05-12",
-    "pe": 36.36
-   },
-   {
-    "d": "2021-05-20",
-    "pe": 36.88
-   },
-   {
-    "d": "2021-05-27",
-    "pe": 37.95
-   },
-   {
-    "d": "2021-06-03",
-    "pe": 38.82
-   },
-   {
-    "d": "2021-06-10",
-    "pe": 38.94
-   },
-   {
-    "d": "2021-06-17",
-    "pe": 38.82
-   },
-   {
-    "d": "2021-06-24",
-    "pe": 39.07
-   },
-   {
-    "d": "2021-07-01",
-    "pe": 31.19
-   },
-   {
-    "d": "2021-07-08",
-    "pe": 31.29
-   },
-   {
-    "d": "2021-07-15",
-    "pe": 31.68
-   },
-   {
-    "d": "2021-07-23",
-    "pe": 31.55
-   },
-   {
-    "d": "2021-07-30",
-    "pe": 31.36
-   },
-   {
-    "d": "2021-08-06",
-    "pe": 32.31
-   },
-   {
-    "d": "2021-08-13",
-    "pe": 32.88
-   },
-   {
-    "d": "2021-08-23",
-    "pe": 32.82
-   },
-   {
-    "d": "2021-08-30",
-    "pe": 33.68
-   },
-   {
-    "d": "2021-09-06",
-    "pe": 34.57
-   },
-   {
-    "d": "2021-09-14",
-    "pe": 34.58
-   },
-   {
-    "d": "2021-09-21",
-    "pe": 34.94
-   },
-   {
-    "d": "2021-09-28",
-    "pe": 35.31
-   },
-   {
-    "d": "2021-10-05",
-    "pe": 35.46
-   },
-   {
-    "d": "2021-10-12",
-    "pe": 35.79
-   },
-   {
-    "d": "2021-10-20",
-    "pe": 36.34
-   },
-   {
-    "d": "2021-10-27",
-    "pe": 36.23
-   },
-   {
-    "d": "2021-11-03",
-    "pe": 35.47
-   },
-   {
-    "d": "2021-11-11",
-    "pe": 35.56
-   },
-   {
-    "d": "2021-11-18",
-    "pe": 35.34
-   },
-   {
-    "d": "2021-11-26",
-    "pe": 33.87
-   },
-   {
-    "d": "2021-12-03",
-    "pe": 34.21
-   },
-   {
-    "d": "2021-12-10",
-    "pe": 34.84
-   },
-   {
-    "d": "2021-12-17",
-    "pe": 33.79
-   },
-   {
-    "d": "2021-12-24",
-    "pe": 33.83
-   },
-   {
-    "d": "2021-12-31",
-    "pe": 34.53
-   },
-   {
-    "d": "2022-01-07",
-    "pe": 35.44
-   },
-   {
-    "d": "2022-01-14",
-    "pe": 36.32
-   },
-   {
-    "d": "2022-01-21",
-    "pe": 35.05
-   },
-   {
-    "d": "2022-01-31",
-    "pe": 34.5
-   },
-   {
-    "d": "2022-02-07",
-    "pe": 34.25
-   },
-   {
-    "d": "2022-02-14",
-    "pe": 33.51
-   },
-   {
-    "d": "2022-02-21",
-    "pe": 34.23
-   },
-   {
-    "d": "2022-02-28",
-    "pe": 33.41
-   },
-   {
-    "d": "2022-03-08",
-    "pe": 31.86
-   },
-   {
-    "d": "2022-03-15",
-    "pe": 33.15
-   },
-   {
-    "d": "2022-03-23",
-    "pe": 34.31
-   },
-   {
-    "d": "2022-03-30",
-    "pe": 34.81
-   },
-   {
-    "d": "2022-04-06",
-    "pe": 35.43
-   },
-   {
-    "d": "2022-04-13",
-    "pe": 34.77
-   },
-   {
-    "d": "2022-04-22",
-    "pe": 34.16
-   },
-   {
-    "d": "2022-04-29",
-    "pe": 34.02
-   },
-   {
-    "d": "2022-05-09",
-    "pe": 32.43
-   },
-   {
-    "d": "2022-05-16",
-    "pe": 31.52
-   },
-   {
-    "d": "2022-05-23",
-    "pe": 32.26
-   },
-   {
-    "d": "2022-05-30",
-    "pe": 33.15
-   },
-   {
-    "d": "2022-06-06",
-    "pe": 32.96
-   },
-   {
-    "d": "2022-06-13",
-    "pe": 31.38
-   },
-   {
-    "d": "2022-06-20",
-    "pe": 30.54
-   },
-   {
-    "d": "2022-06-27",
-    "pe": 31.5
-   },
-   {
-    "d": "2022-07-04",
-    "pe": 20.42
-   },
-   {
-    "d": "2022-07-11",
-    "pe": 20.91
-   },
-   {
-    "d": "2022-07-18",
-    "pe": 20.99
-   },
-   {
-    "d": "2022-07-25",
-    "pe": 21.45
-   },
-   {
-    "d": "2022-08-01",
-    "pe": 22.36
-   },
-   {
-    "d": "2022-08-08",
-    "pe": 22.6
-   },
-   {
-    "d": "2022-08-17",
-    "pe": 23.14
-   },
-   {
-    "d": "2022-08-24",
-    "pe": 22.71
-   },
-   {
-    "d": "2022-09-01",
-    "pe": 22.62
-   },
-   {
-    "d": "2022-09-08",
-    "pe": 22.96
-   },
-   {
-    "d": "2022-09-15",
-    "pe": 23.06
-   },
-   {
-    "d": "2022-09-22",
-    "pe": 22.74
-   },
-   {
-    "d": "2022-09-29",
-    "pe": 21.69
-   },
-   {
-    "d": "2022-10-07",
-    "pe": 22.33
-   },
-   {
-    "d": "2022-10-14",
-    "pe": 22.16
-   },
-   {
-    "d": "2022-10-21",
-    "pe": 22.67
-   },
-   {
-    "d": "2022-10-31",
-    "pe": 23.23
-   },
-   {
-    "d": "2022-11-07",
-    "pe": 23.48
-   },
-   {
-    "d": "2022-11-15",
-    "pe": 23.73
-   },
-   {
-    "d": "2022-11-22",
-    "pe": 23.53
-   },
-   {
-    "d": "2022-11-29",
-    "pe": 24.01
-   },
-   {
-    "d": "2022-12-06",
-    "pe": 24.04
-   },
-   {
-    "d": "2022-12-13",
-    "pe": 24.0
-   },
-   {
-    "d": "2022-12-20",
-    "pe": 23.71
-   },
-   {
-    "d": "2022-12-27",
-    "pe": 23.39
-   },
-   {
-    "d": "2023-01-03",
-    "pe": 23.51
-   },
-   {
-    "d": "2023-01-10",
-    "pe": 23.1
-   },
-   {
-    "d": "2023-01-17",
-    "pe": 23.28
-   },
-   {
-    "d": "2023-01-24",
-    "pe": 23.37
-   },
-   {
-    "d": "2023-02-01",
-    "pe": 22.72
-   },
-   {
-    "d": "2023-02-08",
-    "pe": 23.05
-   },
-   {
-    "d": "2023-02-15",
-    "pe": 23.23
-   },
-   {
-    "d": "2023-02-22",
-    "pe": 22.64
-   },
-   {
-    "d": "2023-03-01",
-    "pe": 22.51
-   },
-   {
-    "d": "2023-03-09",
-    "pe": 22.69
-   },
-   {
-    "d": "2023-03-16",
-    "pe": 21.91
-   },
-   {
-    "d": "2023-03-23",
-    "pe": 22.02
-   },
-   {
-    "d": "2023-03-31",
-    "pe": 22.39
-   },
-   {
-    "d": "2023-04-11",
-    "pe": 22.86
-   },
-   {
-    "d": "2023-04-19",
-    "pe": 22.72
-   },
-   {
-    "d": "2023-04-26",
-    "pe": 22.97
-   },
-   {
-    "d": "2023-05-04",
-    "pe": 23.54
-   },
-   {
-    "d": "2023-05-11",
-    "pe": 23.6
-   },
-   {
-    "d": "2023-05-18",
-    "pe": 23.38
-   },
-   {
-    "d": "2023-05-25",
-    "pe": 23.63
-   },
-   {
-    "d": "2023-06-01",
-    "pe": 23.84
-   },
-   {
-    "d": "2023-06-08",
-    "pe": 24.03
-   },
-   {
-    "d": "2023-06-15",
-    "pe": 24.1
-   },
-   {
-    "d": "2023-06-22",
-    "pe": 24.21
-   },
-   {
-    "d": "2023-06-30",
-    "pe": 24.75
-   },
-   {
-    "d": "2023-07-07",
-    "pe": 23.09
-   },
-   {
-    "d": "2023-07-14",
-    "pe": 23.37
-   },
-   {
-    "d": "2023-07-21",
-    "pe": 23.59
-   },
-   {
-    "d": "2023-07-28",
-    "pe": 23.47
-   },
-   {
-    "d": "2023-08-04",
-    "pe": 23.31
-   },
-   {
-    "d": "2023-08-11",
-    "pe": 23.21
-   },
-   {
-    "d": "2023-08-21",
-    "pe": 23.17
-   },
-   {
-    "d": "2023-08-28",
-    "pe": 23.06
-   },
-   {
-    "d": "2023-09-04",
-    "pe": 23.33
-   },
-   {
-    "d": "2023-09-11",
-    "pe": 23.89
-   },
-   {
-    "d": "2023-09-18",
-    "pe": 24.05
-   },
-   {
-    "d": "2023-09-26",
-    "pe": 23.49
-   },
-   {
-    "d": "2023-10-04",
-    "pe": 23.22
-   },
-   {
-    "d": "2023-10-11",
-    "pe": 23.67
-   },
-   {
-    "d": "2023-10-18",
-    "pe": 23.5
-   },
-   {
-    "d": "2023-10-26",
-    "pe": 22.53
-   },
-   {
-    "d": "2023-11-02",
-    "pe": 22.86
-   },
-   {
-    "d": "2023-11-09",
-    "pe": 23.17
-   },
-   {
-    "d": "2023-11-17",
-    "pe": 23.57
-   },
-   {
-    "d": "2023-11-24",
-    "pe": 23.65
-   },
-   {
-    "d": "2023-12-04",
-    "pe": 24.71
-   },
-   {
-    "d": "2023-12-11",
-    "pe": 25.08
-   },
-   {
-    "d": "2023-12-18",
-    "pe": 25.59
-   },
-   {
-    "d": "2023-12-26",
-    "pe": 25.61
-   },
-   {
-    "d": "2024-01-02",
-    "pe": 25.88
-   },
-   {
-    "d": "2024-01-09",
-    "pe": 25.74
-   },
-   {
-    "d": "2024-01-16",
-    "pe": 26.32
-   },
-   {
-    "d": "2024-01-24",
-    "pe": 25.63
-   },
-   {
-    "d": "2024-02-01",
-    "pe": 25.92
-   },
-   {
-    "d": "2024-02-08",
-    "pe": 25.94
-   },
-   {
-    "d": "2024-02-15",
-    "pe": 26.17
-   },
-   {
-    "d": "2024-02-22",
-    "pe": 26.54
-   },
-   {
-    "d": "2024-02-29",
-    "pe": 26.26
-   },
-   {
-    "d": "2024-03-07",
-    "pe": 26.87
-   },
-   {
-    "d": "2024-03-15",
-    "pe": 26.31
-   },
-   {
-    "d": "2024-03-22",
-    "pe": 26.4
-   },
-   {
-    "d": "2024-04-02",
-    "pe": 26.82
-   },
-   {
-    "d": "2024-04-09",
-    "pe": 27.05
-   },
-   {
-    "d": "2024-04-18",
-    "pe": 26.28
-   },
-   {
-    "d": "2024-04-25",
-    "pe": 26.96
-   },
-   {
-    "d": "2024-05-03",
-    "pe": 26.85
-   },
-   {
-    "d": "2024-05-10",
-    "pe": 26.35
-   },
-   {
-    "d": "2024-05-17",
-    "pe": 26.84
-   },
-   {
-    "d": "2024-05-27",
-    "pe": 27.39
-   },
-   {
-    "d": "2024-06-03",
-    "pe": 27.79
-   },
-   {
-    "d": "2024-06-10",
-    "pe": 27.78
-   },
-   {
-    "d": "2024-06-18",
-    "pe": 28.14
-   },
-   {
-    "d": "2024-06-25",
-    "pe": 28.34
-   },
-   {
-    "d": "2024-07-02",
-    "pe": 24.03
-   },
-   {
-    "d": "2024-07-09",
-    "pe": 24.34
-   },
-   {
-    "d": "2024-07-16",
-    "pe": 24.52
-   },
-   {
-    "d": "2024-07-24",
-    "pe": 24.32
-   },
-   {
-    "d": "2024-07-31",
-    "pe": 24.86
-   },
-   {
-    "d": "2024-08-07",
-    "pe": 24.21
-   },
-   {
-    "d": "2024-08-14",
-    "pe": 24.05
-   },
-   {
-    "d": "2024-08-22",
-    "pe": 24.72
-   },
-   {
-    "d": "2024-08-29",
-    "pe": 25.06
-   },
-   {
-    "d": "2024-09-05",
-    "pe": 25.05
-   },
-   {
-    "d": "2024-09-12",
-    "pe": 25.29
-   },
-   {
-    "d": "2024-09-19",
-    "pe": 25.32
-   },
-   {
-    "d": "2024-09-26",
-    "pe": 26.12
-   },
-   {
-    "d": "2024-10-04",
-    "pe": 24.92
-   },
-   {
-    "d": "2024-10-11",
-    "pe": 24.87
-   },
-   {
-    "d": "2024-10-18",
-    "pe": 24.76
-   },
-   {
-    "d": "2024-10-25",
-    "pe": 24.09
-   },
-   {
-    "d": "2024-11-01",
-    "pe": 24.21
-   },
-   {
-    "d": "2024-11-08",
-    "pe": 24.06
-   },
-   {
-    "d": "2024-11-18",
-    "pe": 23.37
-   },
-   {
-    "d": "2024-11-26",
-    "pe": 24.1
-   },
-   {
-    "d": "2024-12-03",
-    "pe": 24.36
-   },
-   {
-    "d": "2024-12-10",
-    "pe": 24.52
-   },
-   {
-    "d": "2024-12-17",
-    "pe": 24.24
-   },
-   {
-    "d": "2024-12-24",
-    "pe": 23.64
-   },
-   {
-    "d": "2025-01-01",
-    "pe": 23.65
-   },
-   {
-    "d": "2025-01-08",
-    "pe": 23.6
-   },
-   {
-    "d": "2025-01-15",
-    "pe": 23.13
-   },
-   {
-    "d": "2025-01-22",
-    "pe": 23.07
-   },
-   {
-    "d": "2025-01-29",
-    "pe": 23.08
-   },
-   {
-    "d": "2025-02-04",
-    "pe": 23.65
-   },
-   {
-    "d": "2025-02-11",
-    "pe": 22.98
-   },
-   {
-    "d": "2025-02-18",
-    "pe": 22.86
-   },
-   {
-    "d": "2025-02-25",
-    "pe": 22.46
-   },
-   {
-    "d": "2025-03-05",
-    "pe": 22.25
-   },
-   {
-    "d": "2025-03-12",
-    "pe": 22.39
-   },
-   {
-    "d": "2025-03-20",
-    "pe": 23.1
-   },
-   {
-    "d": "2025-03-27",
-    "pe": 23.5
-   },
-   {
-    "d": "2025-04-04",
-    "pe": 22.82
-   },
-   {
-    "d": "2025-04-15",
-    "pe": 23.24
-   },
-   {
-    "d": "2025-04-23",
-    "pe": 24.24
-   },
-   {
-    "d": "2025-04-30",
-    "pe": 24.24
-   },
-   {
-    "d": "2025-05-08",
-    "pe": 24.18
-   },
-   {
-    "d": "2025-05-15",
-    "pe": 24.97
-   },
-   {
-    "d": "2025-05-22",
-    "pe": 24.52
-   },
-   {
-    "d": "2025-05-29",
-    "pe": 24.74
-   },
-   {
-    "d": "2025-06-05",
-    "pe": 24.66
-   },
-   {
-    "d": "2025-06-12",
-    "pe": 24.79
-   },
-   {
-    "d": "2025-06-19",
-    "pe": 24.7
-   },
-   {
-    "d": "2025-06-26",
+    "d": "2019-07-12",
     "pe": 25.45
    },
    {
-    "d": "2025-07-03",
-    "pe": 22.45
+    "d": "2019-07-19",
+    "pe": 25.16
    },
    {
-    "d": "2025-07-10",
-    "pe": 22.4
+    "d": "2019-07-26",
+    "pe": 24.86
    },
    {
-    "d": "2025-07-17",
-    "pe": 22.19
+    "d": "2019-08-02",
+    "pe": 24.23
    },
    {
-    "d": "2025-07-24",
-    "pe": 22.15
+    "d": "2019-08-09",
+    "pe": 24.47
    },
    {
-    "d": "2025-07-31",
-    "pe": 21.89
+    "d": "2019-08-20",
+    "pe": 24.27
    },
    {
-    "d": "2025-08-07",
-    "pe": 21.73
+    "d": "2019-08-27",
+    "pe": 24.46
    },
    {
-    "d": "2025-08-14",
-    "pe": 21.76
+    "d": "2019-09-04",
+    "pe": 23.89
    },
    {
-    "d": "2025-08-22",
-    "pe": 21.98
+    "d": "2019-09-12",
+    "pe": 24.19
    },
    {
-    "d": "2025-09-01",
-    "pe": 21.76
+    "d": "2019-09-19",
+    "pe": 23.58
    },
    {
-    "d": "2025-09-08",
-    "pe": 21.89
+    "d": "2019-09-26",
+    "pe": 25.49
    },
    {
-    "d": "2025-09-15",
-    "pe": 22.15
+    "d": "2019-10-04",
+    "pe": 24.62
    },
    {
-    "d": "2025-09-22",
-    "pe": 22.27
+    "d": "2019-10-14",
+    "pe": 24.98
    },
    {
-    "d": "2025-09-29",
-    "pe": 21.77
+    "d": "2019-10-22",
+    "pe": 25.53
    },
    {
-    "d": "2025-10-07",
-    "pe": 22.19
+    "d": "2019-10-30",
+    "pe": 26.09
    },
    {
-    "d": "2025-10-14",
-    "pe": 22.22
+    "d": "2019-11-06",
+    "pe": 26.36
    },
    {
-    "d": "2025-10-21",
-    "pe": 22.86
+    "d": "2019-11-14",
+    "pe": 26.15
    },
    {
-    "d": "2025-10-29",
+    "d": "2019-11-21",
+    "pe": 26.37
+   },
+   {
+    "d": "2019-11-28",
+    "pe": 26.77
+   },
+   {
+    "d": "2019-12-05",
+    "pe": 26.48
+   },
+   {
+    "d": "2019-12-12",
+    "pe": 26.37
+   },
+   {
+    "d": "2019-12-19",
+    "pe": 27.01
+   },
+   {
+    "d": "2019-12-27",
+    "pe": 26.98
+   },
+   {
+    "d": "2020-01-03",
+    "pe": 26.93
+   },
+   {
+    "d": "2020-01-10",
+    "pe": 27.0
+   },
+   {
+    "d": "2020-01-17",
+    "pe": 27.21
+   },
+   {
+    "d": "2020-01-24",
+    "pe": 26.98
+   },
+   {
+    "d": "2020-01-31",
+    "pe": 26.35
+   },
+   {
+    "d": "2020-02-07",
+    "pe": 26.65
+   },
+   {
+    "d": "2020-02-14",
+    "pe": 26.68
+   },
+   {
+    "d": "2020-02-24",
+    "pe": 26.06
+   },
+   {
+    "d": "2020-03-02",
+    "pe": 24.52
+   },
+   {
+    "d": "2020-03-09",
     "pe": 23.02
    },
    {
-    "d": "2025-11-06",
-    "pe": 22.54
+    "d": "2020-03-17",
+    "pe": 19.75
    },
    {
-    "d": "2025-11-13",
-    "pe": 22.87
+    "d": "2020-03-24",
+    "pe": 17.19
    },
    {
-    "d": "2025-11-20",
-    "pe": 23.14
+    "d": "2020-03-31",
+    "pe": 18.94
    },
    {
-    "d": "2025-11-27",
-    "pe": 23.16
+    "d": "2020-04-09",
+    "pe": 20.07
    },
    {
-    "d": "2025-12-04",
-    "pe": 23.0
+    "d": "2020-04-20",
+    "pe": 20.4
    },
    {
-    "d": "2025-12-11",
-    "pe": 22.88
+    "d": "2020-04-27",
+    "pe": 20.45
    },
    {
-    "d": "2025-12-18",
-    "pe": 22.81
+    "d": "2020-05-05",
+    "pe": 20.28
    },
    {
-    "d": "2025-12-26",
-    "pe": 23.01
+    "d": "2020-05-12",
+    "pe": 20.26
    },
    {
-    "d": "2026-01-02",
-    "pe": 23.26
+    "d": "2020-05-19",
+    "pe": 19.56
    },
    {
-    "d": "2026-01-09",
-    "pe": 22.69
+    "d": "2020-05-27",
+    "pe": 20.52
    },
    {
-    "d": "2026-01-19",
-    "pe": 22.61
+    "d": "2020-06-03",
+    "pe": 22.16
    },
    {
-    "d": "2026-01-27",
-    "pe": 22.25
+    "d": "2020-06-10",
+    "pe": 22.29
    },
    {
-    "d": "2026-02-03",
-    "pe": 22.73
+    "d": "2020-06-17",
+    "pe": 21.77
    },
    {
-    "d": "2026-02-10",
-    "pe": 22.92
+    "d": "2020-06-24",
+    "pe": 22.7
    },
    {
-    "d": "2026-02-17",
-    "pe": 22.73
+    "d": "2020-07-01",
+    "pe": 26.13
    },
    {
-    "d": "2026-02-24",
-    "pe": 22.47
+    "d": "2020-07-08",
+    "pe": 26.82
    },
    {
-    "d": "2026-03-04",
-    "pe": 21.63
+    "d": "2020-07-15",
+    "pe": 26.6
    },
    {
-    "d": "2026-03-11",
-    "pe": 21.09
+    "d": "2020-07-22",
+    "pe": 27.89
    },
    {
-    "d": "2026-03-18",
-    "pe": 21.01
+    "d": "2020-07-29",
+    "pe": 28.07
    },
    {
-    "d": "2026-03-25",
-    "pe": 20.59
+    "d": "2020-08-05",
+    "pe": 27.81
    },
    {
-    "d": "2026-04-06",
-    "pe": 20.29
+    "d": "2020-08-12",
+    "pe": 28.33
    },
    {
-    "d": "2026-04-13",
-    "pe": 21.07
+    "d": "2020-08-19",
+    "pe": 28.58
    },
    {
-    "d": "2026-04-21",
-    "pe": 21.72
+    "d": "2020-08-26",
+    "pe": 28.93
    },
    {
-    "d": "2026-04-28",
-    "pe": 21.2
+    "d": "2020-09-02",
+    "pe": 28.9
    },
    {
-    "d": "2026-05-06",
-    "pe": 21.5
+    "d": "2020-09-09",
+    "pe": 28.25
    },
    {
-    "d": "2026-05-13",
-    "pe": 20.69
+    "d": "2020-09-16",
+    "pe": 29.07
    },
    {
-    "d": "2026-05-20",
-    "pe": 20.91
+    "d": "2020-09-23",
+    "pe": 27.89
    },
    {
-    "d": "2026-05-27",
-    "pe": 21.12
+    "d": "2020-09-30",
+    "pe": 28.18
    },
    {
-    "d": "2026-06-04",
-    "pe": 20.69
+    "d": "2020-10-08",
+    "pe": 29.65
    },
    {
-    "d": "2026-06-11",
-    "pe": 20.47
+    "d": "2020-10-15",
+    "pe": 29.26
    },
    {
-    "d": "2026-06-18",
-    "pe": 21.35
+    "d": "2020-10-22",
+    "pe": 29.8
    },
    {
-    "d": "2026-06-25",
+    "d": "2020-10-29",
+    "pe": 29.24
+   },
+   {
+    "d": "2020-11-05",
+    "pe": 30.36
+   },
+   {
+    "d": "2020-11-12",
+    "pe": 31.79
+   },
+   {
+    "d": "2020-11-20",
+    "pe": 32.22
+   },
+   {
+    "d": "2020-11-27",
+    "pe": 32.49
+   },
+   {
+    "d": "2020-12-07",
+    "pe": 33.46
+   },
+   {
+    "d": "2020-12-14",
+    "pe": 33.97
+   },
+   {
+    "d": "2020-12-21",
+    "pe": 33.39
+   },
+   {
+    "d": "2020-12-29",
+    "pe": 34.91
+   },
+   {
+    "d": "2021-01-05",
+    "pe": 35.57
+   },
+   {
+    "d": "2021-01-12",
+    "pe": 36.49
+   },
+   {
+    "d": "2021-01-19",
+    "pe": 36.38
+   },
+   {
+    "d": "2021-01-27",
+    "pe": 34.99
+   },
+   {
+    "d": "2021-02-03",
+    "pe": 37.05
+   },
+   {
+    "d": "2021-02-10",
+    "pe": 37.85
+   },
+   {
+    "d": "2021-02-17",
+    "pe": 38.1
+   },
+   {
+    "d": "2021-02-24",
+    "pe": 37.53
+   },
+   {
+    "d": "2021-03-03",
+    "pe": 38.19
+   },
+   {
+    "d": "2021-03-10",
+    "pe": 38.02
+   },
+   {
+    "d": "2021-03-18",
+    "pe": 36.47
+   },
+   {
+    "d": "2021-03-25",
+    "pe": 35.89
+   },
+   {
+    "d": "2021-04-05",
+    "pe": 36.67
+   },
+   {
+    "d": "2021-04-12",
+    "pe": 35.85
+   },
+   {
+    "d": "2021-04-20",
+    "pe": 35.82
+   },
+   {
+    "d": "2021-04-28",
+    "pe": 37.24
+   },
+   {
+    "d": "2021-05-05",
+    "pe": 36.62
+   },
+   {
+    "d": "2021-05-12",
+    "pe": 36.82
+   },
+   {
+    "d": "2021-05-20",
+    "pe": 37.34
+   },
+   {
+    "d": "2021-05-27",
+    "pe": 38.43
+   },
+   {
+    "d": "2021-06-03",
+    "pe": 39.31
+   },
+   {
+    "d": "2021-06-10",
+    "pe": 39.43
+   },
+   {
+    "d": "2021-06-17",
+    "pe": 39.31
+   },
+   {
+    "d": "2021-06-24",
+    "pe": 39.56
+   },
+   {
+    "d": "2021-07-01",
+    "pe": 31.59
+   },
+   {
+    "d": "2021-07-08",
+    "pe": 31.68
+   },
+   {
+    "d": "2021-07-15",
+    "pe": 32.08
+   },
+   {
+    "d": "2021-07-23",
+    "pe": 31.94
+   },
+   {
+    "d": "2021-07-30",
+    "pe": 31.75
+   },
+   {
+    "d": "2021-08-06",
+    "pe": 32.71
+   },
+   {
+    "d": "2021-08-13",
+    "pe": 33.3
+   },
+   {
+    "d": "2021-08-23",
+    "pe": 33.23
+   },
+   {
+    "d": "2021-08-30",
+    "pe": 34.11
+   },
+   {
+    "d": "2021-09-06",
+    "pe": 35.01
+   },
+   {
+    "d": "2021-09-14",
+    "pe": 35.01
+   },
+   {
+    "d": "2021-09-21",
+    "pe": 35.38
+   },
+   {
+    "d": "2021-09-28",
+    "pe": 35.75
+   },
+   {
+    "d": "2021-10-05",
+    "pe": 35.9
+   },
+   {
+    "d": "2021-10-12",
+    "pe": 36.24
+   },
+   {
+    "d": "2021-10-20",
+    "pe": 36.8
+   },
+   {
+    "d": "2021-10-27",
+    "pe": 36.68
+   },
+   {
+    "d": "2021-11-03",
+    "pe": 35.92
+   },
+   {
+    "d": "2021-11-11",
+    "pe": 36.01
+   },
+   {
+    "d": "2021-11-18",
+    "pe": 35.79
+   },
+   {
+    "d": "2021-11-26",
+    "pe": 34.3
+   },
+   {
+    "d": "2021-12-03",
+    "pe": 34.64
+   },
+   {
+    "d": "2021-12-10",
+    "pe": 35.28
+   },
+   {
+    "d": "2021-12-17",
+    "pe": 34.22
+   },
+   {
+    "d": "2021-12-24",
+    "pe": 34.25
+   },
+   {
+    "d": "2021-12-31",
+    "pe": 34.96
+   },
+   {
+    "d": "2022-01-07",
+    "pe": 35.88
+   },
+   {
+    "d": "2022-01-14",
+    "pe": 36.78
+   },
+   {
+    "d": "2022-01-21",
+    "pe": 35.49
+   },
+   {
+    "d": "2022-01-31",
+    "pe": 34.93
+   },
+   {
+    "d": "2022-02-07",
+    "pe": 34.68
+   },
+   {
+    "d": "2022-02-14",
+    "pe": 33.93
+   },
+   {
+    "d": "2022-02-21",
+    "pe": 34.66
+   },
+   {
+    "d": "2022-02-28",
+    "pe": 33.83
+   },
+   {
+    "d": "2022-03-08",
+    "pe": 32.26
+   },
+   {
+    "d": "2022-03-15",
+    "pe": 33.57
+   },
+   {
+    "d": "2022-03-23",
+    "pe": 34.74
+   },
+   {
+    "d": "2022-03-30",
+    "pe": 35.25
+   },
+   {
+    "d": "2022-04-06",
+    "pe": 35.87
+   },
+   {
+    "d": "2022-04-13",
+    "pe": 35.2
+   },
+   {
+    "d": "2022-04-22",
+    "pe": 34.59
+   },
+   {
+    "d": "2022-04-29",
+    "pe": 34.45
+   },
+   {
+    "d": "2022-05-09",
+    "pe": 32.84
+   },
+   {
+    "d": "2022-05-16",
+    "pe": 31.91
+   },
+   {
+    "d": "2022-05-23",
+    "pe": 32.66
+   },
+   {
+    "d": "2022-05-30",
+    "pe": 33.56
+   },
+   {
+    "d": "2022-06-06",
+    "pe": 33.38
+   },
+   {
+    "d": "2022-06-13",
+    "pe": 31.78
+   },
+   {
+    "d": "2022-06-20",
+    "pe": 30.92
+   },
+   {
+    "d": "2022-06-27",
+    "pe": 31.89
+   },
+   {
+    "d": "2022-07-04",
+    "pe": 20.68
+   },
+   {
+    "d": "2022-07-11",
+    "pe": 21.18
+   },
+   {
+    "d": "2022-07-18",
     "pe": 21.26
    },
    {
+    "d": "2022-07-25",
+    "pe": 21.72
+   },
+   {
+    "d": "2022-08-01",
+    "pe": 22.64
+   },
+   {
+    "d": "2022-08-08",
+    "pe": 22.89
+   },
+   {
+    "d": "2022-08-17",
+    "pe": 23.43
+   },
+   {
+    "d": "2022-08-24",
+    "pe": 22.99
+   },
+   {
+    "d": "2022-09-01",
+    "pe": 22.91
+   },
+   {
+    "d": "2022-09-08",
+    "pe": 23.24
+   },
+   {
+    "d": "2022-09-15",
+    "pe": 23.35
+   },
+   {
+    "d": "2022-09-22",
+    "pe": 23.02
+   },
+   {
+    "d": "2022-09-29",
+    "pe": 21.96
+   },
+   {
+    "d": "2022-10-07",
+    "pe": 22.61
+   },
+   {
+    "d": "2022-10-14",
+    "pe": 22.44
+   },
+   {
+    "d": "2022-10-21",
+    "pe": 22.95
+   },
+   {
+    "d": "2022-10-31",
+    "pe": 23.52
+   },
+   {
+    "d": "2022-11-07",
+    "pe": 23.77
+   },
+   {
+    "d": "2022-11-15",
+    "pe": 24.03
+   },
+   {
+    "d": "2022-11-22",
+    "pe": 23.82
+   },
+   {
+    "d": "2022-11-29",
+    "pe": 24.31
+   },
+   {
+    "d": "2022-12-06",
+    "pe": 24.35
+   },
+   {
+    "d": "2022-12-13",
+    "pe": 24.3
+   },
+   {
+    "d": "2022-12-20",
+    "pe": 24.01
+   },
+   {
+    "d": "2022-12-27",
+    "pe": 23.68
+   },
+   {
+    "d": "2023-01-03",
+    "pe": 23.81
+   },
+   {
+    "d": "2023-01-10",
+    "pe": 23.39
+   },
+   {
+    "d": "2023-01-17",
+    "pe": 23.58
+   },
+   {
+    "d": "2023-01-24",
+    "pe": 23.66
+   },
+   {
+    "d": "2023-02-01",
+    "pe": 23.0
+   },
+   {
+    "d": "2023-02-08",
+    "pe": 23.34
+   },
+   {
+    "d": "2023-02-15",
+    "pe": 23.53
+   },
+   {
+    "d": "2023-02-22",
+    "pe": 22.92
+   },
+   {
+    "d": "2023-03-01",
+    "pe": 22.79
+   },
+   {
+    "d": "2023-03-09",
+    "pe": 22.97
+   },
+   {
+    "d": "2023-03-16",
+    "pe": 22.18
+   },
+   {
+    "d": "2023-03-23",
+    "pe": 22.3
+   },
+   {
+    "d": "2023-03-31",
+    "pe": 22.67
+   },
+   {
+    "d": "2023-04-11",
+    "pe": 23.14
+   },
+   {
+    "d": "2023-04-19",
+    "pe": 23.01
+   },
+   {
+    "d": "2023-04-26",
+    "pe": 23.26
+   },
+   {
+    "d": "2023-05-04",
+    "pe": 23.84
+   },
+   {
+    "d": "2023-05-11",
+    "pe": 23.89
+   },
+   {
+    "d": "2023-05-18",
+    "pe": 23.68
+   },
+   {
+    "d": "2023-05-25",
+    "pe": 23.93
+   },
+   {
+    "d": "2023-06-01",
+    "pe": 24.14
+   },
+   {
+    "d": "2023-06-08",
+    "pe": 24.33
+   },
+   {
+    "d": "2023-06-15",
+    "pe": 24.4
+   },
+   {
+    "d": "2023-06-22",
+    "pe": 24.51
+   },
+   {
+    "d": "2023-06-30",
+    "pe": 25.06
+   },
+   {
+    "d": "2023-07-07",
+    "pe": 23.38
+   },
+   {
+    "d": "2023-07-14",
+    "pe": 23.66
+   },
+   {
+    "d": "2023-07-21",
+    "pe": 23.88
+   },
+   {
+    "d": "2023-07-28",
+    "pe": 23.76
+   },
+   {
+    "d": "2023-08-04",
+    "pe": 23.61
+   },
+   {
+    "d": "2023-08-11",
+    "pe": 23.5
+   },
+   {
+    "d": "2023-08-21",
+    "pe": 23.46
+   },
+   {
+    "d": "2023-08-28",
+    "pe": 23.35
+   },
+   {
+    "d": "2023-09-04",
+    "pe": 23.62
+   },
+   {
+    "d": "2023-09-11",
+    "pe": 24.19
+   },
+   {
+    "d": "2023-09-18",
+    "pe": 24.35
+   },
+   {
+    "d": "2023-09-26",
+    "pe": 23.79
+   },
+   {
+    "d": "2023-10-04",
+    "pe": 23.51
+   },
+   {
+    "d": "2023-10-11",
+    "pe": 23.96
+   },
+   {
+    "d": "2023-10-18",
+    "pe": 23.79
+   },
+   {
+    "d": "2023-10-26",
+    "pe": 22.81
+   },
+   {
+    "d": "2023-11-02",
+    "pe": 23.14
+   },
+   {
+    "d": "2023-11-09",
+    "pe": 23.46
+   },
+   {
+    "d": "2023-11-17",
+    "pe": 23.87
+   },
+   {
+    "d": "2023-11-24",
+    "pe": 23.94
+   },
+   {
+    "d": "2023-12-04",
+    "pe": 25.02
+   },
+   {
+    "d": "2023-12-11",
+    "pe": 25.4
+   },
+   {
+    "d": "2023-12-18",
+    "pe": 25.91
+   },
+   {
+    "d": "2023-12-26",
+    "pe": 25.93
+   },
+   {
+    "d": "2024-01-02",
+    "pe": 26.21
+   },
+   {
+    "d": "2024-01-09",
+    "pe": 26.06
+   },
+   {
+    "d": "2024-01-16",
+    "pe": 26.65
+   },
+   {
+    "d": "2024-01-24",
+    "pe": 25.95
+   },
+   {
+    "d": "2024-02-01",
+    "pe": 26.24
+   },
+   {
+    "d": "2024-02-08",
+    "pe": 26.27
+   },
+   {
+    "d": "2024-02-15",
+    "pe": 26.5
+   },
+   {
+    "d": "2024-02-22",
+    "pe": 26.87
+   },
+   {
+    "d": "2024-02-29",
+    "pe": 26.59
+   },
+   {
+    "d": "2024-03-07",
+    "pe": 27.21
+   },
+   {
+    "d": "2024-03-15",
+    "pe": 26.64
+   },
+   {
+    "d": "2024-03-22",
+    "pe": 26.73
+   },
+   {
+    "d": "2024-04-02",
+    "pe": 27.16
+   },
+   {
+    "d": "2024-04-09",
+    "pe": 27.39
+   },
+   {
+    "d": "2024-04-18",
+    "pe": 26.61
+   },
+   {
+    "d": "2024-04-25",
+    "pe": 27.3
+   },
+   {
+    "d": "2024-05-03",
+    "pe": 27.19
+   },
+   {
+    "d": "2024-05-10",
+    "pe": 26.68
+   },
+   {
+    "d": "2024-05-17",
+    "pe": 27.17
+   },
+   {
+    "d": "2024-05-27",
+    "pe": 27.74
+   },
+   {
+    "d": "2024-06-03",
+    "pe": 28.14
+   },
+   {
+    "d": "2024-06-10",
+    "pe": 28.13
+   },
+   {
+    "d": "2024-06-18",
+    "pe": 28.49
+   },
+   {
+    "d": "2024-06-25",
+    "pe": 28.69
+   },
+   {
+    "d": "2024-07-02",
+    "pe": 24.33
+   },
+   {
+    "d": "2024-07-09",
+    "pe": 24.65
+   },
+   {
+    "d": "2024-07-16",
+    "pe": 24.83
+   },
+   {
+    "d": "2024-07-24",
+    "pe": 24.63
+   },
+   {
+    "d": "2024-07-31",
+    "pe": 25.17
+   },
+   {
+    "d": "2024-08-07",
+    "pe": 24.51
+   },
+   {
+    "d": "2024-08-14",
+    "pe": 24.35
+   },
+   {
+    "d": "2024-08-22",
+    "pe": 25.03
+   },
+   {
+    "d": "2024-08-29",
+    "pe": 25.37
+   },
+   {
+    "d": "2024-09-05",
+    "pe": 25.36
+   },
+   {
+    "d": "2024-09-12",
+    "pe": 25.61
+   },
+   {
+    "d": "2024-09-19",
+    "pe": 25.64
+   },
+   {
+    "d": "2024-09-26",
+    "pe": 26.45
+   },
+   {
+    "d": "2024-10-04",
+    "pe": 25.23
+   },
+   {
+    "d": "2024-10-11",
+    "pe": 25.18
+   },
+   {
+    "d": "2024-10-18",
+    "pe": 25.07
+   },
+   {
+    "d": "2024-10-25",
+    "pe": 24.39
+   },
+   {
+    "d": "2024-11-01",
+    "pe": 24.52
+   },
+   {
+    "d": "2024-11-08",
+    "pe": 24.36
+   },
+   {
+    "d": "2024-11-18",
+    "pe": 23.66
+   },
+   {
+    "d": "2024-11-26",
+    "pe": 24.41
+   },
+   {
+    "d": "2024-12-03",
+    "pe": 24.67
+   },
+   {
+    "d": "2024-12-10",
+    "pe": 24.83
+   },
+   {
+    "d": "2024-12-17",
+    "pe": 24.55
+   },
+   {
+    "d": "2024-12-24",
+    "pe": 23.93
+   },
+   {
+    "d": "2025-01-01",
+    "pe": 23.95
+   },
+   {
+    "d": "2025-01-08",
+    "pe": 23.9
+   },
+   {
+    "d": "2025-01-15",
+    "pe": 23.42
+   },
+   {
+    "d": "2025-01-22",
+    "pe": 23.36
+   },
+   {
+    "d": "2025-01-29",
+    "pe": 23.37
+   },
+   {
+    "d": "2025-02-04",
+    "pe": 23.95
+   },
+   {
+    "d": "2025-02-11",
+    "pe": 23.27
+   },
+   {
+    "d": "2025-02-18",
+    "pe": 23.15
+   },
+   {
+    "d": "2025-02-25",
+    "pe": 22.74
+   },
+   {
+    "d": "2025-03-05",
+    "pe": 22.53
+   },
+   {
+    "d": "2025-03-12",
+    "pe": 22.67
+   },
+   {
+    "d": "2025-03-20",
+    "pe": 23.39
+   },
+   {
+    "d": "2025-03-27",
+    "pe": 23.8
+   },
+   {
+    "d": "2025-04-04",
+    "pe": 23.1
+   },
+   {
+    "d": "2025-04-15",
+    "pe": 23.53
+   },
+   {
+    "d": "2025-04-23",
+    "pe": 24.54
+   },
+   {
+    "d": "2025-04-30",
+    "pe": 24.55
+   },
+   {
+    "d": "2025-05-08",
+    "pe": 24.49
+   },
+   {
+    "d": "2025-05-15",
+    "pe": 25.28
+   },
+   {
+    "d": "2025-05-22",
+    "pe": 24.82
+   },
+   {
+    "d": "2025-05-29",
+    "pe": 25.05
+   },
+   {
+    "d": "2025-06-05",
+    "pe": 24.97
+   },
+   {
+    "d": "2025-06-12",
+    "pe": 25.11
+   },
+   {
+    "d": "2025-06-19",
+    "pe": 25.01
+   },
+   {
+    "d": "2025-06-26",
+    "pe": 25.77
+   },
+   {
+    "d": "2025-07-03",
+    "pe": 22.73
+   },
+   {
+    "d": "2025-07-10",
+    "pe": 22.69
+   },
+   {
+    "d": "2025-07-17",
+    "pe": 22.47
+   },
+   {
+    "d": "2025-07-24",
+    "pe": 22.42
+   },
+   {
+    "d": "2025-07-31",
+    "pe": 22.16
+   },
+   {
+    "d": "2025-08-07",
+    "pe": 22.01
+   },
+   {
+    "d": "2025-08-14",
+    "pe": 22.04
+   },
+   {
+    "d": "2025-08-22",
+    "pe": 22.25
+   },
+   {
+    "d": "2025-09-01",
+    "pe": 22.03
+   },
+   {
+    "d": "2025-09-08",
+    "pe": 22.16
+   },
+   {
+    "d": "2025-09-15",
+    "pe": 22.43
+   },
+   {
+    "d": "2025-09-22",
+    "pe": 22.55
+   },
+   {
+    "d": "2025-09-29",
+    "pe": 22.04
+   },
+   {
+    "d": "2025-10-07",
+    "pe": 22.46
+   },
+   {
+    "d": "2025-10-14",
+    "pe": 22.5
+   },
+   {
+    "d": "2025-10-21",
+    "pe": 23.14
+   },
+   {
+    "d": "2025-10-29",
+    "pe": 23.31
+   },
+   {
+    "d": "2025-11-06",
+    "pe": 22.82
+   },
+   {
+    "d": "2025-11-13",
+    "pe": 23.15
+   },
+   {
+    "d": "2025-11-20",
+    "pe": 23.43
+   },
+   {
+    "d": "2025-11-27",
+    "pe": 23.45
+   },
+   {
+    "d": "2025-12-04",
+    "pe": 23.29
+   },
+   {
+    "d": "2025-12-11",
+    "pe": 23.17
+   },
+   {
+    "d": "2025-12-18",
+    "pe": 23.1
+   },
+   {
+    "d": "2025-12-26",
+    "pe": 23.3
+   },
+   {
+    "d": "2026-01-02",
+    "pe": 23.56
+   },
+   {
+    "d": "2026-01-09",
+    "pe": 22.98
+   },
+   {
+    "d": "2026-01-19",
+    "pe": 22.89
+   },
+   {
+    "d": "2026-01-27",
+    "pe": 22.52
+   },
+   {
+    "d": "2026-02-03",
+    "pe": 23.02
+   },
+   {
+    "d": "2026-02-10",
+    "pe": 23.2
+   },
+   {
+    "d": "2026-02-17",
+    "pe": 23.02
+   },
+   {
+    "d": "2026-02-24",
+    "pe": 22.75
+   },
+   {
+    "d": "2026-03-04",
+    "pe": 21.9
+   },
+   {
+    "d": "2026-03-11",
+    "pe": 21.35
+   },
+   {
+    "d": "2026-03-18",
+    "pe": 21.27
+   },
+   {
+    "d": "2026-03-25",
+    "pe": 20.85
+   },
+   {
+    "d": "2026-04-06",
+    "pe": 20.55
+   },
+   {
+    "d": "2026-04-13",
+    "pe": 21.33
+   },
+   {
+    "d": "2026-04-21",
+    "pe": 21.99
+   },
+   {
+    "d": "2026-04-28",
+    "pe": 21.47
+   },
+   {
+    "d": "2026-05-06",
+    "pe": 21.77
+   },
+   {
+    "d": "2026-05-13",
+    "pe": 20.95
+   },
+   {
+    "d": "2026-05-20",
+    "pe": 21.17
+   },
+   {
+    "d": "2026-05-27",
+    "pe": 21.39
+   },
+   {
+    "d": "2026-06-04",
+    "pe": 20.95
+   },
+   {
+    "d": "2026-06-11",
+    "pe": 20.72
+   },
+   {
+    "d": "2026-06-18",
+    "pe": 21.62
+   },
+   {
+    "d": "2026-06-25",
+    "pe": 21.52
+   },
+   {
     "d": "2026-07-03",
-    "pe": 20.06
-   },
-   {
-    "d": "2026-07-10",
-    "pe": 20.01
-   },
-   {
-    "d": "2026-07-17",
-    "pe": 20.11
-   },
-   {
-    "d": "2026-07-24",
-    "pe": 19.64
-   },
-   {
-    "d": "2026-07-31",
-    "pe": 20.15
-   },
-   {
-    "d": "2026-08-07",
     "pe": 20.31
    },
    {
+    "d": "2026-07-10",
+    "pe": 20.26
+   },
+   {
+    "d": "2026-07-17",
+    "pe": 20.36
+   },
+   {
+    "d": "2026-07-24",
+    "pe": 19.89
+   },
+   {
+    "d": "2026-07-31",
+    "pe": 20.4
+   },
+   {
+    "d": "2026-08-07",
+    "pe": 20.56
+   },
+   {
     "d": "2026-08-14",
-    "pe": 20.14
+    "pe": 20.39
    }
   ],
   "cross_check": {
@@ -7726,21 +7861,21 @@
    },
    "external_mean_today": 20.57,
    "today_agrees_within_pct": 2.1,
-   "median_5y_ours": 23.58,
+   "median_5y_ours": 23.88,
    "median_5y_external": 22.06,
-   "history_bias": 1.069,
+   "history_bias": 1.082,
    "history_bias_expected": 1.063,
-   "percentile_raw": 3.0,
-   "percentile_adjusted": 8.9,
-   "percentile_adjusted_5y": 10.1,
+   "percentile_raw": 2.1,
+   "percentile_adjusted": 9.0,
+   "percentile_adjusted_5y": 10.3,
    "note": "Today matches three independent NSE-derived publishers within 0.8%. The reconstructed HISTORY runs 8.3% rich because our EPS steps once a year while NSE's rolls quarterly, leaving our denominator stale-low between steps. Predicted bias from that mechanism alone is 1.063 against 1.083 observed. Rank today against the deflated history and the percentile moves from ~3 to ~11 (~13 over five years). Use the adjusted figure when calling the market cheap. Correction C27."
   },
   "anchor_note": "The LEVEL of this series is anchored so that today equals the app's bottom-up weighted trailing P/E. Today matching the index card is therefore true by construction and is not evidence the reconstruction is right. What is measured is the SHAPE \u2014 how aggregate profit moved relative to the index."
  },
  "conditional": {
   "tercile_cuts": [
-   23.5,
-   27.66
+   23.79,
+   28.0
   ],
   "today_bucket": "cheap",
   "horizons": [
@@ -7749,17 +7884,17 @@
     "buckets": [
      {
       "bucket": "cheap",
-      "n_windows": 541,
+      "n_windows": 542,
       "n_independent": 4,
       "sufficient": false,
-      "median_pct": 7.7,
-      "pct_positive": 75.0,
+      "median_pct": 7.6,
+      "pct_positive": 74.5,
       "min_pct": -22.3,
       "max_pct": 46.3
      },
      {
       "bucket": "mid",
-      "n_windows": 667,
+      "n_windows": 668,
       "n_independent": 5,
       "sufficient": true,
       "median_pct": 5.3,
@@ -7769,13 +7904,13 @@
      },
      {
       "bucket": "rich",
-      "n_windows": 667,
+      "n_windows": 668,
       "n_independent": 5,
       "sufficient": true,
       "median_pct": 5.9,
       "pct_positive": 71.1,
       "min_pct": -12.7,
-      "max_pct": 36.2
+      "max_pct": 37.0
      }
     ],
     "any_sufficient": true
@@ -7785,17 +7920,17 @@
     "buckets": [
      {
       "bucket": "cheap",
-      "n_windows": 415,
+      "n_windows": 416,
       "n_independent": 1,
       "sufficient": false,
-      "median_pct": 22.3,
-      "pct_positive": 92.8,
+      "median_pct": 22.2,
+      "pct_positive": 92.1,
       "min_pct": -5.7,
       "max_pct": 90.6
      },
      {
       "bucket": "mid",
-      "n_windows": 667,
+      "n_windows": 668,
       "n_independent": 2,
       "sufficient": false,
       "median_pct": 8.0,
@@ -7805,7 +7940,7 @@
      },
      {
       "bucket": "rich",
-      "n_windows": 667,
+      "n_windows": 668,
       "n_independent": 2,
       "sufficient": false,
       "median_pct": 6.5,
@@ -7821,27 +7956,27 @@
     "buckets": [
      {
       "bucket": "cheap",
-      "n_windows": 323,
+      "n_windows": 322,
       "n_independent": 0,
       "sufficient": false,
-      "median_pct": 38.3,
+      "median_pct": 38.5,
       "pct_positive": 100.0,
       "min_pct": 22.6,
       "max_pct": 137.2
      },
      {
       "bucket": "mid",
-      "n_windows": 507,
+      "n_windows": 510,
       "n_independent": 1,
       "sufficient": false,
-      "median_pct": 32.4,
-      "pct_positive": 96.6,
+      "median_pct": 32.2,
+      "pct_positive": 96.5,
       "min_pct": -2.6,
       "max_pct": 64.8
      },
      {
       "bucket": "rich",
-      "n_windows": 667,
+      "n_windows": 668,
       "n_independent": 1,
       "sufficient": false,
       "median_pct": 26.0,
@@ -7874,7 +8009,7 @@
  ],
  "model": "level(T) = index_EPS_today x (1 + g)^T x exit_PE. Two inputs per scenario, both stated. No probabilities are assigned here \u2014 weights belong to the reader and the UI makes them editable.",
  "caveats": [
-  "EVERY SCENARIO BUILT ON A P/E PERCENTILE IMPLIES A RE-RATING, because today's multiple sits at the 3th percentile of a sample that started expensive and de-rated. Three biases push the same way: constant constituents (today's winners back-cast to 2018 overstate historical earnings and so understate historical P/E), the COVID denominator (2020-21 multiples were high because earnings broke), and the untested assumption of mean reversion itself. The ex-COVID variants are reported beside every headline figure so the artefact is measurable.",
+  "EVERY SCENARIO BUILT ON A P/E PERCENTILE IMPLIES A RE-RATING, because today's multiple sits at the 2th percentile of a sample that started expensive and de-rated. Three biases push the same way: constant constituents (today's winners back-cast to 2018 overstate historical earnings and so understate historical P/E), the COVID denominator (2020-21 multiples were high because earnings broke), and the untested assumption of mean reversion itself. The ex-COVID variants are reported beside every headline figure so the artefact is measurable.",
   "MEAN REVERSION IS ASSUMED, NOT TESTED. conditional_base_rates() is the test and it cannot run here: the cheap-multiple bucket has one independent 1Y window and none at 2Y. Cheap-starting-multiple medians look emphatic and mean nothing at that count.",
   "THIS IS NOT A FORECAST. The repo's own testing found the daily macro\u2192index regression worthless (R\u00b2 = 0.036), crude unable to predict next-day weakness (p = 0.979), and crude beta sign-flipping by regime (+0.006 full sample vs \u22120.075 in 2026). Scenario levels are arithmetic conditional on inputs that nobody has demonstrated the ability to predict.",
   "index_EPS is IMPLIED from spot \u00f7 weighted trailing P/E across ~98% of index weight. It is not a published index EPS and inherits every staleness in Yahoo's per-stock fundamentals.",

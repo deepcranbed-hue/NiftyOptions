@@ -349,7 +349,43 @@ def _scenarios(earn: dict, pv: dict, spot: float) -> list[dict]:
                        "cr of FPI outflows, partly absorbed by DIIs."),
          "invalidated_by": "Brent sustained below $85 with the rupee inside 96."},
     ]
-    for x in axis:
+    # A SECOND PUBLISHED HOUSE, so "the sell side" stops meaning one broker. BofA Global
+    # Research, quoted 2026-08-18, raised FY27 index earnings growth to 10% from 8.5% and
+    # kept a Dec-2026 base of 26,200 and a bear of 22,000.
+    #
+    # THE INTERESTING PART IS THAT 26,200 IS NOT "NO RE-RATING". BofA describe the base as
+    # "assuming no further expansion in valuations", but on THIS file's EPS (1,210) a 10%
+    # year gives 1,331, and holding today's 20.14x would put the index at 26,806. Their
+    # 26,200 implies 19.7x — a mild DE-rating. Published narrative and published arithmetic
+    # disagree by about 2%, and the convention here is to record the level and show the
+    # multiple it implies rather than to adopt the narrative.
+    bofa = [
+        {"id": "bofa_base", "name": "BofA Global Research — base", "published_level": 26200,
+         "eps_growth_pct": 10.0, "exit_pe": 19.7,
+         "quoted": ["published_level", "published_for", "eps_growth_pct", "narrative"],
+         "assumed": ["exit_pe — NOT published. BofA state 'no further expansion in "
+                     "valuations'; 19.7 is what their level implies on this file's index "
+                     "EPS after 10% growth, and it is BELOW today's 20.14x"],
+         "narrative": ("FY27 estimates raised across sectors covering ~71% of Nifty market "
+                       "cap on a resilient June quarter. GST collections, direct tax "
+                       "receipts, credit growth and power demand firm through the West Asia "
+                       "conflict. 10% FY27 growth, 15% FY28."),
+         "invalidated_by": "FY27 growth tracking below 8% at the H1 mark, or the multiple "
+                           "re-rating above 21x on unchanged earnings."},
+        {"id": "bofa_bear", "name": "BofA Global Research — bear", "published_level": 22000,
+         "eps_growth_pct": 0.0, "exit_pe": 18.2,
+         "quoted": ["published_level", "published_for", "narrative"],
+         "assumed": ["eps_growth_pct — BofA list macro shocks without an earnings number; "
+                     "0% is this file's reading, which makes their level a pure multiple "
+                     "story",
+                     "exit_pe — implied by their level on flat EPS under this file's "
+                     "convention. Note 18.2x is still ABOVE the 16.56x minimum in the "
+                     "P/E sample, so even their bear case does not set a new low"],
+         "narrative": ("Simultaneous higher crude, weaker monsoon, rate hikes, rupee "
+                       "depreciation and AI disruption."),
+         "invalidated_by": "Any two of those five resolving without the index breaking 23,000."},
+    ]
+    for x in axis + bofa:
         x.update({"kind": "published", "source": "Axis Securities, quoted 2026-08",
                   "published_for": "2026-12-31",
                   "measured": {
@@ -362,7 +398,7 @@ def _scenarios(earn: dict, pv: dict, spot: float) -> list[dict]:
     for x in out:
         x.setdefault("quoted", [])
         x.setdefault("assumed", [])
-    return out + axis
+    return out + axis + bofa
 
 
 def project(a: dict, rates: dict, earn: dict, pv: dict) -> list[dict]:

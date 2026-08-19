@@ -1,11 +1,11 @@
 {
- "as_of": "2026-08-16",
+ "as_of": "2026-08-19",
  "hypothesis": {
   "id": "H-EARN-ACCEL",
-  "claim": "Aggregate Nifty-50 earnings growth reaccelerates from its recent quarterly run-rate of 7.1% toward the 12-14% assumed for FY27.",
+  "claim": "Aggregate Nifty-50 earnings growth reaccelerates from its recent quarterly run-rate of 7.1% toward the 10-14% assumed for FY27.",
   "status": "OPEN",
   "why_it_matters": "At roughly today's multiple the two assumptions are ~1,150 Nifty points apart over a year. The multiple is not the research question; this is.",
-  "gap_pp": 4.9,
+  "gap_pp": 2.9,
   "settles_on": "Four consecutive quarters of aggregate PAT growth. It is confirmed if the exit rate reaches the band and holds two quarters; refuted if it stays below ~8% through FY27 H1.",
   "next_observation": "Q2 FY27 results, from late October 2026"
  },
@@ -357,30 +357,30 @@
  },
  "L2_expectations": {
   "sell_side_band_pct": [
-   12.0,
+   10.0,
    14.0
   ],
-  "sell_side_source": "Axis Securities FY27 earnings growth band, quoted 2026-08",
+  "sell_side_source": "FY27 earnings growth: BofA Global Research 10% (2026-08-18, raised from 8.5%) to Axis Securities 12-14% (quoted 2026-08). Two houses, not one.",
   "market_implied_pct": 26.9,
   "market_implied_note": "Trailing P/E \u00f7 forward P/E \u2212 1 across the index. Yahoo's forward multiple spans one to two years rather than a clean next fiscal year, so this is NOT a FY27 growth estimate and must not be compared to one directly. It is here as an upper bound on what the price is paying for.",
-  "snapshots_held": 2,
-  "revisions_measurable": false,
+  "snapshots_held": 3,
+  "revisions_measurable": true,
   "revisions_needed": 3,
-  "revisions_note": "expectation_snapshots.json holds 2 capture(s); 3 are needed so there are at least two differences to compare (1 more to go). This is the highest-value gap on the list."
+  "revisions_note": "3 snapshots held, giving 2 differences \u2014 direction is measurable. Treat early readings as provisional until captures straddle a reporting season."
  },
  "L3_valuation": {
   "note": "see nifty_outlook.json \u2014 reconstructed P/E and its percentiles"
  },
  "L4_price": {
-  "spot": 24366.0
+  "spot": 24078.3
  },
  "channels": [
   {
    "id": "earnings_revisions",
    "direction": "both",
    "watch": "Direction of consensus EPS revisions across the index",
-   "observable": false,
-   "why": "expectation_snapshots.json holds 2 capture(s); 3 are needed so there are at least two differences to compare (1 more to go). This is the highest-value gap on the list.",
+   "observable": true,
+   "why": "3 snapshots held, giving 2 differences \u2014 direction is measurable. Treat early readings as provisional until captures straddle a reporting season.",
    "source_needed": "expectation_snapshot.py on a weekly cron"
   },
   {
@@ -440,7 +440,7 @@
    "source_needed": "management commentary, per-company"
   }
  ],
- "channels_observable": 4,
+ "channels_observable": 5,
  "note": "The gap between L1 and L2 IS the research question. Everything the news agent reads should be sorted by whether it bears on that gap; an article that does not touch a channel is not evidence about the index, however loud it is.",
  "caveats": [
   "Constant constituents \u2014 today's Nifty 50 back-cast. Names that entered the index by growing make the historical series look better than the index of the day actually was.",

@@ -64,10 +64,17 @@ DB = os.path.join(_ROOT, "option_chains.db")
 OUT = os.path.join(_ROOT, "earnings_acceleration.json")
 
 # The sell-side assumption this hypothesis is tested against.
-TARGET_BAND_PCT = (12.0, 14.0)
+#
+# WIDENED 2026-08-18, from (12.0, 14.0). The old band was one broker's, and recording one
+# house as "the sell side" made the gap to our +7.1% run-rate look larger and more uniform
+# than it is. BofA Global Research raised FY27 to 10% from 8.5% on 2026-08-18 — BELOW the
+# band this file was testing against, and inside our own reported-to-normalised range
+# (+7.12% reported, +11.84% ex the Reliance one-off, C38). Two houses now bracket 10-14%,
+# and the honest statement of the research question is that gap, not a single number.
+TARGET_BAND_PCT = (10.0, 14.0)
 # Sectors whose Screener sales / operating-profit rows do not form a margin.
 _MARGIN_EXCLUDED_SECTORS = {"Financial Services"}
-TARGET_SOURCE = "Axis Securities FY27 earnings growth band, quoted 2026-08"
+TARGET_SOURCE = ("FY27 earnings growth: BofA Global Research 10% (2026-08-18, raised from 8.5%) to Axis Securities 12-14% (quoted 2026-08). Two houses, not one.")
 
 
 def _load(p, d=None):
