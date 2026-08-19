@@ -67,6 +67,24 @@ two-series backfill to 2018. Do not lower it to hammer a free public archive.
 """
 from __future__ import annotations
 
+# REPO ROOT ON sys.path — placed AFTER the __future__ import, which the language requires to
+# be the first statement after the docstring. An earlier attempt put this block above the
+# docstring and broke the file outright: SyntaxError, "from __future__ imports must occur at
+# the beginning of the file".
+#
+# WHY IT IS NEEDED AT ALL. `python3 data_agent/macro/backfill_nse_participants.py` puts THIS
+# FILE's directory on sys.path[0] — not the working directory — so `from db_config import ...`
+# inside _resolve_db() raised ModuleNotFoundError on every run that let the resolver choose
+# the database. The failure was invisible for two reasons: --help and --probe never reach
+# _resolve_db, and passing --db short-circuits it BEFORE the import, which is how every
+# successful manual run was done. So the script worked whenever a human typed a path and
+# failed the moment a scheduler did the correct thing. participant_oi sat at 12-Aug because
+# of this while participant_flows stayed current — its sibling download_nse_participants.py
+# has carried this bootstrap all along.
+import os as _os, sys as _sys
+_RT = _os.path.dirname(_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
+_RT in _sys.path or _sys.path.insert(0, _RT)
+
 import argparse
 import io
 import os
@@ -75,7 +93,7 @@ import re
 import sqlite3
 import sys
 import time
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, timedelta, timezone
 
 try:
     import requests
@@ -327,9 +345,35 @@ def main() -> int:
                       f"header may have changed")
             backoff = args.delay
         elif r.status_code == 404:
-            conn.execute("INSERT OR REPLACE INTO nse_fetch_skips VALUES (?,?,?,?)",
-                         (ds, series, "404_no_trading", datetime.now().isoformat()))
-            conn.commit(); miss += 1
+            # A 404 MEANS TWO DIFFERENT THINGS AND ONLY ONE OF THEM IS PERMANENT.
+            #
+            # NSE publishes day D's participant file AFTER the close on D. Ask before that
+            # and the archive answers 404 — identical to the 404 for a real holiday. Cache
+            # the second and a rerun correctly skips a holiday forever; cache the first and
+            # the session is skipped forever too, because `todo` is built by subtracting
+            # nse_fetch_skips. That is exactly what happened: 2026-08-13 was recorded
+            # 404_no_trading at 14:38 IST on 2026-08-13 — 52 minutes BEFORE the 15:30 close
+            # — and participant_oi has been missing a trading day ever since while
+            # participant_flows, fetched later, holds it. 16 of the 17 cached skips were
+            # genuine holidays; this was the one that was not.
+            #
+            # Same family as the flows cache writing 0.0 on failure: an error state stored
+            # as a legitimate value, indistinguishable afterwards. §0 already says
+            # "publication lag is part of the signal" — the register knew, this code did not.
+            #
+            # So: only a date STRICTLY IN THE PAST may be cached as a non-trading day.
+            # Today's 404 is "not yet", is not written, and the next run asks again.
+            _today_ist = (datetime.now(timezone(timedelta(hours=5, minutes=30)))
+                          .strftime("%Y-%m-%d"))
+            if ds < _today_ist:
+                conn.execute("INSERT OR REPLACE INTO nse_fetch_skips VALUES (?,?,?,?)",
+                             (ds, series, "404_no_trading", datetime.now().isoformat()))
+                conn.commit(); miss += 1
+            else:
+                miss += 1
+                print(f"[{i}/{len(todo)}] {series} {ds} 404 but that is TODAY — NSE "
+                      f"publishes after the close, so this is 'not yet', not 'never'. "
+                      f"NOT cached; run again after 15:30 IST")
         elif r.status_code in (401, 403, 429):
             # Do NOT abort the run -- back off, re-handshake, and retry this date later.
             backoff = min(max(backoff * 2, 30), 600)
