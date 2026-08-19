@@ -375,12 +375,46 @@ def fetch_best(symbol, start, end, log=print):
     return best, best_ticker
 
 
-def write_daily(rows, symbol, db, exchange=None, replace=False):
+def write_daily(rows, symbol, db, exchange=None, replace=False, allow_today_1d=False):
     """Insert daily bars directly. See the module docstring for why not save_bars.
 
     exchange defaults to whatever this symbol already uses in the database rather
     than to 'NSE' — a wrong exchange forks the series instead of updating it.
+
+    RULE: A 1d BAR IS NEVER DATED TODAY — enforced here as well as in bar_store.save_bars.
+    The rule was stated as applying to everyone and was implemented at two of the three
+    write boundaries; this was the third, and by symbol count the largest. Every Yahoo daily
+    sync, the India index downloader, the commodity dailies, the continuous series and the
+    backfill all funnel through this function, so on 2026-08-19 the database held 126 symbols
+    with a bar dated that day while bar_store and fo_bars were correctly refusing. They
+    happened to be complete because the sync ran after the close; a midday run would have
+    written 126 half-finished bars labelled as daily, and §0 already notes there is nothing
+    in the row to tell the two apart.
+
+    THE COMPARISON IS SIMPLER HERE THAN IN bar_store, AND DELIBERATELY SO. save_bars sends
+    its timestamps through to_db_ts, which normalises to UTC, so a midnight-IST bar for today
+    becomes 18:30 on the previous UTC day and slips past a naive check — its guard has to
+    compare session dates for that reason. This function stores the canonical
+    '<date>T00:00:00' trading date with no conversion, so the row's own prefix IS the session
+    date. Do not "harmonise" the two; they are different because the storage is different.
+
+    `allow_today_1d=True` exists for a deliberate intraday snapshot and must be passed
+    explicitly, so it appears at the call site rather than being a default anyone inherits.
     """
+    if rows and not allow_today_1d:
+        import datetime as _dt
+        _IST = _dt.timezone(_dt.timedelta(hours=5, minutes=30))
+        _today = _dt.datetime.now(_IST).date().isoformat()
+        _kept = [r for r in rows if str(r[0])[:10] < _today]
+        if len(_kept) != len(rows):
+            print(f"   [1d rule] {symbol}: dropped {len(rows) - len(_kept)} bar(s) dated "
+                  f"{_today} — a daily bar is written only once its session has ended")
+        rows = _kept
+        # Nothing left to write means nothing to repair either: return before the foreign-ts
+        # purge, so a run that stores no data does not mutate the table as a side effect.
+        if not rows:
+            return 0, 0
+
     exchange = resolve_exchange(symbol, db=db, explicit=exchange)
     con = sqlite3.connect(db)
 
